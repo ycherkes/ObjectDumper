@@ -164,8 +164,7 @@ namespace ObjectDumper
            var project = entryAssemblyValue != "testhost"
                       && entryAssemblyValue != "ReSharperTestRunner"
                       && entryAssemblyValue != "Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter"
-                ? _dte.Solution.Projects.OfType<Project>()
-                    .SingleOrDefault(x => x.Name == entryAssemblyValue)
+                ? _dte.Solution.GetProjectsRecursively().FirstOrDefault(x => x.Name == entryAssemblyValue)
                 : _dte.ActiveDocument.ProjectItem.ContainingProject;
 
             return project;

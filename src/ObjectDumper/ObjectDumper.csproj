@@ -45,6 +45,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DteExtensions.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="ObjectDumperPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
