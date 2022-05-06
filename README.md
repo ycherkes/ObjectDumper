@@ -6,6 +6,8 @@
 
 A Visual Studio 2022 extension. Dumps the objects from the debugger session in the next formats: CSharp Object Initialization Code, JSON and XML.
 
+Context menu:
+
 ![image](https://user-images.githubusercontent.com/13467759/167089195-48c9d10d-8f0c-412b-b316-20392e2ac9c9.png)
 
 It opens dumped object in a separate document window:
