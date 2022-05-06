@@ -14,8 +14,15 @@ It opens dumped object in a separate document window:
 
 ![image](https://user-images.githubusercontent.com/13467759/167089587-4176db13-8136-4103-8003-0dc9bab42609.png)
 
-## Donate
+## Stand with the people of Ukraine. Now accepting cryptocurrency donations. Bitcoin, Ethereum and USDT.
+
+| Coin                        | Address |
+| --------------------------  |:-------------:|
+| ETH and USDT (ERC-20)       | [0x165CD37b4C644C2921454429E7F9358d18A45e14](https://www.blockchain.com/en/eth/address/0x165CD37b4C644C2921454429E7F9358d18A45e14) |
+| BTC                         | [357a3So9CbsNfBBgFYACGvxxS6tMaDoa1P](https://www.blockchain.com/en/btc/address/357a3So9CbsNfBBgFYACGvxxS6tMaDoa1P) |
+
+## Donate project
 
 | Coin           | Address |
 | -------------  |:-------------:|
-| Ethereum       | [0xa3144c572eAB14bB404399fFE06757d5483ebD94](https://etherdonation.com/d?to=0xa3144c572eAB14bB404399fFE06757d5483ebD94) |
+| Ethereum       | [0xa3144c572eAB14bB404399fFE06757d5483ebD94](https://www.blockchain.com/en/eth/address/0xa3144c572eAB14bB404399fFE06757d5483ebD94) |
