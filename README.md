@@ -1,4 +1,4 @@
-# ObjectDumper
+# Object Dumper
 
 <p align="center">
  <a href="https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper"><img src="https://img.shields.io/visual-studio-marketplace/v/YevhenCherkes.YellowFlavorObjectDumper"></a>
