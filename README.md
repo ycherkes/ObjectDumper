@@ -13,3 +13,9 @@ Context menu:
 It opens dumped object in a separate document window:
 
 ![image](https://user-images.githubusercontent.com/13467759/167089587-4176db13-8136-4103-8003-0dc9bab42609.png)
+
+## Donate
+
+| Coin           | Address |
+| -------------  |:-------------:|
+| Ethereum       | [0xa3144c572eAB14bB404399fFE06757d5483ebD94](https://etherdonation.com/d?to=0xa3144c572eAB14bB404399fFE06757d5483ebD94) |
