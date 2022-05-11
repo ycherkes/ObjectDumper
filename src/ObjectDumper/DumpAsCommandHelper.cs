@@ -2,13 +2,14 @@
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using EnvDTE;
 using EnvDTE80;
-using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.TextManager.Interop;
+using Constants = EnvDTE.Constants;
 using Project = EnvDTE.Project;
 
 namespace ObjectDumper
@@ -26,66 +27,62 @@ namespace ObjectDumper
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            if (_dte.Debugger == null || _dte.Debugger.CurrentMode != dbgDebugMode.dbgBreakMode ||
-                _dte.Debugger.CurrentStackFrame == null)
-            {
-                return false;
-            }
-
-            if (!(_dte.ActiveDocument.Selection is TextSelection ts))
-                return false;
-
-            var selectionText = ts.Text;
-
-            if (!string.IsNullOrEmpty(selectionText))
-                return true;//_dte.Debugger.GetExpression(selectionText).IsValidValue;
-
-            var document = Utils.GetActiveDocument();
-
-            if (document == null) return false;
-
-            var textView = Utils.GetWpfView();
-
-            if (textView == null) return false;
-
-            var caretPos = textView.Caret.Position.BufferPosition.Position;
-
-            ISymbol symbol = Utils.FindSymbolAsync(document, caretPos, CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult();
+            return _dte.Debugger != null
+                && _dte.Debugger.CurrentMode == dbgDebugMode.dbgBreakMode
+                && _dte.Debugger.CurrentStackFrame != null
+                && (_dte.ActiveWindow.ObjectKind == Constants.vsDocumentKindText ||
+                    _dte.ActiveWindow.ObjectKind == "{ECB7191A-597B-41F5-9843-03A4CF275DDE}");
             
-            if (symbol != null)
-            {
-               return _dte.Debugger.GetExpression(symbol.Name).IsValidValue;
-            }
-
-            return false;
         }
 
         public void ExecuteCommand(string format)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (!(_dte.ActiveDocument.Selection is TextSelection ts))
-                return;
+            string selectionText = string.Empty;
 
-            var selectionText = ts.Text;
+            var textView = Utils.GetTextView();
 
-            if (string.IsNullOrEmpty(selectionText))
+            textView.GetSelection(out int piAnchorLine,
+                out int piAnchorCol,
+                out int piEndLine,
+                out int piEndCol);
+
+            if (piAnchorLine == piEndLine && piAnchorCol == piEndCol)
             {
-                var document = Utils.GetActiveDocument();
+                TextSpan[] textSpan = new TextSpan[1];
 
-                if (document == null) return;
-
-                var textView = Utils.GetWpfView();
-
-                if (textView == null) return;
-
-                var caretPos = textView.Caret.Position.BufferPosition.Position;
-
-                ISymbol symbol = Utils.FindSymbolAsync(document, caretPos, CancellationToken.None).ConfigureAwait(false)
-                    .GetAwaiter().GetResult();
-                if (symbol != null)
+                if(textView.GetWordExtent(
+                    piAnchorLine,
+                    piAnchorCol,
+                    (uint)(WORDEXTFLAGS.WORDEXT_CURRENT),
+                    textSpan) != VSConstants.S_OK)
                 {
-                    selectionText = symbol.Name;
+                    return;
+                }
+
+                var ts1 = textSpan[0];
+
+                piAnchorLine = ts1.iStartLine;
+                piEndLine = ts1.iEndLine;
+                piAnchorCol = ts1.iStartIndex;
+                piEndCol = ts1.iEndIndex;
+            }
+
+            if (piAnchorLine != piEndLine || piAnchorCol != piEndCol)
+            {
+                if(textView.GetBuffer(out var buffer) != VSConstants.S_OK)
+                {
+                    return;
+                }
+                var startLine = Math.Min(piAnchorLine, piEndLine);
+                var endLine = Math.Max(piAnchorLine, piEndLine);
+                var startCol = Math.Min(piAnchorCol, piEndCol);
+                var endCol = Math.Max(piAnchorCol, piEndCol);
+
+                if(buffer.GetLineText(startLine, startCol, endLine, endCol, out selectionText) != VSConstants.S_OK)
+                {
+                    return;
                 }
             }
 
@@ -124,6 +121,9 @@ namespace ObjectDumper
             }
 
             var expression = selectionText;
+
+            //var expressionName = _dte.Debugger.GetExpression(expression).Name;
+
             var fileName = expression.Any(char.IsWhiteSpace) ? "expression" : expression;
 
             var runFormatterExpression = _dte.Debugger.GetExpression($@"ObjectFormatter.Formatter.Format({expression}, ""{format}"")");

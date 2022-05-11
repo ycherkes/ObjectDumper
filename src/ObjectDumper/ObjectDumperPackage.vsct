@@ -42,6 +42,9 @@
       <Group guid="guidObjectDumperPackageCmdSet" id="MyMenuGroup" priority="0x0300">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
       </Group>
+      <Group guid="guidObjectDumperPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_COMMANDWINDOW" />
+      </Group>
       <!--<Group guid="guidObjectDumperPackageCmdSet" id="MyMenuGroup" priority="0x0600">
         <Parent guid="guidVSDebugGroup" id="IDM_DEBUG_MENU" />
       </Group>-->

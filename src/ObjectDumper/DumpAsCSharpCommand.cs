@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System;
 using System.ComponentModel.Design;
+using EnvDTE;
 using Task = System.Threading.Tasks.Task;
 
 namespace ObjectDumper
@@ -49,7 +50,6 @@ namespace ObjectDumper
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             if (!(sender is OleMenuCommand menuCommand)) return;
-
 
             // start by assuming that the menu will not be shown
             menuCommand.Visible = false;
