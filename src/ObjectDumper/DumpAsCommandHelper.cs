@@ -131,9 +131,9 @@ namespace ObjectDumper
             string formattedValue = Regex.Unescape(runFormatterExpression.Value).Trim('"');
 
             switch (format)
-            {
+            {                
                 case "csharp":
-                    CreateNewFile(@"General\Visual C# Class", $"{fileName}.cs", formattedValue);
+                    CreateNewFile(@"General\C# Class", $"{fileName}.cs", formattedValue);
                     break;
                 case "xml":
                     CreateNewFile(@"General\XML File", $"{fileName}.xml", formattedValue);
@@ -173,6 +173,7 @@ namespace ObjectDumper
         internal void CreateNewFile(string fileType, string title, string fileContents)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
+
             var newDocument = _dte.ItemOperations.NewFile(fileType, title).Document;
             if (!string.IsNullOrEmpty(fileContents))
             {
