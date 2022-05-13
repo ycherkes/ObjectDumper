@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using Newtonsoft.Json.Embedded;
 using Newtonsoft.Json.Embedded.Converters;
 using Newtonsoft.Json.Embedded.Serialization;
@@ -46,7 +47,7 @@ namespace ObjectFormatter
                 {
                     "json" => JsonConvert.SerializeObject(obj, JsonSettings),
                     "csharp" => ObjectFormatterCSharp.Dump(obj, CsharpDumpOptions),
-                    "xml" => GetXml(obj),
+                    "xml" => GetXmlWithHeader(obj),
                     _ => obj?.ToString()
                 };
             }
@@ -56,15 +57,24 @@ namespace ObjectFormatter
             }
         }
 
+        private static string GetXmlWithHeader(object obj)
+        {
+            return $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{Environment.NewLine}{GetXml(obj)}";
+        }
+
         private static string GetXml(object obj)
         {
-            var json = JsonConvert.SerializeObject(obj, XmlSettings);
+            if (obj == null) return "<!--NULL VALUE-->";
 
-            var typeName = obj.GetType().Name;
-            var elementName = GetElementName(typeName);
+            var elementName = GetElementName(obj);
 
             if (obj is IEnumerable and not IDictionary)
             {
+                var xmlCollection = string.Join(Environment.NewLine, 
+                    ((IEnumerable)obj)
+                    .Cast<object>()
+                    .Select(GetXml));
+
                 var itemTypeName = obj.GetType()
                     .GetInterfaces()
                     .FirstOrDefault(x => x.IsGenericType
@@ -74,13 +84,20 @@ namespace ObjectFormatter
                     ?.Name;
 
                 elementName = GetElementName(itemTypeName) ?? elementName;
+                elementName = XmlConvert.EncodeName($"ArrayOf{elementName}");
 
-                json = "{\"" + elementName + "\":" + json + "}";
-                
-                elementName = "ArrayOf" + elementName;
+                return $"<{elementName}>{Environment.NewLine}{xmlCollection}{Environment.NewLine}</{elementName}>";
             }
 
-            return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" + JsonConvert.DeserializeXNode(json, elementName);
+            var json = JsonConvert.SerializeObject(obj, XmlSettings);
+
+            return JsonConvert.DeserializeXNode(json, elementName)?.ToString();
+        }
+
+        private static string GetElementName(object obj)
+        {
+            var typeName = obj.GetType().Name;
+            return GetElementName(typeName);
         }
 
         private static string GetElementName(string typeName)
