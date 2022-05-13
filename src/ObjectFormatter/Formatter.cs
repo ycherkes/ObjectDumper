@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json.Embedded;
 using Newtonsoft.Json.Embedded.Converters;
 using Newtonsoft.Json.Embedded.Serialization;
@@ -17,10 +20,7 @@ namespace ObjectFormatter
                 NamingStrategy = new CamelCaseNamingStrategy()
             },
             Formatting = Formatting.Indented,
-            Converters =
-            {
-                new StringEnumConverter { NamingStrategy = new CamelCaseNamingStrategy() }
-            },
+            Converters = { new StringEnumConverter() },
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
 
@@ -28,29 +28,27 @@ namespace ObjectFormatter
         {
             NullValueHandling = NullValueHandling.Ignore,
             DefaultValueHandling = DefaultValueHandling.Ignore,
-            Formatting = Formatting.Indented,
+            Converters = { new StringEnumConverter() },
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        };
+
+        private static readonly DumpOptions CsharpDumpOptions = new()
+        {
+            IgnoreDefaultValues = true,
+            IndentSize = 4
         };
 
         public static string Format(object obj, string formattingType)
         {
             try
             {
-                switch (formattingType)
+                return formattingType switch
                 {
-                    case "json":
-                        return JsonConvert.SerializeObject(obj, JsonSettings);
-                    case "csharp":
-                        return ObjectFormatterCSharp.Dump(obj, new DumpOptions
-                        {
-                            IgnoreDefaultValues = true,
-                            IndentSize = 4
-                        });
-                    case "xml":
-                        return GetXml(obj);
-                    default:
-                        return obj?.ToString();
-                }
+                    "json" => JsonConvert.SerializeObject(obj, JsonSettings),
+                    "csharp" => ObjectFormatterCSharp.Dump(obj, CsharpDumpOptions),
+                    "xml" => GetXml(obj),
+                    _ => obj?.ToString()
+                };
             }
             catch (Exception e)
             {
@@ -61,12 +59,35 @@ namespace ObjectFormatter
         private static string GetXml(object obj)
         {
             var json = JsonConvert.SerializeObject(obj, XmlSettings);
-            var name = obj.GetType().Name;
-            var element = name.Contains("AnonymousType")
-                ? "AnonymousType"
-                : name;
 
-            return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" + JsonConvert.DeserializeXNode(json, element);
+            var typeName = obj.GetType().Name;
+            var elementName = GetElementName(typeName);
+
+            if (obj is IEnumerable and not IDictionary)
+            {
+                var itemTypeName = obj.GetType()
+                    .GetInterfaces()
+                    .FirstOrDefault(x => x.IsGenericType
+                    && x.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                    ?.GenericTypeArguments
+                    .FirstOrDefault()
+                    ?.Name;
+
+                elementName = GetElementName(itemTypeName) ?? elementName;
+
+                json = "{\"" + elementName + "\":" + json + "}";
+                
+                elementName = "ArrayOf" + elementName;
+            }
+
+            return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" + JsonConvert.DeserializeXNode(json, elementName);
+        }
+
+        private static string GetElementName(string typeName)
+        {
+            return typeName?.Contains("AnonymousType") == true
+                ? "AnonymousType"
+                : typeName;
         }
     }
 }
