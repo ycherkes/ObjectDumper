@@ -27,4 +27,4 @@ It opens dumped object in a separate document window:
 
 | Coin           | Address |
 | -------------  |:-------------:|
-| Ethereum       | [0xa3144c572eAB14bB404399fFE06757d5483ebD94](https://www.blockchain.com/en/eth/address/0xa3144c572eAB14bB404399fFE06757d5483ebD94) |
+| ETH            | [0xa3144c572eAB14bB404399fFE06757d5483ebD94](https://www.blockchain.com/en/eth/address/0xa3144c572eAB14bB404399fFE06757d5483ebD94) |
