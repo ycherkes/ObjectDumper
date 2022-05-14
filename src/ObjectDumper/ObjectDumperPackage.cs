@@ -1,10 +1,7 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Xml.Linq;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio;
@@ -61,79 +58,9 @@ namespace ObjectDumper
 
             Dte = (DTE2)GetGlobalService(typeof(DTE));
 
-            //Dte.Events.DebuggerEvents.OnEnterBreakMode += DebuggerEvents_OnEnterBreakMode;
             await DumpAsCSharpCommand.InitializeAsync(this);
             await DumpAsJsonCommand.InitializeAsync(this);
             await DumpAsXmlCommand.InitializeAsync(this);
-        }
-
-        private void DebuggerEvents_OnEnterBreakMode(dbgEventReason reason, ref dbgExecutionAction executionAction)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
-            string entryAssembly = "System.Reflection.Assembly.GetEntryAssembly().GetName().Name";
-            var entryAssemblyExpression = Dte.Debugger.GetExpression(entryAssembly);
-            if(!entryAssemblyExpression.IsValidValue)
-            {
-                return;
-            }
-
-            var project = Dte.Solution.Projects.OfType<Project>().SingleOrDefault(x => x.Name == entryAssemblyExpression.Value.Trim('"'));
-
-            if(project == null)
-            {
-                return;
-            }
-
-            var xProject = XDocument.Parse(File.ReadAllText(project.FileName));
-            //var targetFramework = xProject.Root.DescendantNodes().OfType<XElement>().FirstOrDefault(x => x.Name.LocalName == "TargetFramework");
-            var targetFrameworkVersion = xProject.Root.DescendantNodes().OfType<XElement>().FirstOrDefault(x => x.Name.LocalName == "TargetFrameworkVersion");
-            var formatterFileName = Path.Combine(targetFrameworkVersion != null 
-                ? $@"{dllLocation}\Formatter\net45\" 
-                : $@"{dllLocation}\Formatter\netcoreapp3.1\", 
-                "ObjectFormatter.dll");
-
-            string loadAssembly = $"System.Reflection.Assembly.LoadFile(\"{formatterFileName}\")";
-            var loadAssemblyExpression = Dte.Debugger.GetExpression(loadAssembly);
-            if(!loadAssemblyExpression.IsValidValue)
-            {
-                return;
-            }
-            var format = "json";
-            var runFormatterExpression = Dte.Debugger.GetExpression($@"ObjectFormatter.Formatter.Format(someProp, ""{format}"")");
-            
-            
-            if (runFormatterExpression.IsValidValue)
-            {
-                string formattedValue = System.Text.RegularExpressions.Regex.Unescape(runFormatterExpression.Value).Trim('"');
-
-                switch (format)
-                {
-                    case "csharp":
-                        CreateNewFile(@"General\Visual C# Class", "someProp.cs", formattedValue);
-                        break;
-                    case "xml":
-                        CreateNewFile(@"General\XML File", "someProp.xml", formattedValue);
-                        break;
-                    case "json":
-                        CreateNewFile(@"Web\JSON File", "someProp.json", formattedValue);
-                        break;
-                }
-            }
-        }
-
-        internal void CreateNewFile(string fileType, string title, string fileContents)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            var newDocument = Dte.ItemOperations.NewFile(fileType, title).Document;
-            if (!string.IsNullOrEmpty(fileContents))
-            {
-                var selection = (TextSelection)newDocument.Selection;
-                selection?.SelectAll();
-                selection?.Delete();
-                selection?.Insert(fileContents);
-            }
-            newDocument.Saved = true;
         }
 
         #endregion

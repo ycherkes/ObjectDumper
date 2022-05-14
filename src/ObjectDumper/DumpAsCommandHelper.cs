@@ -43,12 +43,10 @@ namespace ObjectDumper
 
             var textView = Utils.GetTextView();
 
-            textView.GetSelection(out int piAnchorLine,
+            if (textView.GetSelection(out int piAnchorLine,
                 out int piAnchorCol,
                 out int piEndLine,
-                out int piEndCol);
-
-            if (piAnchorLine == piEndLine && piAnchorCol == piEndCol)
+                out int piEndCol) != VSConstants.S_OK)
             {
                 TextSpan[] textSpan = new TextSpan[1];
 
@@ -130,18 +128,14 @@ namespace ObjectDumper
 
             string formattedValue = Regex.Unescape(runFormatterExpression.Value).Trim('"');
 
-            switch (format)
-            {                
-                case "csharp":
-                    CreateNewFile(@"General\C# Class", $"{fileName}.cs", formattedValue);
-                    break;
-                case "xml":
-                    CreateNewFile(@"General\XML File", $"{fileName}.xml", formattedValue);
-                    break;
-                case "json":
-                    CreateNewFile(@"Web\JSON File", $"{fileName}.json", formattedValue);
-                    break;
-            }
+            var fileExtension = GetFileExtension(format);
+
+            CreateNewFile($"{fileName}{fileExtension}", formattedValue);
+        }
+
+        private static string GetFileExtension(string format)
+        {
+            return format == "csharp" ? ".cs" : $".{format}";
         }
 
         private Project GetEntryProject()
@@ -170,17 +164,20 @@ namespace ObjectDumper
             return project;
         }
 
-        internal void CreateNewFile(string fileType, string title, string fileContents)
+        internal void CreateNewFile(string fileName, string fileContents)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var newDocument = _dte.ItemOperations.NewFile(fileType, title).Document;
+            var newFileWindow = _dte.ItemOperations.NewFile(Name: fileName);
+            var newDocument = newFileWindow.Document;
+
             if (!string.IsNullOrEmpty(fileContents))
             {
                 var selection = (TextSelection)newDocument.Selection;
                 selection?.SelectAll();
                 selection?.Delete();
                 selection?.Insert(fileContents);
+                selection?.StartOfDocument();
             }
             newDocument.Saved = true;
         }
