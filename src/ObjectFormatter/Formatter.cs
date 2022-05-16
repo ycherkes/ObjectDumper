@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using Newtonsoft.Json.Embedded;
 using Newtonsoft.Json.Embedded.Converters;
 using Newtonsoft.Json.Embedded.Serialization;
@@ -62,9 +65,27 @@ namespace ObjectFormatter
             return $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{Environment.NewLine}{GetXml(obj)}";
         }
 
-        private static string GetXml(object obj)
+        private static string XDocumentToString(this XDocument document)
         {
-            if (obj == null) return "<!--NULL VALUE-->";
+            XmlWriterSettings settings = new()
+            {
+                OmitXmlDeclaration = true,
+                Indent = true,
+                IndentChars = "    " // Indent 4 Spaces
+            };
+
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, settings);
+            document.Save(writer);
+            writer.Flush();
+            return Encoding.UTF8.GetString(memoryStream.ToArray());
+        }
+
+        private static string GetXml(object obj, int nestingLevel = 0)
+        {
+            string indent = new(' ', nestingLevel * 4);
+
+            if (obj == null) return $"{indent}<!--NULL VALUE-->";
 
             var elementName = GetElementName(obj);
 
@@ -73,7 +94,7 @@ namespace ObjectFormatter
                 var xmlCollection = string.Join(Environment.NewLine, 
                     ((IEnumerable)obj)
                     .Cast<object>()
-                    .Select(GetXml));
+                    .Select(o => GetXml(o, nestingLevel + 1)));
 
                 var itemTypeName = obj.GetType()
                     .GetInterfaces()
@@ -91,7 +112,13 @@ namespace ObjectFormatter
 
             var json = JsonConvert.SerializeObject(obj, XmlSettings);
 
-            return JsonConvert.DeserializeXNode(json, elementName)?.ToString();
+            var xml = JsonConvert.DeserializeXNode(json, elementName)?.XDocumentToString();
+
+            if (nestingLevel == 0) return xml;
+
+            return string.Join(Environment.NewLine,
+                               xml?.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                                   .Select(x => $"{indent}{x}") ?? Enumerable.Empty<string>());
         }
 
         private static string GetElementName(object obj)

@@ -169,16 +169,16 @@ namespace ObjectDumper
             ThreadHelper.ThrowIfNotOnUIThread();
 
             var newFileWindow = _dte.ItemOperations.NewFile(Name: fileName);
+
             var newDocument = newFileWindow.Document;
 
             if (!string.IsNullOrEmpty(fileContents))
             {
                 var selection = (TextSelection)newDocument.Selection;
-                selection?.SelectAll();
-                selection?.Delete();
                 selection?.Insert(fileContents);
                 selection?.StartOfDocument();
             }
+
             newDocument.Saved = true;
         }
     }

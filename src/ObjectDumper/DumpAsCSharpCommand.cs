@@ -26,7 +26,7 @@ namespace ObjectDumper
         /// </summary>
         private readonly ObjectDumperPackage _package;
 
-        private readonly DumpAsCommandHelper _DumpAsCommandHelper;
+        private readonly DumpAsCommandHelper _dumpAsCommandHelper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DumpAsCSharpCommand"/> class.
@@ -43,7 +43,7 @@ namespace ObjectDumper
             var menuItem = new OleMenuCommand(Execute, menuCommandID);
             commandService.AddCommand(menuItem);
             menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
-            _DumpAsCommandHelper = new DumpAsCommandHelper(_package.Dte);
+            _dumpAsCommandHelper = new DumpAsCommandHelper(_package.Dte);
         }
 
         private async void MenuItem_BeforeQueryStatus(object sender, EventArgs e)
@@ -55,7 +55,7 @@ namespace ObjectDumper
             menuCommand.Visible = false;
             menuCommand.Enabled = false;
 
-            var isAvailable = await _DumpAsCommandHelper.IsCommandAvailableAsync();
+            var isAvailable = await _dumpAsCommandHelper.IsCommandAvailableAsync();
 
             menuCommand.Visible = isAvailable;
             menuCommand.Enabled = isAvailable;
@@ -100,7 +100,7 @@ namespace ObjectDumper
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            _DumpAsCommandHelper.ExecuteCommand("csharp");
+            _dumpAsCommandHelper.ExecuteCommand("csharp");
         }
 
         
