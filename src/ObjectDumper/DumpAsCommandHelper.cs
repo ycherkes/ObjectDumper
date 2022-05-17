@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -158,7 +159,7 @@ namespace ObjectDumper
            var project = entryAssemblyValue != "testhost"
                       && entryAssemblyValue != "ReSharperTestRunner"
                       && entryAssemblyValue != "Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter"
-                ? _dte.Solution.GetProjectsRecursively().FirstOrDefault(x => x.Name == entryAssemblyValue)
+                ? _dte.Solution.GetProjectsRecursively().FirstOrDefault(x => x.Name == entryAssemblyValue) ?? GetProjectByAssemblyName(entryAssemblyValue)
                 : _dte.ActiveDocument.ProjectItem.ContainingProject;
 
             return project;
@@ -180,6 +181,26 @@ namespace ObjectDumper
             }
 
             newDocument.Saved = true;
+        }
+
+        private Project GetProjectByAssemblyName(string entryAssemblyValue)
+        {
+            // In some cases the assembly name of a project is not the same as the project name
+            foreach (var project in _dte.Solution.GetProjectsRecursively())
+            {
+                foreach (Property property in project.Properties)
+                {
+                    if (property.Name == "AssemblyName")
+                    {
+                        if (property.Value is string assemblyName && assemblyName == entryAssemblyValue)
+                            return project;
+
+                        break;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }
