@@ -23,6 +23,8 @@ It opens dumped object in a separate document window:
 | ETH                         | [0x165CD37b4C644C2921454429E7F9358d18A45e14](https://www.blockchain.com/en/eth/address/0x165CD37b4C644C2921454429E7F9358d18A45e14) |
 | Tether (USDTtrc20)          | [TEFccmfQ38cZS1DTZVhsxKVDckA8Y6VfCy](https://usdt.tokenview.com/en/address/TEFccmfQ38cZS1DTZVhsxKVDckA8Y6VfCy) |
 
+[War in Ukraine: How to Help](https://dou.ua/lenta/articles/stand-with-ukraine/?hl=en)
+
 ## Donate project
 
 | Coin           | Address |
