@@ -87,7 +87,7 @@ namespace ObjectFormatter
 
             var elementName = GetElementName(obj);
 
-            if (obj is IEnumerable and not IDictionary)
+            if (obj is IEnumerable and not IDictionary and not string)
             {
                 var xmlCollection = string.Join(Environment.NewLine, 
                     ((IEnumerable)obj)
@@ -109,14 +109,29 @@ namespace ObjectFormatter
             }
 
             var json = JsonConvert.SerializeObject(obj, XmlSettings);
+            var objectType = obj.GetType();
 
-            var xml = JsonConvert.DeserializeXNode(json, elementName)?.ToString();
+            string xml;
+            if (IsSimpleType(objectType))
+            {
+                elementName = GetElementName(objectType.Name);
+                xml = $"<{elementName}>{json}</{elementName}>";
+            }
+            else
+                xml = JsonConvert.DeserializeXNode(json, elementName)?.ToString();
 
             if (nestingLevel == 0) return xml;
 
             return string.Join(Environment.NewLine,
                                xml?.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
                                    .Select(x => $"{indent}{x}") ?? Enumerable.Empty<string>());
+        }
+
+        private static bool IsSimpleType(Type type)
+        {
+            return type.IsPrimitive
+                || type.IsValueType
+                || type == typeof(string);
         }
 
         private static string GetElementName(object obj)
