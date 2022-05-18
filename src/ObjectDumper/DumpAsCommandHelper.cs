@@ -51,7 +51,7 @@ namespace ObjectDumper
                 if(textView.GetWordExtent(
                     piAnchorLine,
                     piAnchorCol,
-                    (uint)(WORDEXTFLAGS.WORDEXT_CURRENT),
+                    (uint)WORDEXTFLAGS.WORDEXT_CURRENT,
                     textSpan) != VSConstants.S_OK)
                 {
                     return;
@@ -71,10 +71,8 @@ namespace ObjectDumper
                 {
                     return;
                 }
-                var startLine = Math.Min(piAnchorLine, piEndLine);
-                var endLine = Math.Max(piAnchorLine, piEndLine);
-                var startCol = Math.Min(piAnchorCol, piEndCol);
-                var endCol = Math.Max(piAnchorCol, piEndCol);
+
+                var (startLine, endLine, startCol, endCol) = NormalizeSelection(piAnchorLine, piEndLine, piAnchorCol, piEndCol);
 
                 if(buffer.GetLineText(startLine, startCol, endLine, endCol, out selectionText) != VSConstants.S_OK)
                 {
@@ -90,7 +88,7 @@ namespace ObjectDumper
             {
                 var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
 
-                var targetFramework = GetEntryAssemblyTargetFramework(_dte.Debugger)?.Trim('"');
+                var targetFramework = GetEntryAssemblyTargetFramework()?.Trim('"');
 
                 if(targetFramework == null)
                 {
@@ -105,8 +103,7 @@ namespace ObjectDumper
                     isNetCoreMustBeInjected ? "netcoreapp3.1" : "net45",
                     "ObjectFormatter.dll");
 
-                string loadAssembly = $"System.Reflection.Assembly.LoadFile(@\"{formatterFileName}\")";
-                var loadAssemblyExpression = _dte.Debugger.GetExpression(loadAssembly);
+                var loadAssemblyExpression = _dte.Debugger.GetExpression($"System.Reflection.Assembly.LoadFile(@\"{formatterFileName}\")");
                 if (!loadAssemblyExpression.IsValidValue)
                 {
                     return;
@@ -115,17 +112,35 @@ namespace ObjectDumper
 
             var expression = selectionText;
 
-            //var expressionName = _dte.Debugger.GetExpression(expression).Name;
-
-            var fileName = expression.Any(char.IsWhiteSpace) ? "expression" : expression;
+            var fileName = SanitizeFileName(expression.Any(char.IsWhiteSpace) ? "expression" : expression);
 
             var runFormatterExpression = _dte.Debugger.GetExpression($@"ObjectFormatter.Formatter.Format({expression}, ""{format}"")");
 
-            string formattedValue = Regex.Unescape(runFormatterExpression.Value).Trim('"');
+            var formattedValue = Regex.Unescape(runFormatterExpression.Value).Trim('"');
 
             var fileExtension = GetFileExtension(format);
 
             CreateNewFile($"{fileName}{fileExtension}", formattedValue);
+        }
+
+        private static (int startLine, int endLine, int startCol, int endCol) NormalizeSelection(int startLine, int endLine, int startCol, int endCol)
+        {
+            var points = new (int x, int y)[]
+            {
+                (startLine, startCol),
+                (endLine, endCol)
+            }
+            .OrderBy(p => p.x)
+            .ThenBy(p => p.y)
+            .ToArray();
+
+            return (points[0].x, points[1].x, points[0].y, points[1].y);
+        }
+
+        private static string SanitizeFileName(string fileName)
+        {
+            var invalids = Path.GetInvalidFileNameChars();
+            return invalids.Aggregate(fileName, (current, c) => current.Replace(c, '_'));
         }
 
         private static string GetFileExtension(string format)
@@ -133,7 +148,7 @@ namespace ObjectDumper
             return format == "csharp" ? ".cs" : $".{format}";
         }
 
-        private string GetEntryAssemblyTargetFramework(Debugger debugger)
+        private string GetEntryAssemblyTargetFramework()
         {
            string targetFramework = "System.Linq.Enumerable.First(System.Linq.Enumerable.OfType<System.Runtime.Versioning.TargetFrameworkAttribute>(System.Reflection.Assembly.GetEntryAssembly().GetCustomAttributes(true))).FrameworkName";
             var targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
