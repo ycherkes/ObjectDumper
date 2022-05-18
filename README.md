@@ -14,7 +14,7 @@ It opens dumped object in a separate document window:
 
 ![image](https://user-images.githubusercontent.com/13467759/167089587-4176db13-8136-4103-8003-0dc9bab42609.png)
 
-## [War in Ukraine: How to Help](https://dou.ua/lenta/articles/stand-with-ukraine/?hl=en)
+# [Stand with the people of Ukraine: How to Help](https://dou.ua/lenta/articles/stand-with-ukraine/?hl=en)
 
 ## Donate project
 
