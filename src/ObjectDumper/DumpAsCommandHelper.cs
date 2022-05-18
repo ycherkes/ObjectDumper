@@ -3,14 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Constants = EnvDTE.Constants;
-using Project = EnvDTE.Project;
 
 namespace ObjectDumper
 {
@@ -91,23 +89,20 @@ namespace ObjectDumper
             if (!formatterInjectedExpression.IsValidValue)
             {
                 var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
-                var project = GetEntryProject();
 
-                if (project == null)
+                var targetFramework = GetEntryAssemblyTargetFramework(_dte.Debugger)?.Trim('"');
+
+                if(targetFramework == null)
                 {
                     return;
                 }
 
-                var xProject = XDocument.Parse(File.ReadAllText(project.FileName));
-                
-                var targetFrameworkVersion = xProject.Root.DescendantNodes().OfType<XElement>()
-                    .FirstOrDefault(x => x.Name.LocalName == "TargetFrameworkVersion");
+                var isNetCoreMustBeInjected = targetFramework.StartsWith(".NETCoreApp", StringComparison.OrdinalIgnoreCase)
+                     || targetFramework.StartsWith(".NETStandard", StringComparison.OrdinalIgnoreCase);
 
                 var formatterFileName = Path.Combine(dllLocation,
                     "Formatter",
-                    targetFrameworkVersion != null
-                        ? "net45"
-                        : "netcoreapp3.1",
+                    isNetCoreMustBeInjected ? "netcoreapp3.1" : "net45",
                     "ObjectFormatter.dll");
 
                 string loadAssembly = $"System.Reflection.Assembly.LoadFile(@\"{formatterFileName}\")";
@@ -138,30 +133,22 @@ namespace ObjectDumper
             return format == "csharp" ? ".cs" : $".{format}";
         }
 
-        private Project GetEntryProject()
+        private string GetEntryAssemblyTargetFramework(Debugger debugger)
         {
-            string entryAssembly = "System.Reflection.Assembly.GetEntryAssembly().GetName().Name";
-            var entryAssemblyExpression = _dte.Debugger.GetExpression(entryAssembly);
-            if (!entryAssemblyExpression.IsValidValue)
+           string targetFramework = "System.Linq.Enumerable.First(System.Linq.Enumerable.OfType<System.Runtime.Versioning.TargetFrameworkAttribute>(System.Reflection.Assembly.GetEntryAssembly().GetCustomAttributes(true))).FrameworkName";
+            var targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
+            if (!targetFrameworkExpression.IsValidValue)
             {
-                entryAssembly = "System.Reflection.Assembly.GetCallingAssembly().GetName().Name";
+                targetFramework = "System.Linq.Enumerable.First(System.Linq.Enumerable.OfType<System.Runtime.Versioning.TargetFrameworkAttribute>(System.Reflection.Assembly.GetCallingAssembly().GetCustomAttributes(true))).FrameworkName";
 
-                entryAssemblyExpression = _dte.Debugger.GetExpression(entryAssembly);
-                if (!entryAssemblyExpression.IsValidValue)
+                targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
+                if (!targetFrameworkExpression.IsValidValue)
                 {
                     return null;
                 }
             }
 
-            var entryAssemblyValue = entryAssemblyExpression.Value.Trim('"');
-
-           var project = entryAssemblyValue != "testhost"
-                      && entryAssemblyValue != "ReSharperTestRunner"
-                      && entryAssemblyValue != "Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter"
-                ? _dte.Solution.GetProjectsRecursively().FirstOrDefault(x => x.Name == entryAssemblyValue)
-                : _dte.ActiveDocument.ProjectItem.ContainingProject;
-
-            return project;
+            return targetFrameworkExpression.Value;
         }
 
         internal void CreateNewFile(string fileName, string fileContents)
