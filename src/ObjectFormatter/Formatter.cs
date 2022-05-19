@@ -16,9 +16,10 @@ namespace ObjectFormatter
         {
             NullValueHandling = NullValueHandling.Ignore,
             DefaultValueHandling = DefaultValueHandling.Ignore,
-            ContractResolver = new DefaultContractResolver
+            ContractResolver = new SpecificContractResolver
             {
-                NamingStrategy = new CamelCaseNamingStrategy()
+                NamingStrategy = new CamelCaseNamingStrategy(),
+                PropertyTypesToSkip = new []{ "Avro.Schema" }
             },
             Formatting = Formatting.Indented,
             Converters = { new StringEnumConverter() },
@@ -29,6 +30,10 @@ namespace ObjectFormatter
         {
             NullValueHandling = NullValueHandling.Ignore,
             DefaultValueHandling = DefaultValueHandling.Ignore,
+            ContractResolver = new SpecificContractResolver
+            {
+                PropertyTypesToSkip = new[] { "Avro.Schema" }
+            },
             Converters = { new StringEnumConverter() },
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
