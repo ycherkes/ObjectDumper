@@ -91,9 +91,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\DumpAsCSharpCommand.png" />
-    <Content Include="Resources\DumpAsJsonCommand.png" />
-    <Content Include="Resources\DumpAsXmlCommand.png" />
     <VSCTCompile Include="ObjectDumperPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
