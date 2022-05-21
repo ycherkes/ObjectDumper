@@ -10,11 +10,11 @@ A Visual Studio 2022 extension. Dumps the objects from the debugger session in t
 
 Context menu:
 
-![image](https://user-images.githubusercontent.com/13467759/167089195-48c9d10d-8f0c-412b-b316-20392e2ac9c9.png)
+![image](https://user-images.githubusercontent.com/13467759/169641935-3133d740-e25a-4d21-8f33-ad6108e82615.png)
 
 It opens dumped object in a separate document window:
 
-![image](https://user-images.githubusercontent.com/13467759/167089587-4176db13-8136-4103-8003-0dc9bab42609.png)
+![image](https://user-images.githubusercontent.com/13467759/169641908-07aaece0-494f-47a2-9200-c24de0ec89b2.png)
 
 ## Donate project
 
