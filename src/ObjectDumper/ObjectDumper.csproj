@@ -45,6 +45,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Base64Helper.cs" />
+    <Compile Include="LanguageService.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="ObjectDumperPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

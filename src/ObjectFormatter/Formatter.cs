@@ -50,10 +50,10 @@ namespace ObjectFormatter
             {
                 return formattingType switch
                 {
-                    "json" => JsonConvert.SerializeObject(obj, JsonSettings),
-                    "csharp" => ObjectFormatterCSharp.Dump(obj, CsharpDumpOptions),
-                    "xml" => GetXmlWithHeader(obj),
-                    _ => obj?.ToString()
+                    "json" => JsonConvert.SerializeObject(obj, JsonSettings).ToBase64(),
+                    "csharp" => ObjectFormatterCSharp.Dump(obj, CsharpDumpOptions).ToBase64(),
+                    "xml" => GetXmlWithHeader(obj).ToBase64(),
+                    _ => obj?.ToString().ToBase64()
                 };
             }
             catch (Exception e)

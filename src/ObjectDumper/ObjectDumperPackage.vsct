@@ -30,7 +30,7 @@
       <Menu guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenu" priority="0x0100" type="Menu">        
         <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsTopMenuGroup"/>
         <Strings>
-            <ButtonText>Dump as</ButtonText>
+            <ButtonText>Dump As</ButtonText>
         </Strings>
       </Menu>
     </Menus>
@@ -56,7 +56,7 @@
         <CommandFlag>IconAndText</CommandFlag>
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
-          <ButtonText>Dump as C#</ButtonText>
+          <ButtonText>Dump As C#</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsJsonCommandId" priority="0x0200" type="Button">
@@ -67,7 +67,7 @@
         <CommandFlag>IconAndText</CommandFlag>
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
-          <ButtonText>Dump as json</ButtonText>
+          <ButtonText>Dump As Json</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsXmlCommandId" priority="0x0300" type="Button">
@@ -78,7 +78,7 @@
         <CommandFlag>IconAndText</CommandFlag>
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
-          <ButtonText>Dump as xml</ButtonText>
+          <ButtonText>Dump As Xml</ButtonText>
         </Strings>
       </Button>
     </Buttons>
