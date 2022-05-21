@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System;
 using System.ComponentModel.Design;
-using EnvDTE;
 using Task = System.Threading.Tasks.Task;
 
 namespace ObjectDumper

@@ -24,52 +24,32 @@
   <Extern href="VsDebugGuids.h" />
   <Include href="KnownImageIds.vsct"/>
 
-  <!--The Commands section is where commands, menus, and menu groups are defined.
-      This section uses a Guid to identify the package that provides the command defined inside it. -->
   <Commands package="guidObjectDumperPackage">
-    <!-- Inside this section we have different sub-sections: one for the menus, another
-    for the menu groups, one for the buttons (the actual commands), one for the combos
-    and the last one for the bitmaps used. Each element is identified by a command id that
-    is a unique pair of guid and numeric identifier; the guid part of the identifier is usually
-    called "command set" and is used to group different command inside a logically related
-    group; your package should define its own command set in order to avoid collisions
-    with command ids defined by other packages. -->
-
-    <!-- In this section you can define new menu groups. A menu group is a container for
-         other menus or buttons (commands); from a visual point of view you can see the
-         group as the part of a menu contained between two lines. The parent of a group
-         must be a menu. -->
+    
+    <Menus>
+      <Menu guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenu" priority="0x0100" type="Menu">        
+        <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsTopMenuGroup"/>
+        <Strings>
+            <ButtonText>Dump as</ButtonText>
+        </Strings>
+      </Menu>
+    </Menus>
+    
     <Groups>
-      <Group guid="guidObjectDumperPackageCmdSet" id="MyMenuGroup" priority="0x0300">
+      <Group guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" priority="0x0100">
+        <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenu"/>
+      </Group>
+      <Group guid="guidObjectDumperPackageCmdSet" id="DumpAsTopMenuGroup" priority="0x0300">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
       </Group>
-      <Group guid="guidObjectDumperPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+      <Group guid="guidObjectDumperPackageCmdSet" id="DumpAsTopMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_COMMANDWINDOW" />
       </Group>
-      <!--<Group guid="guidObjectDumperPackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidVSDebugGroup" id="IDM_DEBUG_MENU" />
-      </Group>-->
-      <!--<Group guid="guidObjectDumperPackageCmdSet1" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidVSDebugGroup" id="IDM_DEBUG_MENU" />
-      </Group>
-      <Group guid="guidObjectDumperPackageCmdSet2" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidVSDebugGroup" id="IDM_DEBUG_MENU" />
-      </Group>-->
     </Groups>
 
-    <!--Buttons section. -->
-    <!--This section defines the elements the user can interact with, like a menu command or a button
-        or combo box in a toolbar. -->
     <Buttons>
-      <!--To define a menu group you have to specify its ID, the parent menu and its display priority.
-          The command is visible and enabled by default. If you need to change the visibility, status, etc, you can use
-          the CommandFlag node.
-          You can add more than one CommandFlag node e.g.:
-              <CommandFlag>DefaultInvisible</CommandFlag>
-              <CommandFlag>DynamicVisibility</CommandFlag>
-          If you do not want an image next to your command, remove the Icon node /> -->
       <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsCSharpCommandId" priority="0x0100" type="Button">
-        <Parent guid="guidObjectDumperPackageCmdSet" id="MyMenuGroup" />
+        <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="CSFileNode" />
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -79,8 +59,8 @@
           <ButtonText>Dump as C#</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidObjectDumperPackageCmdSet1" id="cmdidDumpAsJsonCommand" priority="0x0100" type="Button">
-        <Parent guid="guidObjectDumperPackageCmdSet" id="MyMenuGroup" />
+      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsJsonCommandId" priority="0x0200" type="Button">
+        <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="JSONScript" />
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -90,8 +70,8 @@
           <ButtonText>Dump as json</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidObjectDumperPackageCmdSet2" id="cmdidDumpAsXmlCommand" priority="0x0100" type="Button">
-        <Parent guid="guidObjectDumperPackageCmdSet" id="MyMenuGroup" />
+      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsXmlCommandId" priority="0x0300" type="Button">
+        <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="XMLFile" />
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -103,27 +83,24 @@
       </Button>
     </Buttons>
   </Commands>
-
+  <KeyBindings>
+    <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsCSharpCommandId"
+        mod1="CONTROL" key1="E" key2="D" editor="guidVSStd97" />
+    <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsJsonCommandId"
+        mod1="CONTROL" key1="E" key2="J" editor="guidVSStd97" />
+    <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsXmlCommandId"
+        mod1="CONTROL" key1="E" key2="X" editor="guidVSStd97" />
+  </KeyBindings>
   <Symbols>
-    <!-- This is the package guid. -->
     <GuidSymbol name="guidObjectDumperPackage" value="{75562b3a-ff38-4ad7-94f8-dc7f08140914}" />
 
-    <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidObjectDumperPackageCmdSet" value="{1fa17746-fa3e-4970-bbc9-d8a37b866b73}">
-      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="DumpAsTopMenuGroup" value="0x1020" />
+      <IDSymbol name="DumpAsSubMenuGroup" value="0x1100"/>
+      <IDSymbol name="DumpAsSubMenu" value="0x1200"/>
       <IDSymbol name="DumpAsCSharpCommandId" value="0x0100" />
       <IDSymbol name="DumpAsJsonCommandId" value="0x0200" />
       <IDSymbol name="DumpAsXmlCommandId" value="0x0300" />
-    </GuidSymbol>
-
-    <GuidSymbol value="{cb7b52b9-a74d-4534-b5ec-b110625425cc}" name="guidObjectDumperPackageCmdSet1">
-      <IDSymbol value="4128" name="MyMenuGroup" />
-      <IDSymbol value="256" name="cmdidDumpAsJsonCommand" />
-    </GuidSymbol>
-  
-    <GuidSymbol value="{613ee535-e701-4416-90f7-d089568924ff}" name="guidObjectDumperPackageCmdSet2">
-      <IDSymbol value="4128" name="MyMenuGroup" />
-      <IDSymbol value="256" name="cmdidDumpAsXmlCommand" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

@@ -13,12 +13,12 @@ namespace ObjectDumper
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 256;
+        public const int CommandId = 0x200;
 
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("cb7b52b9-a74d-4534-b5ec-b110625425cc");
+        public static readonly Guid CommandSet = new Guid("1fa17746-fa3e-4970-bbc9-d8a37b866b73");
 
         /// <summary>
         /// VS Package that provides this command, not null.
