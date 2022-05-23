@@ -28,6 +28,21 @@ namespace ObjectFormatter
             { typeof(void), "void" }
         };
 
+        internal static string GetFormattedNameVB(this Type type, bool useFullName = false)
+        {
+
+            var typeName = useFullName ? type.FullName : type.Name;
+
+            var typeInfo = type.GetTypeInfo();
+            if (!typeInfo.IsGenericType)
+            {
+                return typeName.Replace("[]", "()");
+            }
+
+            return $"{typeName?.Substring(0, typeName.IndexOf('`'))}(Of {string.Join(", ", typeInfo.GenericTypeArguments.Select(t => t.GetFormattedName(useFullName)))})";
+
+        }
+
         internal static bool TryGetBuiltInTypeName(this Type type, out string value)
         {
             return typeToKeywordMappings.TryGetValue(type, out value);

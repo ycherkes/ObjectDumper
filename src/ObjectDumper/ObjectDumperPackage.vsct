@@ -81,6 +81,28 @@
           <ButtonText>Dump As Xml</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsVbCommandId" priority="0x0400" type="Button">
+        <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="VBFileNode" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Dump As Vb</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsYamlCommandId" priority="0x0500" type="Button">
+        <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="3775" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Dump As Yaml</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
   <KeyBindings>
@@ -90,6 +112,10 @@
         mod1="CONTROL" key1="E" key2="J" editor="guidVSStd97" />
     <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsXmlCommandId"
         mod1="CONTROL" key1="E" key2="X" editor="guidVSStd97" />
+    <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsVbCommandId"
+        mod1="CONTROL" key1="E" key2="V" editor="guidVSStd97" />
+    <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsYamlCommandId"
+        mod1="CONTROL" key1="E" key2="Y" editor="guidVSStd97" />
   </KeyBindings>
   <Symbols>
     <GuidSymbol name="guidObjectDumperPackage" value="{75562b3a-ff38-4ad7-94f8-dc7f08140914}" />
@@ -101,6 +127,8 @@
       <IDSymbol name="DumpAsCSharpCommandId" value="0x0100" />
       <IDSymbol name="DumpAsJsonCommandId" value="0x0200" />
       <IDSymbol name="DumpAsXmlCommandId" value="0x0300" />
+      <IDSymbol name="DumpAsVbCommandId" value="0x0400" />
+      <IDSymbol name="DumpAsYamlCommandId" value="0x0500" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

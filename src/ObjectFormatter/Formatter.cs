@@ -1,11 +1,15 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using Newtonsoft.Json.Embedded;
 using Newtonsoft.Json.Embedded.Converters;
 using Newtonsoft.Json.Embedded.Serialization;
+using ObjectFormatter.YamlDotNet.Embedded.Serialization;
 using Formatting = Newtonsoft.Json.Embedded.Formatting;
 
 namespace ObjectFormatter
@@ -44,6 +48,12 @@ namespace ObjectFormatter
             IndentSize = 4
         };
 
+        private static readonly DumpOptions VisualBasicDumpOptions = new()
+        {
+            IgnoreDefaultValues = true,
+            IndentSize = 4
+        };
+
         public static string Format(object obj, string formattingType)
         {
             try
@@ -52,7 +62,9 @@ namespace ObjectFormatter
                 {
                     "json" => JsonConvert.SerializeObject(obj, JsonSettings).ToBase64(),
                     "csharp" => ObjectFormatterCSharp.Dump(obj, CsharpDumpOptions).ToBase64(),
+                    "vb" => ObjectFormatterVisualBasic.Dump(obj, VisualBasicDumpOptions).ToBase64(),
                     "xml" => GetXmlWithHeader(obj).ToBase64(),
+                    "yaml" => GetYaml(obj).ToBase64(),
                     _ => obj?.ToString().ToBase64()
                 };
             }
@@ -60,6 +72,14 @@ namespace ObjectFormatter
             {
                 return e.ToString();
             }
+        }
+
+        private static string GetYaml(object o)
+        {
+            var stringBuilder = new StringBuilder();
+            var serializer = new Serializer();
+            serializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), o);
+            return stringBuilder.ToString();
         }
 
         private static string GetXmlWithHeader(object obj)

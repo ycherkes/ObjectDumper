@@ -101,9 +101,5 @@ namespace ObjectDumper
 
             _dumpAsCommandHelper.ExecuteCommand("csharp");
         }
-
-        
-
-        
     }
 }

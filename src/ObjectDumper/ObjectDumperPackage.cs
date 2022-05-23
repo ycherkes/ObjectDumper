@@ -58,9 +58,17 @@ namespace ObjectDumper
 
             Dte = (DTE2)GetGlobalService(typeof(DTE));
 
-            await DumpAsCSharpCommand.InitializeAsync(this);
-            await DumpAsJsonCommand.InitializeAsync(this);
-            await DumpAsXmlCommand.InitializeAsync(this);
+            await Task.WhenAll(DumpAsCSharpCommand.InitializeAsync(this),
+                DumpAsJsonCommand.InitializeAsync(this),
+                DumpAsXmlCommand.InitializeAsync(this),
+                DumpAsVbCommand.InitializeAsync(this),
+                DumpAsYamlCommand.InitializeAsync(this));
+
+            //await DumpAsCSharpCommand.InitializeAsync(this);
+            //await DumpAsJsonCommand.InitializeAsync(this);
+            //await DumpAsXmlCommand.InitializeAsync(this);
+            //await DumpAsVbCommand.InitializeAsync(this);
+            //await DumpAsYamlCommand.InitializeAsync(this);
         }
 
         #endregion
