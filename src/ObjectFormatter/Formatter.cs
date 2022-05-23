@@ -120,7 +120,7 @@ namespace ObjectFormatter
             if (IsSimpleType(objectType))
             {
                 elementName = GetElementName(objectType.Name);
-                xml = $"<{elementName}>{json}</{elementName}>";
+                xml = $"<{elementName}>{json.Trim('"')}</{elementName}>";
             }
             else
                 xml = JsonConvert.DeserializeXNode(json, elementName)?.ToString();

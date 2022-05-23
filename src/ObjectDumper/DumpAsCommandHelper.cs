@@ -14,10 +14,12 @@ namespace ObjectDumper
     internal class DumpAsCommandHelper
     {
         private readonly DTE2 _dte;
+        private readonly LanguageService _languageService;
 
         public DumpAsCommandHelper(DTE2 dte)
         {
             _dte = dte ?? throw new ArgumentNullException(nameof(dte));
+            _languageService = new LanguageService(dte);
         }
 
         public async Task<bool> IsCommandAvailableAsync()
@@ -79,9 +81,7 @@ namespace ObjectDumper
                 }
             }
 
-            var languageService = new LanguageService(_dte);
-
-            if(!languageService.InjectFormatter())
+            if(!_languageService.InjectFormatter())
             {
                 return;
             }
@@ -90,7 +90,7 @@ namespace ObjectDumper
 
             var fileName = SanitizeFileName(expression.Any(char.IsWhiteSpace) ? "expression" : expression);
 
-            var formattedValue = languageService.GetFormattedValue(expression, format);
+            var formattedValue = _languageService.GetFormattedValue(expression, format);
 
             var fileExtension = GetFileExtension(format);
 
@@ -120,45 +120,6 @@ namespace ObjectDumper
         private static string GetFileExtension(string format)
         {
             return format == "csharp" ? ".cs" : $".{format}";
-        }
-
-        private string GetEntryAssemblyTargetFramework(string language)
-        {
-            if (language == "Basic")
-            {
-                string targetFramework = "System.Linq.Enumerable.First(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Linq.Enumerable.OfType(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Reflection.Assembly.GetEntryAssembly().GetCustomAttributes(True))).FrameworkName";
-                var targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
-                if (!targetFrameworkExpression.IsValidValue)
-                {
-                    targetFramework = "System.Linq.Enumerable.First(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Linq.Enumerable.OfType(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Reflection.Assembly.GetCallingAssembly().GetCustomAttributes(True))).FrameworkName";
-
-                    targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
-                    if (!targetFrameworkExpression.IsValidValue)
-                    {
-                        return null;
-                    }
-                }
-
-                return targetFrameworkExpression.Value;
-            }
-            else
-            {
-
-                string targetFramework = "System.Linq.Enumerable.First(System.Linq.Enumerable.OfType<System.Runtime.Versioning.TargetFrameworkAttribute>(System.Reflection.Assembly.GetEntryAssembly().GetCustomAttributes(true))).FrameworkName";
-                var targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
-                if (!targetFrameworkExpression.IsValidValue)
-                {
-                    targetFramework = "System.Linq.Enumerable.First(System.Linq.Enumerable.OfType<System.Runtime.Versioning.TargetFrameworkAttribute>(System.Reflection.Assembly.GetCallingAssembly().GetCustomAttributes(true))).FrameworkName";
-
-                    targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
-                    if (!targetFrameworkExpression.IsValidValue)
-                    {
-                        return null;
-                    }
-                }
-
-                return targetFrameworkExpression.Value;
-            }
         }
 
         internal void CreateNewFile(string fileName, string fileContents)

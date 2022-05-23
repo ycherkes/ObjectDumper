@@ -15,6 +15,8 @@ namespace ObjectDumper
             _dte = dte;
         }
 
+        private string Language => _dte.Debugger.CurrentStackFrame.Language;
+
         public bool InjectFormatter()
         {
             var isFormatterInjected = IsFormatterInjected();
@@ -41,9 +43,11 @@ namespace ObjectDumper
                 isNetCoreMustBeInjected ? "netcoreapp3.1" : "net45",
                 "ObjectFormatter.dll");
 
-            var loadAssemblyExpression = _dte.Debugger.CurrentStackFrame.Language == "Basic" 
-                ? _dte.Debugger.GetExpression($"System.Reflection.Assembly.LoadFile(\"{formatterFileName}\")") 
-                : _dte.Debugger.GetExpression($"System.Reflection.Assembly.LoadFile(@\"{formatterFileName}\")");
+            var loadAssembly = Language == "Basic"
+                ? $"System.Reflection.Assembly.LoadFile(\"{formatterFileName}\")"
+                : $"System.Reflection.Assembly.LoadFile(@\"{formatterFileName}\")";
+
+            var loadAssemblyExpression = _dte.Debugger.GetExpression(loadAssembly);
 
             return loadAssemblyExpression.IsValidValue;
         }
@@ -61,9 +65,11 @@ namespace ObjectDumper
 
             decodedValue = Regex.Unescape(decodedValue);
 
-            if (_dte.Debugger.CurrentStackFrame.Language == "Basic")
+            if (Language == "Basic")
             {
-                decodedValue = decodedValue.Replace("\" & vbCrLf & \"", Environment.NewLine).Replace("\"\"", "\"");
+                decodedValue = decodedValue
+                    .Replace("\" & vbCrLf & \"", Environment.NewLine)
+                    .Replace("\"\"", "\"");
             }
 
             return decodedValue;
@@ -71,7 +77,7 @@ namespace ObjectDumper
 
         private bool IsFormatterInjected()
         {
-            var isFormatterInjected = _dte.Debugger.CurrentStackFrame.Language == "Basic"
+            var isFormatterInjected = Language == "Basic"
                 ? "NameOf(ObjectFormatter.Formatter.Format)"
                 : "nameof(ObjectFormatter.Formatter.Format)";
 
@@ -80,41 +86,15 @@ namespace ObjectDumper
 
         private string GetEntryAssemblyTargetFramework()
         {
-            if (_dte.Debugger.CurrentStackFrame.Language == "Basic")
-            {
-                string targetFramework = "System.Linq.Enumerable.First(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Linq.Enumerable.OfType(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Reflection.Assembly.GetEntryAssembly().GetCustomAttributes(True))).FrameworkName";
-                var targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
-                if (!targetFrameworkExpression.IsValidValue)
-                {
-                    targetFramework = "System.Linq.Enumerable.First(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Linq.Enumerable.OfType(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Reflection.Assembly.GetCallingAssembly().GetCustomAttributes(True))).FrameworkName";
+            var targetFramework = Language == "Basic"
+                ? "System.Linq.Enumerable.First(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Linq.Enumerable.OfType(Of System.Runtime.Versioning.TargetFrameworkAttribute)(If(System.Reflection.Assembly.GetEntryAssembly(), System.Reflection.Assembly.GetCallingAssembly()).GetCustomAttributes(True))).FrameworkName"
+                : "System.Linq.Enumerable.First(System.Linq.Enumerable.OfType<System.Runtime.Versioning.TargetFrameworkAttribute>((System.Reflection.Assembly.GetEntryAssembly() ?? System.Reflection.Assembly.GetCallingAssembly()).GetCustomAttributes(true))).FrameworkName";
 
-                    targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
-                    if (!targetFrameworkExpression.IsValidValue)
-                    {
-                        return null;
-                    }
-                }
+            var targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
 
-                return targetFrameworkExpression.Value;
-            }
-            else
-            {
-
-                string targetFramework = "System.Linq.Enumerable.First(System.Linq.Enumerable.OfType<System.Runtime.Versioning.TargetFrameworkAttribute>(System.Reflection.Assembly.GetEntryAssembly().GetCustomAttributes(true))).FrameworkName";
-                var targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
-                if (!targetFrameworkExpression.IsValidValue)
-                {
-                    targetFramework = "System.Linq.Enumerable.First(System.Linq.Enumerable.OfType<System.Runtime.Versioning.TargetFrameworkAttribute>(System.Reflection.Assembly.GetCallingAssembly().GetCustomAttributes(true))).FrameworkName";
-
-                    targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
-                    if (!targetFrameworkExpression.IsValidValue)
-                    {
-                        return null;
-                    }
-                }
-
-                return targetFrameworkExpression.Value;
-            }
+            return targetFrameworkExpression.IsValidValue 
+                ? targetFrameworkExpression.Value 
+                : null;
         }
     }
 }
