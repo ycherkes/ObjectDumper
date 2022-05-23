@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ObjectFormatter
+namespace ObjectFormatter.ObjectDumper.NET.Embedded
 {
     internal static class StringExtensions
     {

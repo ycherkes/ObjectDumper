@@ -9,6 +9,7 @@ using System.Xml;
 using Newtonsoft.Json.Embedded;
 using Newtonsoft.Json.Embedded.Converters;
 using Newtonsoft.Json.Embedded.Serialization;
+using ObjectFormatter.ObjectDumper.NET.Embedded;
 using ObjectFormatter.YamlDotNet.Embedded.Serialization;
 using Formatting = Newtonsoft.Json.Embedded.Formatting;
 

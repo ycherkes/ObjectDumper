@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ObjectFormatter
+namespace ObjectFormatter.ObjectDumper.NET.Embedded
 {
     public abstract class DumperBase
     {
@@ -13,32 +13,32 @@ namespace ObjectFormatter
 
         protected DumperBase(DumpOptions dumpOptions)
         {
-            this.DumpOptions = dumpOptions;
-            this.Level = 0;
-            this.stringBuilder = new StringBuilder();
-            this.hashListOfFoundElements = new List<int>();
-            this.isNewLine = true;
+            DumpOptions = dumpOptions;
+            Level = 0;
+            stringBuilder = new StringBuilder();
+            hashListOfFoundElements = new List<int>();
+            isNewLine = true;
         }
 
         protected abstract void FormatValue(object o, int intentLevel);
 
         public int Level
         {
-            get => this.level;
+            get => level;
             set
             {
                 if (value < 0)
                 {
-                    throw new ArgumentException("Level must not be a negative number", nameof(this.Level));
+                    throw new ArgumentException("Level must not be a negative number", nameof(Level));
                 }
 
-                this.level = value;
+                level = value;
             }
         }
 
         public bool IsMaxLevel()
         {
-            return this.Level > this.DumpOptions.MaxLevel;
+            return Level > DumpOptions.MaxLevel;
         }
 
         protected DumpOptions DumpOptions { get; }
@@ -50,13 +50,13 @@ namespace ObjectFormatter
         /// <param name="value">string to be written</param>
         protected void Write(string value)
         {
-            if (this.isNewLine)
+            if (isNewLine)
             {
-                this.Write(value, this.Level);
+                Write(value, Level);
             }
             else
             {
-                this.Write(value, 0);
+                Write(value, 0);
             }
         }
 
@@ -71,15 +71,15 @@ namespace ObjectFormatter
         /// <param name="indentLevel">number of indentions to prepend default 0</param>
         protected void Write(string value, int indentLevel = 0)
         {
-            this.stringBuilder.Append(this.DumpOptions.IndentChar, indentLevel * this.DumpOptions.IndentSize);
-            this.stringBuilder.Append(value);
-            if (value.EndsWith(this.DumpOptions.LineBreakChar))
+            stringBuilder.Append(DumpOptions.IndentChar, indentLevel * DumpOptions.IndentSize);
+            stringBuilder.Append(value);
+            if (value.EndsWith(DumpOptions.LineBreakChar))
             {
-                this.isNewLine = true;
+                isNewLine = true;
             }
             else
             {
-                this.isNewLine = false;
+                isNewLine = false;
             }
         }
 
@@ -91,14 +91,14 @@ namespace ObjectFormatter
         /// </remarks>
         protected void LineBreak()
         {
-            this.stringBuilder.Append(this.DumpOptions.LineBreakChar);
-            this.isNewLine = true;
+            stringBuilder.Append(DumpOptions.LineBreakChar);
+            isNewLine = true;
         }
 
         protected void AddAlreadyTouched(object value)
         {
             var hashCode = GenerateHashCode(value);
-            this.hashListOfFoundElements.Add(hashCode);
+            hashListOfFoundElements.Add(hashCode);
         }
 
         protected bool AlreadyTouched(object value)
@@ -109,9 +109,9 @@ namespace ObjectFormatter
             }
 
             var hashCode = GenerateHashCode(value);
-            for (var i = 0; i < this.hashListOfFoundElements.Count; i++)
+            for (var i = 0; i < hashListOfFoundElements.Count; i++)
             {
-                if (this.hashListOfFoundElements[i] == hashCode)
+                if (hashListOfFoundElements[i] == hashCode)
                 {
                     return true;
                 }
@@ -129,8 +129,8 @@ namespace ObjectFormatter
         {
             // RyuJIT optimizes this to use the ROL instruction
             // Related GitHub pull request: dotnet/coreclr#1830
-            uint rol5 = ((uint)h1 << 5) | ((uint)h1 >> 27);
-            return ((int)rol5 + h1) ^ h2;
+            uint rol5 = (uint)h1 << 5 | (uint)h1 >> 27;
+            return (int)rol5 + h1 ^ h2;
         }
 
 
@@ -140,7 +140,7 @@ namespace ObjectFormatter
         /// <returns>string</returns>
         public override string ToString()
         {
-            return this.stringBuilder.ToString();
+            return stringBuilder.ToString();
         }
     }
 }

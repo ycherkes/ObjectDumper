@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
 
-namespace ObjectFormatter
+namespace ObjectFormatter.ObjectDumper.NET.Embedded
 {
     internal class PropertyAndValue
     {
         public PropertyAndValue(object source, PropertyInfo propertyInfo)
         {
-            this.Value = propertyInfo.TryGetValue(source);
-            this.DefaultValue = propertyInfo.PropertyType.TryGetDefault();
-            this.Property = propertyInfo;
+            Value = propertyInfo.TryGetValue(source);
+            DefaultValue = propertyInfo.PropertyType.TryGetDefault();
+            Property = propertyInfo;
         }
 
         public PropertyInfo Property { get; }
@@ -21,7 +21,7 @@ namespace ObjectFormatter
         {
             get
             {
-                return Equals(this.Value, this.DefaultValue);
+                return Equals(Value, DefaultValue);
             }
         }
     }

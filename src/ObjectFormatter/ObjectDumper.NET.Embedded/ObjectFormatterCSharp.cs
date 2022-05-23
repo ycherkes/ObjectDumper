@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace ObjectFormatter
+namespace ObjectFormatter.ObjectDumper.NET.Embedded
 {
     /// <summary>
     ///     Source: http://stackoverflow.com/questions/852181/c-printing-all-properties-of-an-object

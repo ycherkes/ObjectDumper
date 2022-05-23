@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace ObjectFormatter
+namespace ObjectFormatter.ObjectDumper.NET.Embedded
 {
     // ReSharper disable once CheckNamespace
     public class DumpOptions
     {
         public DumpOptions()
         {
-            this.IndentSize = 2;
-            this.IndentChar = ' ';
-            this.LineBreakChar = Environment.NewLine;
-            this.SetPropertiesOnly = false;
-            this.MaxLevel = int.MaxValue;
-            this.ExcludeProperties = new HashSet<string>();
-            this.PropertyOrderBy = null;
-            this.IgnoreDefaultValues = false;
-            this.IgnoreIndexers = true;
-            this.CustomTypeFormatter = new Dictionary<Type, Func<Type, string>>();
-            this.CustomInstanceFormatters = new CustomInstanceFormatters();
-            this.TrimInitialVariableName = false;
-            this.UseTypeFullName = false;
+            IndentSize = 2;
+            IndentChar = ' ';
+            LineBreakChar = Environment.NewLine;
+            SetPropertiesOnly = false;
+            MaxLevel = int.MaxValue;
+            ExcludeProperties = new HashSet<string>();
+            PropertyOrderBy = null;
+            IgnoreDefaultValues = false;
+            IgnoreIndexers = true;
+            CustomTypeFormatter = new Dictionary<Type, Func<Type, string>>();
+            CustomInstanceFormatters = new CustomInstanceFormatters();
+            TrimInitialVariableName = false;
+            UseTypeFullName = false;
         }
 
         public int IndentSize { get; set; }
@@ -68,22 +68,22 @@ namespace ObjectFormatter
 
         public void AddFormatter<T>(Func<T, string> formatInstance)
         {
-            this.customFormatters.Add(typeof(T), new CustomInstanceFormatter(typeof(T), o => formatInstance((T)o)));
+            customFormatters.Add(typeof(T), new CustomInstanceFormatter(typeof(T), o => formatInstance((T)o)));
         }
 
         public bool HasFormatterFor<T>()
         {
-            return this.customFormatters.ContainsKey(typeof(T));
+            return customFormatters.ContainsKey(typeof(T));
         }
 
         public bool HasFormatterFor(object obj)
         {
-            return this.customFormatters.ContainsKey(obj.GetType());
+            return customFormatters.ContainsKey(obj.GetType());
         }
 
         public bool TryGetFormatter(Type type, out Func<object, string> formatter)
         {
-            if (this.customFormatters.TryGetValue(type, out var customInstanceFormatter))
+            if (customFormatters.TryGetValue(type, out var customInstanceFormatter))
             {
                 formatter = customInstanceFormatter.Formatter;
                 return true;
@@ -95,25 +95,25 @@ namespace ObjectFormatter
 
         public void Clear()
         {
-            this.customFormatters.Clear();
+            customFormatters.Clear();
         }
 
         public void RemoveFormatter<T>()
         {
-            this.RemoveFormatter(typeof(T));
+            RemoveFormatter(typeof(T));
         }
 
         public void RemoveFormatter(Type type)
         {
-            this.customFormatters.Remove(type);
+            customFormatters.Remove(type);
         }
 
         private class CustomInstanceFormatter
         {
             public CustomInstanceFormatter(Type type, Func<object, string> formatter)
             {
-                this.InstanceType = type;
-                this.Formatter = formatter;
+                InstanceType = type;
+                Formatter = formatter;
             }
 
             public Func<object, string> Formatter { get; }

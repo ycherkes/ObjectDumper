@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace ObjectFormatter
+namespace ObjectFormatter.ObjectDumper.NET.Embedded
 {
     internal static class PropertyInfoExtensions
     {
