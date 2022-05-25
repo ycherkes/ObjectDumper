@@ -464,7 +464,9 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 return;
             }
 
-            if (DumpOptions.CustomInstanceFormatters.TryGetFormatter(type, out var func))
+            if (DumpOptions.CustomInstanceFormatters.TryGetValue(type, out var func) ||
+                (type.BaseType != typeof(object) && DumpOptions.CustomInstanceFormatters.TryGetValue(type.BaseType, out func)))
+
             {
                 Write(func(o));
                 return;

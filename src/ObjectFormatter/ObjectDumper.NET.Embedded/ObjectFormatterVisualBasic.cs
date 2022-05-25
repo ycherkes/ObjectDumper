@@ -197,9 +197,11 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 return;
             }
 
+            var type = o.GetType();
+
             if (o is Enum)
             {
-                Write($"{o.GetType().FullName}.{o}", intentLevel);
+                Write($"{type.FullName}.{o}", intentLevel);
                 return;
             }
 
@@ -209,7 +211,14 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 return;
             }
 
-            var type = o.GetType();
+            if (DumpOptions.CustomInstanceFormatters.TryGetValue(type, out var func) ||
+                (type.BaseType != typeof(object) && DumpOptions.CustomInstanceFormatters.TryGetValue(type.BaseType, out func)))
+
+            {
+                Write(func(o));
+                return;
+            }
+
             var typeInfo = type.GetTypeInfo();
             if (typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
             {

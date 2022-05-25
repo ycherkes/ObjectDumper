@@ -9,8 +9,12 @@ using System.Xml;
 using Newtonsoft.Json.Embedded;
 using Newtonsoft.Json.Embedded.Converters;
 using Newtonsoft.Json.Embedded.Serialization;
+using ObjectFormatter.Adapters;
 using ObjectFormatter.ObjectDumper.NET.Embedded;
+using ObjectFormatter.YamlDotNet.Embedded.Core;
 using ObjectFormatter.YamlDotNet.Embedded.Serialization;
+using DirectoryInfo = System.IO.DirectoryInfo;
+using FileInfo = System.IO.FileInfo;
 using Formatting = Newtonsoft.Json.Embedded.Formatting;
 
 namespace ObjectFormatter
@@ -28,7 +32,8 @@ namespace ObjectFormatter
             },
             Formatting = Formatting.Indented,
             Converters = { new StringEnumConverter() },
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            MaxDepth = 100
         };
 
         private static readonly JsonSerializerSettings XmlSettings = new()
@@ -40,23 +45,35 @@ namespace ObjectFormatter
                 PropertyTypesToSkip = new[] { "Avro.Schema" }
             },
             Converters = { new StringEnumConverter() },
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            MaxDepth = 100
         };
 
         private static readonly DumpOptions CsharpDumpOptions = new()
         {
             IgnoreDefaultValues = true,
-            IndentSize = 4
+            IndentSize = 4,
+            MaxLevel = 100
         };
 
         private static readonly DumpOptions VisualBasicDumpOptions = new()
         {
             IgnoreDefaultValues = true,
-            IndentSize = 4
+            IndentSize = 4,
+            MaxLevel = 100
         };
+
+        private static readonly Serializer YamlSerializer = Serializer.FromValueSerializer(new SerializerBuilder().WithMaximumRecursion(100).BuildValueSerializer(), EmitterSettings.Default);
 
         public static string Format(object obj, string formattingType)
         {
+            obj = obj switch
+            {
+                FileInfo info => FileInfoMapper.Map(info),
+                DirectoryInfo directoryInfo => DirectoryInfoMapper.Map(directoryInfo),
+                _ => obj
+            };
+
             try
             {
                 return formattingType switch
@@ -78,8 +95,7 @@ namespace ObjectFormatter
         private static string GetYaml(object o)
         {
             var stringBuilder = new StringBuilder();
-            var serializer = new Serializer();
-            serializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), o);
+            YamlSerializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), o);
             return stringBuilder.ToString();
         }
 
@@ -89,22 +105,6 @@ namespace ObjectFormatter
         }
 
         private const int XmlIndentSize = 2;
-        //private static string XDocumentToString(this XDocument document)
-        //{
-        //    XmlWriterSettings settings = new()
-        //    {
-        //        OmitXmlDeclaration = true,
-        //        Indent = true,
-        //        IndentChars = "    " // Indent 4 Spaces
-        //    };
-
-        //    using var memoryStream = new MemoryStream();
-        //    using var writer = XmlWriter.Create(memoryStream, settings);
-        //    document.Save(writer);
-        //    writer.Flush();
-        //    return Encoding.UTF8.GetString(memoryStream.ToArray());
-        //}
-
         private static string GetXml(object obj, int nestingLevel = 0)
         {
             string indent = new(' ', nestingLevel * XmlIndentSize);
