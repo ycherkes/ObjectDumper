@@ -8,7 +8,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 {
     internal static class TypeExtensions
     {
-        private static readonly Dictionary<Type, string> typeToKeywordMappings = new Dictionary<Type, string>
+        private static readonly Dictionary<Type, string> typeToKeywordMappings = new()
         {
             { typeof(string), "string" },
             { typeof(object), "object" },
@@ -30,7 +30,6 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
         internal static string GetFormattedNameVB(this Type type, bool useFullName = false)
         {
-
             var typeName = useFullName ? type.FullName : type.Name;
 
             var typeInfo = type.GetTypeInfo();
@@ -141,8 +140,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
         public static object GetDefault(this Type t)
         {
-            //var defaultValue = FastDefault.Get(t);
-            var defaultValue = typeof(TypeExtensions).GetRuntimeMethod("GetDefaultGeneric", new Type[] { }).MakeGenericMethod(t).Invoke(null, null);
+            var defaultValue = typeof(TypeExtensions).GetRuntimeMethod(nameof(GetDefaultGeneric), new Type[] { }).MakeGenericMethod(t).Invoke(null, null);
             return defaultValue;
         }
 

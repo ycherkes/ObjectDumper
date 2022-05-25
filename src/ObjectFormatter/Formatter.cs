@@ -14,6 +14,7 @@ using ObjectFormatter.ObjectDumper.NET.Embedded;
 using ObjectFormatter.YamlDotNet.Embedded.Core;
 using ObjectFormatter.YamlDotNet.Embedded.Serialization;
 using DirectoryInfo = System.IO.DirectoryInfo;
+using DriveInfo = System.IO.DriveInfo;
 using FileInfo = System.IO.FileInfo;
 using Formatting = Newtonsoft.Json.Embedded.Formatting;
 
@@ -71,6 +72,7 @@ namespace ObjectFormatter
             {
                 FileInfo info => FileInfoMapper.Map(info),
                 DirectoryInfo directoryInfo => DirectoryInfoMapper.Map(directoryInfo),
+                DriveInfo driveInfo => DriveInfoMapper.Map(driveInfo),
                 _ => obj
             };
 
