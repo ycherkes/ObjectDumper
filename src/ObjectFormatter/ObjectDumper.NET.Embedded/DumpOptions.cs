@@ -20,7 +20,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             IgnoreDefaultValues = false;
             IgnoreIndexers = true;
             CustomTypeFormatter = new Dictionary<Type, Func<Type, string>>();
-            CustomInstanceFormatters = new CustomInstanceFormatters();
+            CustomInstanceFormatters = new Dictionary<Type, Func<object, string>>();
             TrimInitialVariableName = false;
             UseTypeFullName = false;
         }
@@ -57,68 +57,9 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
         public bool TrimTrailingColonName { get; set; }
 
-        public CustomInstanceFormatters CustomInstanceFormatters { get; }
+        public Dictionary<Type, Func<object, string>> CustomInstanceFormatters { get; }
 
         public bool UseTypeFullName { get; set; }
     }
 
-    public class CustomInstanceFormatters
-    {
-        private readonly Dictionary<Type, CustomInstanceFormatter> customFormatters = new Dictionary<Type, CustomInstanceFormatter>();
-
-        public void AddFormatter<T>(Func<T, string> formatInstance)
-        {
-            customFormatters.Add(typeof(T), new CustomInstanceFormatter(typeof(T), o => formatInstance((T)o)));
-        }
-
-        public bool HasFormatterFor<T>()
-        {
-            return customFormatters.ContainsKey(typeof(T));
-        }
-
-        public bool HasFormatterFor(object obj)
-        {
-            return customFormatters.ContainsKey(obj.GetType());
-        }
-
-        public bool TryGetFormatter(Type type, out Func<object, string> formatter)
-        {
-            if (customFormatters.TryGetValue(type, out var customInstanceFormatter))
-            {
-                formatter = customInstanceFormatter.Formatter;
-                return true;
-            }
-
-            formatter = null;
-            return false;
-        }
-
-        public void Clear()
-        {
-            customFormatters.Clear();
-        }
-
-        public void RemoveFormatter<T>()
-        {
-            RemoveFormatter(typeof(T));
-        }
-
-        public void RemoveFormatter(Type type)
-        {
-            customFormatters.Remove(type);
-        }
-
-        private class CustomInstanceFormatter
-        {
-            public CustomInstanceFormatter(Type type, Func<object, string> formatter)
-            {
-                InstanceType = type;
-                Formatter = formatter;
-            }
-
-            public Func<object, string> Formatter { get; }
-
-            public Type InstanceType { get; }
-        }
-    }
 }
