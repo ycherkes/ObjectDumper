@@ -122,12 +122,11 @@ namespace ObjectDumper
             return format == "csharp" ? ".cs" : $".{format}";
         }
 
-        internal void CreateNewFile(string fileName, string fileContents)
+        private void CreateNewFile(string fileName, string fileContents)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             var newFileWindow = _dte.ItemOperations.NewFile(Name: fileName);
-
             var newDocument = newFileWindow.Document;
 
             if (!string.IsNullOrEmpty(fileContents))
@@ -137,7 +136,7 @@ namespace ObjectDumper
                 selection?.StartOfDocument();
             }
 
-            newDocument.Saved = true;
+            newDocument.Save();
         }
     }
 }
