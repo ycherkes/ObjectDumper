@@ -8,7 +8,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 {
     internal static class TypeExtensions
     {
-        private static readonly Dictionary<Type, string> typeToKeywordMappings = new()
+        private static readonly Dictionary<Type, string> TypeToKeywordMappings = new()
         {
             { typeof(string), "string" },
             { typeof(object), "object" },
@@ -31,8 +31,9 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
         internal static string GetFormattedNameVB(this Type type, bool useFullName = false)
         {
             var typeName = useFullName ? type.FullName : type.Name;
-
+            
             var typeInfo = type.GetTypeInfo();
+
             if (!typeInfo.IsGenericType)
             {
                 return typeName.Replace("[]", "()");
@@ -44,32 +45,30 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
         internal static bool TryGetBuiltInTypeName(this Type type, out string value)
         {
-            return typeToKeywordMappings.TryGetValue(type, out value);
+            return TypeToKeywordMappings.TryGetValue(type, out value);
         }
 
         internal static bool IsKeyword(string value)
         {
-            return typeToKeywordMappings.Values.Contains(value);
+            return TypeToKeywordMappings.Values.Contains(value);
         }
 
         internal static string GetFormattedName(this Type type, bool useFullName = false, bool useValueTupleFormatting = true)
         {
-            TryGetInnerElementType(ref type, out var arrayBrackets);
+            type = TryGetInnerElementType(type, out var arrayBrackets);
 
             var typeName = GetTypeName(type, useFullName, useValueTupleFormatting);
 
             var typeInfo = type.GetTypeInfo();
-            if (!typeInfo.IsGenericType)
+            if (!typeInfo.IsGenericType || type.IsAnonymous())
             {
                 return $"{typeName}{arrayBrackets}";
             }
 
-#if NETSTANDARD2_0_OR_GREATER
             if (useValueTupleFormatting && type.IsValueTuple())
             {
                 return typeName.RemoveGenericBackTick();
             }
-#endif
 
             string genericTypeParametersString;
             if (typeInfo.IsGenericTypeDefinition)
@@ -101,6 +100,11 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
         private static string GetTypeName(Type type, bool useFullName, bool useValueTupleFormatting)
         {
+            if (type.IsAnonymous())
+            {
+                return string.Empty;
+            }
+            
             string typeName;
 
             if (useFullName == false && type.TryGetBuiltInTypeName(out var keyword))
@@ -108,13 +112,11 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 return keyword;
             }
             else
-#if NETSTANDARD2_0_OR_GREATER
             if (useValueTupleFormatting && type.IsValueTuple())
             {
                 typeName = $"({string.Join(", ", type.GenericTypeArguments.Select(t => GetTypeName(t, useFullName, useValueTupleFormatting)))})";
             }
             else
-#endif
             {
                 typeName = useFullName ? type.FullName : type.Name;
             }
@@ -122,12 +124,12 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             return typeName;
         }
 
-        private static void TryGetInnerElementType(ref Type type, out string arrayBrackets)
+        private static Type TryGetInnerElementType(Type type, out string arrayBrackets)
         {
             arrayBrackets = null;
             if (!type.IsArray)
             {
-                return;
+                return type;
             }
 
             do
@@ -136,6 +138,8 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 type = type.GetElementType();
             }
             while (type.IsArray);
+
+            return type;
         }
 
         public static object GetDefault(this Type t)
@@ -188,15 +192,12 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             return false;
         }
 
-#if NETSTANDARD2_0_OR_GREATER
         public static bool IsValueTuple(this Type type)
         {
             return
                 type.IsValueType &&
-                //type.IsGenericType &&
                 type.FullName is string fullName &&
                 (fullName.StartsWith("System.ValueTuple") || fullName.StartsWith("System.ValueTuple`"));
         }
-#endif
     }
 }

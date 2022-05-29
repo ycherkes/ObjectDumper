@@ -8,7 +8,11 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 {
     internal class ObjectFormatterVisualBasic : DumperBase
     {
-        public ObjectFormatterVisualBasic(DumpOptions dumpOptions) : base(dumpOptions)
+        private ObjectFormatterVisualBasic(DumpOptions dumpOptions) : base(dumpOptions)
+        {
+        }
+
+        private ObjectFormatterVisualBasic(ObjectFormatterVisualBasic formatter) : base(formatter)
         {
         }
 
@@ -16,16 +20,18 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
         {
             dumpOptions ??= new DumpOptions();
 
-            var instance = new ObjectFormatterVisualBasic(dumpOptions);
+            using var instance = new ObjectFormatterVisualBasic(dumpOptions);
             instance.Write($"Dim {GetVariableName(element)} = ");
             instance.FormatValue(element);
 
             return instance.ToString();
         }
 
-        private void CreateObject(object o, int intentLevel = 0)
+        private void CreateObject(object o)
         {
-            Write($"new {GetClassName(o)}", intentLevel);
+            AddAlreadyTouched(o);
+
+            Write($"new {GetClassName(o)}");
             Write(" With {");
             LineBreak();
             Level++;
@@ -72,6 +78,20 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             foreach (var property in properties)
             {
                 var value = property.TryGetValue(o);
+
+                if (AlreadyTouched(value))
+                {
+                    Write($".{property.Name} = ");
+                    FormatValue(property.PropertyType.GetDefault());
+                    if (!Equals(property, last))
+                    {
+                        Write(",");
+                    }
+                    Write(" Rem Circular reference detected");
+                    LineBreak();
+                    continue;
+                }
+
                 Write($".{property.Name} = ");
                 FormatValue(value);
                 if (!Equals(property, last))
@@ -86,7 +106,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             Write("}");
         }
 
-        protected override void FormatValue(object o, int intentLevel = 0)
+        protected override void FormatValue(object o)
         {
             if (IsMaxLevel())
             {
@@ -95,69 +115,69 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
             if (o == null)
             {
-                Write("Nothing", intentLevel);
+                Write("Nothing");
                 return;
             }
 
             if (o is bool)
             {
-                Write($"{o.ToString().ToLower()}", intentLevel);
+                Write($"{o.ToString().ToLower()}");
                 return;
             }
 
             if (o is string)
             {
                 var str = $@"{o}".Escape();
-                Write($"\"{str}\"", intentLevel);
+                Write($"\"{str}\"");
                 return;
             }
 
             if (o is char)
             {
                 var c = o.ToString().Replace("\0", "").Trim();
-                Write($"\"{c}c\"", intentLevel);
+                Write($"\"{c}c\"");
                 return;
             }
 
             if (o is double)
             {
-                Write($"{o}d", intentLevel);
+                Write($"{o}d");
                 return;
             }
 
             if (o is decimal)
             {
-                Write($"{o}D", intentLevel);
+                Write($"{o}D");
                 return;
             }
 
             if (o is byte or sbyte)
             {
-                Write($"{o}", intentLevel);
+                Write($"{o}");
                 return;
             }
 
             if (o is float)
             {
-                Write($"{o}f", intentLevel);
+                Write($"{o}f");
                 return;
             }
 
             if (o is int or uint)
             {
-                Write($"{o}", intentLevel);
+                Write($"{o}");
                 return;
             }
 
             if (o is long || o is ulong)
             {
-                Write($"{o}L", intentLevel);
+                Write($"{o}L");
                 return;
             }
 
             if (o is short or ushort)
             {
-                Write($"{o}", intentLevel);
+                Write($"{o}");
                 return;
             }
 
@@ -165,15 +185,15 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (dateTime == DateTime.MinValue)
                 {
-                    Write("DateTime.MinValue", intentLevel);
+                    Write("DateTime.MinValue");
                 }
                 else if (dateTime == DateTime.MaxValue)
                 {
-                    Write("DateTime.MaxValue", intentLevel);
+                    Write("DateTime.MaxValue");
                 }
                 else
                 {
-                    Write($"DateTime.ParseExact(\"{dateTime:O}\", \"O\", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)", intentLevel);
+                    Write($"DateTime.ParseExact(\"{dateTime:O}\", \"O\", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)");
                 }
 
                 return;
@@ -183,15 +203,15 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (dateTimeOffset == DateTimeOffset.MinValue)
                 {
-                    Write("DateTimeOffset.MinValue", intentLevel);
+                    Write("DateTimeOffset.MinValue");
                 }
                 else if (dateTimeOffset == DateTimeOffset.MaxValue)
                 {
-                    Write("DateTimeOffset.MaxValue", intentLevel);
+                    Write("DateTimeOffset.MaxValue");
                 }
                 else
                 {
-                    Write($"DateTimeOffset.ParseExact(\"{dateTimeOffset:O}\", \"O\", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)", intentLevel);
+                    Write($"DateTimeOffset.ParseExact(\"{dateTimeOffset:O}\", \"O\", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)");
                 }
 
                 return;
@@ -201,13 +221,13 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
             if (o is Enum)
             {
-                Write($"{type.FullName}.{o}", intentLevel);
+                Write($"{type.FullName}.{o}");
                 return;
             }
 
             if (o is Guid guid)
             {
-                Write($"new Guid(\"{guid:D}\")", intentLevel);
+                Write($"new Guid(\"{guid:D}\")");
                 return;
             }
 
@@ -225,7 +245,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 var kvpKey = type.GetRuntimeProperty(nameof(KeyValuePair<object, object>.Key)).GetValue(o, null);
                 var kvpValue = type.GetRuntimeProperty(nameof(KeyValuePair<object, object>.Value)).GetValue(o, null);
 
-                Write("{ ", intentLevel);
+                Write("{ ");
                 FormatValue(kvpKey);
                 Write(", ");
                 FormatValue(kvpValue);
@@ -237,7 +257,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
 
                 //fixme array here? from/not from
-                Write($"new {GetClassName(o)}", intentLevel);
+                Write($"new {GetClassName(o)}");
                 //this.LineBreak();
                 Write(o is Array ? " {" : " From {");
 
@@ -248,7 +268,8 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 return;
             }
 
-            CreateObject(o, intentLevel);
+            using var newFormatter = new ObjectFormatterVisualBasic(this);
+            newFormatter.CreateObject(o);
         }
 
         private void WriteItems(IEnumerable items)
@@ -265,14 +286,14 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             var e = items.GetEnumerator();
             if (e.MoveNext())
             {
-                FormatValue(e.Current, Level);
+                FormatValue(e.Current);
 
                 while (e.MoveNext())
                 {
                     Write(",");
                     LineBreak();
 
-                    FormatValue(e.Current, Level);
+                    FormatValue(e.Current);
                 }
 
                 LineBreak();

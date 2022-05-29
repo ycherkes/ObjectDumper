@@ -12,7 +12,11 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
     /// </summary>
     internal class ObjectFormatterCSharp : DumperBase
     {
-        public ObjectFormatterCSharp(DumpOptions dumpOptions) : base(dumpOptions)
+        private ObjectFormatterCSharp(DumpOptions dumpOptions) : base(dumpOptions)
+        {
+        }
+
+        private ObjectFormatterCSharp(ObjectFormatterCSharp formatter) : base(formatter)
         {
         }
 
@@ -20,7 +24,8 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
         {
             dumpOptions ??= new DumpOptions();
 
-            var instance = new ObjectFormatterCSharp(dumpOptions);
+            using var instance = new ObjectFormatterCSharp(dumpOptions);
+
             if (!dumpOptions.TrimInitialVariableName)
             {
                 instance.Write($"var {instance.GetVariableName(element)} = ");
@@ -35,7 +40,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             return instance.ToString();
         }
 
-        private void CreateObject(object o, int intentLevel = 0)
+        private void CreateObject(object o)
         {
             AddAlreadyTouched(o);
 
@@ -43,7 +48,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
             var typeName = type.IsAnonymous() ? "" : type.GetFormattedName(DumpOptions.UseTypeFullName);
 
-            Write($"new {typeName}", intentLevel);
+            Write($"new {typeName}");
             LineBreak();
             Write("{");
             LineBreak();
@@ -176,7 +181,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             }
         }
 
-        protected override void FormatValue(object o, int intentLevel = 0)
+        protected override void FormatValue(object o)
         {
             if (IsMaxLevel())
             {
@@ -185,33 +190,33 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
             if (o == null)
             {
-                Write("null", intentLevel);
+                Write("null");
                 return;
             }
 
             if (o is bool)
             {
-                Write($"{o.ToString().ToLower()}", intentLevel);
+                Write($"{o.ToString().ToLower()}");
                 return;
             }
 
             if (o is string)
             {
                 var str = $@"{o}".Escape();
-                Write($"\"{str}\"", intentLevel);
+                Write($"\"{str}\"");
                 return;
             }
 
             if (o is char)
             {
                 var c = o.ToString().Replace("\0", "").Trim();
-                Write($"\'{c}\'", intentLevel);
+                Write($"\'{c}\'");
                 return;
             }
 
             if (o is byte || o is sbyte)
             {
-                Write($"{o}", intentLevel);
+                Write($"{o}");
                 return;
             }
 
@@ -219,15 +224,15 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (@short == short.MinValue)
                 {
-                    Write("short.MinValue", intentLevel);
+                    Write("short.MinValue");
                 }
                 else if (@short == short.MaxValue)
                 {
-                    Write("short.MaxValue", intentLevel);
+                    Write("short.MaxValue");
                 }
                 else
                 {
-                    Write($"{@short.ToString(CultureInfo.InvariantCulture)}", intentLevel);
+                    Write($"{@short.ToString(CultureInfo.InvariantCulture)}");
                 }
 
                 return;
@@ -239,11 +244,11 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
                 if (@ushort == ushort.MaxValue)
                 {
-                    Write("ushort.MaxValue", intentLevel);
+                    Write("ushort.MaxValue");
                 }
                 else
                 {
-                    Write($"{@ushort.ToString(CultureInfo.InvariantCulture)}", intentLevel);
+                    Write($"{@ushort.ToString(CultureInfo.InvariantCulture)}");
                 }
 
                 return;
@@ -253,15 +258,15 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (@int == int.MinValue)
                 {
-                    Write("int.MinValue", intentLevel);
+                    Write("int.MinValue");
                 }
                 else if (@int == int.MaxValue)
                 {
-                    Write("int.MaxValue", intentLevel);
+                    Write("int.MaxValue");
                 }
                 else
                 {
-                    Write($"{@int.ToString(CultureInfo.InvariantCulture)}", intentLevel);
+                    Write($"{@int.ToString(CultureInfo.InvariantCulture)}");
                 }
 
                 return;
@@ -273,11 +278,11 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
                 if (@uint == uint.MaxValue)
                 {
-                    Write("uint.MaxValue", intentLevel);
+                    Write("uint.MaxValue");
                 }
                 else
                 {
-                    Write($"{@uint.ToString(CultureInfo.InvariantCulture)}u", intentLevel);
+                    Write($"{@uint.ToString(CultureInfo.InvariantCulture)}u");
                 }
 
                 return;
@@ -287,15 +292,15 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (@long == long.MinValue)
                 {
-                    Write("long.MinValue", intentLevel);
+                    Write("long.MinValue");
                 }
                 else if (@long == long.MaxValue)
                 {
-                    Write("long.MaxValue", intentLevel);
+                    Write("long.MaxValue");
                 }
                 else
                 {
-                    Write($"{@long.ToString(CultureInfo.InvariantCulture)}L", intentLevel);
+                    Write($"{@long.ToString(CultureInfo.InvariantCulture)}L");
                 }
 
                 return;
@@ -307,11 +312,11 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
                 if (@ulong == ulong.MaxValue)
                 {
-                    Write("ulong.MaxValue", intentLevel);
+                    Write("ulong.MaxValue");
                 }
                 else
                 {
-                    Write($"{@ulong.ToString(CultureInfo.InvariantCulture)}UL", intentLevel);
+                    Write($"{@ulong.ToString(CultureInfo.InvariantCulture)}UL");
                 }
 
                 return;
@@ -321,27 +326,27 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (@double == double.MinValue)
                 {
-                    Write("double.MinValue", intentLevel);
+                    Write("double.MinValue");
                 }
                 else if (@double == double.MaxValue)
                 {
-                    Write("double.MaxValue", intentLevel);
+                    Write("double.MaxValue");
                 }
                 else if (double.IsNaN(@double))
                 {
-                    Write("double.NaN", intentLevel);
+                    Write("double.NaN");
                 }
                 else if (double.IsPositiveInfinity(@double))
                 {
-                    Write("double.PositiveInfinity", intentLevel);
+                    Write("double.PositiveInfinity");
                 }
                 else if (double.IsNegativeInfinity(@double))
                 {
-                    Write("double.NegativeInfinity", intentLevel);
+                    Write("double.NegativeInfinity");
                 }
                 else
                 {
-                    Write($"{@double.ToString(CultureInfo.InvariantCulture)}d", intentLevel);
+                    Write($"{@double.ToString(CultureInfo.InvariantCulture)}d");
                 }
 
                 return;
@@ -351,15 +356,15 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (@decimal == decimal.MinValue)
                 {
-                    Write("decimal.MinValue", intentLevel);
+                    Write("decimal.MinValue");
                 }
                 else if (@decimal == decimal.MaxValue)
                 {
-                    Write("decimal.MaxValue", intentLevel);
+                    Write("decimal.MaxValue");
                 }
                 else
                 {
-                    Write($"{@decimal.ToString(CultureInfo.InvariantCulture)}m", intentLevel);
+                    Write($"{@decimal.ToString(CultureInfo.InvariantCulture)}m");
                 }
 
                 return;
@@ -369,15 +374,15 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (@float == float.MinValue)
                 {
-                    Write("float.MinValue", intentLevel);
+                    Write("float.MinValue");
                 }
                 else if (@float == float.MaxValue)
                 {
-                    Write("float.MaxValue", intentLevel);
+                    Write("float.MaxValue");
                 }
                 else
                 {
-                    Write($"{@float.ToString(CultureInfo.InvariantCulture)}f", intentLevel);
+                    Write($"{@float.ToString(CultureInfo.InvariantCulture)}f");
                 }
 
                 return;
@@ -387,15 +392,15 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (dateTime == DateTime.MinValue)
                 {
-                    Write("DateTime.MinValue", intentLevel);
+                    Write("DateTime.MinValue");
                 }
                 else if (dateTime == DateTime.MaxValue)
                 {
-                    Write("DateTime.MaxValue", intentLevel);
+                    Write("DateTime.MaxValue");
                 }
                 else
                 {
-                    Write($"DateTime.ParseExact(\"{dateTime:O}\", \"O\", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)", intentLevel);
+                    Write($"DateTime.ParseExact(\"{dateTime:O}\", \"O\", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)");
                 }
 
                 return;
@@ -405,15 +410,15 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (dateTimeOffset == DateTimeOffset.MinValue)
                 {
-                    Write("DateTimeOffset.MinValue", intentLevel);
+                    Write("DateTimeOffset.MinValue");
                 }
                 else if (dateTimeOffset == DateTimeOffset.MaxValue)
                 {
-                    Write("DateTimeOffset.MaxValue", intentLevel);
+                    Write("DateTimeOffset.MaxValue");
                 }
                 else
                 {
-                    Write($"DateTimeOffset.ParseExact(\"{dateTimeOffset:O}\", \"O\", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)", intentLevel);
+                    Write($"DateTimeOffset.ParseExact(\"{dateTimeOffset:O}\", \"O\", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)");
                 }
 
                 return;
@@ -423,19 +428,19 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 if (timeSpan == TimeSpan.Zero)
                 {
-                    Write("TimeSpan.Zero", intentLevel);
+                    Write("TimeSpan.Zero");
                 }
                 else if (timeSpan == TimeSpan.MinValue)
                 {
-                    Write("TimeSpan.MinValue", intentLevel);
+                    Write("TimeSpan.MinValue");
                 }
                 else if (timeSpan == TimeSpan.MaxValue)
                 {
-                    Write("TimeSpan.MaxValue", intentLevel);
+                    Write("TimeSpan.MaxValue");
                 }
                 else
                 {
-                    Write($"TimeSpan.ParseExact(\"{timeSpan:c}\", \"c\", CultureInfo.InvariantCulture, TimeSpanStyles.None)", intentLevel);
+                    Write($"TimeSpan.ParseExact(\"{timeSpan:c}\", \"c\", CultureInfo.InvariantCulture, TimeSpanStyles.None)");
                 }
 
                 return;
@@ -443,7 +448,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
             if (o is CultureInfo cultureInfo)
             {
-                Write($"new CultureInfo(\"{cultureInfo}\")", intentLevel);
+                Write($"new CultureInfo(\"{cultureInfo}\")");
                 return;
             }
 
@@ -454,13 +459,13 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 var enumTypeName = type.GetFormattedName(DumpOptions.UseTypeFullName);
                 var enumFlags = $"{o}".Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 var enumValues = string.Join(" | ", enumFlags.Select(f => $"{enumTypeName}.{f.Replace(" ", "")}"));
-                Write($"{enumValues}", intentLevel);
+                Write($"{enumValues}");
                 return;
             }
 
             if (o is Guid guid)
             {
-                Write($"new Guid(\"{guid:D}\")", intentLevel);
+                Write($"new Guid(\"{guid:D}\")");
                 return;
             }
 
@@ -481,7 +486,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                     return;
                 }
 
-                Write($"typeof({systemType.GetFormattedName(DumpOptions.UseTypeFullName)})", intentLevel);
+                Write($"typeof({systemType.GetFormattedName(DumpOptions.UseTypeFullName)})");
                 return;
             }
             var typeInfo = type.GetTypeInfo();
@@ -490,7 +495,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 var kvpKey = type.GetRuntimeProperty(nameof(KeyValuePair<object, object>.Key)).GetValue(o, null);
                 var kvpValue = type.GetRuntimeProperty(nameof(KeyValuePair<object, object>.Value)).GetValue(o, null);
 
-                Write("{ ", intentLevel);
+                Write("{ ");
                 FormatValue(kvpKey);
                 Write(", ");
                 FormatValue(kvpValue);
@@ -498,18 +503,16 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 return;
             }
 
-#if NETSTANDARD2_0_OR_GREATER
             if (type.IsValueTuple())
             {
                 WriteValueTuple(o, type);
                 return;
             }
-#endif
 
             if (o is IEnumerable enumerable)
             {
                 var typeName = type.GetFormattedName(DumpOptions.UseTypeFullName);
-                Write($"new {typeName}", intentLevel);
+                Write($"new {typeName}");
                 LineBreak();
                 Write("{");
                 LineBreak();
@@ -518,10 +521,10 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 return;
             }
 
-            CreateObject(o, intentLevel);
+            using var newFormatter = new ObjectFormatterCSharp(this);
+            newFormatter.CreateObject(o);
         }
 
-#if NETSTANDARD2_0_OR_GREATER
         private void WriteValueTuple(object o, Type type)
         {
             var fields = type.GetFields().ToList();
@@ -546,7 +549,6 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 Write("ValueTuple.Create()");
             }
         }
-#endif
 
         private void WriteItems(IEnumerable items)
         {
@@ -560,14 +562,14 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             var e = items.GetEnumerator();
             if (e.MoveNext())
             {
-                FormatValue(e.Current, Level);
+                FormatValue(e.Current);
 
                 while (e.MoveNext())
                 {
                     Write(",");
                     LineBreak();
 
-                    FormatValue(e.Current, Level);
+                    FormatValue(e.Current);
                 }
 
                 LineBreak();
