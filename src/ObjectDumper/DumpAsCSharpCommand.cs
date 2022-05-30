@@ -99,7 +99,7 @@ namespace ObjectDumper
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            _dumpAsCommandHelper.ExecuteCommand("csharp");
+            _dumpAsCommandHelper.ExecuteCommand("cs");
         }
     }
 }

@@ -81,18 +81,15 @@ namespace ObjectDumper
                 }
             }
 
-            if(!_languageService.InjectFormatter())
-            {
-                return;
-            }
+            var (isInjected, evaluationResult) = _languageService.InjectFormatter();
 
             var expression = selectionText;
 
             var fileName = SanitizeFileName(expression.Any(char.IsWhiteSpace) ? "expression" : expression);
 
-            var formattedValue = _languageService.GetFormattedValue(expression, format);
+            var formattedValue = isInjected ? _languageService.GetFormattedValue(expression, format) : evaluationResult;
 
-            var fileExtension = GetFileExtension(format);
+            var fileExtension = $".{format}";
 
             CreateNewFile($"{fileName}{fileExtension}", formattedValue);
         }
@@ -115,11 +112,6 @@ namespace ObjectDumper
         {
             var invalids = Path.GetInvalidFileNameChars();
             return invalids.Aggregate(fileName, (current, c) => current.Replace(c, '_'));
-        }
-
-        private static string GetFileExtension(string format)
-        {
-            return format == "csharp" ? ".cs" : $".{format}";
         }
 
         private void CreateNewFile(string fileName, string fileContents)

@@ -17,23 +17,25 @@ namespace ObjectDumper
 
         private string Language => _dte.Debugger.CurrentStackFrame.Language;
 
-        public bool InjectFormatter()
+        public (bool success, string evaluationResult) InjectFormatter()
         {
             var isFormatterInjected = IsFormatterInjected();
 
             if (isFormatterInjected)
             {
-                return true;
+                return (true, null);
             }
 
             var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
 
-            var targetFramework = GetEntryAssemblyTargetFramework()?.Trim('"');
+            var targetFrameworkEvaluationResult = GetEntryAssemblyTargetFramework();
 
-            if (targetFramework == null)
+            if(!targetFrameworkEvaluationResult.isValid)
             {
-                return false;
+                return (false, targetFrameworkEvaluationResult.value);
             }
+
+            var targetFramework = targetFrameworkEvaluationResult.value.Trim('"');
 
             var isNetCoreMustBeInjected = targetFramework.StartsWith(".NETCoreApp", StringComparison.OrdinalIgnoreCase)
                                           || targetFramework.StartsWith(".NETStandard", StringComparison.OrdinalIgnoreCase);
@@ -49,7 +51,7 @@ namespace ObjectDumper
 
             var loadAssemblyExpression = _dte.Debugger.GetExpression(loadAssembly);
 
-            return loadAssemblyExpression.IsValidValue;
+            return (loadAssemblyExpression.IsValidValue, loadAssemblyExpression.Value);
         }
 
         public string GetFormattedValue(string expression, string format)
@@ -84,7 +86,7 @@ namespace ObjectDumper
             return _dte.Debugger.GetExpression(isFormatterInjected).IsValidValue;
         }
 
-        private string GetEntryAssemblyTargetFramework()
+        private (bool isValid, string value) GetEntryAssemblyTargetFramework()
         {
             var targetFramework = Language == "Basic"
                 ? "System.Linq.Enumerable.First(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Linq.Enumerable.OfType(Of System.Runtime.Versioning.TargetFrameworkAttribute)(If(System.Reflection.Assembly.GetEntryAssembly(), System.Reflection.Assembly.GetCallingAssembly()).GetCustomAttributes(True))).FrameworkName"
@@ -92,9 +94,7 @@ namespace ObjectDumper
 
             var targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
 
-            return targetFrameworkExpression.IsValidValue 
-                ? targetFrameworkExpression.Value 
-                : null;
+            return (targetFrameworkExpression.IsValidValue, targetFrameworkExpression.Value);
         }
     }
 }

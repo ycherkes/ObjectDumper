@@ -81,7 +81,7 @@ namespace ObjectFormatter
                 return formattingType switch
                 {
                     "json" => JsonConvert.SerializeObject(obj, JsonSettings).ToBase64(),
-                    "csharp" => ObjectFormatterCSharp.Dump(obj, CsharpDumpOptions).ToBase64(),
+                    "cs" => ObjectFormatterCSharp.Dump(obj, CsharpDumpOptions).ToBase64(),
                     "vb" => ObjectFormatterVisualBasic.Dump(obj, VisualBasicDumpOptions).ToBase64(),
                     "xml" => GetXmlWithHeader(obj).ToBase64(),
                     "yaml" => GetYaml(obj).ToBase64(),
