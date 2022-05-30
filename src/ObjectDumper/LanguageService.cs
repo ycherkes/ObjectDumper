@@ -35,10 +35,10 @@ namespace ObjectDumper
                 return (false, targetFrameworkEvaluationResult.value);
             }
 
-            var targetFramework = targetFrameworkEvaluationResult.value.Trim('"');
+            var targetFramework = targetFrameworkEvaluationResult.value;
 
-            var isNetCoreMustBeInjected = targetFramework.StartsWith(".NETCoreApp", StringComparison.OrdinalIgnoreCase)
-                                          || targetFramework.StartsWith(".NETStandard", StringComparison.OrdinalIgnoreCase);
+            var isNetCoreMustBeInjected = targetFramework.IndexOf("NETCore", StringComparison.OrdinalIgnoreCase) >= 0
+                                          || targetFramework.IndexOf("NETStandard", StringComparison.OrdinalIgnoreCase) >= 0;
 
             var formatterFileName = Path.Combine(dllLocation,
                 "Formatter",
@@ -54,7 +54,7 @@ namespace ObjectDumper
             return (loadAssemblyExpression.IsValidValue, loadAssemblyExpression.Value);
         }
 
-        public string GetFormattedValue(string expression, string format)
+        public (bool success, string value) GetFormattedValue(string expression, string format)
         {
             var runFormatterExpression = _dte.Debugger.GetExpression($@"ObjectFormatter.Formatter.Format({expression}, ""{format}"")");
 
@@ -62,7 +62,7 @@ namespace ObjectDumper
 
             if(isDecoded)
             {
-                return decodedValue;
+                return (true, decodedValue);
             }
 
             decodedValue = Regex.Unescape(decodedValue);
@@ -74,8 +74,54 @@ namespace ObjectDumper
                     .Replace("\"\"", "\"");
             }
 
-            return decodedValue;
+            return (false, decodedValue);
         }
+
+        //public string GetFormattedValueLastChance(string expression, string format)
+        //{
+        //    var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
+
+        //    var targetFrameworkEvaluationResult = GetEntryAssemblyTargetFramework();
+
+        //    if (!targetFrameworkEvaluationResult.isValid)
+        //    {
+        //        return targetFrameworkEvaluationResult.value;
+        //    }
+
+        //    var targetFramework = targetFrameworkEvaluationResult.value;
+
+        //    var isNetCoreMustBeInjected = targetFramework.IndexOf("NETCore", StringComparison.OrdinalIgnoreCase) >= 0
+        //                                  || targetFramework.IndexOf("NETStandard", StringComparison.OrdinalIgnoreCase) >= 0;
+
+        //    var formatterFileName = Path.Combine(dllLocation,
+        //        "Formatter",
+        //        isNetCoreMustBeInjected ? "netcoreapp3.1" : "net45",
+        //        "ObjectFormatter.dll");
+
+        //    var loadAssemblyAndRunFormatter = Language == "Basic"
+        //        ? $"System.Reflection.Assembly.LoadFile(\"{formatterFileName}\").GetType(\"ObjectFormatter.Formatter\").GetMethod(\"Format\").Invoke(Nothing, New Object(){{" + expression + ",\"" + format + "\"})"
+        //        : $"System.Reflection.Assembly.LoadFile(@\"{formatterFileName}\").GetType(\"ObjectFormatter.Formatter\").GetMethod(\"Format\").Invoke(null, new object[]{{" + expression + ",\"" + format + "\"})";
+
+        //    var runFormatterExpression = _dte.Debugger.GetExpression(loadAssemblyAndRunFormatter);
+
+        //    var (isDecoded, decodedValue) = runFormatterExpression.Value.Trim('"').Base64Decode();
+
+        //    if (isDecoded)
+        //    {
+        //        return decodedValue;
+        //    }
+
+        //    decodedValue = Regex.Unescape(decodedValue);
+
+        //    if (Language == "Basic")
+        //    {
+        //        decodedValue = decodedValue
+        //            .Replace("\" & vbCrLf & \"", Environment.NewLine)
+        //            .Replace("\"\"", "\"");
+        //    }
+
+        //    return decodedValue;
+        //}
 
         private bool IsFormatterInjected()
         {
@@ -88,9 +134,10 @@ namespace ObjectDumper
 
         private (bool isValid, string value) GetEntryAssemblyTargetFramework()
         {
+
             var targetFramework = Language == "Basic"
-                ? "System.Linq.Enumerable.First(Of System.Runtime.Versioning.TargetFrameworkAttribute)(System.Linq.Enumerable.OfType(Of System.Runtime.Versioning.TargetFrameworkAttribute)(If(System.Reflection.Assembly.GetEntryAssembly(), System.Reflection.Assembly.GetCallingAssembly()).GetCustomAttributes(True))).FrameworkName"
-                : "System.Linq.Enumerable.First(System.Linq.Enumerable.OfType<System.Runtime.Versioning.TargetFrameworkAttribute>((System.Reflection.Assembly.GetEntryAssembly() ?? System.Reflection.Assembly.GetCallingAssembly()).GetCustomAttributes(true))).FrameworkName";
+                ? "GetType(System.String).Assembly.Location"
+                : "typeof(System.String).Assembly.Location";
 
             var targetFrameworkExpression = _dte.Debugger.GetExpression(targetFramework);
 

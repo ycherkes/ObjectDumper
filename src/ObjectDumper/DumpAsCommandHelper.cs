@@ -87,7 +87,9 @@ namespace ObjectDumper
 
             var fileName = SanitizeFileName(expression.Any(char.IsWhiteSpace) ? "expression" : expression);
 
-            var formattedValue = isInjected ? _languageService.GetFormattedValue(expression, format) : evaluationResult;
+            var (_, value) = isInjected ? _languageService.GetFormattedValue(expression, format) : (false, evaluationResult);
+
+            var formattedValue = value;
 
             var fileExtension = $".{format}";
 
