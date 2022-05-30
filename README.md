@@ -12,7 +12,7 @@ It opens dumped object in a separate document window.
 
 ![HowTo3](https://user-images.githubusercontent.com/13467759/169960728-59afc54c-6458-49c9-adbb-043458240e9d.gif)
 
-# Known restrictions: debugging code mustn't be optimized so the Expression Evaluator can evaluate. 
+### Known restrictions: debugging code mustn't be optimized so the Expression Evaluator can evaluate. 
 
 ## Donate project
 
