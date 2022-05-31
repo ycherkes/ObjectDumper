@@ -2,9 +2,7 @@
 
 # Object Dumper
 
-<p align="center">
- <a href="https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper"><img src="https://img.shields.io/visual-studio-marketplace/v/YevhenCherkes.YellowFlavorObjectDumper"></a>
-</p>
+[![marketplace](https://img.shields.io/visual-studio-marketplace/v/YevhenCherkes.YellowFlavorObjectDumper.svg?label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
 
 A Visual Studio 2022 extension. It dumps the objects from the debugging session in the next formats: CSharp, VB, JSON, YAML, and XML.
 
