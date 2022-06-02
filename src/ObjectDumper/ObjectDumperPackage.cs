@@ -33,11 +33,7 @@ namespace ObjectDumper
     [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     [Guid(PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideOptionPage(typeof(ObjectDumperJsonOptionPage), "Object Dupmer", "Json", 0, 0, true)]
-    [ProvideOptionPage(typeof(ObjectDumperXmlOptionPage), "Object Dupmer", "Xml", 0, 0, true)]
-    [ProvideOptionPage(typeof(ObjectDumperCSharpOptionPage), "Object Dupmer", "C#", 0, 0, true)]
-    [ProvideOptionPage(typeof(ObjectDumperVisualBasicOptionPage), "Object Dupmer", "Visual Basic", 0, 0, true)]
-    [ProvideOptionPage(typeof(ObjectDumperYamlOptionPage), "Object Dupmer", "Yaml", 0, 0, true)]
+    [ProvideOptionPage(typeof(ObjectDumperOptionPage), "Object Dupmer", "General", 0, 0, true)]
     public sealed class ObjectDumperPackage : AsyncPackage
     {
         /// <summary>

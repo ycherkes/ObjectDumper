@@ -50,19 +50,7 @@
     <Compile Include="DumpAsYamlCommand.cs" />
     <Compile Include="DumpAsVbCommand.cs" />
     <Compile Include="LanguageService.cs" />
-    <Compile Include="OptionPages\ObjectDumperCSharpOptionPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="OptionPages\ObjectDumperJsonOptionPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="OptionPages\ObjectDumperVisualBasicOptionPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="OptionPages\ObjectDumperXmlOptionPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="OptionPages\ObjectDumperYamlOptionPage.cs">
+    <Compile Include="OptionPages\ObjectDumperOptionPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Utils.cs" />

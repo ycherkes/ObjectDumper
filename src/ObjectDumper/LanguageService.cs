@@ -84,78 +84,8 @@ namespace ObjectDumper
 
         private string GetBase64EncodedSettings(string format)
         {
-            IBaseSettings settings;
-
-            switch (format)
-            {
-                case "cs":
-                    settings = (IBaseSettings)_package.GetDialogPage(typeof(ObjectDumperCSharpOptionPage));
-                    break;
-                case "vb":
-                    settings = (IBaseSettings)_package.GetDialogPage(typeof(ObjectDumperVisualBasicOptionPage));
-                    break;
-                case "json":
-                    settings = (IBaseSettings)_package.GetDialogPage(typeof(ObjectDumperJsonOptionPage));
-                    break;
-                case "xml":
-                    settings = (IBaseSettings)_package.GetDialogPage(typeof(ObjectDumperXmlOptionPage));
-                    break;
-                case "yaml":
-                    settings = (IBaseSettings)_package.GetDialogPage(typeof(ObjectDumperYamlOptionPage));
-                    break;
-                default:
-                    settings = new BaseSettings();
-                break;
-            }
-
-            return settings.ToJson().ToBase64();
+            return ((ObjectDumperOptionPage)_package.GetDialogPage(typeof(ObjectDumperOptionPage))).ToJson(format).ToBase64();
         }
-
-        //public string GetFormattedValueLastChance(string expression, string format)
-        //{
-        //    var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
-
-        //    var targetFrameworkEvaluationResult = GetEntryAssemblyTargetFramework();
-
-        //    if (!targetFrameworkEvaluationResult.isValid)
-        //    {
-        //        return targetFrameworkEvaluationResult.value;
-        //    }
-
-        //    var targetFramework = targetFrameworkEvaluationResult.value;
-
-        //    var isNetCoreMustBeInjected = targetFramework.IndexOf("NETCore", StringComparison.OrdinalIgnoreCase) >= 0
-        //                                  || targetFramework.IndexOf("NETStandard", StringComparison.OrdinalIgnoreCase) >= 0;
-
-        //    var formatterFileName = Path.Combine(dllLocation,
-        //        "Formatter",
-        //        isNetCoreMustBeInjected ? "netcoreapp3.1" : "net45",
-        //        "ObjectFormatter.dll");
-
-        //    var loadAssemblyAndRunFormatter = Language == "Basic"
-        //        ? $"System.Reflection.Assembly.LoadFile(\"{formatterFileName}\").GetType(\"ObjectFormatter.Formatter\").GetMethod(\"Format\").Invoke(Nothing, New Object(){{" + expression + ",\"" + format + "\"})"
-        //        : $"System.Reflection.Assembly.LoadFile(@\"{formatterFileName}\").GetType(\"ObjectFormatter.Formatter\").GetMethod(\"Format\").Invoke(null, new object[]{{" + expression + ",\"" + format + "\"})";
-
-        //    var runFormatterExpression = _dte.Debugger.GetExpression(loadAssemblyAndRunFormatter);
-
-        //    var (isDecoded, decodedValue) = runFormatterExpression.Value.Trim('"').Base64Decode();
-
-        //    if (isDecoded)
-        //    {
-        //        return decodedValue;
-        //    }
-
-        //    decodedValue = Regex.Unescape(decodedValue);
-
-        //    if (Language == "Basic")
-        //    {
-        //        decodedValue = decodedValue
-        //            .Replace("\" & vbCrLf & \"", Environment.NewLine)
-        //            .Replace("\"\"", "\"");
-        //    }
-
-        //    return decodedValue;
-        //}
 
         private bool IsFormatterInjected()
         {
