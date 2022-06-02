@@ -12,10 +12,6 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
         {
         }
 
-        private ObjectFormatterVisualBasic(ObjectFormatterVisualBasic formatter) : base(formatter)
-        {
-        }
-
         public static string Dump(object element, DumpOptions dumpOptions = null)
         {
             dumpOptions ??= new DumpOptions();
@@ -29,7 +25,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
         private void CreateObject(object o)
         {
-            AddAlreadyTouched(o);
+            PushAlreadyTouched(o);
 
             Write($"new {GetClassName(o)}");
             Write(" With {");
@@ -54,7 +50,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                     .ToList();
             }
 
-            if (DumpOptions.IgnoreDefaultValues)
+            if (DumpOptions.IgnoreDefaultValues || DumpOptions.IgnoreNullValues)
             {
                 properties = properties
                     .Where(p =>
@@ -62,7 +58,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                         var value = p.GetValue(o);
                         var defaultValue = p.PropertyType.GetDefault();
                         var isDefaultValue = Equals(value, defaultValue);
-                        return !isDefaultValue;
+                        return (DumpOptions.IgnoreDefaultValues && !isDefaultValue) || (DumpOptions.IgnoreNullValues && value != null);
                     })
                     .ToList();
             }
@@ -104,6 +100,8 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
             Level--;
             Write("}");
+
+            PopAlreadyTouched();
         }
 
         protected override void FormatValue(object o)
@@ -268,8 +266,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 return;
             }
 
-            using var newFormatter = new ObjectFormatterVisualBasic(this);
-            newFormatter.CreateObject(o);
+            CreateObject(o);
         }
 
         private void WriteItems(IEnumerable items)

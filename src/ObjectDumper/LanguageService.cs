@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
+using ObjectDumper.OptionPages;
 
 namespace ObjectDumper
 {
@@ -9,10 +11,12 @@ namespace ObjectDumper
     {
 
         private readonly DTE2 _dte;
+        private readonly AsyncPackage _package;
 
-        public LanguageService(DTE2 dte)
+        public LanguageService(DTE2 dte, AsyncPackage package)
         {
             _dte = dte;
+            _package = package;
         }
 
         private string Language => _dte.Debugger.CurrentStackFrame.Language;
@@ -56,7 +60,8 @@ namespace ObjectDumper
 
         public (bool success, string value) GetFormattedValue(string expression, string format)
         {
-            var runFormatterExpression = _dte.Debugger.GetExpression($@"ObjectFormatter.Formatter.Format({expression}, ""{format}"")");
+            var settings = GetBase64EncodedSettings(format);
+            var runFormatterExpression = _dte.Debugger.GetExpression($@"ObjectFormatter.Formatter.Format({expression}, ""{format}"", ""{settings}"")");
 
             var (isDecoded, decodedValue) = runFormatterExpression.Value.Trim('"').Base64Decode();
 
@@ -75,6 +80,35 @@ namespace ObjectDumper
             }
 
             return (false, decodedValue);
+        }
+
+        private string GetBase64EncodedSettings(string format)
+        {
+            IBaseSettings settings;
+
+            switch (format)
+            {
+                case "cs":
+                    settings = (IBaseSettings)_package.GetDialogPage(typeof(ObjectDumperCSharpOptionPage));
+                    break;
+                case "vb":
+                    settings = (IBaseSettings)_package.GetDialogPage(typeof(ObjectDumperVisualBasicOptionPage));
+                    break;
+                case "json":
+                    settings = (IBaseSettings)_package.GetDialogPage(typeof(ObjectDumperJsonOptionPage));
+                    break;
+                case "xml":
+                    settings = (IBaseSettings)_package.GetDialogPage(typeof(ObjectDumperXmlOptionPage));
+                    break;
+                case "yaml":
+                    settings = (IBaseSettings)_package.GetDialogPage(typeof(ObjectDumperYamlOptionPage));
+                    break;
+                default:
+                    settings = new BaseSettings();
+                break;
+            }
+
+            return settings.ToJson().ToBase64();
         }
 
         //public string GetFormattedValueLastChance(string expression, string format)

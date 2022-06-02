@@ -18,12 +18,15 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             ExcludeProperties = new HashSet<string>();
             PropertyOrderBy = null;
             IgnoreDefaultValues = false;
+            IgnoreNullValues = false;
             IgnoreIndexers = true;
             CustomTypeFormatter = new Dictionary<Type, Func<Type, string>>();
             CustomInstanceFormatters = new Dictionary<Type, Func<object, string>>();
             TrimInitialVariableName = false;
             UseTypeFullName = false;
         }
+
+        public bool IgnoreNullValues { get; set; }
 
         public int IndentSize { get; set; }
 

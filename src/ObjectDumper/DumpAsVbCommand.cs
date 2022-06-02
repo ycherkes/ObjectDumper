@@ -42,7 +42,7 @@ namespace ObjectDumper
             var menuItem = new OleMenuCommand(Execute, menuCommandID);
             commandService.AddCommand(menuItem);
             menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
-            _dumpAsCommandHelper = new DumpAsCommandHelper(_package.Dte);
+            _dumpAsCommandHelper = new DumpAsCommandHelper(_package.Dte, package);
         }
 
         private async void MenuItem_BeforeQueryStatus(object sender, EventArgs e)

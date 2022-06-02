@@ -6,6 +6,7 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
+using ObjectDumper.OptionPages;
 using Task = System.Threading.Tasks.Task;
 
 namespace ObjectDumper
@@ -30,16 +31,21 @@ namespace ObjectDumper
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.CSharpProject_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
-    [Guid(ObjectDumperPackage.PackageGuidString)]
+    [Guid(PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideOptionPage(typeof(ObjectDumperJsonOptionPage), "Object Dupmer", "Json", 0, 0, true)]
+    [ProvideOptionPage(typeof(ObjectDumperXmlOptionPage), "Object Dupmer", "Xml", 0, 0, true)]
+    [ProvideOptionPage(typeof(ObjectDumperCSharpOptionPage), "Object Dupmer", "C#", 0, 0, true)]
+    [ProvideOptionPage(typeof(ObjectDumperVisualBasicOptionPage), "Object Dupmer", "Visual Basic", 0, 0, true)]
+    [ProvideOptionPage(typeof(ObjectDumperYamlOptionPage), "Object Dupmer", "Yaml", 0, 0, true)]
     public sealed class ObjectDumperPackage : AsyncPackage
     {
         /// <summary>
         /// ObjectDumperPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "75562b3a-ff38-4ad7-94f8-dc7f08140914";
+        private const string PackageGuidString = "75562b3a-ff38-4ad7-94f8-dc7f08140914";
 
-        public DTE2 Dte { get; set; }
+        public DTE2 Dte { get; private set; }
 
         #region Package Members
 
@@ -63,12 +69,6 @@ namespace ObjectDumper
                 DumpAsXmlCommand.InitializeAsync(this),
                 DumpAsVbCommand.InitializeAsync(this),
                 DumpAsYamlCommand.InitializeAsync(this));
-
-            //await DumpAsCSharpCommand.InitializeAsync(this);
-            //await DumpAsJsonCommand.InitializeAsync(this);
-            //await DumpAsXmlCommand.InitializeAsync(this);
-            //await DumpAsVbCommand.InitializeAsync(this);
-            //await DumpAsYamlCommand.InitializeAsync(this);
         }
 
         #endregion
