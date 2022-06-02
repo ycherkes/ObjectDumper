@@ -11,12 +11,13 @@ namespace ObjectDumper
     {
 
         private readonly DTE2 _dte;
-        private readonly AsyncPackage _package;
+        private readonly ObjectDumperOptionPage _optionsPage;
+
 
         public LanguageService(DTE2 dte, AsyncPackage package)
         {
             _dte = dte;
-            _package = package;
+            _optionsPage = (ObjectDumperOptionPage)package.GetDialogPage(typeof(ObjectDumperOptionPage));
         }
 
         private string Language => _dte.Debugger.CurrentStackFrame.Language;
@@ -60,7 +61,7 @@ namespace ObjectDumper
 
         public (bool success, string value) GetFormattedValue(string expression, string format)
         {
-            var settings = GetBase64EncodedSettings(format);
+            var settings = _optionsPage.ToJson(format).ToBase64();
             var runFormatterExpression = _dte.Debugger.GetExpression($@"ObjectFormatter.Formatter.Format({expression}, ""{format}"", ""{settings}"")");
 
             var (isDecoded, decodedValue) = runFormatterExpression.Value.Trim('"').Base64Decode();
@@ -80,11 +81,6 @@ namespace ObjectDumper
             }
 
             return (false, decodedValue);
-        }
-
-        private string GetBase64EncodedSettings(string format)
-        {
-            return ((ObjectDumperOptionPage)_package.GetDialogPage(typeof(ObjectDumperOptionPage))).ToJson(format).ToBase64();
         }
 
         private bool IsFormatterInjected()
