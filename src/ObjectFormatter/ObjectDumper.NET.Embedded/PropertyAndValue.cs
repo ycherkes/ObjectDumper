@@ -17,12 +17,8 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
         public object DefaultValue { get; }
 
-        public bool IsDefaultValue
-        {
-            get
-            {
-                return Equals(Value, DefaultValue);
-            }
-        }
+        public bool IsDefaultValue => DefaultValue != null && Equals(Value, DefaultValue);
+
+        public bool IsNullValue => Value == null;
     }
 }

@@ -14,5 +14,15 @@ namespace ObjectFormatter
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             return Convert.ToBase64String(plainTextBytes);
         }
+
+        public static string FromBase64(this string base64EncodedData)
+        {
+            if (string.IsNullOrEmpty(base64EncodedData))
+            {
+                return null;
+            }
+            var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
+            return Encoding.UTF8.GetString(base64EncodedBytes);
+        }
     }
 }

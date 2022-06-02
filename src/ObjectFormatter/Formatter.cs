@@ -22,7 +22,7 @@ namespace ObjectFormatter
 {
     public static class Formatter
     {
-        private static readonly JsonSerializerSettings JsonSettings = new()
+        private static JsonSerializerSettings JsonSettings => new()
         {
             NullValueHandling = NullValueHandling.Ignore,
             DefaultValueHandling = DefaultValueHandling.Ignore,
@@ -37,7 +37,7 @@ namespace ObjectFormatter
             MaxDepth = 100
         };
 
-        private static readonly JsonSerializerSettings XmlSettings = new()
+        private static JsonSerializerSettings XmlSettings => new()
         {
             NullValueHandling = NullValueHandling.Ignore,
             DefaultValueHandling = DefaultValueHandling.Ignore,
@@ -50,24 +50,32 @@ namespace ObjectFormatter
             MaxDepth = 100
         };
 
-        private static readonly DumpOptions CsharpDumpOptions = new()
+        private static DumpOptions CsharpDumpOptions => new()
         {
             IgnoreDefaultValues = true,
+            IgnoreNullValues = true,
+            IndentSize = 4,
+            MaxLevel = 100,
+            
+        };
+
+        private static DumpOptions VisualBasicDumpOptions => new()
+        {
+            IgnoreDefaultValues = true,
+            IgnoreNullValues = true,
             IndentSize = 4,
             MaxLevel = 100
         };
 
-        private static readonly DumpOptions VisualBasicDumpOptions = new()
+        private static YamlSettings YamlSettings => new()
         {
-            IgnoreDefaultValues = true,
-            IndentSize = 4,
-            MaxLevel = 100
+            MaxDepth = 100
         };
 
-        private static readonly Serializer YamlSerializer = Serializer.FromValueSerializer(new SerializerBuilder().WithMaximumRecursion(100).BuildValueSerializer(), EmitterSettings.Default);
-
-        public static string Format(object obj, string formattingType)
+        public static string Format(object obj, string formattingType, string settings = null)
         {
+            //RefreshSettings();
+
             obj = obj switch
             {
                 FileInfo info => FileInfoMapper.Map(info),
@@ -80,11 +88,11 @@ namespace ObjectFormatter
             {
                 return formattingType switch
                 {
-                    "json" => JsonConvert.SerializeObject(obj, JsonSettings).ToBase64(),
-                    "cs" => ObjectFormatterCSharp.Dump(obj, CsharpDumpOptions).ToBase64(),
-                    "vb" => ObjectFormatterVisualBasic.Dump(obj, VisualBasicDumpOptions).ToBase64(),
-                    "xml" => GetXmlWithHeader(obj).ToBase64(),
-                    "yaml" => GetYaml(obj).ToBase64(),
+                    "json" => GetJson(obj, settings.FromBase64()).ToBase64(),
+                    "cs" => GetCsharp(obj, settings.FromBase64()).ToBase64(),
+                    "vb" => GetVisualBasic(obj, settings.FromBase64()).ToBase64(),
+                    "xml" => GetXmlWithHeader(obj, settings.FromBase64()).ToBase64(),
+                    "yaml" => GetYaml(obj, settings.FromBase64()).ToBase64(),
                     _ => obj?.ToString().ToBase64()
                 };
             }
@@ -94,20 +102,105 @@ namespace ObjectFormatter
             }
         }
 
-        private static string GetYaml(object o)
+        private static string GetVisualBasic(object obj, string settings)
         {
+            return ObjectFormatterVisualBasic.Dump(obj, GetVbSettings(settings));
+        }
+
+        private static string GetCsharp(object obj, string settings)
+        {
+            return ObjectFormatterCSharp.Dump(obj, GetCsharpSettings(settings));
+        }
+
+        private static DumpOptions GetCsharpSettings(string settings)
+        {
+            var newSettings = CsharpDumpOptions;
+            if (settings == null) return newSettings;
+
+            var csharpSettings = JsonConvert.DeserializeObject<CSharpSettings>(settings);
+            newSettings.IgnoreDefaultValues = csharpSettings.IgnoreDefaultValues;
+            newSettings.IgnoreNullValues = csharpSettings.IgnoreNullValues;
+            newSettings.UseTypeFullName = csharpSettings.UseFullTypeName;
+            newSettings.MaxLevel = csharpSettings.MaxDepth;
+
+            return newSettings;
+        }
+
+        private static DumpOptions GetVbSettings(string settings)
+        {
+            var newSettings = VisualBasicDumpOptions;
+            if (settings == null) return newSettings;
+
+            var vbSettings = JsonConvert.DeserializeObject<VbSettings>(settings);
+            newSettings.IgnoreDefaultValues = vbSettings.IgnoreDefaultValues;
+            newSettings.IgnoreNullValues = vbSettings.IgnoreNullValues;
+            newSettings.UseTypeFullName = vbSettings.UseFullTypeName;
+            newSettings.MaxLevel = vbSettings.MaxDepth;
+
+            return newSettings;
+        }
+
+        private static string GetJson(object obj, string settings)
+        {
+            return JsonConvert.SerializeObject(obj, GetJsonSettings(settings));
+        }
+
+        private static JsonSerializerSettings GetJsonSettings(string settings)
+        {
+            var newSettings = JsonSettings;
+            if (settings == null) return newSettings;
+
+            var jsonSettings = JsonConvert.DeserializeObject<JsonSettings>(settings);
+            newSettings.NullValueHandling = jsonSettings.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include;
+            newSettings.DefaultValueHandling = jsonSettings.IgnoreDefaultValues ? DefaultValueHandling.Ignore : DefaultValueHandling.Include;
+            newSettings.MaxDepth = jsonSettings.MaxDepth;
+            newSettings.TypeNameHandling = jsonSettings.UseFullTypeName ? TypeNameHandling.All : TypeNameHandling.None;
+            return newSettings;
+        }
+
+        private static JsonSerializerSettings GetXmlSettings(string settings)
+        {
+            var newSettings = XmlSettings;
+            if (settings == null) return newSettings;
+
+            var xmlSettings = JsonConvert.DeserializeObject<XmlSettings>(settings);
+            newSettings.NullValueHandling = xmlSettings.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include;
+            newSettings.DefaultValueHandling = xmlSettings.IgnoreDefaultValues ? DefaultValueHandling.Ignore : DefaultValueHandling.Include;
+            newSettings.MaxDepth = xmlSettings.MaxDepth;
+            newSettings.TypeNameHandling = xmlSettings.UseFullTypeName ? TypeNameHandling.All : TypeNameHandling.None;
+            return newSettings;
+        }
+
+        private static string GetYaml(object obj, string settings)
+        {
+            var yamlSerializer = GetYamlSerializer(settings);
             var stringBuilder = new StringBuilder();
-            YamlSerializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), o);
+            yamlSerializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), obj);
             return stringBuilder.ToString();
         }
 
-        private static string GetXmlWithHeader(object obj)
+        private static Serializer GetYamlSerializer(string settings)
         {
-            return $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{Environment.NewLine}{GetXml(obj)}";
+            var yamlSettings = GetYamlSettings(settings);
+
+            return Serializer.FromValueSerializer(new SerializerBuilder().WithMaximumRecursion(yamlSettings.MaxDepth).BuildValueSerializer(), EmitterSettings.Default);
+        }
+
+        private static YamlSettings GetYamlSettings(string settings)
+        {
+            return settings == null 
+                ? YamlSettings
+                : JsonConvert.DeserializeObject<YamlSettings>(settings);
+        }
+
+        private static string GetXmlWithHeader(object obj, string settings)
+        {
+            var xmlSettings = GetXmlSettings(settings);
+            return $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{Environment.NewLine}{GetXml(obj, xmlSettings)}";
         }
 
         private const int XmlIndentSize = 2;
-        private static string GetXml(object obj, int nestingLevel = 0)
+        private static string GetXml(object obj, JsonSerializerSettings xmlSettings, int nestingLevel = 0)
         {
             string indent = new(' ', nestingLevel * XmlIndentSize);
 
@@ -120,7 +213,7 @@ namespace ObjectFormatter
                 var xmlCollection = string.Join(Environment.NewLine, 
                     ((IEnumerable)obj)
                     .Cast<object>()
-                    .Select(o => GetXml(o, nestingLevel + 1)));
+                    .Select(o => GetXml(o, xmlSettings, nestingLevel + 1)));
 
                 var itemTypeName = obj.GetType()
                     .GetInterfaces()
@@ -136,7 +229,7 @@ namespace ObjectFormatter
                 return $"<{elementName}>{Environment.NewLine}{xmlCollection}{Environment.NewLine}</{elementName}>";
             }
 
-            var json = JsonConvert.SerializeObject(obj, XmlSettings);
+            var json = JsonConvert.SerializeObject(obj, xmlSettings);
             var objectType = obj.GetType();
 
             string xml;
@@ -174,5 +267,54 @@ namespace ObjectFormatter
                 ? "AnonymousType"
                 : typeName;
         }
+    }
+
+    internal class JsonSettings
+    {
+        public bool IgnoreNullValues { get; set; } = true;
+
+        public bool IgnoreDefaultValues { get; set; } = true;
+
+        public int MaxDepth { get; set; } = 100;
+
+        public bool UseFullTypeName { get; set; } = false;
+    }
+
+    internal class XmlSettings
+    {
+        public bool IgnoreNullValues { get; set; } = true;
+
+        public bool IgnoreDefaultValues { get; set; } = true;
+
+        public int MaxDepth { get; set; } = 100;
+
+        public bool UseFullTypeName { get; set; } = false;
+    }
+
+    internal class CSharpSettings
+    {
+        public bool IgnoreNullValues { get; set; } = true;
+
+        public bool IgnoreDefaultValues { get; set; } = true;
+
+        public int MaxDepth { get; set; } = 100;
+
+        public bool UseFullTypeName { get; set; } = false;
+    }
+
+    internal class VbSettings
+    {
+        public bool IgnoreNullValues { get; set; } = true;
+
+        public bool IgnoreDefaultValues { get; set; } = true;
+
+        public int MaxDepth { get; set; } = 100;
+
+        public bool UseFullTypeName { get; set; } = false;
+    }
+
+    internal class YamlSettings
+    {
+        public int MaxDepth { get; set; } = 100;
     }
 }

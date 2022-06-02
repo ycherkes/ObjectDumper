@@ -9,18 +9,10 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
     public abstract class DumperBase : IDisposable
     {
         private readonly IndentedTextWriter _textWriter;
-        private readonly HashSet<object> _hashTable;
+        private readonly Stack<object> _touchedObjects;
         private readonly StringBuilder _stringBuilder;
         private readonly StringWriter _stringWriter;
         private readonly bool _isOwner;
-
-        protected DumperBase(DumperBase dumperBase)
-        {
-            DumpOptions = dumperBase.DumpOptions;
-            _textWriter = dumperBase._textWriter;
-            _isOwner = false;
-            _hashTable = new HashSet<object>(dumperBase._hashTable);
-        }
 
         protected DumperBase(DumpOptions dumpOptions)
         {
@@ -28,7 +20,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             _stringBuilder = new StringBuilder();
             _stringWriter = new StringWriter(_stringBuilder);
             _textWriter = new IndentedTextWriter(_stringWriter, new string(DumpOptions.IndentChar, DumpOptions.IndentSize));
-            _hashTable = new HashSet<object>();
+            _touchedObjects = new Stack<object>();
             Level = 0;
             _isOwner = true;
         }
@@ -81,14 +73,19 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             _textWriter.WriteLine();
         }
 
-        protected void AddAlreadyTouched(object value)
+        protected void PushAlreadyTouched(object value)
         {
-            _hashTable.Add(value);
+            _touchedObjects.Push(value);
+        }
+
+        protected void PopAlreadyTouched()
+        {
+            _touchedObjects.Pop();
         }
 
         protected bool AlreadyTouched(object value)
         {
-            return value != null && _hashTable.Contains(value);
+            return value != null && _touchedObjects.Contains(value);
         }
 
         /// <summary>

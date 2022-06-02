@@ -16,10 +16,6 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
         {
         }
 
-        private ObjectFormatterCSharp(ObjectFormatterCSharp formatter) : base(formatter)
-        {
-        }
-
         public static string Dump(object element, DumpOptions dumpOptions = null)
         {
             dumpOptions ??= new DumpOptions();
@@ -42,7 +38,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
         private void CreateObject(object o)
         {
-            AddAlreadyTouched(o);
+            PushAlreadyTouched(o);
 
             var type = o.GetType();
 
@@ -56,6 +52,8 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             DumpProperties(o);
             Level--;
             Write("}");
+
+            PopAlreadyTouched();
         }
 
         private void DumpProperties(object o)
@@ -90,9 +88,9 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 .ToList();
 
             PropertyAndValue lastProperty;
-            if (DumpOptions.IgnoreDefaultValues)
+            if (DumpOptions.IgnoreDefaultValues || DumpOptions.IgnoreNullValues)
             {
-                lastProperty = propertiesAndValues.LastOrDefault(pv => !pv.IsDefaultValue);
+                lastProperty = propertiesAndValues.LastOrDefault(pv => (DumpOptions.IgnoreDefaultValues && !pv.IsDefaultValue) || (DumpOptions.IgnoreNullValues && !pv.IsNullValue));
             }
             else
             {
@@ -116,12 +114,9 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                     continue;
                 }
 
-                if (DumpOptions.IgnoreDefaultValues)
+                if ((DumpOptions.IgnoreDefaultValues && propertiesAndValue.IsDefaultValue) || (DumpOptions.IgnoreNullValues && propertiesAndValue.IsNullValue))
                 {
-                    if (propertiesAndValue.IsDefaultValue)
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
                 var indexParameters = propertiesAndValue.Property.GetIndexParameters();
@@ -521,8 +516,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 return;
             }
 
-            using var newFormatter = new ObjectFormatterCSharp(this);
-            newFormatter.CreateObject(o);
+            CreateObject(o);
         }
 
         private void WriteValueTuple(object o, Type type)

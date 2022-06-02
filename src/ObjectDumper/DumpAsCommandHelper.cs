@@ -16,10 +16,10 @@ namespace ObjectDumper
         private readonly DTE2 _dte;
         private readonly LanguageService _languageService;
 
-        public DumpAsCommandHelper(DTE2 dte)
+        public DumpAsCommandHelper(DTE2 dte, AsyncPackage package)
         {
             _dte = dte ?? throw new ArgumentNullException(nameof(dte));
-            _languageService = new LanguageService(dte);
+            _languageService = new LanguageService(dte, package);
         }
 
         public async Task<bool> IsCommandAvailableAsync()
