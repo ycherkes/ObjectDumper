@@ -46,11 +46,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Base64Helper.cs" />
-    <Compile Include="CommonSettings.cs" />
     <Compile Include="DumpAsYamlCommand.cs" />
     <Compile Include="DumpAsVbCommand.cs" />
+    <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="LanguageService.cs" />
-    <Compile Include="OptionPages\ObjectDumperOptionPage.cs">
+    <Compile Include="Options\NamingConvention.cs" />
+    <Compile Include="Options\NamingStrategy.cs" />
+    <Compile Include="Options\ObjectDumperOptionPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Utils.cs" />

@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
 using Microsoft.VisualStudio.Shell;
+using ObjectDumper.Extensions;
 
-namespace ObjectDumper.OptionPages
+namespace ObjectDumper.Options
 {
     public class ObjectDumperOptionPage : DialogPage
     {
@@ -41,6 +42,16 @@ namespace ObjectDumper.OptionPages
         public int JsonMaxDepth { get; set; } = 100;
 
         [Category("Json")]
+        [DisplayName("Naming Strategy")]
+        [Description("Naming Strategy")]
+        public NamingStrategy JsonNamingStrategy { get; set; } = NamingStrategy.CamelCase;
+
+        [Category("Json")]
+        [DisplayName("Serialize Enums As Strings")]
+        [Description("Serialize Enums As Strings")]
+        public bool JsonSerializeEnumAsString { get; set; } = true;
+
+        [Category("Json")]
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
         public bool JsonUseFullTypeName { get; set; } = false;
@@ -60,10 +71,10 @@ namespace ObjectDumper.OptionPages
         [Description("Max Depth")]
         public int VisualBasicMaxDepth { get; set; } = 100;
 
-        [Category("Visual Basic")]
-        [DisplayName("Use Full Type Name")]
-        [Description("Use Full Type Name")]
-        public bool VisualBasicUseFullTypeName { get; set; } = false;
+        //[Category("Visual Basic")]
+        //[DisplayName("Use Full Type Name")]
+        //[Description("Use Full Type Name")]
+        //public bool VisualBasicUseFullTypeName { get; set; } = false;
 
         [Category("Xml")]
         [DisplayName("Ignore Null Values")]
@@ -81,6 +92,16 @@ namespace ObjectDumper.OptionPages
         public int XmlMaxDepth { get; set; } = 100;
 
         [Category("Xml")]
+        [DisplayName("Naming Strategy")]
+        [Description("Naming Strategy")]
+        public NamingStrategy XmlNamingStrategy { get; set; } = NamingStrategy.Default;
+
+        [Category("Xml")]
+        [DisplayName("Serialize Enums As Strings")]
+        [Description("Serialize Enums As Strings")]
+        public bool XmlSerializeEnumAsString { get; set; } = true;
+
+        [Category("Xml")]
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
         public bool XmlUseFullTypeName { get; set; } = false;
@@ -90,12 +111,17 @@ namespace ObjectDumper.OptionPages
         [Description("Max Depth")]
         public int YamlMaxDepth { get; set; } = 100;
 
+        [Category("Yaml")]
+        [DisplayName("Naming Convention")]
+        [Description("Naming Convention")]
+        public NamingConvention YamlNamingConvention { get; set; } = NamingConvention.Null;
+
         public string ToJson(string format)
         {
             switch(format)
             {
                 case "cs":
-                    return new CommonSettings
+                    return new
                     {
                         IgnoreDefaultValues = CSharpIgnoreDefaultValues,
                         IgnoreNullValues = CSharpIgnoreNullValues,
@@ -103,36 +129,41 @@ namespace ObjectDumper.OptionPages
                         UseFullTypeName = CSharpUseFullTypeName
                     }.ToJson();
                 case "vb":
-                    return new CommonSettings
+                    return new
                     {
                         IgnoreDefaultValues = VisualBasicIgnoreDefaultValues,
                         IgnoreNullValues = VisualBasicIgnoreNullValues,
                         MaxDepth = VisualBasicMaxDepth,
-                        UseFullTypeName = VisualBasicUseFullTypeName
+                        //UseFullTypeName = VisualBasicUseFullTypeName
                     }.ToJson();
                 case "json":
-                    return new CommonSettings
+                    return new
                     {
                         IgnoreDefaultValues = JsonIgnoreDefaultValues,
                         IgnoreNullValues = JsonIgnoreNullValues,
                         MaxDepth = JsonMaxDepth,
-                        UseFullTypeName = JsonUseFullTypeName
+                        UseFullTypeName = JsonUseFullTypeName,
+                        NamingStrategy = JsonNamingStrategy,
+                        SerializeEnumAsString = JsonSerializeEnumAsString
                     }.ToJson();
                 case "xml":
-                    return new CommonSettings
+                    return new
                     {
                         IgnoreDefaultValues = XmlIgnoreDefaultValues,
                         IgnoreNullValues = XmlIgnoreNullValues,
                         MaxDepth = XmlMaxDepth,
-                        UseFullTypeName = XmlUseFullTypeName
+                        UseFullTypeName = XmlUseFullTypeName,
+                        NamingStrategy = XmlNamingStrategy,
+                        SerializeEnumAsString = XmlSerializeEnumAsString
                     }.ToJson();
                 case "yaml":
-                    return new CommonSettings
+                    return new
                     {
-                        MaxDepth = YamlMaxDepth
+                        MaxDepth = YamlMaxDepth,
+                        NamingConvention = YamlNamingConvention
                     }.ToJson();
                 default:
-                    return new CommonSettings().ToJson();
+                    return new object().ToJson();
             }
         }
     }

@@ -39,6 +39,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
         public int MaxLevel { get; set; }
 
         public ICollection<string> ExcludeProperties { get; set; }
+        public ICollection<string> ExcludeTypes { get; set; }
 
         public IDictionary<Type, Func<Type, string>> CustomTypeFormatter { get; set; }
 

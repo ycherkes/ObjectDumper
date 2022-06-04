@@ -11,6 +11,7 @@ using Newtonsoft.Json.Embedded.Converters;
 using Newtonsoft.Json.Embedded.Serialization;
 using ObjectFormatter.Adapters;
 using ObjectFormatter.ObjectDumper.NET.Embedded;
+using ObjectFormatter.Settings;
 using ObjectFormatter.YamlDotNet.Embedded.Core;
 using ObjectFormatter.YamlDotNet.Embedded.Serialization;
 using DirectoryInfo = System.IO.DirectoryInfo;
@@ -29,7 +30,7 @@ namespace ObjectFormatter
             ContractResolver = new SpecificContractResolver
             {
                 NamingStrategy = new CamelCaseNamingStrategy(),
-                PropertyTypesToSkip = new []{ "Avro.Schema" }
+                ExcludeTypes = new []{ "Avro.Schema" }
             },
             Formatting = Formatting.Indented,
             Converters = { new StringEnumConverter() },
@@ -43,7 +44,7 @@ namespace ObjectFormatter
             DefaultValueHandling = DefaultValueHandling.Ignore,
             ContractResolver = new SpecificContractResolver
             {
-                PropertyTypesToSkip = new[] { "Avro.Schema" }
+                ExcludeTypes = new[] { "Avro.Schema" }
             },
             Converters = { new StringEnumConverter() },
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -56,7 +57,7 @@ namespace ObjectFormatter
             IgnoreNullValues = true,
             IndentSize = 4,
             MaxLevel = 100,
-            
+            ExcludeTypes = new[] { "Avro.Schema" }
         };
 
         private static DumpOptions VisualBasicDumpOptions => new()
@@ -64,7 +65,8 @@ namespace ObjectFormatter
             IgnoreDefaultValues = true,
             IgnoreNullValues = true,
             IndentSize = 4,
-            MaxLevel = 100
+            MaxLevel = 100,
+            ExcludeTypes = new[] { "Avro.Schema" }
         };
 
         private static YamlSettings YamlSettings => new()
@@ -74,8 +76,6 @@ namespace ObjectFormatter
 
         public static string Format(object obj, string formattingType, string settings = null)
         {
-            //RefreshSettings();
-
             obj = obj switch
             {
                 FileInfo info => FileInfoMapper.Map(info),
@@ -134,7 +134,7 @@ namespace ObjectFormatter
             var vbSettings = JsonConvert.DeserializeObject<VbSettings>(settings);
             newSettings.IgnoreDefaultValues = vbSettings.IgnoreDefaultValues;
             newSettings.IgnoreNullValues = vbSettings.IgnoreNullValues;
-            newSettings.UseTypeFullName = vbSettings.UseFullTypeName;
+            //newSettings.UseTypeFullName = vbSettings.UseFullTypeName;
             newSettings.MaxLevel = vbSettings.MaxDepth;
 
             return newSettings;
@@ -155,6 +155,21 @@ namespace ObjectFormatter
             newSettings.DefaultValueHandling = jsonSettings.IgnoreDefaultValues ? DefaultValueHandling.Ignore : DefaultValueHandling.Include;
             newSettings.MaxDepth = jsonSettings.MaxDepth;
             newSettings.TypeNameHandling = jsonSettings.UseFullTypeName ? TypeNameHandling.All : TypeNameHandling.None;
+
+            if(!jsonSettings.SerializeEnumAsString)
+            {
+                newSettings.Converters = null;
+            }
+
+            if (jsonSettings.NamingStrategy != "CamelCase")
+            {
+                newSettings.ContractResolver = new SpecificContractResolver
+                {
+                    NamingStrategy = (NamingStrategy)Activator.CreateInstance(Type.GetType($"Newtonsoft.Json.Embedded.Serialization.{jsonSettings.NamingStrategy}NamingStrategy")),
+                    ExcludeTypes = new[] { "Avro.Schema" }
+                };
+            }
+
             return newSettings;
         }
 
@@ -168,6 +183,21 @@ namespace ObjectFormatter
             newSettings.DefaultValueHandling = xmlSettings.IgnoreDefaultValues ? DefaultValueHandling.Ignore : DefaultValueHandling.Include;
             newSettings.MaxDepth = xmlSettings.MaxDepth;
             newSettings.TypeNameHandling = xmlSettings.UseFullTypeName ? TypeNameHandling.All : TypeNameHandling.None;
+
+            if (!xmlSettings.SerializeEnumAsString)
+            {
+                newSettings.Converters = null;
+            }
+
+            if (xmlSettings.NamingStrategy != "CamelCase")
+            {
+                newSettings.ContractResolver = new SpecificContractResolver
+                {
+                    NamingStrategy = (NamingStrategy)Activator.CreateInstance(Type.GetType($"Newtonsoft.Json.Embedded.Serialization.{xmlSettings.NamingStrategy}NamingStrategy")),
+                    ExcludeTypes = new[] { "Avro.Schema" }
+                };
+            }
+
             return newSettings;
         }
 
@@ -183,7 +213,12 @@ namespace ObjectFormatter
         {
             var yamlSettings = GetYamlSettings(settings);
 
-            return Serializer.FromValueSerializer(new SerializerBuilder().WithMaximumRecursion(yamlSettings.MaxDepth).BuildValueSerializer(), EmitterSettings.Default);
+            var valueSerializer = new SerializerBuilder()
+                .WithNamingConvention((INamingConvention)Activator.CreateInstance(Type.GetType($"ObjectFormatter.YamlDotNet.Embedded.Serialization.NamingConventions.{yamlSettings.NamingConvention}NamingConvention")))
+                .WithMaximumRecursion(yamlSettings.MaxDepth)
+                .BuildValueSerializer();
+
+            return Serializer.FromValueSerializer(valueSerializer, EmitterSettings.Default);
         }
 
         private static YamlSettings GetYamlSettings(string settings)
@@ -267,54 +302,5 @@ namespace ObjectFormatter
                 ? "AnonymousType"
                 : typeName;
         }
-    }
-
-    internal class JsonSettings
-    {
-        public bool IgnoreNullValues { get; set; } = true;
-
-        public bool IgnoreDefaultValues { get; set; } = true;
-
-        public int MaxDepth { get; set; } = 100;
-
-        public bool UseFullTypeName { get; set; } = false;
-    }
-
-    internal class XmlSettings
-    {
-        public bool IgnoreNullValues { get; set; } = true;
-
-        public bool IgnoreDefaultValues { get; set; } = true;
-
-        public int MaxDepth { get; set; } = 100;
-
-        public bool UseFullTypeName { get; set; } = false;
-    }
-
-    internal class CSharpSettings
-    {
-        public bool IgnoreNullValues { get; set; } = true;
-
-        public bool IgnoreDefaultValues { get; set; } = true;
-
-        public int MaxDepth { get; set; } = 100;
-
-        public bool UseFullTypeName { get; set; } = false;
-    }
-
-    internal class VbSettings
-    {
-        public bool IgnoreNullValues { get; set; } = true;
-
-        public bool IgnoreDefaultValues { get; set; } = true;
-
-        public int MaxDepth { get; set; } = 100;
-
-        public bool UseFullTypeName { get; set; } = false;
-    }
-
-    internal class YamlSettings
-    {
-        public int MaxDepth { get; set; } = 100;
     }
 }

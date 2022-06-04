@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
-using ObjectDumper.OptionPages;
+using ObjectDumper.Options;
 
 namespace ObjectDumper
 {

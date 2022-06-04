@@ -43,7 +43,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
 
         }
 
-        internal static bool TryGetBuiltInTypeName(this Type type, out string value)
+        private static bool TryGetBuiltInTypeName(this Type type, out string value)
         {
             return TypeToKeywordMappings.TryGetValue(type, out value);
         }
@@ -111,7 +111,7 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
             {
                 return keyword;
             }
-            else
+
             if (useValueTupleFormatting && type.IsValueTuple())
             {
                 typeName = $"({string.Join(", ", type.GenericTypeArguments.Select(t => GetTypeName(t, useFullName, useValueTupleFormatting)))})";

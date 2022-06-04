@@ -36,10 +36,17 @@ namespace ObjectFormatter.ObjectDumper.NET.Embedded
                 .Where(p => p.GetMethod != null && p.GetMethod.IsPublic && p.GetMethod.IsStatic == false)
                 .ToList();
 
-            if (DumpOptions.ExcludeProperties != null && DumpOptions.ExcludeProperties.Any())
+            if (DumpOptions.ExcludeProperties?.Any() == true)
             {
                 properties = properties
                     .Where(p => !DumpOptions.ExcludeProperties.Contains(p.Name))
+                    .ToList();
+            }
+
+            if (DumpOptions.ExcludeTypes?.Any() == true)
+            {
+                properties = properties
+                    .Where(p => !DumpOptions.ExcludeTypes.Contains(p.PropertyType.FullName))
                     .ToList();
             }
 

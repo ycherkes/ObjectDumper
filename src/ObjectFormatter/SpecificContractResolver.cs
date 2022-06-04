@@ -8,13 +8,13 @@ namespace ObjectFormatter
 {
     public class SpecificContractResolver : DefaultContractResolver
     {
-        public string[] PropertyTypesToSkip { get; set; }
+        public string[] ExcludeTypes { get; set; }
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             var properties = (List<JsonProperty>)base.CreateProperties(type, memberSerialization);
 
             // Do not serialize properties
-            return properties.FindAll(p =>  !PropertyTypesToSkip.Any(pt => string.Equals(p.PropertyType?.FullName, pt, StringComparison.Ordinal)));
+            return properties.FindAll(p =>  !ExcludeTypes.Any(pt => string.Equals(p.PropertyType?.FullName, pt, StringComparison.Ordinal)));
         }
     }
 }
