@@ -14,6 +14,12 @@ It opens dumped object in a separate document window.
 
 ### Known restrictions: the debugging code mustn't be optimized so the Expression Evaluator can be run.
 
+# Powered By
+
+* [ObjectDumper.NET](https://github.com/thomasgalliker/ObjectDumper)
+* [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
+* [YamlDotNet](https://github.com/aaubry/YamlDotNet)
+
 ## Donate project
 
 | Coin           | Address |
