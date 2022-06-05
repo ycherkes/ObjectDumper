@@ -12,6 +12,13 @@ It opens dumped object in a separate document window.
 
 ![HowTo3](https://user-images.githubusercontent.com/13467759/169960728-59afc54c-6458-49c9-adbb-043458240e9d.gif)
 
+# Settings
+
+Object dumper settings is access through Tools -> Options -> Object Dumper
+
+![image](https://user-images.githubusercontent.com/13467759/172042766-af526888-8499-4f2d-bd2c-12b3ddbf615a.png)
+
+
 ### Known restrictions: the debugging code mustn't be optimized so the Expression Evaluator can be run.
 
 # Powered By
