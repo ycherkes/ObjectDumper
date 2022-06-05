@@ -1,4 +1,6 @@
-﻿namespace ObjectFormatter.Settings;
+﻿using Newtonsoft.Json.Embedded;
+
+namespace ObjectFormatter.Settings;
 
 internal class JsonSettings
 {
@@ -8,7 +10,7 @@ internal class JsonSettings
 
     public int MaxDepth { get; set; } = 100;
 
-    public bool UseFullTypeName { get; set; } = false;
+    public TypeNameHandling TypeNameHandling { get; set; } = TypeNameHandling.None;
 
     public string NamingStrategy { get; set; } = "CamelCase";
     

@@ -154,7 +154,7 @@ namespace ObjectFormatter
             newSettings.NullValueHandling = jsonSettings.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include;
             newSettings.DefaultValueHandling = jsonSettings.IgnoreDefaultValues ? DefaultValueHandling.Ignore : DefaultValueHandling.Include;
             newSettings.MaxDepth = jsonSettings.MaxDepth;
-            newSettings.TypeNameHandling = jsonSettings.UseFullTypeName ? TypeNameHandling.All : TypeNameHandling.None;
+            newSettings.TypeNameHandling = jsonSettings.TypeNameHandling;
 
             if(!jsonSettings.SerializeEnumAsString)
             {

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Microsoft.VisualStudio.Shell;
+using Newtonsoft.Json;
 using ObjectDumper.Extensions;
 
 namespace ObjectDumper.Options
@@ -47,9 +48,9 @@ namespace ObjectDumper.Options
         public bool JsonSerializeEnumAsString { get; set; } = true;
 
         [Category("Json")]
-        [DisplayName("Use Full Type Name")]
-        [Description("Use Full Type Name")]
-        public bool JsonUseFullTypeName { get; set; } = false;
+        [DisplayName("Type Name Handling")]
+        [Description("Type Name Handling")]
+        public TypeNameHandling JsonTypeNameHandling { get; set; } = TypeNameHandling.None;
 
         [Category("Visual Basic")]
         [DisplayName("Ignore Null Values")]
@@ -122,7 +123,7 @@ namespace ObjectDumper.Options
                         IgnoreDefaultValues = JsonIgnoreDefaultValues,
                         IgnoreNullValues = JsonIgnoreNullValues,
                         MaxDepth = CommonMaxDepth,
-                        UseFullTypeName = JsonUseFullTypeName,
+                        TypeNameHandling = JsonTypeNameHandling,
                         NamingStrategy = JsonNamingStrategy,
                         SerializeEnumAsString = JsonSerializeEnumAsString
                     }.ToJson();
