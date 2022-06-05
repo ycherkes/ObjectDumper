@@ -33,7 +33,7 @@ namespace ObjectDumper
     [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     [Guid(PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideOptionPage(typeof(ObjectDumperOptionPage), "Object Dupmer", "General", 0, 0, true)]
+    [ProvideOptionPage(typeof(ObjectDumperOptionPage), "Object Dumper", "General", 0, 0, true)]
     public sealed class ObjectDumperPackage : AsyncPackage
     {
         /// <summary>
