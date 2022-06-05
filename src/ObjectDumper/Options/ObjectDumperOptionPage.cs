@@ -6,6 +6,11 @@ namespace ObjectDumper.Options
 {
     public class ObjectDumperOptionPage : DialogPage
     {
+        [Category(" Common Settings")]
+        [DisplayName("Max Depth")]
+        [Description("Max Depth")]
+        public int CommonMaxDepth { get; set; } = 100;
+
         [Category("C#")]
         [DisplayName("Ignore Null Values")]
         [Description("Ignore Null Values")]
@@ -16,11 +21,6 @@ namespace ObjectDumper.Options
         [Description("Ignore Default Values")]
         public bool CSharpIgnoreDefaultValues { get; set; } = true;
         
-        [Category("C#")]
-        [DisplayName("Max Depth")]
-        [Description("Max Depth")]
-        public int CSharpMaxDepth { get; set; } = 100;
-
         [Category("C#")]
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
@@ -35,11 +35,6 @@ namespace ObjectDumper.Options
         [DisplayName("Ignore Default Values")]
         [Description("Ignore Default Values")]
         public bool JsonIgnoreDefaultValues { get; set; } = true;
-
-        [Category("Json")]
-        [DisplayName("Max Depth")]
-        [Description("Max Depth")]
-        public int JsonMaxDepth { get; set; } = 100;
 
         [Category("Json")]
         [DisplayName("Naming Strategy")]
@@ -66,11 +61,6 @@ namespace ObjectDumper.Options
         [Description("Ignore Default Values")]
         public bool VisualBasicIgnoreDefaultValues { get; set; } = true;
 
-        [Category("Visual Basic")]
-        [DisplayName("Max Depth")]
-        [Description("Max Depth")]
-        public int VisualBasicMaxDepth { get; set; } = 100;
-
         //[Category("Visual Basic")]
         //[DisplayName("Use Full Type Name")]
         //[Description("Use Full Type Name")]
@@ -85,11 +75,6 @@ namespace ObjectDumper.Options
         [DisplayName("Ignore Default Values")]
         [Description("Ignore Default Values")]
         public bool XmlIgnoreDefaultValues { get; set; } = true;
-
-        [Category("Xml")]
-        [DisplayName("Max Depth")]
-        [Description("Max Depth")]
-        public int XmlMaxDepth { get; set; } = 100;
 
         [Category("Xml")]
         [DisplayName("Naming Strategy")]
@@ -107,11 +92,6 @@ namespace ObjectDumper.Options
         public bool XmlUseFullTypeName { get; set; } = false;
 
         [Category("Yaml")]
-        [DisplayName("Max Depth")]
-        [Description("Max Depth")]
-        public int YamlMaxDepth { get; set; } = 100;
-
-        [Category("Yaml")]
         [DisplayName("Naming Convention")]
         [Description("Naming Convention")]
         public NamingConvention YamlNamingConvention { get; set; } = NamingConvention.Null;
@@ -125,7 +105,7 @@ namespace ObjectDumper.Options
                     {
                         IgnoreDefaultValues = CSharpIgnoreDefaultValues,
                         IgnoreNullValues = CSharpIgnoreNullValues,
-                        MaxDepth = CSharpMaxDepth,
+                        MaxDepth = CommonMaxDepth,
                         UseFullTypeName = CSharpUseFullTypeName
                     }.ToJson();
                 case "vb":
@@ -133,7 +113,7 @@ namespace ObjectDumper.Options
                     {
                         IgnoreDefaultValues = VisualBasicIgnoreDefaultValues,
                         IgnoreNullValues = VisualBasicIgnoreNullValues,
-                        MaxDepth = VisualBasicMaxDepth,
+                        MaxDepth = CommonMaxDepth,
                         //UseFullTypeName = VisualBasicUseFullTypeName
                     }.ToJson();
                 case "json":
@@ -141,7 +121,7 @@ namespace ObjectDumper.Options
                     {
                         IgnoreDefaultValues = JsonIgnoreDefaultValues,
                         IgnoreNullValues = JsonIgnoreNullValues,
-                        MaxDepth = JsonMaxDepth,
+                        MaxDepth = CommonMaxDepth,
                         UseFullTypeName = JsonUseFullTypeName,
                         NamingStrategy = JsonNamingStrategy,
                         SerializeEnumAsString = JsonSerializeEnumAsString
@@ -151,7 +131,7 @@ namespace ObjectDumper.Options
                     {
                         IgnoreDefaultValues = XmlIgnoreDefaultValues,
                         IgnoreNullValues = XmlIgnoreNullValues,
-                        MaxDepth = XmlMaxDepth,
+                        MaxDepth = CommonMaxDepth,
                         UseFullTypeName = XmlUseFullTypeName,
                         NamingStrategy = XmlNamingStrategy,
                         SerializeEnumAsString = XmlSerializeEnumAsString
@@ -159,7 +139,7 @@ namespace ObjectDumper.Options
                 case "yaml":
                     return new
                     {
-                        MaxDepth = YamlMaxDepth,
+                        MaxDepth = CommonMaxDepth,
                         NamingConvention = YamlNamingConvention
                     }.ToJson();
                 default:

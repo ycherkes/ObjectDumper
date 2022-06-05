@@ -231,24 +231,26 @@ namespace ObjectFormatter
         private static string GetXmlWithHeader(object obj, string settings)
         {
             var xmlSettings = GetXmlSettings(settings);
-            return $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{Environment.NewLine}{GetXml(obj, xmlSettings)}";
+            var useFullTypeName = xmlSettings.TypeNameHandling == TypeNameHandling.All;
+            xmlSettings.TypeNameHandling = TypeNameHandling.None;
+            return $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{Environment.NewLine}{GetXml(obj, xmlSettings, useFullTypeName)}";
         }
 
         private const int XmlIndentSize = 2;
-        private static string GetXml(object obj, JsonSerializerSettings xmlSettings, int nestingLevel = 0)
+        private static string GetXml(object obj, JsonSerializerSettings xmlSettings, bool useFullTypeName, int nestingLevel = 0)
         {
             string indent = new(' ', nestingLevel * XmlIndentSize);
 
             if (obj == null) return $"{indent}<!--NULL VALUE-->";
 
-            var elementName = GetElementName(obj);
+            var elementName = GetElementName(obj, useFullTypeName);
 
             if (obj is IEnumerable and not IDictionary and not string)
             {
                 var xmlCollection = string.Join(Environment.NewLine, 
                     ((IEnumerable)obj)
                     .Cast<object>()
-                    .Select(o => GetXml(o, xmlSettings, nestingLevel + 1)));
+                    .Select(o => GetXml(o, xmlSettings, useFullTypeName, nestingLevel + 1)));
 
                 var itemTypeName = obj.GetType()
                     .GetInterfaces()
@@ -270,7 +272,7 @@ namespace ObjectFormatter
             string xml;
             if (IsSimpleType(objectType))
             {
-                elementName = GetElementName(objectType.Name);
+                elementName = GetElementName(obj, useFullTypeName);
                 xml = $"<{elementName}>{json.Trim('"')}</{elementName}>";
             }
             else
@@ -290,9 +292,10 @@ namespace ObjectFormatter
                 || type == typeof(string);
         }
 
-        private static string GetElementName(object obj)
+        private static string GetElementName(object obj, bool useFullTypeName)
         {
-            var typeName = obj.GetType().Name;
+            var type = obj.GetType();
+            var typeName = useFullTypeName ? type.FullName : type.Name;
             return GetElementName(typeName);
         }
 
