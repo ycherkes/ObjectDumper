@@ -10,10 +10,14 @@ using Newtonsoft.Json.Embedded;
 using Newtonsoft.Json.Embedded.Converters;
 using Newtonsoft.Json.Embedded.Serialization;
 using ObjectFormatter.Adapters;
-using ObjectFormatter.ObjectDumper.NET.Embedded;
+using ObjectFormatter.CodeDom.Embedded;
+using ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom;
+using ObjectFormatter.CodeDom.Embedded.ms.Common.src.Sys.CodeDom;
 using ObjectFormatter.Settings;
 using ObjectFormatter.YamlDotNet.Embedded.Core;
 using ObjectFormatter.YamlDotNet.Embedded.Serialization;
+using CodeDomProvider = ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom.Compiler.CodeDomProvider;
+using CodeGeneratorOptions = ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom.Compiler.CodeGeneratorOptions;
 using DirectoryInfo = System.IO.DirectoryInfo;
 using DriveInfo = System.IO.DriveInfo;
 using FileInfo = System.IO.FileInfo;
@@ -51,21 +55,19 @@ namespace ObjectFormatter
             MaxDepth = 100
         };
 
-        private static DumpOptions CsharpDumpOptions => new()
+        private static VisitorOptions CsharpDumpOptions => new()
         {
             IgnoreDefaultValues = true,
             IgnoreNullValues = true,
-            IndentSize = 4,
-            MaxLevel = 100,
+            MaxDepth = 100,
             ExcludeTypes = new[] { "Avro.Schema" }
         };
 
-        private static DumpOptions VisualBasicDumpOptions => new()
+        private static VisitorOptions VisualBasicDumpOptions => new()
         {
             IgnoreDefaultValues = true,
             IgnoreNullValues = true,
-            IndentSize = 4,
-            MaxLevel = 100,
+            MaxDepth = 100,
             ExcludeTypes = new[] { "Avro.Schema" }
         };
 
@@ -104,15 +106,55 @@ namespace ObjectFormatter
 
         private static string GetVisualBasic(object obj, string settings)
         {
-            return ObjectFormatterVisualBasic.Dump(obj, GetVbSettings(settings));
+            var visitorOptions = GetVbSettings(settings);
+            var objVisitor = new ObjectVisitor(visitorOptions);
+            var expression = objVisitor.Visit(obj);
+            var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(), "initExpression")
+            {
+                InitExpression = expression
+            };
+
+            CodeDomProvider provider = CodeDomProvider.CreateProvider("visualbasic");
+
+            CodeGeneratorOptions options = new CodeGeneratorOptions
+            {
+                BracingStyle = "C"
+            };
+            var stringBuilder = new StringBuilder();
+            using (var sourceWriter = new StringWriter(stringBuilder))
+            {
+                provider.GenerateCodeFromStatement(variableDeclaration, sourceWriter, options);
+            }
+            var result = stringBuilder.ToString();
+            return result;
         }
 
         private static string GetCsharp(object obj, string settings)
         {
-            return ObjectFormatterCSharp.Dump(obj, GetCsharpSettings(settings));
+            var visitorOptions = GetCsharpSettings(settings);
+            var objVisitor = new ObjectVisitor(visitorOptions);
+            var expression = objVisitor.Visit(obj);
+            var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(), "initExpression")
+            {
+                InitExpression = expression
+            };
+           
+            CodeDomProvider provider = CodeDomProvider.CreateProvider("csharp");
+
+            CodeGeneratorOptions options = new CodeGeneratorOptions
+            {
+                BracingStyle = "C"
+            };
+            var stringBuilder = new StringBuilder();
+            using (var sourceWriter = new StringWriter(stringBuilder))
+            {
+                provider.GenerateCodeFromStatement(variableDeclaration, sourceWriter, options);
+            }
+            var result = stringBuilder.ToString();
+            return result;
         }
 
-        private static DumpOptions GetCsharpSettings(string settings)
+        private static VisitorOptions GetCsharpSettings(string settings)
         {
             var newSettings = CsharpDumpOptions;
             if (settings == null) return newSettings;
@@ -121,12 +163,12 @@ namespace ObjectFormatter
             newSettings.IgnoreDefaultValues = csharpSettings.IgnoreDefaultValues;
             newSettings.IgnoreNullValues = csharpSettings.IgnoreNullValues;
             newSettings.UseTypeFullName = csharpSettings.UseFullTypeName;
-            newSettings.MaxLevel = csharpSettings.MaxDepth;
+            newSettings.MaxDepth = csharpSettings.MaxDepth;
 
             return newSettings;
         }
 
-        private static DumpOptions GetVbSettings(string settings)
+        private static VisitorOptions GetVbSettings(string settings)
         {
             var newSettings = VisualBasicDumpOptions;
             if (settings == null) return newSettings;
@@ -134,8 +176,8 @@ namespace ObjectFormatter
             var vbSettings = JsonConvert.DeserializeObject<VbSettings>(settings);
             newSettings.IgnoreDefaultValues = vbSettings.IgnoreDefaultValues;
             newSettings.IgnoreNullValues = vbSettings.IgnoreNullValues;
-            //newSettings.UseTypeFullName = vbSettings.UseFullTypeName;
-            newSettings.MaxLevel = vbSettings.MaxDepth;
+            newSettings.UseTypeFullName = vbSettings.UseFullTypeName;
+            newSettings.MaxDepth = vbSettings.MaxDepth;
 
             return newSettings;
         }

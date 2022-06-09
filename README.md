@@ -22,7 +22,7 @@ Object dumper options is access through Tools -> Options -> Object Dumper
 
 # Powered By
 
-* [ObjectDumper.NET](https://github.com/thomasgalliker/ObjectDumper)
+* System.CodeDom
 * [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
 * [YamlDotNet](https://github.com/aaubry/YamlDotNet)
 
