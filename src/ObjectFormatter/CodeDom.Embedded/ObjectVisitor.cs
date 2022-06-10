@@ -113,8 +113,26 @@ internal class ObjectVisitor
 
     private CodeExpression VisitEnum(object o)
     {
-        return new CodePropertyReferenceExpression(
-            new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), o.ToString());
+
+        var values = o.ToString().Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries); ;
+
+        if (values.Length == 1)
+        {
+            return new CodeFieldReferenceExpression(
+                new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), o.ToString());
+        }
+
+        var expressions = values.Select(v => new CodeFieldReferenceExpression(
+                new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), v.Trim())).ToArray();
+
+        var bitwiseOrExpression = new CodeBinaryOperatorExpression(expressions[0], CodeBinaryOperatorType.BitwiseOr, expressions[1]);
+
+        foreach (var expression in expressions.Skip(2))
+        {
+            bitwiseOrExpression = new CodeBinaryOperatorExpression(bitwiseOrExpression, CodeBinaryOperatorType.BitwiseOr, expression);
+        }
+
+        return bitwiseOrExpression;
     }
 
     private CodeExpression VisitKeyValuePair(object o)
