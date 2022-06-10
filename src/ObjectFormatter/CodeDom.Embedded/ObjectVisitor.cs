@@ -450,19 +450,21 @@ internal class ObjectVisitor
 
     private CodeExpression VisitDateTime(DateTime dateTime)
     {
-        var year = new CodePrimitiveExpression(dateTime.Year);
-        var month = new CodePrimitiveExpression(dateTime.Month);
-        var day = new CodePrimitiveExpression(dateTime.Day);
-        var hour = new CodePrimitiveExpression(dateTime.Hour);
-        var minute = new CodePrimitiveExpression(dateTime.Minute);
-        var second = new CodePrimitiveExpression(dateTime.Second);
-        var millisecond = new CodePrimitiveExpression(dateTime.Millisecond);
+        var utcDateTime = dateTime.ToUniversalTime();
+
+        var year = new CodePrimitiveExpression(utcDateTime.Year);
+        var month = new CodePrimitiveExpression(utcDateTime.Month);
+        var day = new CodePrimitiveExpression(utcDateTime.Day);
+        var hour = new CodePrimitiveExpression(utcDateTime.Hour);
+        var minute = new CodePrimitiveExpression(utcDateTime.Minute);
+        var second = new CodePrimitiveExpression(utcDateTime.Second);
+        var millisecond = new CodePrimitiveExpression(utcDateTime.Millisecond);
 
 
         var kind = new CodeFieldReferenceExpression
         (
             new CodeTypeReferenceExpression(new CodeTypeReference(typeof(DateTimeKind), _typeReferenceOptions)),
-            dateTime.Kind.ToString()
+            utcDateTime.Kind.ToString()
         );
 
         return new CodeObjectCreateExpression(new CodeTypeReference(typeof(DateTime), _typeReferenceOptions), year,
