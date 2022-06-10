@@ -1,6 +1,6 @@
 ﻿namespace ObjectFormatter.Implementation
 {
-    internal interface IFormatter
+    internal interface ISerializer
     {
         string Format(object obj, string settings);
     }

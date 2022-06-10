@@ -6,7 +6,7 @@ using ObjectFormatter.Implementation.Settings;
 
 namespace ObjectFormatter.Implementation
 {
-    internal class JsonFormatter: IFormatter
+    internal class JsonSerializer: ISerializer
     {
         private static JsonSerializerSettings JsonSettings => new()
         {

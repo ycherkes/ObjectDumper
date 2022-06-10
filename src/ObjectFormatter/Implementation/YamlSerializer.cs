@@ -9,14 +9,14 @@ using ObjectFormatter.YamlDotNet.Embedded.Serialization;
 
 namespace ObjectFormatter.Implementation
 {
-    internal class YamlFormatter: IFormatter
+    internal class YamlSerializer: ISerializer
     {
         private static YamlSettings YamlSettings => new()
         {
             MaxDepth = 100
         };
 
-        private static Serializer GetYamlSerializer(string settings)
+        private static YamlDotNet.Embedded.Serialization.Serializer GetYamlSerializer(string settings)
         {
             var yamlSettings = GetYamlSettings(settings);
 
@@ -25,7 +25,7 @@ namespace ObjectFormatter.Implementation
                 .WithMaximumRecursion(yamlSettings.MaxDepth)
                 .BuildValueSerializer();
 
-            return Serializer.FromValueSerializer(valueSerializer, EmitterSettings.Default);
+            return YamlDotNet.Embedded.Serialization.Serializer.FromValueSerializer(valueSerializer, EmitterSettings.Default);
         }
 
         private static YamlSettings GetYamlSettings(string settings)

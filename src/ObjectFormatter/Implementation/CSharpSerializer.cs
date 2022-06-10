@@ -9,9 +9,9 @@ using ObjectFormatter.Implementation.Settings;
 
 namespace ObjectFormatter.Implementation
 {
-    internal class VisualBasicFormatter: IFormatter
+    internal class CSharpSerializer: ISerializer
     {
-        private static VisitorOptions VisualBasicDumpOptions => new()
+        private static VisitorOptions CsharpDumpOptions => new()
         {
             IgnoreDefaultValues = true,
             IgnoreNullValues = true,
@@ -21,16 +21,16 @@ namespace ObjectFormatter.Implementation
 
         public string Format(object obj, string settings)
         {
-            var visitorOptions = GetVbSettings(settings);
+            var visitorOptions = GetCsharpSettings(settings);
             var objVisitor = new ObjectVisitor(visitorOptions);
             var expression = objVisitor.Visit(obj);
-            var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(),
+            var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(), 
                 obj != null ? ReflectionUtils.ComposeVariableName(obj.GetType()) : "nullValue")
             {
                 InitExpression = expression
             };
 
-            CodeDomProvider provider = CodeDomProvider.CreateProvider("visualbasic");
+            CodeDomProvider provider = CodeDomProvider.CreateProvider("csharp");
 
             CodeGeneratorOptions options = new CodeGeneratorOptions
             {
@@ -45,16 +45,16 @@ namespace ObjectFormatter.Implementation
             return result;
         }
 
-        private static VisitorOptions GetVbSettings(string settings)
+        private static VisitorOptions GetCsharpSettings(string settings)
         {
-            var newSettings = VisualBasicDumpOptions;
+            var newSettings = CsharpDumpOptions;
             if (settings == null) return newSettings;
 
-            var vbSettings = JsonConvert.DeserializeObject<VbSettings>(settings);
-            newSettings.IgnoreDefaultValues = vbSettings.IgnoreDefaultValues;
-            newSettings.IgnoreNullValues = vbSettings.IgnoreNullValues;
-            newSettings.UseTypeFullName = vbSettings.UseFullTypeName;
-            newSettings.MaxDepth = vbSettings.MaxDepth;
+            var csharpSettings = JsonConvert.DeserializeObject<CSharpSettings>(settings);
+            newSettings.IgnoreDefaultValues = csharpSettings.IgnoreDefaultValues;
+            newSettings.IgnoreNullValues = csharpSettings.IgnoreNullValues;
+            newSettings.UseTypeFullName = csharpSettings.UseFullTypeName;
+            newSettings.MaxDepth = csharpSettings.MaxDepth;
 
             return newSettings;
         }

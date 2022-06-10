@@ -48,7 +48,7 @@ namespace ObjectDumper
             var formatterFileName = Path.Combine(dllLocation,
                 "Formatter",
                 isNetCoreMustBeInjected ? "netcoreapp3.1" : "net45",
-                "ObjectFormatter.dll");
+                "A75562B3AFF384AD7.ObjectFormatter.dll");
 
             var loadAssembly = Language == "Basic"
                 ? $"System.Reflection.Assembly.LoadFile(\"{formatterFileName}\")"
@@ -62,7 +62,7 @@ namespace ObjectDumper
         public (bool success, string value) GetFormattedValue(string expression, string format)
         {
             var settings = _optionsPage.ToJson(format).ToBase64();
-            var runFormatterExpression = _dte.Debugger.GetExpression($@"ObjectFormatter.Formatter.Format({expression}, ""{format}"", ""{settings}"")");
+            var runFormatterExpression = _dte.Debugger.GetExpression($@"A75562B3AFF384AD7.ObjectFormatter.ObjectSerializer.Serialize({expression}, ""{format}"", ""{settings}"")");
 
             var (isDecoded, decodedValue) = runFormatterExpression.Value.Trim('"').Base64Decode();
 
@@ -86,8 +86,8 @@ namespace ObjectDumper
         private bool IsFormatterInjected()
         {
             var isFormatterInjected = Language == "Basic"
-                ? "NameOf(ObjectFormatter.Formatter.Format)"
-                : "nameof(ObjectFormatter.Formatter.Format)";
+                ? "NameOf(A75562B3AFF384AD7.ObjectFormatter.ObjectSerializer.Serialize)"
+                : "nameof(A75562B3AFF384AD7.ObjectFormatter.ObjectSerializer.Serialize)";
 
             return _dte.Debugger.GetExpression(isFormatterInjected).IsValidValue;
         }

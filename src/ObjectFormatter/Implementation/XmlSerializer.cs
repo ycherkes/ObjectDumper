@@ -10,7 +10,7 @@ using ObjectFormatter.Implementation.Settings;
 
 namespace ObjectFormatter.Implementation
 {
-    internal class XmlFormatter: IFormatter
+    internal class XmlSerializer: ISerializer
     {
         private static JsonSerializerSettings XmlSettings => new()
         {
