@@ -37,9 +37,11 @@ internal class ObjectVisitor
         if (IsMaxDepth())
             return new CodeSeparatedExpressionCollection(new CodeExpression[]
                 {
-                    new CodePrimitiveExpression(null), 
+                    @object == null
+                    ? new CodePrimitiveExpression(null)
+                    : new CodeDefaultValueExpression(new CodeTypeReference(@object.GetType(), _typeReferenceOptions)), 
                     new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Max depth") { NoNewLine = true }))
-                }, ",");
+                }, ", ");
 
         try
         {
@@ -130,7 +132,7 @@ internal class ObjectVisitor
                 {
                     new CodePrimitiveExpression(null),
                     new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Circular reference detected") { NoNewLine = true }))
-                }, ",");
+                }, ", ");
 
         PushVisited(o);
 
@@ -164,7 +166,7 @@ internal class ObjectVisitor
                 {
                     new CodePrimitiveExpression(null),
                     new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Circular reference detected") { NoNewLine = true }))
-                }, ",");
+                }, ", ");
 
         PushVisited(o);
 
@@ -210,7 +212,7 @@ internal class ObjectVisitor
                 {
                     new CodePrimitiveExpression(null),
                     new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Circular reference detected") { NoNewLine = true }))
-                }, ",");
+                }, ", ");
 
         PushVisited(dict);
 
@@ -281,7 +283,7 @@ internal class ObjectVisitor
                 {
                     new CodePrimitiveExpression(null),
                     new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Circular reference detected") { NoNewLine = true }))
-                }, ",");
+                }, ", ");
 
         PushVisited(collection);
 

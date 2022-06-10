@@ -1,12 +1,128 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using Newtonsoft.Json.Embedded.Utilities;
+using ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.VisualBasic;
+using ObjectFormatter.CodeDom.Embedded.ms.Common.src.Sys;
+using ObjectFormatter.YamlDotNet.Embedded.Serialization.Utilities;
 
 namespace ObjectFormatter.CodeDom.Embedded
 {
     internal static class ReflectionUtils
     {
+        public static string ComposeVariableName(Type type)
+        {
+            var stringBuilder = new StringBuilder();
+
+            stringBuilder.Append(GetFormattedTypeName(type).ToCamelCase());
+            var innerType = GetCollectionItemType(type);
+
+            while (innerType != type)
+            {
+                stringBuilder.Append("Of");
+                stringBuilder.Append(GetFormattedTypeName(innerType).ToPascalCase());
+                if(innerType == typeof(string))
+                {
+                    break;
+                }
+                type = innerType;
+                innerType = GetCollectionItemType(type);
+            }
+
+            var result = stringBuilder.ToString();
+
+            if(CSharpHelpers.IsKeyword(result) || VBCodeGenerator.IsKeyword(result))
+            {
+                result += "Value";
+            }
+
+            return result;
+        }
+
+        private static string GetFormattedTypeName(Type type)
+        {
+            var result = type.IsArray 
+                ? "array" 
+                : type.IsAnonymousType() 
+                    ? "AnonymousType" 
+                    : type.Name.Split('`')[0];
+
+            if(type.IsInterface() && result.StartsWith("I", StringComparison.OrdinalIgnoreCase))
+            {
+                result = result.Substring(1);
+            }
+            return result;
+        }
+
+        public static Type GetCollectionItemType(Type type)
+        {
+            if (type.IsArray)
+            {
+                return type.GetElementType();
+            }
+            if (ImplementsGenericDefinition(type, typeof(IEnumerable<>), out Type? genericListType))
+            {
+                if (genericListType!.IsGenericTypeDefinition())
+                {
+                    throw new Exception("Type {0} is not a collection.".FormatWith(CultureInfo.InvariantCulture, type));
+                }
+
+                return genericListType!.GetGenericArguments()[0];
+            }
+            if (typeof(IEnumerable).IsAssignableFrom(type))
+            {
+                return typeof(object);
+            }
+
+            return type;
+        }
+
+        public static bool ImplementsGenericDefinition(Type type, Type genericInterfaceDefinition, [NotNullWhen(true)] out Type? implementingType)
+        {
+            ValidationUtils.ArgumentNotNull(type, nameof(type));
+            ValidationUtils.ArgumentNotNull(genericInterfaceDefinition, nameof(genericInterfaceDefinition));
+
+            if (!genericInterfaceDefinition.IsInterface() || !genericInterfaceDefinition.IsGenericTypeDefinition())
+            {
+                throw new ArgumentNullException("'{0}' is not a generic interface definition.".FormatWith(CultureInfo.InvariantCulture, genericInterfaceDefinition));
+            }
+
+            if (type.IsInterface())
+            {
+                if (type.IsGenericType())
+                {
+                    Type interfaceDefinition = type.GetGenericTypeDefinition();
+
+                    if (genericInterfaceDefinition == interfaceDefinition)
+                    {
+                        implementingType = type;
+                        return true;
+                    }
+                }
+            }
+
+            foreach (Type i in type.GetInterfaces())
+            {
+                if (i.IsGenericType())
+                {
+                    Type interfaceDefinition = i.GetGenericTypeDefinition();
+
+                    if (genericInterfaceDefinition == interfaceDefinition)
+                    {
+                        implementingType = i;
+                        return true;
+                    }
+                }
+            }
+
+            implementingType = null;
+            return false;
+        }
+
         public static bool IsAnonymousType(this Type type)
         {
             var hasCompilerGeneratedAttribute = type.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Length > 0;
@@ -133,7 +249,7 @@ namespace ObjectFormatter.CodeDom.Embedded
 
         public static bool IsNullableType(Type t)
         {
-            return (t.IsGenericType() && t.GetGenericTypeDefinition() == typeof(Nullable<>));
+            return t.IsGenericType() && t.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         public static bool IsGenericType(this Type type)

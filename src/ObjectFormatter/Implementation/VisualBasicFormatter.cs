@@ -24,7 +24,8 @@ namespace ObjectFormatter.Implementation
             var visitorOptions = GetVbSettings(settings);
             var objVisitor = new ObjectVisitor(visitorOptions);
             var expression = objVisitor.Visit(obj);
-            var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(), "initExpression")
+            var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(),
+                obj != null ? ReflectionUtils.ComposeVariableName(obj.GetType()) : "nullValue")
             {
                 InitExpression = expression
             };
