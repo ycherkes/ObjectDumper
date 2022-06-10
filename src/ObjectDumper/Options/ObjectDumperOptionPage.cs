@@ -62,10 +62,10 @@ namespace ObjectDumper.Options
         [Description("Ignore Default Values")]
         public bool VisualBasicIgnoreDefaultValues { get; set; } = true;
 
-        //[Category("Visual Basic")]
-        //[DisplayName("Use Full Type Name")]
-        //[Description("Use Full Type Name")]
-        //public bool VisualBasicUseFullTypeName { get; set; } = false;
+        [Category("Visual Basic")]
+        [DisplayName("Use Full Type Name")]
+        [Description("Use Full Type Name")]
+        public bool VisualBasicUseFullTypeName { get; set; } = false;
 
         [Category("Xml")]
         [DisplayName("Ignore Null Values")]
@@ -115,7 +115,7 @@ namespace ObjectDumper.Options
                         IgnoreDefaultValues = VisualBasicIgnoreDefaultValues,
                         IgnoreNullValues = VisualBasicIgnoreNullValues,
                         MaxDepth = CommonMaxDepth,
-                        //UseFullTypeName = VisualBasicUseFullTypeName
+                        UseFullTypeName = VisualBasicUseFullTypeName
                     }.ToJson();
                 case "json":
                     return new

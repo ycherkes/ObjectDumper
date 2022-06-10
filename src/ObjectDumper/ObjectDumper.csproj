@@ -85,11 +85,11 @@
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.1.4057" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Formatter\net45\ObjectFormatter.dll">
+    <Content Include="Formatter\net45\A75562B3AFF384AD7.ObjectFormatter.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Formatter\netcoreapp3.1\ObjectFormatter.dll">
+    <Content Include="Formatter\netcoreapp3.1\A75562B3AFF384AD7.ObjectFormatter.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
