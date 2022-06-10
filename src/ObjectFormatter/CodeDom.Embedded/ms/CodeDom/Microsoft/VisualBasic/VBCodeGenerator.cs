@@ -1215,6 +1215,22 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.VisualBasic
             GenerateStatement(e.Statement);
         }
 
+        protected override void GenerateSeparatedExpressionCollection(CodeSeparatedExpressionCollection e)
+        {
+            var collectionLength = e.ExpressionCollection.Count;
+            int current = 0;
+
+            foreach (CodeExpression codeExpression in e.ExpressionCollection)
+            {
+                current++;
+                GenerateExpression(codeExpression);
+                if (current < collectionLength)
+                {
+                    Output.Write(e.Separator);
+                }
+            }
+        }
+
         protected override void GenerateObjectCreateExpression(CodeObjectCreateExpression e)
         {
             Output.Write("New ");
@@ -1331,7 +1347,7 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.VisualBasic
                     Output.Write(commentLineStart);
                 }
             }
-            if (!e.IsBlock)
+            if (!e.NoNewLine)
             {
                 Output.WriteLine();
             }

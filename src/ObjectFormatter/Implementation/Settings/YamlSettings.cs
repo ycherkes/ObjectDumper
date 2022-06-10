@@ -1,4 +1,4 @@
-﻿namespace ObjectFormatter.Settings;
+﻿namespace ObjectFormatter.Implementation.Settings;
 
 internal class YamlSettings
 {

@@ -1,6 +1,6 @@
-﻿namespace ObjectFormatter.Settings;
+﻿namespace ObjectFormatter.Implementation.Settings;
 
-internal class CSharpSettings
+internal class XmlSettings
 {
     public bool IgnoreNullValues { get; set; } = true;
 
@@ -9,4 +9,8 @@ internal class CSharpSettings
     public int MaxDepth { get; set; } = 100;
 
     public bool UseFullTypeName { get; set; } = false;
+
+    public string NamingStrategy { get; set; } = "Default";
+
+    public bool SerializeEnumAsString { get; set; } = true;
 }

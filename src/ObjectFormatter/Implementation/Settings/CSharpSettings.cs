@@ -1,6 +1,6 @@
-﻿namespace ObjectFormatter.Settings;
+﻿namespace ObjectFormatter.Implementation.Settings;
 
-internal class VbSettings
+internal class CSharpSettings
 {
     public bool IgnoreNullValues { get; set; } = true;
 

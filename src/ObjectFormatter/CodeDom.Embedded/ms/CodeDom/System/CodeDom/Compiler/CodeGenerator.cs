@@ -507,6 +507,10 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom.Compiler
             {
                 GenerateStatementExpression((CodeStatementExpression)e);
             }
+            else if (e is CodeSeparatedExpressionCollection)
+            {
+                GenerateSeparatedExpressionCollection((CodeSeparatedExpressionCollection)e);
+            }
             else if (e is CodeArrayCreateExpression)
             {
                 GenerateArrayCreateExpression((CodeArrayCreateExpression)e);
@@ -1351,6 +1355,7 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom.Compiler
         protected abstract void GenerateValueTupleCreateExpression(CodeValueTupleCreateExpression e);
         protected abstract void GenerateCodeImplicitKeyValuePairCreateExpression(CodeImplicitKeyValuePairCreateExpression e);
         protected abstract void GenerateStatementExpression(CodeStatementExpression e);
+        protected abstract void GenerateSeparatedExpressionCollection(CodeSeparatedExpressionCollection e);
         protected abstract void GenerateObjectCreateExpression(CodeObjectCreateExpression e);
         protected abstract void GenerateLambdaExpression(CodeLambdaExpression e);
         protected abstract void GenerateObjectCreateAndInitializeExpression(CodeObjectCreateAndInitializeExpression e);

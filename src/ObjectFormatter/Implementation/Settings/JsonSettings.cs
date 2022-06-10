@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Embedded;
 
-namespace ObjectFormatter.Settings;
+namespace ObjectFormatter.Implementation.Settings;
 
 internal class JsonSettings
 {

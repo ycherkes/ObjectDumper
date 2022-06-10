@@ -31,6 +31,6 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom
             set { _text = value; }
         }
 
-        public bool IsBlock { get; set; } = false;
+        public bool NoNewLine { get; set; } = false;
     }
 }

@@ -1009,11 +1009,7 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.CSharp
 
         private void GenerateComment(CodeComment e)
         {
-            if (e.DocComment && e.IsBlock)
-            {
-                throw new ArgumentException(SR.Format("The 'DocComment' property and  'IsBlock' are mutually exclusive .", nameof(e)), nameof(e));
-            }
-            string commentLineStart = e.DocComment ? "///" : e.IsBlock ? "/*" : "//";
+            string commentLineStart = e.DocComment ? "///" : "//";
             Output.Write(commentLineStart);
             Output.Write(' ');
 
@@ -1049,11 +1045,8 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.CSharp
                     Output.Write(commentLineStart);
                 }
             }
-            if (e.IsBlock)
-                Output.Write("*/");
-            else
+            if (!e.NoNewLine)
             {
-
                 Output.WriteLine();
             }
         }
@@ -1322,6 +1315,10 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.CSharp
             {
                 GenerateStatementExpression((CodeStatementExpression)e);
             }
+            else if(e is CodeSeparatedExpressionCollection)
+            {
+                GenerateSeparatedExpressionCollection((CodeSeparatedExpressionCollection)e);
+            }
             else if (e is CodeArrayCreateExpression)
             {
                 GenerateArrayCreateExpression((CodeArrayCreateExpression)e);
@@ -1451,6 +1448,22 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.CSharp
                 else
                 {
                     throw new ArgumentException(SR.Format(SR.InvalidElementType, e.GetType().FullName), nameof(e));
+                }
+            }
+        }
+
+        private void GenerateSeparatedExpressionCollection(CodeSeparatedExpressionCollection e)
+        {
+            var collectionLength = e.ExpressionCollection.Count;
+            int current = 0;
+
+            foreach (CodeExpression codeExpression in e.ExpressionCollection)
+            {
+                current++;
+                GenerateExpression(codeExpression);
+                if (current < collectionLength)
+                {
+                    Output.Write(e.Separator);
                 }
             }
         }
