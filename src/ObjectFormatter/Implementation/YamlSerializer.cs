@@ -35,7 +35,7 @@ namespace ObjectFormatter.Implementation
                 : JsonConvert.DeserializeObject<YamlSettings>(settings);
         }
 
-        public string Format(object obj, string settings)
+        public string Serialize(object obj, string settings)
         {
             var yamlSerializer = GetYamlSerializer(settings);
             var stringBuilder = new StringBuilder();

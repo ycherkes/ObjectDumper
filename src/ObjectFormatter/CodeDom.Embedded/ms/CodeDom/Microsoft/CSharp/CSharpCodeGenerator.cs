@@ -1327,6 +1327,10 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.CSharp
             {
                 GenerateBaseReferenceExpression((CodeBaseReferenceExpression)e);
             }
+            else if (e is CodeFlagsBinaryOperatorExpression)
+            {
+                GenerateFlagsBinaryOperatorExpression((CodeFlagsBinaryOperatorExpression)e);
+            }
             else if (e is CodeBinaryOperatorExpression)
             {
                 GenerateBinaryOperatorExpression((CodeBinaryOperatorExpression)e);
@@ -1448,6 +1452,29 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.CSharp
                 else
                 {
                     throw new ArgumentException(SR.Format(SR.InvalidElementType, e.GetType().FullName), nameof(e));
+                }
+            }
+        }
+
+        private void GenerateFlagsBinaryOperatorExpression(CodeFlagsBinaryOperatorExpression e)
+        {
+            if (e.Expressions.Count == 0) return;
+
+            bool isFirst = true;
+
+            foreach (CodeExpression expression in e.Expressions)
+            {
+                if(isFirst)
+                {
+                    GenerateExpression(e.Expressions[0]);
+                    isFirst = false;
+                }
+                else
+                {
+                    Output.Write(' ');
+                    OutputOperator(e.Operator);
+                    Output.Write(' ');
+                    GenerateExpression(expression);
                 }
             }
         }

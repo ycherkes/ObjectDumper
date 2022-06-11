@@ -519,6 +519,10 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom.Compiler
             {
                 GenerateBaseReferenceExpression((CodeBaseReferenceExpression)e);
             }
+            else if (e is CodeFlagsBinaryOperatorExpression)
+            {
+                GenerateFlagsBinaryOperatorExpression((CodeFlagsBinaryOperatorExpression)e);
+            }
             else if (e is CodeBinaryOperatorExpression)
             {
                 GenerateBinaryOperatorExpression((CodeBinaryOperatorExpression)e);
@@ -1302,6 +1306,29 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom.Compiler
 
         protected abstract void GenerateArrayCreateExpression(CodeArrayCreateExpression e);
         protected abstract void GenerateBaseReferenceExpression(CodeBaseReferenceExpression e);
+
+        protected virtual void GenerateFlagsBinaryOperatorExpression(CodeFlagsBinaryOperatorExpression e)
+        {
+            if (e.Expressions.Count == 0) return;
+
+            bool isFirst = true;
+
+            foreach (CodeExpression expression in e.Expressions)
+            {
+                if (isFirst)
+                {
+                    GenerateExpression(e.Expressions[0]);
+                    isFirst = false;
+                }
+                else
+                {
+                    Output.Write(' ');
+                    OutputOperator(e.Operator);
+                    Output.Write(' ');
+                    GenerateExpression(expression);
+                }
+            }
+        }
 
         protected virtual void GenerateBinaryOperatorExpression(CodeBinaryOperatorExpression e)
         {

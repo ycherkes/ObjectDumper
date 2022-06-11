@@ -19,7 +19,7 @@ namespace ObjectFormatter.Implementation
             ExcludeTypes = new[] { "Avro.Schema" }
         };
 
-        public string Format(object obj, string settings)
+        public string Serialize(object obj, string settings)
         {
             var visitorOptions = GetCsharpSettings(settings);
             var objVisitor = new ObjectVisitor(visitorOptions);

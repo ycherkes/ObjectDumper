@@ -113,8 +113,7 @@ internal class ObjectVisitor
 
     private CodeExpression VisitEnum(object o)
     {
-
-        var values = o.ToString().Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries); ;
+        var values = o.ToString().Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
         if (values.Length == 1)
         {
@@ -122,15 +121,10 @@ internal class ObjectVisitor
                 new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), o.ToString());
         }
 
-        var expressions = values.Select(v => new CodeFieldReferenceExpression(
+        var expressions = values.Select(v => (CodeExpression)new CodeFieldReferenceExpression(
                 new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), v.Trim())).ToArray();
 
-        var bitwiseOrExpression = new CodeBinaryOperatorExpression(expressions[0], CodeBinaryOperatorType.BitwiseOr, expressions[1]);
-
-        foreach (var expression in expressions.Skip(2))
-        {
-            bitwiseOrExpression = new CodeBinaryOperatorExpression(bitwiseOrExpression, CodeBinaryOperatorType.BitwiseOr, expression);
-        }
+        var bitwiseOrExpression = new CodeFlagsBinaryOperatorExpression(CodeBinaryOperatorType.BitwiseOr, expressions);
 
         return bitwiseOrExpression;
     }

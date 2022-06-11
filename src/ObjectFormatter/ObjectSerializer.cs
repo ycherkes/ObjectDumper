@@ -34,7 +34,7 @@ namespace A75562B3AFF384AD7.ObjectFormatter
             try
             {
                 return Serializers.TryGetValue(formattingType, out var formatter) 
-                    ? formatter.Format(obj, settings.FromBase64()).ToBase64() 
+                    ? formatter.Serialize(obj, settings.FromBase64()).ToBase64() 
                     : obj?.ToString().ToBase64();
             }
             catch (Exception e)

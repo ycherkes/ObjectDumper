@@ -13,9 +13,15 @@ namespace ObjectDumper.Options
         public int CommonMaxDepth { get; set; } = 100;
 
         [Category("C#")]
+        [DisplayName("Enabled")]
+        [Description("Enabled")]
+        public bool CSharpEnabled { get; set; } = true;
+
+        [Category("C#")]
         [DisplayName("Ignore Null Values")]
         [Description("Ignore Null Values")]
         public bool CSharpIgnoreNullValues { get; set; } = true;
+
 
         [Category("C#")]
         [DisplayName("Ignore Default Values")]
@@ -26,6 +32,11 @@ namespace ObjectDumper.Options
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
         public bool CSharpUseFullTypeName { get; set; } = false;
+
+        [Category("Json")]
+        [DisplayName("Enabled")]
+        [Description("Enabled")]
+        public bool JsonEnabled { get; set; } = true;
 
         [Category("Json")]
         [DisplayName("Ignore Null Values")]
@@ -53,6 +64,11 @@ namespace ObjectDumper.Options
         public TypeNameHandling JsonTypeNameHandling { get; set; } = TypeNameHandling.None;
 
         [Category("Visual Basic")]
+        [DisplayName("Enabled")]
+        [Description("Enabled")]
+        public bool VisualBasicEnabled { get; set; } = true;
+
+        [Category("Visual Basic")]
         [DisplayName("Ignore Null Values")]
         [Description("Ignore Null Values")]
         public bool VisualBasicIgnoreNullValues { get; set; } = true;
@@ -66,6 +82,11 @@ namespace ObjectDumper.Options
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
         public bool VisualBasicUseFullTypeName { get; set; } = false;
+
+        [Category("Xml")]
+        [DisplayName("Enabled")]
+        [Description("Enabled")]
+        public bool XmlEnabled { get; set; } = true;
 
         [Category("Xml")]
         [DisplayName("Ignore Null Values")]
@@ -91,6 +112,11 @@ namespace ObjectDumper.Options
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
         public bool XmlUseFullTypeName { get; set; } = false;
+
+        [Category("Yaml")]
+        [DisplayName("Enabled")]
+        [Description("Enabled")]
+        public bool YamlEnabled { get; set; } = true;
 
         [Category("Yaml")]
         [DisplayName("Naming Convention")]

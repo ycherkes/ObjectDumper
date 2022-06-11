@@ -51,7 +51,7 @@ namespace ObjectFormatter.Implementation
             return newSettings;
         }
 
-        public string Format(object obj, string settings)
+        public string Serialize(object obj, string settings)
         {
             return JsonConvert.SerializeObject(obj, GetJsonSettings(settings));
         }

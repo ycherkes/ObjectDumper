@@ -2,6 +2,6 @@
 {
     internal interface ISerializer
     {
-        string Format(object obj, string settings);
+        string Serialize(object obj, string settings);
     }
 }

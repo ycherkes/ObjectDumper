@@ -25,7 +25,7 @@ namespace ObjectFormatter.Implementation
             MaxDepth = 100
         };
 
-        public string Format(object obj, string settings)
+        public string Serialize(object obj, string settings)
         {
             var xmlSettings = GetXmlSettings(settings);
             var useFullTypeName = xmlSettings.TypeNameHandling == TypeNameHandling.All;

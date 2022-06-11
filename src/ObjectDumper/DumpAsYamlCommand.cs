@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System;
 using System.ComponentModel.Design;
+using ObjectDumper.Options;
 using Task = System.Threading.Tasks.Task;
 
 namespace ObjectDumper
@@ -26,6 +27,7 @@ namespace ObjectDumper
         private readonly ObjectDumperPackage _package;
 
         private readonly DumpAsCommandHelper _dumpAsCommandHelper;
+        private readonly ObjectDumperOptionPage _optionsPage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DumpAsYamlCommand"/> class.
@@ -37,6 +39,7 @@ namespace ObjectDumper
         {
             _package = (ObjectDumperPackage)package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+            _optionsPage = (ObjectDumperOptionPage)package.GetDialogPage(typeof(ObjectDumperOptionPage));
 
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new OleMenuCommand(Execute, menuCommandID);
@@ -54,7 +57,7 @@ namespace ObjectDumper
             menuCommand.Visible = false;
             menuCommand.Enabled = false;
 
-            var isAvailable = await _dumpAsCommandHelper.IsCommandAvailableAsync();
+            var isAvailable = _optionsPage.YamlEnabled && await _dumpAsCommandHelper.IsCommandAvailableAsync();
 
             menuCommand.Visible = isAvailable;
             menuCommand.Enabled = isAvailable;
