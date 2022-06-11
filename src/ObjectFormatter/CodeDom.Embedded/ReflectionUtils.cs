@@ -24,6 +24,10 @@ namespace ObjectFormatter.CodeDom.Embedded
             while (innerType != type)
             {
                 stringBuilder.Append("Of");
+                if (type.Name.Contains("Dictionary")) 
+                {
+                    innerType = type.GetGenericArguments().LastOrDefault() ?? typeof(object);
+                }
                 stringBuilder.Append(GetFormattedTypeName(innerType).ToPascalCase());
                 if(innerType == typeof(string))
                 {
