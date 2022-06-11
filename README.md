@@ -12,11 +12,9 @@ It opens dumped object in a separate document window.
 
 ![HowTo3](https://user-images.githubusercontent.com/13467759/169960728-59afc54c-6458-49c9-adbb-043458240e9d.gif)
 
-# Options
+# Configurable
 
-Object dumper options is access through Tools -> Options -> Object Dumper
-
-![image](https://user-images.githubusercontent.com/13467759/172047349-1331eae0-24fb-4c94-846d-9e6e715bc558.png)
+![image](https://user-images.githubusercontent.com/13467759/173191322-7393a7c8-62b0-48c8-8b01-35626aaeea63.png)
 
 ### Known restrictions: the debugging code mustn't be optimized so the Expression Evaluator can be run.
 
