@@ -39,7 +39,7 @@ namespace ObjectFormatter.UnitTests
         [Fact]
         public void HashSet()
         {
-            var dict = new[]
+            var hashSet = new[]
             {
                 new Person{ Age = 32, FirstName = "Bob"},
                 new Person{ Age = 23, FirstName = "Alice"},
@@ -47,7 +47,7 @@ namespace ObjectFormatter.UnitTests
 
             var serializer = new CSharpSerializer();
 
-            var result = serializer.Serialize(dict, null);
+            var result = serializer.Serialize(hashSet, null);
 
             Assert.StartsWith("var hashSetOfPerson", result);
         }
