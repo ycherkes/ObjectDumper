@@ -52,6 +52,18 @@ namespace ObjectFormatter.UnitTests
             Assert.StartsWith("var hashSetOfPerson", result);
         }
 
+        [Fact]
+        public void String()
+        {
+            var stringValue = "Test string value";
+
+            var serializer = new CSharpSerializer();
+
+            var result = serializer.Serialize(stringValue, null);
+
+            Assert.StartsWith("var stringValue", result);
+        }
+
 
 
         private class Person
