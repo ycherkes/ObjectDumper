@@ -12,15 +12,17 @@ It opens dumped object in a separate document window.
 
 ![HowTo3](https://user-images.githubusercontent.com/13467759/169960728-59afc54c-6458-49c9-adbb-043458240e9d.gif)
 
-# Configurable
+# Configurable:
 
-![image](https://user-images.githubusercontent.com/13467759/173191322-7393a7c8-62b0-48c8-8b01-35626aaeea63.png)
+![image](https://user-images.githubusercontent.com/13467759/173329406-50060b8a-4a67-4cfd-802f-8d8ed52b5cdf.png)
 
-### Known restrictions: the debugging code mustn't be optimized so the Expression Evaluator can be run.
+### Known restrictions: 
+- the debugging code mustn't be optimized so the Expression Evaluator can be run.
+- local debugging only.
 
 # Powered By
 
-* System.CodeDom
+* [System.CodeDom](https://github.com/kri-kan/Microsoft_projects/tree/master/src/System.CodeDom)
 * [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
 * [YamlDotNet](https://github.com/aaubry/YamlDotNet)
 
