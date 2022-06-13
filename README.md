@@ -6,9 +6,9 @@
 [![installs](https://img.shields.io/visual-studio-marketplace/i/YevhenCherkes.YellowFlavorObjectDumper?label=Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
 
 
-A Visual Studio 2022 extension. It dumps the objects from the debugging session in the next formats: CSharp, VB, JSON, YAML, and XML.
+A Visual Studio 2022 extension. Dumps the objects from the debugging session in the next formats: CSharp, VB, JSON, YAML, and XML.
 
-It opens dumped object in a separate document window.
+It opens the dumped object in a separate document window.
 
 ![HowTo3](https://user-images.githubusercontent.com/13467759/169960728-59afc54c-6458-49c9-adbb-043458240e9d.gif)
 
