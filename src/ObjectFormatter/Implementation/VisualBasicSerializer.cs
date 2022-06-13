@@ -11,12 +11,14 @@ namespace ObjectFormatter.Implementation
 {
     internal class VisualBasicSerializer: ISerializer
     {
-        private static VisitorOptions VisualBasicDumpOptions => new()
+        private static VisitorOptions VisualBasicVisitorOptions => new()
         {
             IgnoreDefaultValues = true,
             IgnoreNullValues = true,
             MaxDepth = 100,
-            ExcludeTypes = new[] { "Avro.Schema" }
+            ExcludeTypes = new[] { "Avro.Schema" },
+            UseTypeFullName = false,
+            ConvertDateTimeToUtc = true
         };
 
         public string Serialize(object obj, string settings)
@@ -47,7 +49,7 @@ namespace ObjectFormatter.Implementation
 
         private static VisitorOptions GetVbSettings(string settings)
         {
-            var newSettings = VisualBasicDumpOptions;
+            var newSettings = VisualBasicVisitorOptions;
             if (settings == null) return newSettings;
 
             var vbSettings = JsonConvert.DeserializeObject<VbSettings>(settings);
@@ -55,6 +57,7 @@ namespace ObjectFormatter.Implementation
             newSettings.IgnoreNullValues = vbSettings.IgnoreNullValues;
             newSettings.UseTypeFullName = vbSettings.UseFullTypeName;
             newSettings.MaxDepth = vbSettings.MaxDepth;
+            newSettings.ConvertDateTimeToUtc = vbSettings.ConvertDateTimeToUtc;
 
             return newSettings;
         }

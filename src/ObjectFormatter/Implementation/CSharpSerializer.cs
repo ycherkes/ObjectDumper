@@ -11,12 +11,14 @@ namespace ObjectFormatter.Implementation
 {
     internal class CSharpSerializer: ISerializer
     {
-        private static VisitorOptions CsharpDumpOptions => new()
+        private static VisitorOptions CsharpVisitorOptions => new()
         {
             IgnoreDefaultValues = true,
             IgnoreNullValues = true,
             MaxDepth = 100,
-            ExcludeTypes = new[] { "Avro.Schema" }
+            ExcludeTypes = new[] { "Avro.Schema" },
+            UseTypeFullName = false,
+            ConvertDateTimeToUtc = true
         };
 
         public string Serialize(object obj, string settings)
@@ -47,7 +49,7 @@ namespace ObjectFormatter.Implementation
 
         private static VisitorOptions GetCsharpSettings(string settings)
         {
-            var newSettings = CsharpDumpOptions;
+            var newSettings = CsharpVisitorOptions;
             if (settings == null) return newSettings;
 
             var csharpSettings = JsonConvert.DeserializeObject<CSharpSettings>(settings);
@@ -55,6 +57,7 @@ namespace ObjectFormatter.Implementation
             newSettings.IgnoreNullValues = csharpSettings.IgnoreNullValues;
             newSettings.UseTypeFullName = csharpSettings.UseFullTypeName;
             newSettings.MaxDepth = csharpSettings.MaxDepth;
+            newSettings.ConvertDateTimeToUtc = csharpSettings.ConvertDateTimeToUtc;
 
             return newSettings;
         }

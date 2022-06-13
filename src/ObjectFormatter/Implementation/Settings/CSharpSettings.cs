@@ -2,6 +2,7 @@
 
 internal class CSharpSettings
 {
+    public bool ConvertDateTimeToUtc { get; set; } = true;
     public bool IgnoreNullValues { get; set; } = true;
 
     public bool IgnoreDefaultValues { get; set; } = true;

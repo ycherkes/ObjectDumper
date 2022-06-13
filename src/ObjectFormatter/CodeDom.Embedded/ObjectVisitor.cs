@@ -18,9 +18,11 @@ internal class ObjectVisitor
     private readonly CodeTypeReferenceOptions _typeReferenceOptions;
     private readonly Stack<object> _visitedObjects;
     private int _depth;
+    private readonly bool _convertDateTimeToUtc;
 
     public ObjectVisitor(VisitorOptions visitorOptions)
     {
+        _convertDateTimeToUtc = visitorOptions.ConvertDateTimeToUtc;
         _maxDepth = visitorOptions.MaxDepth;
         _ignoreDefaultValues = visitorOptions.IgnoreDefaultValues;
         _ignoreNullValues = visitorOptions.IgnoreNullValues;
@@ -464,21 +466,24 @@ internal class ObjectVisitor
 
     private CodeExpression VisitDateTime(DateTime dateTime)
     {
-        var utcDateTime = dateTime.ToUniversalTime();
+        if(_convertDateTimeToUtc)
+        {
+            dateTime = dateTime.ToUniversalTime();
+        }
 
-        var year = new CodePrimitiveExpression(utcDateTime.Year);
-        var month = new CodePrimitiveExpression(utcDateTime.Month);
-        var day = new CodePrimitiveExpression(utcDateTime.Day);
-        var hour = new CodePrimitiveExpression(utcDateTime.Hour);
-        var minute = new CodePrimitiveExpression(utcDateTime.Minute);
-        var second = new CodePrimitiveExpression(utcDateTime.Second);
-        var millisecond = new CodePrimitiveExpression(utcDateTime.Millisecond);
+        var year = new CodePrimitiveExpression(dateTime.Year);
+        var month = new CodePrimitiveExpression(dateTime.Month);
+        var day = new CodePrimitiveExpression(dateTime.Day);
+        var hour = new CodePrimitiveExpression(dateTime.Hour);
+        var minute = new CodePrimitiveExpression(dateTime.Minute);
+        var second = new CodePrimitiveExpression(dateTime.Second);
+        var millisecond = new CodePrimitiveExpression(dateTime.Millisecond);
 
 
         var kind = new CodeFieldReferenceExpression
         (
             new CodeTypeReferenceExpression(new CodeTypeReference(typeof(DateTimeKind), _typeReferenceOptions)),
-            utcDateTime.Kind.ToString()
+            dateTime.Kind.ToString()
         );
 
         return new CodeObjectCreateExpression(new CodeTypeReference(typeof(DateTime), _typeReferenceOptions), year,

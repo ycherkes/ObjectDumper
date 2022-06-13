@@ -33,6 +33,11 @@ namespace ObjectDumper.Options
         [Description("Use Full Type Name")]
         public bool CSharpUseFullTypeName { get; set; } = false;
 
+        [Category("C#")]
+        [DisplayName("Convert DateTime to UTC")]
+        [Description("Convert DateTime to UTC")]
+        public bool CSharpConvertDateTimeToUtc { get; set; } = true;
+
         [Category("Json")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -82,6 +87,11 @@ namespace ObjectDumper.Options
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
         public bool VisualBasicUseFullTypeName { get; set; } = false;
+
+        [Category("Visual Basic")]
+        [DisplayName("Convert DateTime to UTC")]
+        [Description("Convert DateTime to UTC")]
+        public bool VisualBasicConvertDateTimeToUtc { get; set; } = true;
 
         [Category("Xml")]
         [DisplayName("Enabled")]
@@ -133,7 +143,8 @@ namespace ObjectDumper.Options
                         IgnoreDefaultValues = CSharpIgnoreDefaultValues,
                         IgnoreNullValues = CSharpIgnoreNullValues,
                         MaxDepth = CommonMaxDepth,
-                        UseFullTypeName = CSharpUseFullTypeName
+                        UseFullTypeName = CSharpUseFullTypeName,
+                        ConvertDateTimeToUtc = CSharpConvertDateTimeToUtc
                     }.ToJson();
                 case "vb":
                     return new
@@ -141,7 +152,8 @@ namespace ObjectDumper.Options
                         IgnoreDefaultValues = VisualBasicIgnoreDefaultValues,
                         IgnoreNullValues = VisualBasicIgnoreNullValues,
                         MaxDepth = CommonMaxDepth,
-                        UseFullTypeName = VisualBasicUseFullTypeName
+                        UseFullTypeName = VisualBasicUseFullTypeName,
+                        ConvertDateTimeToUtc = VisualBasicConvertDateTimeToUtc
                     }.ToJson();
                 case "json":
                     return new
