@@ -23,16 +23,16 @@ namespace ObjectFormatter.CodeDom.Embedded
 
             while (innerType != type)
             {
+                if (type == typeof(string) && innerType == typeof(char))
+                {
+                    break;
+                }
                 stringBuilder.Append("Of");
                 if (type.Name.Contains("Dictionary")) 
                 {
                     innerType = type.GetGenericArguments().LastOrDefault() ?? typeof(object);
                 }
                 stringBuilder.Append(GetFormattedTypeName(innerType).ToPascalCase());
-                if(innerType == typeof(string))
-                {
-                    break;
-                }
                 type = innerType;
                 innerType = GetCollectionItemType(type);
             }
