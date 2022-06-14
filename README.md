@@ -16,6 +16,15 @@ It opens the dumped object in a separate document window.
 
 ![image](https://user-images.githubusercontent.com/13467759/173329406-50060b8a-4a67-4cfd-802f-8d8ed52b5cdf.png)
 
+# Quick tips:
+- How to compare two dumped objects:
+  1. Enable option "Show Miscellaneous files in Solution Explorer":
+  ![image](https://user-images.githubusercontent.com/13467759/173348566-e5768350-321a-4fbd-85fc-10e3a366a5ae.png)
+  2. Install a diff extension - I verified the [Heku.VsDiff](https://marketplace.visualstudio.com/items?itemName=Heku.VsDiff)
+  3. Select files in Solution Explorer under the Miscellaneous Files folder -> Right click -> Compare Selected Files:
+  ![image](https://user-images.githubusercontent.com/13467759/173349566-518f89e1-9d21-4ab6-a4e1-da2dc86e3a78.png)
+
+
 ### Known restrictions: 
 - the debugging code mustn't be optimized so the Expression Evaluator can be run.
 - local debugging only.
