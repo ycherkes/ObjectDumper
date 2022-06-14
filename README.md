@@ -31,7 +31,7 @@ It opens the dumped object in a separate document window.
 
 # Powered By
 
-* [System.CodeDom](https://github.com/kri-kan/Microsoft_projects/tree/master/src/System.CodeDom)
+* [System.CodeDom](https://github.com/dotnet/runtime/tree/main/src/libraries/System.CodeDom)
 * [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
 * [YamlDotNet](https://github.com/aaubry/YamlDotNet)
 
