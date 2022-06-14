@@ -20,7 +20,7 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.VisualBasic
     internal sealed partial class VBCodeGenerator : CodeCompiler
     {
         private static readonly char[] s_periodArray = new char[] { '.' };
-        private const int MaxLineLength = 80;
+        private const int MaxLineLength = int.MaxValue;
 
         private const GeneratorSupport LanguageSupport = GeneratorSupport.EntryPointMethod |
                                                          GeneratorSupport.GotoStatements |
@@ -2512,7 +2512,7 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.VisualBasic
         {
             string s = typeRef.BaseType;
 
-            if (s == "System.Nullable`1")
+            if (s == "System.Nullable`1" && typeRef.TypeArguments.Count > 0)
             {
                 return GetBaseTypeOutput(typeRef.TypeArguments[0]) + "?";
             }

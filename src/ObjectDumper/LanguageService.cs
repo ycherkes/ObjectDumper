@@ -62,7 +62,7 @@ namespace ObjectDumper
         public (bool success, string value) GetFormattedValue(string expression, string format)
         {
             var settings = _optionsPage.ToJson(format).ToBase64();
-            var runFormatterExpression = _dte.Debugger.GetExpression($@"A75562B3AFF384AD7.ObjectFormatter.ObjectSerializer.Serialize({expression}, ""{format}"", ""{settings}"")");
+            var runFormatterExpression = _dte.Debugger.GetExpression($@"A75562B3AFF384AD7.ObjectFormatter.ObjectSerializer.Serialize({expression}, ""{format}"", ""{settings}"")", Timeout: _optionsPage.CommonOperationTimeoutSeconds*1000);
 
             var (isDecoded, decodedValue) = runFormatterExpression.Value.Trim('"').Base64Decode();
 

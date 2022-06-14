@@ -22,7 +22,7 @@ namespace ObjectFormatter.Implementation
             },
             Converters = { new StringEnumConverter() },
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            MaxDepth = 100
+            MaxDepth = 25
         };
 
         public string Serialize(object obj, string settings)

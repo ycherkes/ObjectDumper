@@ -10,128 +10,159 @@ namespace ObjectDumper.Options
         [Category(" Common Settings")]
         [DisplayName("Max Depth")]
         [Description("Max Depth")]
-        public int CommonMaxDepth { get; set; } = 100;
+        [DefaultValue(25)]
+        public int CommonMaxDepth { get; set; }
+
+        [Category(" Common Settings")]
+        [DisplayName("Operation Timeout (Seconds)")]
+        [Description("Operation Timeout in Seconds. Negative value means no timeout.")]
+        [DefaultValue(10)]
+        public int CommonOperationTimeoutSeconds { get; set; }
 
         [Category("C#")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
-        public bool CSharpEnabled { get; set; } = true;
+        [DefaultValue(true)]
+        public bool CSharpEnabled { get; set; }
 
         [Category("C#")]
         [DisplayName("Ignore Null Values")]
         [Description("Ignore Null Values")]
-        public bool CSharpIgnoreNullValues { get; set; } = true;
+        [DefaultValue(true)]
+        public bool CSharpIgnoreNullValues { get; set; }
 
 
         [Category("C#")]
         [DisplayName("Ignore Default Values")]
         [Description("Ignore Default Values")]
-        public bool CSharpIgnoreDefaultValues { get; set; } = true;
+        [DefaultValue(true)]
+        public bool CSharpIgnoreDefaultValues { get; set; }
         
         [Category("C#")]
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
-        public bool CSharpUseFullTypeName { get; set; } = false;
+        [DefaultValue(false)]
+        public bool CSharpUseFullTypeName { get; set; }
 
         [Category("C#")]
         [DisplayName("Convert DateTime to UTC")]
         [Description("Convert DateTime to UTC")]
-        public bool CSharpConvertDateTimeToUtc { get; set; } = true;
+        [DefaultValue(true)]
+        public bool CSharpConvertDateTimeToUtc { get; set; }
 
         [Category("Json")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
-        public bool JsonEnabled { get; set; } = true;
+        [DefaultValue(true)]
+        public bool JsonEnabled { get; set; }
 
         [Category("Json")]
         [DisplayName("Ignore Null Values")]
         [Description("Ignore Null Values")]
-        public bool JsonIgnoreNullValues { get; set; } = true;
+        [DefaultValue(true)]
+        public bool JsonIgnoreNullValues { get; set; }
 
         [Category("Json")]
         [DisplayName("Ignore Default Values")]
         [Description("Ignore Default Values")]
-        public bool JsonIgnoreDefaultValues { get; set; } = true;
+        [DefaultValue(true)]
+        public bool JsonIgnoreDefaultValues { get; set; }
 
         [Category("Json")]
         [DisplayName("Naming Strategy")]
         [Description("Naming Strategy")]
-        public NamingStrategy JsonNamingStrategy { get; set; } = NamingStrategy.CamelCase;
+        [DefaultValue(NamingStrategy.CamelCase)]
+        public NamingStrategy JsonNamingStrategy { get; set; }
 
         [Category("Json")]
         [DisplayName("Serialize Enums As Strings")]
         [Description("Serialize Enums As Strings")]
-        public bool JsonSerializeEnumAsString { get; set; } = true;
+        [DefaultValue(true)]
+        public bool JsonSerializeEnumAsString { get; set; }
 
         [Category("Json")]
         [DisplayName("Type Name Handling")]
         [Description("Type Name Handling")]
-        public TypeNameHandling JsonTypeNameHandling { get; set; } = TypeNameHandling.None;
+        [DefaultValue(TypeNameHandling.None)]
+        public TypeNameHandling JsonTypeNameHandling { get; set; }
 
         [Category("Visual Basic")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
-        public bool VisualBasicEnabled { get; set; } = true;
+        [DefaultValue(true)]
+        public bool VisualBasicEnabled { get; set; }
 
         [Category("Visual Basic")]
         [DisplayName("Ignore Null Values")]
         [Description("Ignore Null Values")]
-        public bool VisualBasicIgnoreNullValues { get; set; } = true;
+        [DefaultValue(true)]
+        public bool VisualBasicIgnoreNullValues { get; set; }
 
         [Category("Visual Basic")]
         [DisplayName("Ignore Default Values")]
         [Description("Ignore Default Values")]
-        public bool VisualBasicIgnoreDefaultValues { get; set; } = true;
+        [DefaultValue(true)]
+        public bool VisualBasicIgnoreDefaultValues { get; set; }
 
         [Category("Visual Basic")]
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
-        public bool VisualBasicUseFullTypeName { get; set; } = false;
+        [DefaultValue(false)]
+        public bool VisualBasicUseFullTypeName { get; set; }
 
         [Category("Visual Basic")]
         [DisplayName("Convert DateTime to UTC")]
         [Description("Convert DateTime to UTC")]
-        public bool VisualBasicConvertDateTimeToUtc { get; set; } = true;
+        [DefaultValue(true)]
+        public bool VisualBasicConvertDateTimeToUtc { get; set; }
 
         [Category("Xml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
-        public bool XmlEnabled { get; set; } = true;
+        [DefaultValue(true)]
+        public bool XmlEnabled { get; set; }
 
         [Category("Xml")]
         [DisplayName("Ignore Null Values")]
         [Description("Ignore Null Values")]
-        public bool XmlIgnoreNullValues { get; set; } = true;
+        [DefaultValue(true)]
+        public bool XmlIgnoreNullValues { get; set; }
 
         [Category("Xml")]
         [DisplayName("Ignore Default Values")]
         [Description("Ignore Default Values")]
-        public bool XmlIgnoreDefaultValues { get; set; } = true;
+        [DefaultValue(true)]
+        public bool XmlIgnoreDefaultValues { get; set; }
 
         [Category("Xml")]
         [DisplayName("Naming Strategy")]
         [Description("Naming Strategy")]
-        public NamingStrategy XmlNamingStrategy { get; set; } = NamingStrategy.Default;
+        [DefaultValue(NamingStrategy.Default)]
+        public NamingStrategy XmlNamingStrategy { get; set; }
 
         [Category("Xml")]
         [DisplayName("Serialize Enums As Strings")]
         [Description("Serialize Enums As Strings")]
-        public bool XmlSerializeEnumAsString { get; set; } = true;
+        [DefaultValue(true)]
+        public bool XmlSerializeEnumAsString { get; set; }
 
         [Category("Xml")]
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
-        public bool XmlUseFullTypeName { get; set; } = false;
+        [DefaultValue(false)]
+        public bool XmlUseFullTypeName { get; set; }
 
         [Category("Yaml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
-        public bool YamlEnabled { get; set; } = true;
+        [DefaultValue(true)]
+        public bool YamlEnabled { get; set; }
 
         [Category("Yaml")]
         [DisplayName("Naming Convention")]
         [Description("Naming Convention")]
-        public NamingConvention YamlNamingConvention { get; set; } = NamingConvention.Null;
+        [DefaultValue(NamingConvention.Null)]
+        public NamingConvention YamlNamingConvention { get; set; }
 
         public string ToJson(string format)
         {

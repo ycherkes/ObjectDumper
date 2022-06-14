@@ -20,7 +20,7 @@ namespace ObjectFormatter.Implementation
             Formatting = Formatting.Indented,
             Converters = { new StringEnumConverter() },
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            MaxDepth = 100
+            MaxDepth = 25
         };
 
         private static JsonSerializerSettings GetJsonSettings(string settings)

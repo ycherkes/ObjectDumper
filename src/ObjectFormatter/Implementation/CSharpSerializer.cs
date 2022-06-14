@@ -15,7 +15,7 @@ namespace ObjectFormatter.Implementation
         {
             IgnoreDefaultValues = true,
             IgnoreNullValues = true,
-            MaxDepth = 100,
+            MaxDepth = 25,
             ExcludeTypes = new[] { "Avro.Schema" },
             UseTypeFullName = false,
             ConvertDateTimeToUtc = true

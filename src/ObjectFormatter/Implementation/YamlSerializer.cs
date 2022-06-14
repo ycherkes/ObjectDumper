@@ -13,10 +13,10 @@ namespace ObjectFormatter.Implementation
     {
         private static YamlSettings YamlSettings => new()
         {
-            MaxDepth = 100
+            MaxDepth = 25
         };
 
-        private static YamlDotNet.Embedded.Serialization.Serializer GetYamlSerializer(string settings)
+        private static Serializer GetYamlSerializer(string settings)
         {
             var yamlSettings = GetYamlSettings(settings);
 
@@ -25,7 +25,7 @@ namespace ObjectFormatter.Implementation
                 .WithMaximumRecursion(yamlSettings.MaxDepth)
                 .BuildValueSerializer();
 
-            return YamlDotNet.Embedded.Serialization.Serializer.FromValueSerializer(valueSerializer, EmitterSettings.Default);
+            return Serializer.FromValueSerializer(valueSerializer, EmitterSettings.Default);
         }
 
         private static YamlSettings GetYamlSettings(string settings)

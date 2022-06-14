@@ -30,7 +30,7 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.CSharp
         private readonly IDictionary<string, string> _provOptions;
 
         private const int ParameterMultilineThreshold = 15;
-        private const int MaxLineLength = 80;
+        private const int MaxLineLength = int.MaxValue;
         private const GeneratorSupport LanguageSupport = GeneratorSupport.ArraysOfArrays |
                                                          GeneratorSupport.EntryPointMethod |
                                                          GeneratorSupport.GotoStatements |
@@ -3003,7 +3003,7 @@ namespace ObjectFormatter.CodeDom.Embedded.ms.CodeDom.Microsoft.CSharp
         {
             string s = typeRef.BaseType;
 
-            if (s == "System.Nullable`1")
+            if (s == "System.Nullable`1" && typeRef.TypeArguments.Count > 0)
             {
                 return GetBaseTypeOutput(typeRef.TypeArguments[0]) + "?";
             }
