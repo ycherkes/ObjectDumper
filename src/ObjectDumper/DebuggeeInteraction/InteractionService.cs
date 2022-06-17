@@ -46,7 +46,7 @@ namespace ObjectDumper.DebuggeeInteraction
                                           || targetFramework.IndexOf("NETStandard", StringComparison.OrdinalIgnoreCase) >= 0;
 
             var formatterFileName = Path.Combine(dllLocation,
-                "Binaries",
+                "InjectableLibs",
                 isNetCoreMustBeInjected ? "netcoreapp3.1" : "net45",
                 "YellowFlavor.Serialization.dll");
 

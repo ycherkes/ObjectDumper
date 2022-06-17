@@ -91,11 +91,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Binaries\net45\YellowFlavor.Serialization.dll">
+    <Content Include="InjectableLibs\net45\YellowFlavor.Serialization.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Binaries\netcoreapp3.1\YellowFlavor.Serialization.dll">
+    <Content Include="InjectableLibs\netcoreapp3.1\YellowFlavor.Serialization.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
