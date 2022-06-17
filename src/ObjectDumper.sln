@@ -5,9 +5,13 @@ VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectDumper", "ObjectDumper\ObjectDumper.csproj", "{038A571A-82B6-4667-8C18-E6FFEEE32192}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectFormatter", "ObjectFormatter\ObjectFormatter.csproj", "{C771494C-494B-4C4D-A4D0-7FE09CB5A7E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization", "Serialization\Serialization.csproj", "{C771494C-494B-4C4D-A4D0-7FE09CB5A7E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectFormatter.UnitTests", "..\test\ObjectFormatter.UnitTests\ObjectFormatter.UnitTests.csproj", "{F4AC0B51-45F1-46A0-B641-959D7AB42B0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization.UnitTests", "..\test\ObjectFormatter.UnitTests\Serialization.UnitTests.csproj", "{F4AC0B51-45F1-46A0-B641-959D7AB42B0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8FD04DB2-FB06-4588-AD0D-A3D7CD45BFE0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0BD90D7A-4327-495B-8C72-53CD9453F000}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +48,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{038A571A-82B6-4667-8C18-E6FFEEE32192} = {8FD04DB2-FB06-4588-AD0D-A3D7CD45BFE0}
+		{C771494C-494B-4C4D-A4D0-7FE09CB5A7E9} = {8FD04DB2-FB06-4588-AD0D-A3D7CD45BFE0}
+		{F4AC0B51-45F1-46A0-B641-959D7AB42B0A} = {0BD90D7A-4327-495B-8C72-53CD9453F000}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {29C0C2A9-946A-4CB4-9AF6-79FF7B79F388}

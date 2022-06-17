@@ -45,23 +45,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Base64Helper.cs" />
-    <Compile Include="DumpAsYamlCommand.cs" />
-    <Compile Include="DumpAsVbCommand.cs" />
+    <Compile Include="Extensions\Base64Extensions.cs" />
+    <Compile Include="Commands\DumpAsYamlCommand.cs" />
+    <Compile Include="Commands\DumpAsVbCommand.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
-    <Compile Include="LanguageService.cs" />
+    <Compile Include="DebuggeeInteraction\InteractionService.cs" />
     <Compile Include="Options\NamingConvention.cs" />
     <Compile Include="Options\NamingStrategy.cs" />
     <Compile Include="Options\ObjectDumperOptionPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Utils.cs" />
+    <Compile Include="Utils\ShellUtils.cs" />
     <Compile Include="ObjectDumperPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DumpAsCommandHelper.cs" />
-    <Compile Include="DumpAsCSharpCommand.cs" />
-    <Compile Include="DumpAsJsonCommand.cs" />
-    <Compile Include="DumpAsXmlCommand.cs" />
+    <Compile Include="Commands\DumpAsCommandHelper.cs" />
+    <Compile Include="Commands\DumpAsCSharpCommand.cs" />
+    <Compile Include="Commands\DumpAsJsonCommand.cs" />
+    <Compile Include="Commands\DumpAsXmlCommand.cs" />
+    <Compile Include="Utils\TextViewUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source.extension.vsixmanifest">
@@ -90,13 +91,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Formatter\net45\A75562B3AFF384AD7.ObjectFormatter.dll">
+    <Content Include="InjectableLibs\net45\YellowFlavor.Serialization.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Formatter\netcoreapp3.1\A75562B3AFF384AD7.ObjectFormatter.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="InjectableLibs\netcoreapp3.1\YellowFlavor.Serialization.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\PackageIcon.png">
       <IncludeInVSIX>true</IncludeInVSIX>

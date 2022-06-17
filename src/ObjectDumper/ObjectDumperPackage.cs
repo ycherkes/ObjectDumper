@@ -6,6 +6,7 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
+using ObjectDumper.Commands;
 using ObjectDumper.Options;
 using Task = System.Threading.Tasks.Task;
 
