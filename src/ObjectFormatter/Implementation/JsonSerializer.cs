@@ -1,12 +1,13 @@
-﻿using System;
-using Newtonsoft.Json.Embedded;
+﻿using Newtonsoft.Json.Embedded;
 using Newtonsoft.Json.Embedded.Converters;
 using Newtonsoft.Json.Embedded.Serialization;
+using ObjectFormatter.Implementation.Json;
 using ObjectFormatter.Implementation.Settings;
+using System;
 
 namespace ObjectFormatter.Implementation
 {
-    internal class JsonSerializer: ISerializer
+    internal class JsonSerializer : ISerializer
     {
         private static JsonSerializerSettings JsonSettings => new()
         {

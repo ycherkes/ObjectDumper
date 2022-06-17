@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json.Embedded;
+using Newtonsoft.Json.Embedded.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Embedded;
-using Newtonsoft.Json.Embedded.Serialization;
 
-namespace ObjectFormatter
+namespace ObjectFormatter.Implementation.Json
 {
     public class SpecificContractResolver : DefaultContractResolver
     {
@@ -14,7 +14,7 @@ namespace ObjectFormatter
             var properties = (List<JsonProperty>)base.CreateProperties(type, memberSerialization);
 
             // Do not serialize properties
-            return properties.FindAll(p =>  !ExcludeTypes.Any(pt => string.Equals(p.PropertyType?.FullName, pt, StringComparison.Ordinal)));
+            return properties.FindAll(p => !ExcludeTypes.Any(pt => string.Equals(p.PropertyType?.FullName, pt, StringComparison.Ordinal)));
         }
     }
 }

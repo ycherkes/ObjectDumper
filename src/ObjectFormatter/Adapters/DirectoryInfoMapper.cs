@@ -1,6 +1,6 @@
 ﻿namespace ObjectFormatter.Adapters
 {
-    internal class DirectoryInfoMapper
+    internal static class DirectoryInfoMapper
     {
         public static DirectoryInfo Map(System.IO.DirectoryInfo directoryInfo)
         {

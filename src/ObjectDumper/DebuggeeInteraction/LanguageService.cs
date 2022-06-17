@@ -1,18 +1,18 @@
-﻿using System;
+﻿using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
+using ObjectDumper.Extensions;
+using ObjectDumper.Options;
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using EnvDTE80;
-using Microsoft.VisualStudio.Shell;
-using ObjectDumper.Options;
 
-namespace ObjectDumper
+namespace ObjectDumper.DebuggeeInteraction
 {
     internal class LanguageService
     {
 
         private readonly DTE2 _dte;
         private readonly ObjectDumperOptionPage _optionsPage;
-
 
         public LanguageService(DTE2 dte, AsyncPackage package)
         {
@@ -35,7 +35,7 @@ namespace ObjectDumper
 
             var targetFrameworkEvaluationResult = GetEntryAssemblyTargetFramework();
 
-            if(!targetFrameworkEvaluationResult.isValid)
+            if (!targetFrameworkEvaluationResult.isValid)
             {
                 return (false, targetFrameworkEvaluationResult.value);
             }
@@ -62,11 +62,11 @@ namespace ObjectDumper
         public (bool success, string value) GetFormattedValue(string expression, string format)
         {
             var settings = _optionsPage.ToJson(format).ToBase64();
-            var runFormatterExpression = _dte.Debugger.GetExpression($@"A75562B3AFF384AD7.ObjectFormatter.ObjectSerializer.Serialize({expression}, ""{format}"", ""{settings}"")", Timeout: _optionsPage.CommonOperationTimeoutSeconds*1000);
+            var runFormatterExpression = _dte.Debugger.GetExpression($@"A75562B3AFF384AD7.ObjectFormatter.ObjectSerializer.Serialize({expression}, ""{format}"", ""{settings}"")", Timeout: _optionsPage.CommonOperationTimeoutSeconds * 1000);
 
             var (isDecoded, decodedValue) = runFormatterExpression.Value.Trim('"').Base64Decode();
 
-            if(isDecoded)
+            if (isDecoded)
             {
                 return (true, decodedValue);
             }

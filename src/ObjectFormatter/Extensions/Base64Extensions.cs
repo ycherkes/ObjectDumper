@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Text;
 
-namespace ObjectFormatter
+namespace ObjectFormatter.Extensions
 {
-    internal static class Base64Helper
+    internal static class Base64Extensions
     {
         public static string ToBase64(this string plainText)
         {
-            if(string.IsNullOrEmpty(plainText))
+            if (string.IsNullOrEmpty(plainText))
             {
                 return null;
             }

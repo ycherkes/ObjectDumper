@@ -1,15 +1,15 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.IO;
-using System.Text;
-using Newtonsoft.Json.Embedded;
+﻿using Newtonsoft.Json.Embedded;
 using ObjectFormatter.Implementation.Settings;
 using ObjectFormatter.YamlDotNet.Embedded.Core;
 using ObjectFormatter.YamlDotNet.Embedded.Serialization;
+using System;
+using System.CodeDom.Compiler;
+using System.IO;
+using System.Text;
 
 namespace ObjectFormatter.Implementation
 {
-    internal class YamlSerializer: ISerializer
+    internal class YamlSerializer : ISerializer
     {
         private static YamlSettings YamlSettings => new()
         {
@@ -39,7 +39,10 @@ namespace ObjectFormatter.Implementation
         {
             var yamlSerializer = GetYamlSerializer(settings);
             var stringBuilder = new StringBuilder();
-            yamlSerializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), obj);
+            using var stringWriter = new StringWriter(stringBuilder);
+            using var textWriter = new IndentedTextWriter(stringWriter);
+            yamlSerializer.Serialize(textWriter, obj);
+
             return stringBuilder.ToString();
         }
     }

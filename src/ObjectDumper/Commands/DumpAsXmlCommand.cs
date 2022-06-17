@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualStudio.Shell;
-using System;
+﻿using System;
 using System.ComponentModel.Design;
+using Microsoft.VisualStudio.Shell;
 using ObjectDumper.Options;
 using Task = System.Threading.Tasks.Task;
 
-namespace ObjectDumper
+namespace ObjectDumper.Commands
 {
     /// <summary>
     /// Command handler

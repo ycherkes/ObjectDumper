@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using ObjectFormatter;
 using ObjectFormatter.Adapters;
+using ObjectFormatter.Extensions;
 using ObjectFormatter.Implementation;
 using DirectoryInfo = System.IO.DirectoryInfo;
 using DriveInfo = System.IO.DriveInfo;

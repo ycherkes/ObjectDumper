@@ -1,20 +1,20 @@
-﻿using Microsoft.VisualStudio.Shell;
-using System;
+﻿using System;
 using System.ComponentModel.Design;
+using Microsoft.VisualStudio.Shell;
 using ObjectDumper.Options;
 using Task = System.Threading.Tasks.Task;
 
-namespace ObjectDumper
+namespace ObjectDumper.Commands
 {
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class DumpAsCSharpCommand
+    internal sealed class DumpAsYamlCommand
     {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 0x0100;
+        public const int CommandId = 0x0500;
 
         /// <summary>
         /// Command menu group (command set GUID).
@@ -30,12 +30,12 @@ namespace ObjectDumper
         private readonly ObjectDumperOptionPage _optionsPage;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DumpAsCSharpCommand"/> class.
+        /// Initializes a new instance of the <see cref="DumpAsYamlCommand"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private DumpAsCSharpCommand(AsyncPackage package, OleMenuCommandService commandService)
+        private DumpAsYamlCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
             _package = (ObjectDumperPackage)package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -57,7 +57,7 @@ namespace ObjectDumper
             menuCommand.Visible = false;
             menuCommand.Enabled = false;
 
-            var isAvailable = _optionsPage.CSharpEnabled && await _dumpAsCommandHelper.IsCommandAvailableAsync();
+            var isAvailable = _optionsPage.YamlEnabled && await _dumpAsCommandHelper.IsCommandAvailableAsync();
 
             menuCommand.Visible = isAvailable;
             menuCommand.Enabled = isAvailable;
@@ -66,7 +66,7 @@ namespace ObjectDumper
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static DumpAsCSharpCommand Instance
+        public static DumpAsYamlCommand Instance
         {
             get;
             private set;
@@ -88,7 +88,7 @@ namespace ObjectDumper
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-            Instance = new DumpAsCSharpCommand(package, commandService);
+            Instance = new DumpAsYamlCommand(package, commandService);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace ObjectDumper
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            _dumpAsCommandHelper.ExecuteCommand("cs");
+            _dumpAsCommandHelper.ExecuteCommand("yaml");
         }
     }
 }

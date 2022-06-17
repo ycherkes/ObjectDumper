@@ -1,15 +1,15 @@
-﻿using System.IO;
-using System.Text;
-using Newtonsoft.Json.Embedded;
+﻿using Newtonsoft.Json.Embedded;
 using ObjectFormatter.CodeDom.Embedded;
 using ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom;
 using ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom.Compiler;
 using ObjectFormatter.CodeDom.Embedded.ms.Common.src.Sys.CodeDom;
 using ObjectFormatter.Implementation.Settings;
+using System.IO;
+using System.Text;
 
 namespace ObjectFormatter.Implementation
 {
-    internal class VisualBasicSerializer: ISerializer
+    internal class VisualBasicSerializer : ISerializer
     {
         private static VisitorOptions VisualBasicVisitorOptions => new()
         {

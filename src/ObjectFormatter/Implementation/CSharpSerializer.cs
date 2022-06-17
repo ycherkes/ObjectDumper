@@ -1,15 +1,15 @@
-﻿using System.IO;
-using System.Text;
-using Newtonsoft.Json.Embedded;
+﻿using Newtonsoft.Json.Embedded;
 using ObjectFormatter.CodeDom.Embedded;
 using ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom;
 using ObjectFormatter.CodeDom.Embedded.ms.CodeDom.System.CodeDom.Compiler;
 using ObjectFormatter.CodeDom.Embedded.ms.Common.src.Sys.CodeDom;
 using ObjectFormatter.Implementation.Settings;
+using System.IO;
+using System.Text;
 
 namespace ObjectFormatter.Implementation
 {
-    internal class CSharpSerializer: ISerializer
+    internal class CSharpSerializer : ISerializer
     {
         private static VisitorOptions CsharpVisitorOptions => new()
         {
@@ -26,7 +26,7 @@ namespace ObjectFormatter.Implementation
             var visitorOptions = GetCsharpSettings(settings);
             var objVisitor = new ObjectVisitor(visitorOptions);
             var expression = objVisitor.Visit(obj);
-            var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(), 
+            var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(),
                 obj != null ? ReflectionUtils.ComposeVariableName(obj.GetType()) : "nullValue")
             {
                 InitExpression = expression

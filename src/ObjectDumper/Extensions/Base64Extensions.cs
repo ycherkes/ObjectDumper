@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 
-namespace ObjectDumper
+namespace ObjectDumper.Extensions
 {
-    internal static class Base64Helper
+    internal static class Base64Extensions
     {
         public static string ToBase64(this string plainText)
         {

@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Newtonsoft.Json.Embedded;
+using Newtonsoft.Json.Embedded.Converters;
+using Newtonsoft.Json.Embedded.Serialization;
+using ObjectFormatter.Implementation.Json;
+using ObjectFormatter.Implementation.Settings;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using Newtonsoft.Json.Embedded;
-using Newtonsoft.Json.Embedded.Converters;
-using Newtonsoft.Json.Embedded.Serialization;
-using ObjectFormatter.Implementation.Settings;
 
 namespace ObjectFormatter.Implementation
 {
-    internal class XmlSerializer: ISerializer
+    internal class XmlSerializer : ISerializer
     {
         private static JsonSerializerSettings XmlSettings => new()
         {
