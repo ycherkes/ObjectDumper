@@ -48,7 +48,7 @@ namespace ObjectDumper.DebuggeeInteraction
             var formatterFileName = Path.Combine(dllLocation,
                 "Binaries",
                 isNetCoreMustBeInjected ? "netcoreapp3.1" : "net45",
-                "YellowFlavor.Serialization.ObjectSerializer.dll");
+                "YellowFlavor.Serialization.dll");
 
             var loadAssembly = Language == "Basic"
                 ? $"System.Reflection.Assembly.LoadFile(\"{formatterFileName}\")"
