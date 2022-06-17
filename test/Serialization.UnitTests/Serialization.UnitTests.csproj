@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ObjectFormatter\ObjectFormatter.csproj" />
+    <ProjectReference Include="..\..\src\Serialization\Serialization.csproj" />
   </ItemGroup>
 
 </Project>

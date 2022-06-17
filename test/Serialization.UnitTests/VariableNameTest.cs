@@ -1,6 +1,6 @@
-using ObjectFormatter.Implementation;
+using YellowFlavor.Serialization.Implementation;
 
-namespace ObjectFormatter.UnitTests
+namespace Serialization.UnitTests
 {
     public class VariableNameTest
     {
@@ -27,7 +27,7 @@ namespace ObjectFormatter.UnitTests
             {
                 new Person{ Age = 32, FirstName = "Bob"},
                 new Person{ Age = 23, FirstName = "Alice"},
-            }.ToDictionary(x => x.FirstName, x => new List<Person>{x});
+            }.ToDictionary(x => x.FirstName, x => new List<Person> { x });
 
             var serializer = new CSharpSerializer();
 

@@ -1,6 +1,6 @@
-using ObjectFormatter.Implementation;
+using YellowFlavor.Serialization.Implementation;
 
-namespace ObjectFormatter.UnitTests
+namespace Serialization.UnitTests
 {
     public class FlagsSerializationTest
     {

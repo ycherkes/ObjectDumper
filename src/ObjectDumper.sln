@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectDumper", "ObjectDumpe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization", "Serialization\Serialization.csproj", "{C771494C-494B-4C4D-A4D0-7FE09CB5A7E9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization.UnitTests", "..\test\ObjectFormatter.UnitTests\Serialization.UnitTests.csproj", "{F4AC0B51-45F1-46A0-B641-959D7AB42B0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization.UnitTests", "..\test\Serialization.UnitTests\Serialization.UnitTests.csproj", "{F4AC0B51-45F1-46A0-B641-959D7AB42B0A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8FD04DB2-FB06-4588-AD0D-A3D7CD45BFE0}"
 EndProject
