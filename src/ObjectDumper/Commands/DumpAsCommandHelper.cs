@@ -14,14 +14,14 @@ namespace ObjectDumper.Commands
     internal class DumpAsCommandHelper
     {
         private readonly DTE2 _dte;
-        private readonly LanguageService _languageService;
+        private readonly InteractionService _languageService;
         private readonly AsyncPackage _package;
 
         public DumpAsCommandHelper(DTE2 dte, AsyncPackage package)
         {
             _dte = dte ?? throw new ArgumentNullException(nameof(dte));
             _package = package ?? throw new ArgumentNullException(nameof(package));
-            _languageService = new LanguageService(dte, package);
+            _languageService = new InteractionService(dte, package);
         }
 
         public async Task<bool> IsCommandAvailableAsync()

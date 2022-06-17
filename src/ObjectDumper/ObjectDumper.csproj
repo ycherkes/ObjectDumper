@@ -49,7 +49,7 @@
     <Compile Include="Commands\DumpAsYamlCommand.cs" />
     <Compile Include="Commands\DumpAsVbCommand.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
-    <Compile Include="DebuggeeInteraction\LanguageService.cs" />
+    <Compile Include="DebuggeeInteraction\InteractionService.cs" />
     <Compile Include="Options\NamingConvention.cs" />
     <Compile Include="Options\NamingStrategy.cs" />
     <Compile Include="Options\ObjectDumperOptionPage.cs">
@@ -91,13 +91,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Formatter\net45\A75562B3AFF384AD7.ObjectFormatter.dll">
+    <Content Include="Binaries\net45\YellowFlavor.Serialization.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Formatter\netcoreapp3.1\A75562B3AFF384AD7.ObjectFormatter.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Binaries\netcoreapp3.1\YellowFlavor.Serialization.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\PackageIcon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
