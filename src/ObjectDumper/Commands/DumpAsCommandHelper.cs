@@ -14,14 +14,14 @@ namespace ObjectDumper.Commands
     internal class DumpAsCommandHelper
     {
         private readonly DTE2 _dte;
-        private readonly InteractionService _languageService;
+        private readonly InteractionService _interactionService;
         private readonly AsyncPackage _package;
 
         public DumpAsCommandHelper(DTE2 dte, AsyncPackage package)
         {
             _dte = dte ?? throw new ArgumentNullException(nameof(dte));
             _package = package ?? throw new ArgumentNullException(nameof(package));
-            _languageService = new InteractionService(dte, package);
+            _interactionService = new InteractionService(dte, package);
         }
 
         public async Task<bool> IsCommandAvailableAsync()
@@ -47,13 +47,13 @@ namespace ObjectDumper.Commands
                 return;
             }
 
-            var (isInjected, evaluationResult) = _languageService.InjectFormatter();
+            var (isInjected, evaluationResult) = _interactionService.InjectFormatter();
 
             var expression = selectionText;
 
             var fileName = SanitizeFileName(expression.Any(char.IsWhiteSpace) ? "expression" : expression);
 
-            var (_, value) = isInjected ? _languageService.GetFormattedValue(expression, format) : (false, evaluationResult);
+            var (_, value) = isInjected ? _interactionService.GetFormattedValue(expression, format) : (false, evaluationResult);
 
             var formattedValue = value;
 

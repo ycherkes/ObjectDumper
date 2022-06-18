@@ -13,6 +13,11 @@ namespace ObjectDumper.Utils
 
             var textView = ShellUtils.GetTextView(serviceProvider);
 
+            if (textView == null)
+            {
+                return (false, selectionText);
+            }
+
             if (textView.GetSelection(out int piAnchorLine,
                 out int piAnchorCol,
                 out int piEndLine,

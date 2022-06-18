@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel.Design;
-using Microsoft.VisualStudio.Shell;
+﻿using Microsoft.VisualStudio.Shell;
 using ObjectDumper.Options;
+using System;
+using System.ComponentModel.Design;
 using Task = System.Threading.Tasks.Task;
 
 namespace ObjectDumper.Commands
@@ -41,8 +41,8 @@ namespace ObjectDumper.Commands
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
             _optionsPage = (ObjectDumperOptionPage)package.GetDialogPage(typeof(ObjectDumperOptionPage));
 
-            var menuCommandID = new CommandID(CommandSet, CommandId);
-            var menuItem = new OleMenuCommand(Execute, menuCommandID);
+            var menuCommandId = new CommandID(CommandSet, CommandId);
+            var menuItem = new OleMenuCommand(Execute, menuCommandId);
             commandService.AddCommand(menuItem);
             menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
             _dumpAsCommandHelper = new DumpAsCommandHelper(_package.Dte, package);
@@ -71,11 +71,6 @@ namespace ObjectDumper.Commands
             get;
             private set;
         }
-
-        /// <summary>
-        /// Gets the service provider from the owner package.
-        /// </summary>
-        private IAsyncServiceProvider ServiceProvider => _package;
 
         /// <summary>
         /// Initializes the singleton instance of the command.
