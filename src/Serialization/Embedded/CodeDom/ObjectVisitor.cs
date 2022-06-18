@@ -37,49 +37,45 @@ internal class ObjectVisitor
     public CodeExpression Visit(object @object)
     {
         if (IsMaxDepth())
-            return new CodeSeparatedExpressionCollection(new CodeExpression[]
-                {
-                    @object == null
-                    ? new CodePrimitiveExpression(null)
-                    : new CodeDefaultValueExpression(new CodeTypeReference(@object.GetType(), _typeReferenceOptions)), 
-                    new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Max depth") { NoNewLine = true }))
-                }, ", ");
+        {
+            return GetMaxDepthExpression(@object);
+        }
 
         try
         {
             _depth++;
 
-            if (@object == null || IsPrimitive(@object)) 
+            if (@object == null || IsPrimitive(@object))
                 return new CodePrimitiveExpression(@object);
 
-            if (@object is TimeSpan timeSpan) 
+            if (@object is TimeSpan timeSpan)
                 return VisitTimeSpan(timeSpan);
 
-            if (@object is DateTime dateTime) 
+            if (@object is DateTime dateTime)
                 return VisitDateTime(dateTime);
 
-            if (@object is DateTimeOffset dateTimeOffset) 
+            if (@object is DateTimeOffset dateTimeOffset)
                 return VisitDateTimeOffset(dateTimeOffset);
 
-            if (IsKeyValuePair(@object)) 
+            if (IsKeyValuePair(@object))
                 return VisitKeyValuePair(@object);
 
-            if (IsTuple(@object)) 
+            if (IsTuple(@object))
                 return VisitTuple(@object);
 
-            if (IsValueTuple(@object)) 
+            if (IsValueTuple(@object))
                 return VisitValueTuple(@object);
 
-            if (@object is Enum) 
+            if (@object is Enum)
                 return VisitEnum(@object);
 
-            if (@object is Guid guid) 
+            if (@object is Guid guid)
                 return VisitGuid(guid);
 
-            if (@object is CultureInfo cultureInfo) 
+            if (@object is CultureInfo cultureInfo)
                 return VisitCultureInfo(cultureInfo);
 
-            if (@object is Type type) 
+            if (@object is Type type)
                 return VisitType(type);
 
             if (@object is IDictionary dict)
@@ -142,11 +138,9 @@ internal class ObjectVisitor
     private CodeExpression VisitTuple(object o)
     {
         if (IsVisited(o))
-            return new CodeSeparatedExpressionCollection(new CodeExpression[]
-                {
-                    new CodePrimitiveExpression(null),
-                    new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Circular reference detected") { NoNewLine = true }))
-                }, ", ");
+        {
+            return GetCircularReferenceDetectedExpression();
+        }
 
         PushVisited(o);
 
@@ -176,11 +170,9 @@ internal class ObjectVisitor
     private CodeExpression VisitObject(object o)
     {
         if (IsVisited(o))
-            return new CodeSeparatedExpressionCollection(new CodeExpression[]
-                {
-                    new CodePrimitiveExpression(null),
-                    new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Circular reference detected") { NoNewLine = true }))
-                }, ", ");
+        {
+            return GetCircularReferenceDetectedExpression();
+        }
 
         PushVisited(o);
 
@@ -222,11 +214,9 @@ internal class ObjectVisitor
     private CodeExpression VisitDictionary(IDictionary dict)
     {
         if (IsVisited(dict))
-            return new CodeSeparatedExpressionCollection(new CodeExpression[]
-                {
-                    new CodePrimitiveExpression(null),
-                    new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Circular reference detected") { NoNewLine = true }))
-                }, ", ");
+        {
+            return GetCircularReferenceDetectedExpression();
+        }
 
         PushVisited(dict);
 
@@ -293,11 +283,9 @@ internal class ObjectVisitor
     private CodeExpression VisitCollection(IEnumerable collection)
     {
         if (IsVisited(collection))
-            return new CodeSeparatedExpressionCollection(new CodeExpression[]
-                {
-                    new CodePrimitiveExpression(null),
-                    new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Circular reference detected") { NoNewLine = true }))
-                }, ", ");
+        {
+            return GetCircularReferenceDetectedExpression();
+        }
 
         PushVisited(collection);
 
@@ -364,7 +352,7 @@ internal class ObjectVisitor
             new CodeAnonymousTypeReference(),
             items.ToArray());
 
-        if (isImmutable || !type.IsArray) 
+        if (isImmutable || !type.IsArray)
             expr = new CodeMethodInvokeExpression(expr, $"To{type.Name.Split('`')[0]}");
 
         return expr;
@@ -466,7 +454,7 @@ internal class ObjectVisitor
 
     private CodeExpression VisitDateTime(DateTime dateTime)
     {
-        if(_convertDateTimeToUtc)
+        if (_convertDateTimeToUtc)
         {
             dateTime = dateTime.ToUniversalTime();
         }
@@ -478,7 +466,6 @@ internal class ObjectVisitor
         var minute = new CodePrimitiveExpression(dateTime.Minute);
         var second = new CodePrimitiveExpression(dateTime.Second);
         var millisecond = new CodePrimitiveExpression(dateTime.Millisecond);
-
 
         var kind = new CodeFieldReferenceExpression
         (
@@ -503,6 +490,26 @@ internal class ObjectVisitor
     private static bool IsCollection(object obj)
     {
         return obj is ICollection || ReflectionUtils.IsGenericCollection(obj.GetType());
+    }
+
+    private static CodeExpression GetCircularReferenceDetectedExpression()
+    {
+        return new CodeSeparatedExpressionCollection(new CodeExpression[]
+        {
+            new CodePrimitiveExpression(null),
+            new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Circular reference detected") { NoNewLine = true }))
+        }, ", ");
+    }
+
+    private CodeExpression GetMaxDepthExpression(object @object)
+    {
+        return new CodeSeparatedExpressionCollection(new CodeExpression[]
+        {
+            @object == null
+            ? new CodePrimitiveExpression(null)
+            : new CodeDefaultValueExpression(new CodeTypeReference(@object.GetType(), _typeReferenceOptions)),
+            new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Max depth") { NoNewLine = true }))
+        }, ", ");
     }
 
     private static bool IsPrimitive(object @object)

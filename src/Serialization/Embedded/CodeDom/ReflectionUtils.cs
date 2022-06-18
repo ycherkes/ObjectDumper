@@ -1,7 +1,4 @@
 ﻿using Embedded.Newtonsoft.Json.Utilities;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.VisualBasic;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys;
-using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +6,9 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.VisualBasic;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys;
+using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.Utilities;
 
 namespace YellowFlavor.Serialization.Embedded.CodeDom
 {
@@ -68,15 +68,16 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
             {
                 return type.GetElementType();
             }
-            if (ImplementsGenericDefinition(type, typeof(IEnumerable<>), out Type? genericListType))
+            if (ImplementsGenericDefinition(type, typeof(IEnumerable<>), out Type genericListType))
             {
-                if (genericListType!.IsGenericTypeDefinition())
+                if (genericListType.IsGenericTypeDefinition())
                 {
                     throw new Exception("Type {0} is not a collection.".FormatWith(CultureInfo.InvariantCulture, type));
                 }
 
                 return genericListType!.GetGenericArguments()[0];
             }
+
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
                 return typeof(object);
@@ -85,7 +86,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
             return type;
         }
 
-        public static bool ImplementsGenericDefinition(Type type, Type genericInterfaceDefinition, [NotNullWhen(true)] out Type? implementingType)
+        private static bool ImplementsGenericDefinition(Type type, Type genericInterfaceDefinition, [NotNullWhen(true)] out Type? implementingType)
         {
             ValidationUtils.ArgumentNotNull(type, nameof(type));
             ValidationUtils.ArgumentNotNull(genericInterfaceDefinition, nameof(genericInterfaceDefinition));
