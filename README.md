@@ -25,9 +25,11 @@ It opens the dumped object in a separate document window.
   ![image](https://user-images.githubusercontent.com/13467759/173349566-518f89e1-9d21-4ab6-a4e1-da2dc86e3a78.png)
 
 
-### Known restrictions: 
+### Known restrictions:
+- [C# and VisualBasic](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper/DebuggeeInteraction/InteractionService.cs#L88) project languages are currently supported only.
 - the debugging code mustn't be optimized so the Expression Evaluator can be run.
 - local debugging only.
+- it doesn't work for UWP applications, because [UAP doesn't support Assembly.LoadForm](https://github.com/dotnet/runtime/issues/7543). You can bypass this restriction by referencing the .nestandard20 version of [Serialization lib](https://github.com/ycherkes/ObjectDumper/tree/main/src/Serialization) and calling: ```_ = ObjectSerializer.Serialize(null, "cs");``` for loading the serializer into executing assembly.
 
 # Powered By
 
