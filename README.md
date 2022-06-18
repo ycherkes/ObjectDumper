@@ -28,6 +28,7 @@ It opens the dumped object in a separate document window.
 ### Known restrictions: 
 - the debugging code mustn't be optimized so the Expression Evaluator can be run.
 - local debugging only.
+- it doesn't work for UWP applications, because [UAP doesn't support Assembly.LoadForm](https://github.com/dotnet/runtime/issues/7543). You can bypass this restriction by referencing the .nestandard20 version of [Serialization lib](https://github.com/ycherkes/ObjectDumper/tree/main/src/Serialization) and calling: ```_ = ObjectSerializer.Serialize(null, "cs");``` for loading the serializer into executing assembly.
 
 # Powered By
 
