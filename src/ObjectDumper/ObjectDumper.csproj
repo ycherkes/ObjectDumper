@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DebuggeeInteraction\ExpressionProviders\VisualBasicExpressionProvider.cs" />
+    <Compile Include="DebuggeeInteraction\ExpressionProviders\CSharpFSharpExpressionProvider.cs" />
+    <Compile Include="DebuggeeInteraction\ExpressionProviders\IExpressionProvider.cs" />
     <Compile Include="Extensions\Base64Extensions.cs" />
     <Compile Include="Commands\DumpAsYamlCommand.cs" />
     <Compile Include="Commands\DumpAsVbCommand.cs" />
