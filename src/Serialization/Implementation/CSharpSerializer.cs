@@ -1,11 +1,11 @@
 ﻿using Embedded.Newtonsoft.Json;
+using System.IO;
+using System.Text;
 using YellowFlavor.Serialization.Embedded.CodeDom;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.Compiler;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom;
 using YellowFlavor.Serialization.Implementation.Settings;
-using System.IO;
-using System.Text;
 
 namespace YellowFlavor.Serialization.Implementation
 {
@@ -18,7 +18,8 @@ namespace YellowFlavor.Serialization.Implementation
             MaxDepth = 25,
             ExcludeTypes = new[] { "Avro.Schema" },
             UseTypeFullName = false,
-            ConvertDateTimeToUtc = true
+            DateTimeInstantiation = DateTimeInstantiation.New,
+            DateKind = DateKind.ConvertToUtc
         };
 
         public string Serialize(object obj, string settings)
@@ -57,7 +58,8 @@ namespace YellowFlavor.Serialization.Implementation
             newSettings.IgnoreNullValues = csharpSettings.IgnoreNullValues;
             newSettings.UseTypeFullName = csharpSettings.UseFullTypeName;
             newSettings.MaxDepth = csharpSettings.MaxDepth;
-            newSettings.ConvertDateTimeToUtc = csharpSettings.ConvertDateTimeToUtc;
+            newSettings.DateTimeInstantiation = csharpSettings.DateTimeInstantiation;
+            newSettings.DateKind = csharpSettings.DateKind;
 
             return newSettings;
         }

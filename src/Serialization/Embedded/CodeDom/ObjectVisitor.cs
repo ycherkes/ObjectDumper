@@ -18,11 +18,13 @@ internal class ObjectVisitor
     private readonly CodeTypeReferenceOptions _typeReferenceOptions;
     private readonly Stack<object> _visitedObjects;
     private int _depth;
-    private readonly bool _convertDateTimeToUtc;
+    private readonly DateTimeInstantiation _dateTimeInstantiation;
+    private readonly DateKind _dateKind;
 
     public ObjectVisitor(VisitorOptions visitorOptions)
     {
-        _convertDateTimeToUtc = visitorOptions.ConvertDateTimeToUtc;
+        _dateTimeInstantiation = visitorOptions.DateTimeInstantiation;
+        _dateKind = visitorOptions.DateKind;
         _maxDepth = visitorOptions.MaxDepth;
         _ignoreDefaultValues = visitorOptions.IgnoreDefaultValues;
         _ignoreNullValues = visitorOptions.IgnoreNullValues;
@@ -376,6 +378,26 @@ internal class ObjectVisitor
                 nameof(DateTimeOffset.MinValue)
             );
 
+        if (_dateTimeInstantiation == DateTimeInstantiation.Parse)
+        {
+            return new CodeMethodInvokeExpression
+            (
+                new CodeMethodReferenceExpression(
+                    new CodeTypeReferenceExpression(dateTimeOffsetCodeTypeReference),
+                    nameof(DateTime.ParseExact)),
+                new CodePrimitiveExpression(dateTimeOffset.ToString("O")),
+                new CodePrimitiveExpression("O"),
+                new CodeFieldReferenceExpression(
+                    new CodeTypeReferenceExpression(
+                        new CodeTypeReference(typeof(CultureInfo), _typeReferenceOptions)),
+                        nameof(CultureInfo.InvariantCulture)),
+                new CodeFieldReferenceExpression(
+                    new CodeTypeReferenceExpression(
+                        new CodeTypeReference(typeof(DateTimeStyles), _typeReferenceOptions)),
+                        nameof(DateTimeStyles.RoundtripKind))
+            );
+        }
+
         var year = new CodePrimitiveExpression(dateTimeOffset.Year);
         var month = new CodePrimitiveExpression(dateTimeOffset.Month);
         var day = new CodePrimitiveExpression(dateTimeOffset.Day);
@@ -437,6 +459,26 @@ internal class ObjectVisitor
                 new CodePrimitiveExpression(timeSpan.Ticks)
             );
 
+        if (_dateTimeInstantiation == DateTimeInstantiation.Parse)
+        {
+            return new CodeMethodInvokeExpression
+            (
+                new CodeMethodReferenceExpression(
+                    new CodeTypeReferenceExpression(timeSpanCodeTypeReference),
+                    nameof(TimeSpan.ParseExact)),
+                new CodePrimitiveExpression(timeSpan.ToString("c")),
+                new CodePrimitiveExpression("c"),
+                new CodeFieldReferenceExpression(
+                    new CodeTypeReferenceExpression(
+                        new CodeTypeReference(typeof(CultureInfo), _typeReferenceOptions)),
+                        nameof(CultureInfo.InvariantCulture)),
+                new CodeFieldReferenceExpression(
+                    new CodeTypeReferenceExpression(
+                        new CodeTypeReference(typeof(TimeSpanStyles), _typeReferenceOptions)),
+                        nameof(TimeSpanStyles.None))
+            );
+        }
+
         var days = new CodePrimitiveExpression(timeSpan.Days);
         var hours = new CodePrimitiveExpression(timeSpan.Hours);
         var minutes = new CodePrimitiveExpression(timeSpan.Minutes);
@@ -454,9 +496,45 @@ internal class ObjectVisitor
 
     private CodeExpression VisitDateTime(DateTime dateTime)
     {
-        if (_convertDateTimeToUtc)
+        var dateTimeCodeTypeReference = new CodeTypeReference(typeof(DateTime), _typeReferenceOptions);
+
+        if (dateTime == DateTime.MaxValue)
+            return new CodeFieldReferenceExpression
+            (
+                new CodeTypeReferenceExpression(dateTimeCodeTypeReference),
+                nameof(DateTime.MaxValue)
+            );
+
+        if (dateTime == DateTime.MinValue)
+            return new CodeFieldReferenceExpression
+            (
+                new CodeTypeReferenceExpression(dateTimeCodeTypeReference),
+                nameof(DateTime.MinValue)
+            );
+
+        if (_dateKind == DateKind.ConvertToUtc)
         {
             dateTime = dateTime.ToUniversalTime();
+        }
+
+        if (_dateTimeInstantiation == DateTimeInstantiation.Parse)
+        {
+            return new CodeMethodInvokeExpression
+            (
+                new CodeMethodReferenceExpression(
+                    new CodeTypeReferenceExpression(dateTimeCodeTypeReference),
+                    nameof(DateTime.ParseExact)),
+                new CodePrimitiveExpression(dateTime.ToString("O")),
+                new CodePrimitiveExpression("O"),
+                new CodeFieldReferenceExpression(
+                    new CodeTypeReferenceExpression(
+                        new CodeTypeReference(typeof(CultureInfo), _typeReferenceOptions)),
+                        nameof(CultureInfo.InvariantCulture)),
+                new CodeFieldReferenceExpression(
+                    new CodeTypeReferenceExpression(
+                        new CodeTypeReference(typeof(DateTimeStyles), _typeReferenceOptions)),
+                        nameof(DateTimeStyles.RoundtripKind))
+            );
         }
 
         var year = new CodePrimitiveExpression(dateTime.Year);
@@ -473,7 +551,7 @@ internal class ObjectVisitor
             dateTime.Kind.ToString()
         );
 
-        return new CodeObjectCreateExpression(new CodeTypeReference(typeof(DateTime), _typeReferenceOptions), year,
+        return new CodeObjectCreateExpression(dateTimeCodeTypeReference, year,
             month, day, hour, minute, second, millisecond, kind);
     }
 
