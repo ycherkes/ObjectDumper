@@ -10,7 +10,7 @@ A Visual Studio 2022 extension. Dumps the objects from the debugging session in 
 
 It opens the dumped object in a separate document window.
 
-![HowTo3](https://user-images.githubusercontent.com/13467759/169960728-59afc54c-6458-49c9-adbb-043458240e9d.gif)
+![Presentation](https://user-images.githubusercontent.com/13467759/175532580-a356aea0-1844-4177-a30f-f653abe60471.gif)
 
 # Configurable:
 
