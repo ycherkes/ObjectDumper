@@ -14,7 +14,7 @@ It opens the dumped object in a separate document window.
 
 # Configurable:
 
-![image](https://user-images.githubusercontent.com/13467759/173609871-15c78049-9e09-4678-bcf2-7d25a250d68d.png)
+![image](https://user-images.githubusercontent.com/13467759/175510317-1435d913-f1b6-4dda-bee7-c5e61ce27c56.png)
 
 # Quick tips:
 - How to compare two dumped objects:
