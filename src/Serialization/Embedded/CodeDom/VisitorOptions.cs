@@ -4,7 +4,8 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
 {
     internal class VisitorOptions
     {
-        public bool ConvertDateTimeToUtc { get; set; } = true;
+        public DateTimeInstantiation DateTimeInstantiation { get; set; } = DateTimeInstantiation.New;
+        public DateKind DateKind { get; set; } = DateKind.ConvertToUtc;
         public ICollection<string> ExcludeTypes { get; set; }
         public int MaxDepth { get; set; }
         public bool IgnoreNullValues { get; set; }

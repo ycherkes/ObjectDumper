@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using Microsoft.VisualStudio.Shell;
+﻿using Microsoft.VisualStudio.Shell;
 using Newtonsoft.Json;
 using ObjectDumper.Extensions;
+using System.ComponentModel;
 
 namespace ObjectDumper.Options
 {
@@ -37,7 +37,7 @@ namespace ObjectDumper.Options
         [Description("Ignore Default Values")]
         [DefaultValue(true)]
         public bool CSharpIgnoreDefaultValues { get; set; }
-        
+
         [Category("C#")]
         [DisplayName("Use Full Type Name")]
         [Description("Use Full Type Name")]
@@ -45,10 +45,16 @@ namespace ObjectDumper.Options
         public bool CSharpUseFullTypeName { get; set; }
 
         [Category("C#")]
-        [DisplayName("Convert DateTime to UTC")]
-        [Description("Convert DateTime to UTC")]
-        [DefaultValue(true)]
-        public bool CSharpConvertDateTimeToUtc { get; set; }
+        [DisplayName("DateTime Instantiation")]
+        [Description("Configures how to DateTime, DateTimeOffset, TimeSpan will be instantiated")]
+        [DefaultValue(DateTimeInstantiation.New)]
+        public DateTimeInstantiation CSharpDateTimeInstantiation { get; set; }
+
+        [Category("C#")]
+        [DisplayName("DateTime Kind")]
+        [Description("DateTime Kind")]
+        [DefaultValue(DateKind.ConvertToUtc)]
+        public DateKind CSharpDateKind { get; set; }
 
         [Category("Json")]
         [DisplayName("Enabled")]
@@ -111,10 +117,16 @@ namespace ObjectDumper.Options
         public bool VisualBasicUseFullTypeName { get; set; }
 
         [Category("Visual Basic")]
-        [DisplayName("Convert DateTime to UTC")]
-        [Description("Convert DateTime to UTC")]
-        [DefaultValue(true)]
-        public bool VisualBasicConvertDateTimeToUtc { get; set; }
+        [DisplayName("DateTime Instantiation")]
+        [Description("Configures how to DateTime, DateTimeOffset, TimeSpan will be instantiated")]
+        [DefaultValue(DateTimeInstantiation.New)]
+        public DateTimeInstantiation VisualBasicDateTimeInstantiation { get; set; }
+
+        [Category("Visual Basic")]
+        [DisplayName("DateTime Kind")]
+        [Description("DateTime Kind")]
+        [DefaultValue(DateKind.ConvertToUtc)]
+        public DateKind VisualBasicDateKind { get; set; }
 
         [Category("Xml")]
         [DisplayName("Enabled")]
@@ -166,7 +178,7 @@ namespace ObjectDumper.Options
 
         public string ToJson(string format)
         {
-            switch(format)
+            switch (format)
             {
                 case "cs":
                     return new
@@ -175,7 +187,8 @@ namespace ObjectDumper.Options
                         IgnoreNullValues = CSharpIgnoreNullValues,
                         MaxDepth = CommonMaxDepth,
                         UseFullTypeName = CSharpUseFullTypeName,
-                        ConvertDateTimeToUtc = CSharpConvertDateTimeToUtc
+                        DateTimeInstantiation = CSharpDateTimeInstantiation,
+                        DateKind = CSharpDateKind
                     }.ToJson();
                 case "vb":
                     return new
@@ -184,7 +197,8 @@ namespace ObjectDumper.Options
                         IgnoreNullValues = VisualBasicIgnoreNullValues,
                         MaxDepth = CommonMaxDepth,
                         UseFullTypeName = VisualBasicUseFullTypeName,
-                        ConvertDateTimeToUtc = VisualBasicConvertDateTimeToUtc
+                        DateTimeInstantiation = VisualBasicDateTimeInstantiation,
+                        DateKind = VisualBasicDateKind
                     }.ToJson();
                 case "json":
                     return new

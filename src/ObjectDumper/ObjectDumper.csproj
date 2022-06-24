@@ -53,6 +53,7 @@
     <Compile Include="Commands\DumpAsVbCommand.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="DebuggeeInteraction\InteractionService.cs" />
+    <Compile Include="Options\DateTimeOptions.cs" />
     <Compile Include="Options\NamingConvention.cs" />
     <Compile Include="Options\NamingStrategy.cs" />
     <Compile Include="Options\ObjectDumperOptionPage.cs">
