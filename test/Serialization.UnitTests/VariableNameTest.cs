@@ -1,3 +1,4 @@
+using Serialization.UnitTests.TestModel;
 using YellowFlavor.Serialization.Implementation;
 
 namespace Serialization.UnitTests
@@ -64,12 +65,5 @@ namespace Serialization.UnitTests
             Assert.StartsWith("var stringValue", result);
         }
 
-
-
-        private class Person
-        {
-            public string FirstName { get; set; }
-            public int Age { get; set; }
-        }
     }
 }

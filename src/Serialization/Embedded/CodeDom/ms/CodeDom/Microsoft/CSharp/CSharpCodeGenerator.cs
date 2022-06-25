@@ -1315,7 +1315,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.CShar
             {
                 GenerateStatementExpression((CodeStatementExpression)e);
             }
-            else if(e is CodeSeparatedExpressionCollection)
+            else if (e is CodeSeparatedExpressionCollection)
             {
                 GenerateSeparatedExpressionCollection((CodeSeparatedExpressionCollection)e);
             }
@@ -1464,7 +1464,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.CShar
 
             foreach (CodeExpression expression in e.Expressions)
             {
-                if(isFirst)
+                if (isFirst)
                 {
                     GenerateExpression(e.Expressions[0]);
                     isFirst = false;
@@ -1497,8 +1497,9 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.CShar
 
         private void GenerateCodeImplicitKeyValuePairCreateExpression(CodeImplicitKeyValuePairCreateExpression e)
         {
-            Output.Write('{');
-            OutputExpressionList(new CodeExpressionCollection(new []{e.Key, e.Value}));
+            Output.WriteLine('{');
+            OutputExpressionList(new CodeExpressionCollection(new[] { e.Key, e.Value }), true);
+            Output.WriteLine();
             Output.Write('}');
         }
 
@@ -1521,7 +1522,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.CShar
                 }
                 GenerateExpression(current);
             }
-            
+
             if (codeLambdaExpression.Parameters.Count != 1)
             {
                 Output.Write(')');
@@ -3072,7 +3073,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.CShar
                 sb.Append("global::");
             }
 
-            string baseType = (typeRef.Options & CodeTypeReferenceOptions.ShortTypeName) != 0 
+            string baseType = (typeRef.Options & CodeTypeReferenceOptions.ShortTypeName) != 0
                 ? typeRef.BaseType.Split('.').Last().Split('+').Last()
                 : typeRef.BaseType;
 

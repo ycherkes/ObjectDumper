@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="ObjectDumper.7c57976c-bdc9-4edc-a4fd-48c114054ad5" Version="0.0.0.39" Language="en-US" Publisher="Yevhen Cherkes" />
+        <Identity Id="ObjectDumper.7c57976c-bdc9-4edc-a4fd-48c114054ad5" Version="0.0.0.40" Language="en-US" Publisher="Yevhen Cherkes" />
         <DisplayName>Object Dumper</DisplayName>
-        <Description xml:space="preserve">Object Dumper. Dumps an object while debugging in the next formats: CSharp Object Initialization Code, Visual Basic, JSON, YAML and XML.</Description>
+        <Description xml:space="preserve">Object Dumper. Dumps an object while debugging in the next formats: C# Object Initialization Code, Visual Basic, JSON, YAML and XML.</Description>
         <License>LICENSE.txt</License>
         <Icon>Resources\PackageIcon.png</Icon>
         <Preview>true</Preview>
