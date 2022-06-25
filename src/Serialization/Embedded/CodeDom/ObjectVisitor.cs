@@ -249,7 +249,7 @@ internal class ObjectVisitor
 
             var dictionaryType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
 
-            CodeExpression dictionaryCreateExpression = new CodeObjectCreateAndInitializeExpression(new CodeTypeReference(dictionaryType, _typeReferenceOptions), items);
+            CodeExpression dictionaryCreateExpression = new CodeObjectCreateAndInitializeExpression(new CodeCollectionTypeReference(dictionaryType, _typeReferenceOptions), items);
 
             dictionaryCreateExpression = new CodeMethodInvokeExpression(dictionaryCreateExpression, $"To{type.Name.Split('`')[0]}");
 
@@ -257,7 +257,7 @@ internal class ObjectVisitor
         }
         else
         {
-            CodeExpression dictionaryCreateExpression = new CodeObjectCreateAndInitializeExpression(new CodeTypeReference(type, _typeReferenceOptions), items);
+            CodeExpression dictionaryCreateExpression = new CodeObjectCreateAndInitializeExpression(new CodeCollectionTypeReference(type, _typeReferenceOptions), items);
             return dictionaryCreateExpression;
         }
     }
@@ -335,7 +335,7 @@ internal class ObjectVisitor
         }
 
         var initializeExpression = new CodeObjectCreateAndInitializeExpression(
-            new CodeTypeReference(type, _typeReferenceOptions),
+            new CodeCollectionTypeReference(type, _typeReferenceOptions),
             items.ToArray()
         );
 

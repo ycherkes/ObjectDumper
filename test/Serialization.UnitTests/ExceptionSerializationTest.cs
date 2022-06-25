@@ -22,7 +22,8 @@ namespace Serialization.UnitTests
                     IgnoreNullValues = true,
                     MaxDepth = 5,
                     UseFullTypeName = false,
-                    ConvertDateTimeToUtc = true
+                    DateTimeInstantiation = "New",
+                    DateKind = "ConvertToUtc"
                 }));
 
                 Assert.Contains(".Message = \"Index was outside the bounds of the array.\"", result);

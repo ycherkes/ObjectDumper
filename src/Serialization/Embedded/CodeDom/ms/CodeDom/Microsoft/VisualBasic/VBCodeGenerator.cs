@@ -1188,8 +1188,12 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
 
             if (e.InitializeExpressions.Count <= 0) return;
 
-            Output.Write(e.CreateType is CodeEmptyTypeReference ? "With" : " With");
-            Output.WriteLine();
+            Output.Write(e.CreateType switch
+            {
+                CodeEmptyTypeReference => "With ",
+                CodeCollectionTypeReference => " From ",
+                _ => " With "
+            });
             Output.WriteLine('{');
             OutputExpressionList(e.InitializeExpressions, newlineBetweenItems: true, newLineContinuation: false);
             Output.WriteLine();
@@ -1205,8 +1209,9 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
 
         protected override void GenerateCodeImplicitKeyValuePairCreateExpression(CodeImplicitKeyValuePairCreateExpression e)
         {
-            Output.Write('{');
-            OutputExpressionList(new CodeExpressionCollection(new[] { e.Key, e.Value }));
+            Output.WriteLine('{');
+            OutputExpressionList(new CodeExpressionCollection(new[] { e.Key, e.Value }), true, false);
+            Output.WriteLine();
             Output.Write('}');
         }
 
@@ -1245,7 +1250,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
         {
             Output.Write("Function (");
             bool first = true;
-            
+
             foreach (CodeExpression current in codeLambdaExpression.Parameters)
             {
                 if (first)
@@ -1258,7 +1263,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 }
                 GenerateExpression(current);
             }
-            
+
             Output.Write(')');
             Output.Write(" ");
             GenerateExpression(codeLambdaExpression.LambdaExpression);
@@ -2519,7 +2524,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
 
             if (preferBuiltInTypes)
             {
-                if(typeRef is CodeEmptyTypeReference)
+                if (typeRef is CodeEmptyTypeReference)
                 {
                     return string.Empty;
                 }
