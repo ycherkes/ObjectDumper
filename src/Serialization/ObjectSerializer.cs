@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using YellowFlavor.Serialization.Adapters;
 using YellowFlavor.Serialization.Extensions;
 using YellowFlavor.Serialization.Implementation;
-using DirectoryInfo = System.IO.DirectoryInfo;
-using DriveInfo = System.IO.DriveInfo;
-using FileInfo = System.IO.FileInfo;
 
 namespace YellowFlavor.Serialization
 {
@@ -22,14 +18,6 @@ namespace YellowFlavor.Serialization
 
         public static string Serialize(object obj, string formattingType, string settings = null)
         {
-            obj = obj switch
-            {
-                FileInfo info => FileInfoMapper.Map(info),
-                DirectoryInfo directoryInfo => DirectoryInfoMapper.Map(directoryInfo),
-                DriveInfo driveInfo => DriveInfoMapper.Map(driveInfo),
-                _ => obj
-            };
-
             try
             {
                 return Serializers.TryGetValue(formattingType, out var formatter)
