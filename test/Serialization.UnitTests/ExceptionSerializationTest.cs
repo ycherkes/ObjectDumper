@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using YellowFlavor.Serialization.Implementation;
+﻿using YellowFlavor.Serialization.Implementation;
 
 namespace Serialization.UnitTests
 {
@@ -16,15 +15,7 @@ namespace Serialization.UnitTests
             {
                 var serializer = new VisualBasicSerializer();
 
-                var result = serializer.Serialize(e, JsonConvert.SerializeObject(new
-                {
-                    IgnoreDefaultValues = true,
-                    IgnoreNullValues = true,
-                    MaxDepth = 5,
-                    UseFullTypeName = false,
-                    DateTimeInstantiation = "New",
-                    DateKind = "ConvertToUtc"
-                }));
+                var result = serializer.Serialize(e, null);
 
                 Assert.Contains(".Message = \"Index was outside the bounds of the array.\"", result);
             }
