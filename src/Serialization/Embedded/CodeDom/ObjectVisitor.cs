@@ -190,19 +190,15 @@ internal class ObjectVisitor
             ? new CodeAnonymousTypeReference()
             : new CodeTypeReference(objectType, _typeReferenceOptions))
         {
-            InitializeExpressions = new CodeExpressionCollection(serializationInfo.GetEnumerator().Cast<SerializationEntry>()
-                .Select(p => new
-                {
-                    p.Name,
-                    p.Value,
-                    p.ObjectType
-                })
-                .Where(pv => !_excludeTypes.Contains(pv.ObjectType.FullName) &&
-                             (!_ignoreNullValues || (_ignoreNullValues && pv.Value != null)) &&
-                             (!_ignoreDefaultValues || !pv.ObjectType.IsValueType || (_ignoreDefaultValues &&
-                                 ReflectionUtils.GetDefaultValue(pv.ObjectType)?.Equals(pv.Value) != true)))
-                .Select(pv => (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, pv.Name), Visit(pv.Value)))
-                .ToArray())
+            InitializeExpressions = new CodeExpressionCollection(
+                serializationInfo.GetEnumerator()
+                                 .Cast<SerializationEntry>()
+                                 .Where(pv => !_excludeTypes.Contains(pv.ObjectType.FullName) &&
+                                              (!_ignoreNullValues || (_ignoreNullValues && pv.Value != null)) &&
+                                              (!_ignoreDefaultValues || !pv.ObjectType.IsValueType || (_ignoreDefaultValues &&
+                                                  ReflectionUtils.GetDefaultValue(pv.ObjectType)?.Equals(pv.Value) != true)))
+                                 .Select(pv => (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, pv.Name), Visit(pv.Value)))
+                                 .ToArray())
         };
 
         PopVisited();
