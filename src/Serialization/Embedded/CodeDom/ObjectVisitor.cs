@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom;
 
@@ -86,6 +87,9 @@ internal class ObjectVisitor
             if (@object is IEnumerable enumerable)
                 return VisitCollection(enumerable);
 
+            if (@object is ISerializable serializable)
+                return VisitSerializable(serializable);
+
             return VisitObject(@object);
         }
         finally
@@ -167,6 +171,43 @@ internal class ObjectVisitor
         var objectType = o.GetType();
         var propertyValues = objectType.GetProperties().Select(p => p.GetValue(o)).Select(Visit).Take(2).ToArray();
         return new CodeImplicitKeyValuePairCreateExpression(propertyValues.First(), propertyValues.Last());
+    }
+
+    private CodeExpression VisitSerializable(ISerializable serializable)
+    {
+        if (IsVisited(serializable))
+        {
+            return GetCircularReferenceDetectedExpression();
+        }
+
+        PushVisited(serializable);
+
+        var objectType = serializable.GetType();
+        SerializationInfo serializationInfo = new SerializationInfo(objectType, new FormatterConverter());
+        serializable.GetObjectData(serializationInfo, new StreamingContext());
+
+        var result = new CodeObjectCreateAndInitializeExpression(serializable.GetType().IsAnonymousType()
+            ? new CodeAnonymousTypeReference()
+            : new CodeTypeReference(objectType, _typeReferenceOptions))
+        {
+            InitializeExpressions = new CodeExpressionCollection(serializationInfo.GetEnumerator().Cast<SerializationEntry>()
+                .Select(p => new
+                {
+                    p.Name,
+                    p.Value,
+                    p.ObjectType
+                })
+                .Where(pv => !_excludeTypes.Contains(pv.ObjectType.FullName) &&
+                             (!_ignoreNullValues || (_ignoreNullValues && pv.Value != null)) &&
+                             (!_ignoreDefaultValues || !pv.ObjectType.IsValueType || (_ignoreDefaultValues &&
+                                 ReflectionUtils.GetDefaultValue(pv.ObjectType)?.Equals(pv.Value) != true)))
+                .Select(pv => (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, pv.Name), Visit(pv.Value)))
+                .ToArray())
+        };
+
+        PopVisited();
+
+        return result;
     }
 
     private CodeExpression VisitObject(object o)
