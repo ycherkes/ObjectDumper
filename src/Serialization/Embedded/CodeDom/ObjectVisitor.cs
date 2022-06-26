@@ -186,17 +186,15 @@ internal class ObjectVisitor
         SerializationInfo serializationInfo = new SerializationInfo(objectType, new FormatterConverter());
         serializable.GetObjectData(serializationInfo, new StreamingContext());
 
-        var result = new CodeObjectCreateAndInitializeExpression(serializable.GetType().IsAnonymousType()
-            ? new CodeAnonymousTypeReference()
-            : new CodeTypeReference(objectType, _typeReferenceOptions))
+        var result = new CodeObjectCreateAndInitializeExpression(new CodeTypeReference(objectType, _typeReferenceOptions))
         {
             InitializeExpressions = new CodeExpressionCollection(
                 serializationInfo.GetEnumerator()
                                  .Cast<SerializationEntry>()
-                                 .Where(pv => !_excludeTypes.Contains(pv.ObjectType.FullName) &&
-                                              (!_ignoreNullValues || (_ignoreNullValues && pv.Value != null)) &&
-                                              (!_ignoreDefaultValues || !pv.ObjectType.IsValueType || (_ignoreDefaultValues &&
-                                                  ReflectionUtils.GetDefaultValue(pv.ObjectType)?.Equals(pv.Value) != true)))
+                                 .Where(se => !_excludeTypes.Contains(se.ObjectType.FullName) &&
+                                              (!_ignoreNullValues || (_ignoreNullValues && se.Value != null)) &&
+                                              (!_ignoreDefaultValues || !se.ObjectType.IsValueType || (_ignoreDefaultValues &&
+                                                  ReflectionUtils.GetDefaultValue(se.ObjectType)?.Equals(se.Value) != true)))
                                  .Select(pv => (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, pv.Name), Visit(pv.Value)))
                                  .ToArray())
         };
@@ -421,7 +419,7 @@ internal class ObjectVisitor
             (
                 new CodeMethodReferenceExpression(
                     new CodeTypeReferenceExpression(dateTimeOffsetCodeTypeReference),
-                    nameof(DateTime.ParseExact)),
+                    nameof(DateTimeOffset.ParseExact)),
                 new CodePrimitiveExpression(dateTimeOffset.ToString("O")),
                 new CodePrimitiveExpression("O"),
                 new CodeFieldReferenceExpression(
