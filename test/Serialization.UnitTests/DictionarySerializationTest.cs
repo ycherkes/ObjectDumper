@@ -88,5 +88,46 @@ namespace Serialization.UnitTests
 };
 ", result);
         }
+
+        [Fact]
+        public void SerializeDictionaryOfTypeArrayCSharp()
+        {
+            var dict = new Dictionary<string, Type[]>
+            {
+                {"First",  new[]{ typeof(Person) } },
+                {"Second", new[]{ typeof(string) } }
+            };
+
+            var serializer = new CSharpSerializer();
+
+            var result = serializer.Serialize(dict, JsonConvert.SerializeObject(new
+            {
+                IgnoreDefaultValues = true,
+                IgnoreNullValues = true,
+                MaxDepth = 5,
+                UseFullTypeName = false,
+                DateTimeInstantiation = "New",
+                DateKind = "ConvertToUtc"
+            }));
+
+            Assert.Equal(@"var dictionaryOfArrayOfType = new Dictionary<string, Type[]>
+{
+    {
+        ""First"",
+        new Type[]
+        {
+            typeof(Person)
+        }
+    },
+    {
+        ""Second"",
+        new Type[]
+        {
+            typeof(string)
+        }
+    }
+};
+", result);
+        }
     }
 }

@@ -56,7 +56,7 @@ namespace System.Runtime.Serialization
             if (type.IsArray)
             {
                 ArrayRank = type.GetArrayRank();
-                ArrayElementType = new CodeTypeReference(type.GetElementType());
+                ArrayElementType = new CodeTypeReference(type.GetElementType(), codeTypeReferenceOption);
                 _baseType = null;
             }
             else
@@ -71,7 +71,7 @@ namespace System.Runtime.Serialization
 
         public CodeTypeReference(Type type) : this(type, CodeTypeReferenceOptions.GenericTypeParameter)
         {
-         }
+        }
 
         public CodeTypeReference(string typeName, CodeTypeReferenceOptions codeTypeReferenceOption)
         {
