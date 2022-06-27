@@ -16,12 +16,12 @@ namespace YellowFlavor.Serialization
             {"yaml", new YamlSerializer()}
         };
 
-        public static string Serialize(object obj, string formattingType, string settings = null)
+        public static string Serialize(object obj, string format, string settings = null)
         {
             try
             {
-                return Serializers.TryGetValue(formattingType, out var formatter)
-                    ? formatter.Serialize(obj, settings.FromBase64()).ToBase64()
+                return Serializers.TryGetValue(format, out var serializer)
+                    ? serializer.Serialize(obj, settings.FromBase64()).ToBase64()
                     : obj?.ToString().ToBase64();
             }
             catch (Exception e)
