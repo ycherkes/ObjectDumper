@@ -26,7 +26,7 @@ namespace YellowFlavor.Serialization
             }
             catch (Exception e)
             {
-                return e.ToString();
+                return e.ToString().ToBase64();
             }
         }
     }
