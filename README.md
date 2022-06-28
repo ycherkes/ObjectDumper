@@ -37,6 +37,8 @@ It opens the dumped object in a separate document window.
 * [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
 * [YamlDotNet](https://github.com/aaubry/YamlDotNet)
 
+This tool has been working well for my own personal needs, but outside that its future depends on your feedback. Feel free to [open an issue](https://github.com/ycherkes/ObjectDumper/issues).
+
 ## Donate project
 
 | Coin           | Address |
