@@ -13,7 +13,6 @@ namespace ObjectDumper.DebuggeeInteraction
 {
     internal class InteractionService
     {
-
         private readonly ObjectDumperOptionPage _optionsPage;
         private readonly Dictionary<string, IExpressionProvider> _expressionProvidersByLanguage;
         private readonly Debugger _debugger;
@@ -22,6 +21,7 @@ namespace ObjectDumper.DebuggeeInteraction
         {
             _debugger = dte.Debugger;
             _optionsPage = (ObjectDumperOptionPage)package.GetDialogPage(typeof(ObjectDumperOptionPage));
+
             var cSharpFSharpProvider = new CSharpFSharpExpressionProvider();
             _expressionProvidersByLanguage = new Dictionary<string, IExpressionProvider>(StringComparer.OrdinalIgnoreCase)
             {
@@ -35,9 +35,9 @@ namespace ObjectDumper.DebuggeeInteraction
 
         public (bool success, string evaluationResult) InjectFormatter()
         {
-            var isServiceFound = _expressionProvidersByLanguage.TryGetValue(Language, out var expressionProvider);
+            var isProviderFound = _expressionProvidersByLanguage.TryGetValue(Language, out var expressionProvider);
 
-            if (!isServiceFound)
+            if (!isProviderFound)
             {
                 return (false, $"Unsupported language: {Language}");
             }
@@ -74,9 +74,9 @@ namespace ObjectDumper.DebuggeeInteraction
 
         public (bool success, string value) GetSerializedValue(string expression, string format)
         {
-            var isServiceFound = _expressionProvidersByLanguage.TryGetValue(Language, out var expressionComposer);
+            var isProviderFound = _expressionProvidersByLanguage.TryGetValue(Language, out var expressionComposer);
 
-            if (!isServiceFound)
+            if (!isProviderFound)
             {
                 return (false, $"Unsupported language: {Language}");
             }
