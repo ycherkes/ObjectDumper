@@ -87,8 +87,15 @@ internal class ObjectVisitor
             if (@object is IEnumerable enumerable)
                 return VisitCollection(enumerable);
 
-            if (@object is ISerializable serializable)
-                return VisitSerializable(serializable);
+            try
+            {
+                if (@object is ISerializable serializable)
+                    return VisitSerializable(serializable);
+            }
+            catch
+            {
+                // ignored
+            }
 
             return VisitObject(@object);
         }
