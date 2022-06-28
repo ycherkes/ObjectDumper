@@ -99,9 +99,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="InjectableLibs\netcoreapp3.1\YellowFlavor.Serialization.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
+    <Content Include="InjectableLibs\netstandard2.0\YellowFlavor.Serialization.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Resources\PackageIcon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
