@@ -25,9 +25,9 @@ namespace ObjectDumper.DebuggeeInteraction
             var cSharpFSharpProvider = new CSharpFSharpExpressionProvider();
             _expressionProvidersByLanguage = new Dictionary<string, IExpressionProvider>(StringComparer.OrdinalIgnoreCase)
             {
-                {"C#", cSharpFSharpProvider},
-                {"F#", cSharpFSharpProvider},
-                {"Basic", new VisualBasicExpressionProvider()}
+                { "C#", cSharpFSharpProvider },
+                { "F#", cSharpFSharpProvider },
+                { "Basic", new VisualBasicExpressionProvider() }
             };
         }
 
