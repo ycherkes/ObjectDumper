@@ -157,13 +157,17 @@ internal class ObjectVisitor
 
         PushVisited(o);
 
-        var objectType = o.GetType();
-        var propertyValues = objectType.GetProperties().Select(p => p.GetValue(o)).Select(Visit);
-        var result = new CodeObjectCreateExpression(new CodeTypeReference(objectType, _typeReferenceOptions), propertyValues.ToArray());
-
-        PopVisited();
-
-        return result;
+        try
+        {
+            var objectType = o.GetType();
+            var propertyValues = objectType.GetProperties().Select(p => p.GetValue(o)).Select(Visit);
+            var result = new CodeObjectCreateExpression(new CodeTypeReference(objectType, _typeReferenceOptions), propertyValues.ToArray());
+            return result;
+        }
+        finally
+        {
+            PopVisited();
+        }
     }
 
     private CodeExpression VisitKeyValuePairGenerateTuple(object o)
@@ -189,26 +193,31 @@ internal class ObjectVisitor
 
         PushVisited(serializable);
 
-        var objectType = serializable.GetType();
-        SerializationInfo serializationInfo = new SerializationInfo(objectType, new FormatterConverter());
-        serializable.GetObjectData(serializationInfo, new StreamingContext());
-
-        var result = new CodeObjectCreateAndInitializeExpression(new CodeTypeReference(objectType, _typeReferenceOptions))
+        try
         {
-            InitializeExpressions = new CodeExpressionCollection(
-                serializationInfo.GetEnumerator()
-                                 .Cast<SerializationEntry>()
-                                 .Where(se => !_excludeTypes.Contains(se.ObjectType.FullName) &&
-                                              (!_ignoreNullValues || (_ignoreNullValues && se.Value != null)) &&
-                                              (!_ignoreDefaultValues || !se.ObjectType.IsValueType || (_ignoreDefaultValues &&
-                                                  ReflectionUtils.GetDefaultValue(se.ObjectType)?.Equals(se.Value) != true)))
-                                 .Select(pv => (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, pv.Name), Visit(pv.Value)))
-                                 .ToArray())
-        };
+            var objectType = serializable.GetType();
+            SerializationInfo serializationInfo = new SerializationInfo(objectType, new FormatterConverter());
+            serializable.GetObjectData(serializationInfo, new StreamingContext());
 
-        PopVisited();
+            var result = new CodeObjectCreateAndInitializeExpression(new CodeTypeReference(objectType, _typeReferenceOptions))
+            {
+                InitializeExpressions = new CodeExpressionCollection(
+                    serializationInfo.GetEnumerator()
+                                     .Cast<SerializationEntry>()
+                                     .Where(se => !_excludeTypes.Contains(se.ObjectType.FullName) &&
+                                                  (!_ignoreNullValues || (_ignoreNullValues && se.Value != null)) &&
+                                                  (!_ignoreDefaultValues || !se.ObjectType.IsValueType || (_ignoreDefaultValues &&
+                                                      ReflectionUtils.GetDefaultValue(se.ObjectType)?.Equals(se.Value) != true)))
+                                     .Select(pv => (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, pv.Name), Visit(pv.Value)))
+                                     .ToArray())
+            };
 
-        return result;
+            return result;
+        }
+        finally
+        {
+            PopVisited();
+        }
     }
 
     private CodeExpression VisitObject(object o)
@@ -220,31 +229,36 @@ internal class ObjectVisitor
 
         PushVisited(o);
 
-        var objectType = o.GetType();
-
-        var result = new CodeObjectCreateAndInitializeExpression(o.GetType().IsAnonymousType()
-            ? new CodeAnonymousTypeReference()
-            : new CodeTypeReference(objectType, _typeReferenceOptions))
+        try
         {
-            InitializeExpressions = new CodeExpressionCollection(objectType.GetRuntimeProperties()
-                .Where(p => p.CanRead)
-                .Select(p => new
-                {
-                    PropertyName = p.Name,
-                    Value = p.GetValue(o),
-                    p.PropertyType
-                })
-                .Where(pv => !_excludeTypes.Contains(pv.PropertyType.FullName) &&
-                             (!_ignoreNullValues || (_ignoreNullValues && pv.Value != null)) &&
-                             (!_ignoreDefaultValues || !pv.PropertyType.IsValueType || (_ignoreDefaultValues &&
-                                 ReflectionUtils.GetDefaultValue(pv.PropertyType)?.Equals(pv.Value) != true)))
-                .Select(pv => (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, pv.PropertyName), Visit(pv.Value)))
-                .ToArray())
-        };
+            var objectType = o.GetType();
 
-        PopVisited();
+            var result = new CodeObjectCreateAndInitializeExpression(o.GetType().IsAnonymousType()
+                ? new CodeAnonymousTypeReference()
+                : new CodeTypeReference(objectType, _typeReferenceOptions))
+            {
+                InitializeExpressions = new CodeExpressionCollection(objectType.GetRuntimeProperties()
+                    .Where(p => p.CanRead)
+                    .Select(p => new
+                    {
+                        PropertyName = p.Name,
+                        Value = p.GetValue(o),
+                        p.PropertyType
+                    })
+                    .Where(pv => !_excludeTypes.Contains(pv.PropertyType.FullName) &&
+                                 (!_ignoreNullValues || (_ignoreNullValues && pv.Value != null)) &&
+                                 (!_ignoreDefaultValues || !pv.PropertyType.IsValueType || (_ignoreDefaultValues &&
+                                     ReflectionUtils.GetDefaultValue(pv.PropertyType)?.Equals(pv.Value) != true)))
+                    .Select(pv => (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, pv.PropertyName), Visit(pv.Value)))
+                    .ToArray())
+            };
 
-        return result;
+            return result;
+        }
+        finally
+        {
+            PopVisited();
+        }
     }
 
     private CodeExpression VisitValueTuple(object o)
@@ -264,17 +278,22 @@ internal class ObjectVisitor
 
         PushVisited(dict);
 
-        var valuesType = dict.Values.GetType();
-        var keysType = dict.Keys.GetType();
+        try
+        {
+            var valuesType = dict.Values.GetType();
+            var keysType = dict.Keys.GetType();
 
-        var result = ReflectionUtils.ContainsAnonymousType(keysType) ||
-                     ReflectionUtils.ContainsAnonymousType(valuesType)
-            ? VisitAnonymousDictionary(dict)
-            : VisitSimpleDictionary(dict);
+            var result = ReflectionUtils.ContainsAnonymousType(keysType) ||
+                         ReflectionUtils.ContainsAnonymousType(valuesType)
+                ? VisitAnonymousDictionary(dict)
+                : VisitSimpleDictionary(dict);
 
-        PopVisited();
-
-        return result;
+            return result;
+        }
+        finally
+        {
+            PopVisited();
+        }
     }
 
     private CodeExpression VisitSimpleDictionary(IDictionary dict)
@@ -333,17 +352,22 @@ internal class ObjectVisitor
 
         PushVisited(collection);
 
-        var collectionType = collection.GetType();
+        try
+        {
+            var collectionType = collection.GetType();
 
-        var elementType = ReflectionUtils.GetInnerElementType(collectionType);
+            var elementType = ReflectionUtils.GetInnerElementType(collectionType);
 
-        var result = ReflectionUtils.ContainsAnonymousType(collectionType)
-            ? VisitAnonymousCollection(collection)
-            : VisitSimpleCollection(collection, elementType);
+            var result = ReflectionUtils.ContainsAnonymousType(collectionType)
+                ? VisitAnonymousCollection(collection)
+                : VisitSimpleCollection(collection, elementType);
 
-        PopVisited();
-
-        return result;
+            return result;
+        }
+        finally
+        {
+            PopVisited();
+        }
     }
 
     private CodeExpression VisitSimpleCollection(IEnumerable enumerable, Type elementType)
