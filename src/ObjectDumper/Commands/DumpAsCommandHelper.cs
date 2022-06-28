@@ -48,19 +48,17 @@ namespace ObjectDumper.Commands
                 return;
             }
 
-            var (isInjected, evaluationResult) = _interactionService.InjectFormatter();
+            var (isInjected, injectionEvaluationResult) = _interactionService.InjectSerializer();
 
-            var expression = selectionText;
+            var fileName = SanitizeFileName(selectionText.Any(char.IsWhiteSpace) ? "expression" : selectionText);
 
-            var fileName = SanitizeFileName(expression.Any(char.IsWhiteSpace) ? "expression" : expression);
-
-            var (_, value) = isInjected ? _interactionService.GetSerializedValue(expression, format) : (false, evaluationResult);
-
-            var serializedValue = value;
+            var fileContent = isInjected
+                ? _interactionService.GetSerializedValue(selectionText, format)
+                : injectionEvaluationResult;
 
             var fileExtension = $".{format}";
 
-            CreateNewFile($"{fileName}{fileExtension}", serializedValue);
+            CreateNewFile($"{fileName}{fileExtension}", fileContent);
         }
 
         private static string SanitizeFileName(string fileName)

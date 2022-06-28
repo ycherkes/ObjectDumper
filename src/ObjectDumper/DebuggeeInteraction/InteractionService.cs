@@ -33,7 +33,7 @@ namespace ObjectDumper.DebuggeeInteraction
 
         private string Language => _debugger.CurrentStackFrame.Language;
 
-        public (bool success, string evaluationResult) InjectFormatter()
+        public (bool success, string evaluationResult) InjectSerializer()
         {
             var isProviderFound = _expressionProvidersByLanguage.TryGetValue(Language, out var expressionProvider);
 
@@ -72,13 +72,13 @@ namespace ObjectDumper.DebuggeeInteraction
             return (evaluationResult.IsValidValue, evaluationResult.Value);
         }
 
-        public (bool success, string value) GetSerializedValue(string expression, string format)
+        public string GetSerializedValue(string expression, string format)
         {
             var isProviderFound = _expressionProvidersByLanguage.TryGetValue(Language, out var expressionComposer);
 
             if (!isProviderFound)
             {
-                return (false, $"Unsupported language: {Language}");
+                return $"Unsupported language: {Language}";
             }
 
             var settings = _optionsPage.ToJson(format).ToBase64();
@@ -88,7 +88,7 @@ namespace ObjectDumper.DebuggeeInteraction
 
             if (evaluationResult.IsValidValue)
             {
-                return (true, trimmedValue.Base64Decode());
+                return trimmedValue.Base64Decode();
             }
 
             trimmedValue = Regex.Unescape(trimmedValue);
@@ -100,7 +100,7 @@ namespace ObjectDumper.DebuggeeInteraction
                     .Replace("\"\"", "\"");
             }
 
-            return (false, trimmedValue);
+            return trimmedValue;
         }
 
         private bool IsSerializerInjected(IExpressionProvider expressionProvider)
