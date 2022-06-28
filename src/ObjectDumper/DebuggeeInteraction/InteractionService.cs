@@ -1,4 +1,5 @@
-﻿using EnvDTE80;
+﻿using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using ObjectDumper.DebuggeeInteraction.ExpressionProviders;
 using ObjectDumper.Extensions;
@@ -13,13 +14,13 @@ namespace ObjectDumper.DebuggeeInteraction
     internal class InteractionService
     {
 
-        private readonly DTE2 _dte;
         private readonly ObjectDumperOptionPage _optionsPage;
         private readonly Dictionary<string, IExpressionProvider> _expressionProvidersByLanguage;
+        private readonly Debugger _debugger;
 
         public InteractionService(DTE2 dte, Package package)
         {
-            _dte = dte;
+            _debugger = dte.Debugger;
             _optionsPage = (ObjectDumperOptionPage)package.GetDialogPage(typeof(ObjectDumperOptionPage));
             var cSharpFSharpProvider = new CSharpFSharpExpressionProvider();
             _expressionProvidersByLanguage = new Dictionary<string, IExpressionProvider>(StringComparer.OrdinalIgnoreCase)
@@ -30,7 +31,7 @@ namespace ObjectDumper.DebuggeeInteraction
             };
         }
 
-        private string Language => _dte.Debugger.CurrentStackFrame.Language;
+        private string Language => _debugger.CurrentStackFrame.Language;
 
         public (bool success, string evaluationResult) InjectFormatter()
         {
@@ -66,12 +67,12 @@ namespace ObjectDumper.DebuggeeInteraction
                 "YellowFlavor.Serialization.dll");
 
             var loadAssemblyExpressionText = expressionProvider.GetLoadAssemblyExpressionText(serializerFileName);
-            var evaluationResult = _dte.Debugger.GetExpression(loadAssemblyExpressionText);
+            var evaluationResult = _debugger.GetExpression(loadAssemblyExpressionText);
 
             return (evaluationResult.IsValidValue, evaluationResult.Value);
         }
 
-        public (bool success, string value) GetFormattedValue(string expression, string format)
+        public (bool success, string value) GetSerializedValue(string expression, string format)
         {
             var isServiceFound = _expressionProvidersByLanguage.TryGetValue(Language, out var expressionComposer);
 
@@ -82,37 +83,36 @@ namespace ObjectDumper.DebuggeeInteraction
 
             var settings = _optionsPage.ToJson(format).ToBase64();
             var serializeExpressionText = expressionComposer.GetSerializedValueExpressionText(expression, format, settings);
-            var evaluationResult = _dte.Debugger.GetExpression(serializeExpressionText, Timeout: _optionsPage.CommonOperationTimeoutSeconds * 1000);
+            var evaluationResult = _debugger.GetExpression(serializeExpressionText, Timeout: _optionsPage.CommonOperationTimeoutSeconds * 1000);
+            var trimmedValue = evaluationResult.Value.Trim('"');
 
-            var (isDecoded, decodedValue) = evaluationResult.Value.Trim('"').Base64Decode();
-
-            if (isDecoded)
+            if (evaluationResult.IsValidValue)
             {
-                return (true, decodedValue);
+                return (true, trimmedValue.Base64Decode());
             }
 
-            decodedValue = Regex.Unescape(decodedValue);
+            trimmedValue = Regex.Unescape(trimmedValue);
 
             if (Language == "Basic")
             {
-                decodedValue = decodedValue
+                trimmedValue = trimmedValue
                     .Replace("\" & vbCrLf & \"", Environment.NewLine)
                     .Replace("\"\"", "\"");
             }
 
-            return (false, decodedValue);
+            return (false, trimmedValue);
         }
 
         private bool IsSerializerInjected(IExpressionProvider expressionProvider)
         {
             var isSerializerInjectedExpressionText = expressionProvider.GetIsSerializerInjectedExpressionText();
-            return _dte.Debugger.GetExpression(isSerializerInjectedExpressionText).IsValidValue;
+            return _debugger.GetExpression(isSerializerInjectedExpressionText).IsValidValue;
         }
 
         private (bool isValid, string value) GetStringTypeAssemblyLocation(IExpressionProvider expressionProvider)
         {
             var assemblyLocationExpressionText = expressionProvider.GetStringTypeAssemblyLocationExpressionText();
-            var evaluationResult = _dte.Debugger.GetExpression(assemblyLocationExpressionText);
+            var evaluationResult = _debugger.GetExpression(assemblyLocationExpressionText);
             return (evaluationResult.IsValidValue, evaluationResult.Value);
         }
     }

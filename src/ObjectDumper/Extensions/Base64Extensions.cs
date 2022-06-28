@@ -15,17 +15,10 @@ namespace ObjectDumper.Extensions
             return Convert.ToBase64String(plainTextBytes);
         }
 
-        public static (bool, string) Base64Decode(this string base64EncodedData)
+        public static string Base64Decode(this string base64EncodedData)
         {
-            try
-            {
-                var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
-                return (true, Encoding.UTF8.GetString(base64EncodedBytes));
-            }
-            catch
-            {
-                return (false, base64EncodedData);
-            }
+            var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
+            return Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
 }

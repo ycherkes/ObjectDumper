@@ -13,6 +13,7 @@ namespace ObjectDumper.Commands
 {
     internal class DumpAsCommandHelper
     {
+        private const string ImmediateWindowObjectKind = "{ECB7191A-597B-41F5-9843-03A4CF275DDE}";
         private readonly DTE2 _dte;
         private readonly InteractionService _interactionService;
         private readonly AsyncPackage _package;
@@ -32,7 +33,7 @@ namespace ObjectDumper.Commands
                 && _dte.Debugger.CurrentMode == dbgDebugMode.dbgBreakMode
                 && _dte.Debugger.CurrentStackFrame != null
                 && (_dte.ActiveWindow.ObjectKind == Constants.vsDocumentKindText ||
-                    _dte.ActiveWindow.ObjectKind == "{ECB7191A-597B-41F5-9843-03A4CF275DDE}");
+                    _dte.ActiveWindow.ObjectKind == ImmediateWindowObjectKind);
 
         }
 
@@ -53,13 +54,13 @@ namespace ObjectDumper.Commands
 
             var fileName = SanitizeFileName(expression.Any(char.IsWhiteSpace) ? "expression" : expression);
 
-            var (_, value) = isInjected ? _interactionService.GetFormattedValue(expression, format) : (false, evaluationResult);
+            var (_, value) = isInjected ? _interactionService.GetSerializedValue(expression, format) : (false, evaluationResult);
 
-            var formattedValue = value;
+            var serializedValue = value;
 
             var fileExtension = $".{format}";
 
-            CreateNewFile($"{fileName}{fileExtension}", formattedValue);
+            CreateNewFile($"{fileName}{fileExtension}", serializedValue);
         }
 
         private static string SanitizeFileName(string fileName)
@@ -68,17 +69,17 @@ namespace ObjectDumper.Commands
             return invalids.Aggregate(fileName, (current, c) => current.Replace(c, '_'));
         }
 
-        private void CreateNewFile(string fileName, string fileContents)
+        private void CreateNewFile(string fileName, string fileContent)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             var newFileWindow = _dte.ItemOperations.NewFile(Name: fileName);
             var newDocument = newFileWindow.Document;
 
-            if (!string.IsNullOrEmpty(fileContents))
+            if (!string.IsNullOrEmpty(fileContent))
             {
                 var selection = (TextSelection)newDocument.Selection;
-                selection?.Insert(fileContents);
+                selection?.Insert(fileContent);
                 selection?.StartOfDocument();
             }
 
