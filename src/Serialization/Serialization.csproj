@@ -5,8 +5,8 @@
     <TargetFrameworks Condition="'$(LibraryFrameworks)'!=''">$(LibraryFrameworks)</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <AssemblyName>YellowFlavor.Serialization</AssemblyName>
-    <AssemblyVersion>0.0.0.45</AssemblyVersion>
-    <FileVersion>0.0.0.45</FileVersion>
+    <AssemblyVersion>0.0.0.46</AssemblyVersion>
+    <FileVersion>0.0.0.46</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RootNamespace>YellowFlavor.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
   </PropertyGroup>
