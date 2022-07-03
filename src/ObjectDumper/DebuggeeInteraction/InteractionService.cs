@@ -42,9 +42,9 @@ namespace ObjectDumper.DebuggeeInteraction
                 return (false, $"Unsupported language: {Language}");
             }
 
-            var isFormatterInjected = IsSerializerInjected(expressionProvider);
+            var isSerializerInjected = IsSerializerInjected(expressionProvider);
 
-            if (isFormatterInjected)
+            if (isSerializerInjected)
             {
                 return (true, null);
             }
