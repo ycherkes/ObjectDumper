@@ -31,6 +31,8 @@ It opens the dumped object in a separate document window.
 - local debugging only.
 - it doesn't work for UWP applications, because [UAP doesn't support Assembly.LoadFrom](https://github.com/dotnet/runtime/issues/7543). You can bypass this restriction by referencing the .nestandard20 version of [Serialization lib](https://github.com/ycherkes/ObjectDumper/tree/main/src/Serialization) and calling: ```_ = ObjectSerializer.Serialize(null, "cs");``` for loading the serializer into executing assembly. [Example](https://github.com/ycherkes/ObjectDumper/blob/main/samples/uwp/TestUwp/App.xaml.cs#L26)
 
+**Privacy Notice:** No personal data is collected at all.
+
 # Powered By
 
 * [System.CodeDom](https://github.com/dotnet/runtime/tree/main/src/libraries/System.CodeDom)
