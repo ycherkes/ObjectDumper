@@ -21,6 +21,7 @@ internal class ObjectVisitor
     private int _depth;
     private readonly DateTimeInstantiation _dateTimeInstantiation;
     private readonly DateKind _dateKind;
+    private readonly bool _useNamedArgumentsForReferenceRecordTypes;
 
     public ObjectVisitor(VisitorOptions visitorOptions)
     {
@@ -33,6 +34,7 @@ internal class ObjectVisitor
             ? CodeTypeReferenceOptions.FullTypeName
             : CodeTypeReferenceOptions.ShortTypeName;
         _excludeTypes = visitorOptions.ExcludeTypes ?? new List<string>();
+        _useNamedArgumentsForReferenceRecordTypes = visitorOptions.UseNamedArgumentsForReferenceRecordTypes;
 
         _visitedObjects = new Stack<object>();
     }
@@ -59,6 +61,11 @@ internal class ObjectVisitor
 
             if (@object is DateTimeOffset dateTimeOffset)
                 return VisitDateTimeOffset(dateTimeOffset);
+
+            if (IsRecord(@object))
+            {
+                return VisitRecord(@object);
+            }
 
             if (IsKeyValuePair(@object))
                 return VisitKeyValuePair(@object);
@@ -103,6 +110,21 @@ internal class ObjectVisitor
         {
             _depth--;
         }
+    }
+
+    private CodeExpression VisitRecord(object o)
+    {
+        var objectType = o.GetType();
+        var argumentValues = _useNamedArgumentsForReferenceRecordTypes ?
+            objectType.GetProperties().Select(p => (CodeExpression)new CodeNamedArgumentExpression(p.Name, Visit(p.GetValue(o))))
+            : objectType.GetProperties().Select(p => p.GetValue(o)).Select(Visit);
+        return new CodeObjectCreateExpression(new CodeTypeReference(objectType, _typeReferenceOptions),
+            argumentValues.ToArray());
+    }
+
+    private static bool IsRecord(object o)
+    {
+        return o.GetType().GetMethods().Any(m => m.Name == "<Clone>$"); ;
     }
 
     private CodeExpression VisitType(Type type)

@@ -579,6 +579,10 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.
             {
                 GenerateObjectCreateAndInitializeExpression((CodeObjectCreateAndInitializeExpression)e);
             }
+            else if (e is CodeNamedArgumentExpression na)
+            {
+                GenerateNamedArgumentExpression(na);
+            }
             else if (e is CodeValueTupleCreateExpression)
             {
                 GenerateValueTupleCreateExpression((CodeValueTupleCreateExpression)e);
@@ -1386,6 +1390,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.
         protected abstract void GenerateObjectCreateExpression(CodeObjectCreateExpression e);
         protected abstract void GenerateLambdaExpression(CodeLambdaExpression e);
         protected abstract void GenerateObjectCreateAndInitializeExpression(CodeObjectCreateAndInitializeExpression e);
+        protected abstract void GenerateNamedArgumentExpression(CodeNamedArgumentExpression e);
         protected abstract void GenerateCodeAssignExpression(CodeAssignExpression e);
         protected virtual void GenerateParameterDeclarationExpression(CodeParameterDeclarationExpression e)
         {

@@ -482,6 +482,13 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
             }
         }
 
+        protected override void GenerateNamedArgumentExpression(CodeNamedArgumentExpression e)
+        {
+            Output.Write(e.Name);
+            Output.Write(":=");
+            GenerateExpression(e.Value);
+        }
+
         protected override void GenerateCodeAssignExpression(CodeAssignExpression e)
         {
             GenerateExpression(e.Left);

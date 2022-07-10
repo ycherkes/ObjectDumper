@@ -19,7 +19,8 @@ namespace YellowFlavor.Serialization.Implementation
             ExcludeTypes = new[] { "Avro.Schema" },
             UseTypeFullName = false,
             DateTimeInstantiation = DateTimeInstantiation.New,
-            DateKind = DateKind.ConvertToUtc
+            DateKind = DateKind.ConvertToUtc,
+            UseNamedArgumentsForReferenceRecordTypes = false
         };
 
         public string Serialize(object obj, string settings)
@@ -60,6 +61,7 @@ namespace YellowFlavor.Serialization.Implementation
             newSettings.MaxDepth = csharpSettings.MaxDepth;
             newSettings.DateTimeInstantiation = csharpSettings.DateTimeInstantiation;
             newSettings.DateKind = csharpSettings.DateKind;
+            newSettings.UseNamedArgumentsForReferenceRecordTypes = csharpSettings.UseNamedArgumentsForReferenceRecordTypes;
 
             return newSettings;
         }

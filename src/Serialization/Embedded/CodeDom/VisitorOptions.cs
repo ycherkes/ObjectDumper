@@ -11,5 +11,6 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
         public bool IgnoreNullValues { get; set; }
         public bool IgnoreDefaultValues { get; set; }
         public bool UseTypeFullName { get; set; }
+        public bool UseNamedArgumentsForReferenceRecordTypes { get; set; }
     }
 }
