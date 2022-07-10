@@ -10,4 +10,5 @@ internal class CSharpSettings
     public bool IgnoreDefaultValues { get; set; } = true;
     public int MaxDepth { get; set; } = 100;
     public bool UseFullTypeName { get; set; } = false;
+    public bool UseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
 }

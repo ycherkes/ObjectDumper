@@ -1387,6 +1387,10 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.CShar
             {
                 GenerateObjectCreateAndInitializeExpression((CodeObjectCreateAndInitializeExpression)e);
             }
+            else if (e is CodeNamedArgumentExpression na)
+            {
+                GenerateNamedArgumentExpression(na);
+            }
             else if (e is CodeValueTupleCreateExpression)
             {
                 GenerateValueTupleCreateExpression((CodeValueTupleCreateExpression)e);
@@ -1454,6 +1458,13 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.CShar
                     throw new ArgumentException(SR.Format(SR.InvalidElementType, e.GetType().FullName), nameof(e));
                 }
             }
+        }
+
+        private void GenerateNamedArgumentExpression(CodeNamedArgumentExpression na)
+        {
+            Output.Write(na.Name);
+            Output.Write(": ");
+            GenerateExpression(na.Value);
         }
 
         private void GenerateFlagsBinaryOperatorExpression(CodeFlagsBinaryOperatorExpression e)

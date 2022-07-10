@@ -56,6 +56,12 @@ namespace ObjectDumper.Options
         [DefaultValue(DateKind.ConvertToUtc)]
         public DateKind CSharpDateKind { get; set; } = DateKind.ConvertToUtc;
 
+        [Category("C#")]
+        [DisplayName("Use Named Arguments For Reference Record Types")]
+        [Description("Use Named Arguments For Reference Record Types")]
+        [DefaultValue(false)]
+        public bool CSharpUseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
+
         [Category("Json")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -128,6 +134,12 @@ namespace ObjectDumper.Options
         [DefaultValue(DateKind.ConvertToUtc)]
         public DateKind VisualBasicDateKind { get; set; } = DateKind.ConvertToUtc;
 
+        [Category("Visual Basic")]
+        [DisplayName("Use Named Arguments For Reference Record Types")]
+        [Description("Use Named Arguments For Reference Record Types")]
+        [DefaultValue(false)]
+        public bool VisualBasicUseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
+
         [Category("Xml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -188,7 +200,8 @@ namespace ObjectDumper.Options
                         MaxDepth = CommonMaxDepth,
                         UseFullTypeName = CSharpUseFullTypeName,
                         DateTimeInstantiation = CSharpDateTimeInstantiation,
-                        DateKind = CSharpDateKind
+                        DateKind = CSharpDateKind,
+                        UseNamedArgumentsForReferenceRecordTypes = CSharpUseNamedArgumentsForReferenceRecordTypes
                     }.ToJson();
                 case "vb":
                     return new
@@ -198,7 +211,8 @@ namespace ObjectDumper.Options
                         MaxDepth = CommonMaxDepth,
                         UseFullTypeName = VisualBasicUseFullTypeName,
                         DateTimeInstantiation = VisualBasicDateTimeInstantiation,
-                        DateKind = VisualBasicDateKind
+                        DateKind = VisualBasicDateKind,
+                        UseNamedArgumentsForReferenceRecordTypes = VisualBasicUseNamedArgumentsForReferenceRecordTypes
                     }.ToJson();
                 case "json":
                     return new
