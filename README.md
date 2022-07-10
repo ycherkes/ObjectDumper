@@ -46,3 +46,6 @@ This tool has been working well for my own personal needs, but outside that its 
 | Coin           | Address |
 | -------------  |:-------------:|
 | ETH            | [0xa3144c572eAB14bB404399fFE06757d5483ebD94](https://www.blockchain.com/en/eth/address/0xa3144c572eAB14bB404399fFE06757d5483ebD94) |
+
+[![PayPal](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?business=KXGF7CMW8Y8WJ&no_recurring=0&item_name=Help+Object+Dumper+become+better%21)
+
