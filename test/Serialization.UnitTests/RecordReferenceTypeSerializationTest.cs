@@ -17,7 +17,7 @@ namespace Serialization.UnitTests
         }
 
         [Fact]
-        public void SerializeFlagsVb()
+        public void SerializeRecordVb()
         {
             var recordVar = new Person("Boris", "Johnson");
 
