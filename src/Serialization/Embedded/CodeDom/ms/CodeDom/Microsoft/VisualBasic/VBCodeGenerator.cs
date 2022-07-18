@@ -885,11 +885,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 {
                     string typeName = GetTypeOutput(e.CreateType);
                     Output.Write(typeName);
-
-                    if (typeName.IndexOf('(') == -1)
-                    {
-                        Output.Write("()");
-                    }
+                    Output.Write("()");
                 }
 
                 //Output.WriteLine("");
