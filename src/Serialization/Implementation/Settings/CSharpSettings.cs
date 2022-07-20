@@ -1,4 +1,5 @@
-﻿using YellowFlavor.Serialization.Embedded.CodeDom;
+﻿using System.Reflection;
+using YellowFlavor.Serialization.Embedded.CodeDom;
 
 namespace YellowFlavor.Serialization.Implementation.Settings;
 
@@ -11,4 +12,6 @@ internal class CSharpSettings
     public int MaxDepth { get; set; } = 100;
     public bool UseFullTypeName { get; set; } = false;
     public bool UseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
+    public BindingFlags GetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
+    public bool WritablePropertiesOnly { get; set; } = true;
 }

@@ -1,5 +1,6 @@
 ﻿using Embedded.Newtonsoft.Json;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using YellowFlavor.Serialization.Embedded.CodeDom;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom;
@@ -20,7 +21,9 @@ namespace YellowFlavor.Serialization.Implementation
             UseTypeFullName = false,
             DateTimeInstantiation = DateTimeInstantiation.New,
             DateKind = DateKind.ConvertToUtc,
-            UseNamedArgumentsForReferenceRecordTypes = false
+            UseNamedArgumentsForReferenceRecordTypes = false,
+            GetPropertiesBindingFlags = BindingFlags.Instance | BindingFlags.Public,
+            WritablePropertiesOnly = true
         };
 
         public string Serialize(object obj, string settings)
@@ -62,6 +65,8 @@ namespace YellowFlavor.Serialization.Implementation
             newSettings.DateTimeInstantiation = vbSettings.DateTimeInstantiation;
             newSettings.DateKind = vbSettings.DateKind;
             newSettings.UseNamedArgumentsForReferenceRecordTypes = vbSettings.UseNamedArgumentsForReferenceRecordTypes;
+            newSettings.GetPropertiesBindingFlags = vbSettings.GetPropertiesBindingFlags;
+            newSettings.WritablePropertiesOnly = vbSettings.WritablePropertiesOnly;
 
             return newSettings;
         }

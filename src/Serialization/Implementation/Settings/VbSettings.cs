@@ -1,4 +1,5 @@
-﻿using YellowFlavor.Serialization.Embedded.CodeDom;
+﻿using System.Reflection;
+using YellowFlavor.Serialization.Embedded.CodeDom;
 
 namespace YellowFlavor.Serialization.Implementation.Settings;
 
@@ -8,7 +9,9 @@ internal class VbSettings
     public DateKind DateKind { get; set; } = DateKind.ConvertToUtc;
     public bool IgnoreNullValues { get; set; } = true;
     public bool IgnoreDefaultValues { get; set; } = true;
-    public int MaxDepth { get; set; } = 100;
+    public int MaxDepth { get; set; } = 25;
     public bool UseFullTypeName { get; set; } = false;
     public bool UseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
+    public BindingFlags GetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
+    public bool WritablePropertiesOnly { get; set; } = true;
 }
