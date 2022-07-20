@@ -276,13 +276,13 @@ internal class ObjectVisitor
         try
         {
             var objectType = o.GetType();
-
-            var result = new CodeObjectCreateAndInitializeExpression(o.GetType().IsAnonymousType()
+            var isAnonymousType = o.GetType().IsAnonymousType();
+            var result = new CodeObjectCreateAndInitializeExpression(isAnonymousType
                 ? new CodeAnonymousTypeReference()
                 : new CodeTypeReference(objectType, _typeReferenceOptions))
             {
                 InitializeExpressions = new CodeExpressionCollection(objectType.GetProperties(_getPropertiesBindingFlags)
-                    .Where(p => p.CanRead && (p.CanWrite || !_writablePropertiesOnly))
+                    .Where(p => p.CanRead && (p.CanWrite || !_writablePropertiesOnly || isAnonymousType))
                     .Select(p => new
                     {
                         PropertyName = p.Name,
