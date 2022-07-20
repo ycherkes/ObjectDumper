@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using ObjectDumper.Extensions;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace ObjectDumper.Options
 {
@@ -61,6 +62,18 @@ namespace ObjectDumper.Options
         [Description("Use Named Arguments For Reference Record Types")]
         [DefaultValue(false)]
         public bool CSharpUseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
+
+        [Category("C#")]
+        [DisplayName("Get Properties Binding Flags")]
+        [Description("Get Properties Binding Flags")]
+        [DefaultValue(BindingFlags.Public | BindingFlags.Instance)]
+        public BindingFlags CSharpGetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
+
+        [Category("C#")]
+        [DisplayName("Writable Properties Only")]
+        [Description("Writable Properties Only")]
+        [DefaultValue(true)]
+        public bool CSharpWritablePropertiesOnly { get; set; } = true;
 
         [Category("Json")]
         [DisplayName("Enabled")]
@@ -140,6 +153,18 @@ namespace ObjectDumper.Options
         [DefaultValue(false)]
         public bool VisualBasicUseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
 
+        [Category("Visual Basic")]
+        [DisplayName("Get Properties Binding Flags")]
+        [Description("Get Properties Binding Flags")]
+        [DefaultValue(BindingFlags.Public | BindingFlags.Instance)]
+        public BindingFlags VisualBasicGetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
+
+        [Category("Visual Basic")]
+        [DisplayName("Writable Properties Only")]
+        [Description("Writable Properties Only")]
+        [DefaultValue(true)]
+        public bool VisualBasicWritablePropertiesOnly { get; set; } = true;
+
         [Category("Xml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -201,7 +226,9 @@ namespace ObjectDumper.Options
                         UseFullTypeName = CSharpUseFullTypeName,
                         DateTimeInstantiation = CSharpDateTimeInstantiation,
                         DateKind = CSharpDateKind,
-                        UseNamedArgumentsForReferenceRecordTypes = CSharpUseNamedArgumentsForReferenceRecordTypes
+                        UseNamedArgumentsForReferenceRecordTypes = CSharpUseNamedArgumentsForReferenceRecordTypes,
+                        GetPropertiesBindingFlags = CSharpGetPropertiesBindingFlags,
+                        WritablePropertiesOnly = CSharpWritablePropertiesOnly
                     }.ToJson();
                 case "vb":
                     return new
@@ -212,7 +239,9 @@ namespace ObjectDumper.Options
                         UseFullTypeName = VisualBasicUseFullTypeName,
                         DateTimeInstantiation = VisualBasicDateTimeInstantiation,
                         DateKind = VisualBasicDateKind,
-                        UseNamedArgumentsForReferenceRecordTypes = VisualBasicUseNamedArgumentsForReferenceRecordTypes
+                        UseNamedArgumentsForReferenceRecordTypes = VisualBasicUseNamedArgumentsForReferenceRecordTypes,
+                        GetPropertiesBindingFlags = VisualBasicGetPropertiesBindingFlags,
+                        WritablePropertiesOnly = VisualBasicWritablePropertiesOnly
                     }.ToJson();
                 case "json":
                     return new

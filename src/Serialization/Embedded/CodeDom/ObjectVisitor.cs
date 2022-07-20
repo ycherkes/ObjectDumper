@@ -22,6 +22,8 @@ internal class ObjectVisitor
     private readonly DateTimeInstantiation _dateTimeInstantiation;
     private readonly DateKind _dateKind;
     private readonly bool _useNamedArgumentsForReferenceRecordTypes;
+    private readonly bool _writablePropertiesOnly;
+    private readonly BindingFlags _getPropertiesBindingFlags;
 
     public ObjectVisitor(VisitorOptions visitorOptions)
     {
@@ -35,6 +37,8 @@ internal class ObjectVisitor
             : CodeTypeReferenceOptions.ShortTypeName;
         _excludeTypes = visitorOptions.ExcludeTypes ?? new List<string>();
         _useNamedArgumentsForReferenceRecordTypes = visitorOptions.UseNamedArgumentsForReferenceRecordTypes;
+        _getPropertiesBindingFlags = visitorOptions.GetPropertiesBindingFlags;
+        _writablePropertiesOnly = visitorOptions.WritablePropertiesOnly;
 
         _visitedObjects = new Stack<object>();
     }
@@ -115,16 +119,34 @@ internal class ObjectVisitor
     private CodeExpression VisitRecord(object o)
     {
         var objectType = o.GetType();
+        var properties = objectType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic).Where(p => p.CanWrite);
         var argumentValues = _useNamedArgumentsForReferenceRecordTypes ?
-            objectType.GetProperties().Select(p => (CodeExpression)new CodeNamedArgumentExpression(p.Name, Visit(p.GetValue(o))))
-            : objectType.GetProperties().Select(p => p.GetValue(o)).Select(Visit);
+            properties.Select(p => (CodeExpression)new CodeNamedArgumentExpression(p.Name, Visit(p.GetValue(o))))
+            : properties.Select(p => p.GetValue(o)).Select(Visit);
         return new CodeObjectCreateExpression(new CodeTypeReference(objectType, _typeReferenceOptions),
             argumentValues.ToArray());
     }
 
     private static bool IsRecord(object o)
     {
-        return o.GetType().GetMethods().Any(m => m.Name == "<Clone>$"); ;
+        var objectType = o.GetType();
+
+        var constructor = objectType.GetConstructors().FirstOrDefault();
+
+        if (constructor == null)
+        {
+            return false;
+        }
+
+        if (objectType.GetMethods().All(m => m.Name != "<Clone>$"))
+        {
+            return false;
+        }
+
+        var properties = objectType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic).Where(x => x.CanWrite);
+
+        return constructor.GetParameters().Select(x => new { x.Name, Type = x.ParameterType })
+            .SequenceEqual(properties.Select(x => new { x.Name, Type = x.PropertyType }));
     }
 
     private CodeExpression VisitType(Type type)
@@ -259,8 +281,8 @@ internal class ObjectVisitor
                 ? new CodeAnonymousTypeReference()
                 : new CodeTypeReference(objectType, _typeReferenceOptions))
             {
-                InitializeExpressions = new CodeExpressionCollection(objectType.GetRuntimeProperties()
-                    .Where(p => p.CanRead)
+                InitializeExpressions = new CodeExpressionCollection(objectType.GetProperties(_getPropertiesBindingFlags)
+                    .Where(p => p.CanRead && (p.CanWrite || !_writablePropertiesOnly))
                     .Select(p => new
                     {
                         PropertyName = p.Name,
