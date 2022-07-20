@@ -946,7 +946,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
         {
             Output.Write("CType(");
             GenerateExpression(e.Expression);
-            Output.Write(',');
+            Output.Write(", ");
             OutputType(e.TargetType);
             OutputArrayPostfix(e.TargetType);
             Output.Write(')');
