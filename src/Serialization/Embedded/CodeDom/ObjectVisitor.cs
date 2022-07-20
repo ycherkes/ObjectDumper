@@ -55,7 +55,7 @@ internal class ObjectVisitor
             _depth++;
 
             if (@object == null || IsPrimitive(@object))
-                return new CodePrimitiveExpression(@object);
+                return VisitPrimitive(@object);
 
             if (@object is TimeSpan timeSpan)
                 return VisitTimeSpan(timeSpan);
@@ -114,6 +114,51 @@ internal class ObjectVisitor
         {
             _depth--;
         }
+    }
+
+    private static CodeExpression VisitPrimitive(object @object)
+    {
+        if (@object != null)
+        {
+            var objectType = @object.GetType();
+
+            var specialValueExpression = new[]
+            {
+                "MaxValue",
+                "MinValue",
+                "PositiveInfinity",
+                "NegativeInfinity",
+                "NaN"
+            }.Select(specialValue => GetSpecialValue(@object, objectType, specialValue))
+             .FirstOrDefault(x => x != null);
+
+            if (specialValueExpression != null)
+            {
+                return specialValueExpression;
+            }
+        }
+
+        return new CodePrimitiveExpression(@object);
+    }
+
+    private static CodeExpression GetSpecialValue(object @object, Type objectType, string fieldName)
+    {
+        var maxField = objectType.GetField(fieldName, BindingFlags.Public | BindingFlags.Static);
+        if (maxField != null)
+        {
+            if (Equals(maxField.GetValue(null), @object))
+            {
+                {
+                    return new CodeFieldReferenceExpression
+                    (
+                        new CodeTypeReferenceExpression(objectType),
+                        fieldName
+                    );
+                }
+            }
+        }
+
+        return null;
     }
 
     private CodeExpression VisitRecord(object o)
