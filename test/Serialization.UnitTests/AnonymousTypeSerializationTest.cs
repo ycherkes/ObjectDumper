@@ -7,16 +7,31 @@ namespace Serialization.UnitTests
         [Fact]
         public void SerializeAnonymousTypeCsharp()
         {
-            var anonymous = new { Name = "Peter" };
+            var anonymous = new[]
+            {
+                new { Name = "Steeve", Age = (int?)int.MaxValue, Reference = "Test reference" },
+                new { Name = "Peter", Age = (int?)null, Reference = (string)null }
+            };
 
             var serializer = new CSharpSerializer();
 
             var result = serializer.Serialize(anonymous, null);
 
             Assert.Equal(
-@"var anonymousType = new 
+@"var arrayOfAnonymousType = new []
 {
-    Name = ""Peter""
+    new 
+    {
+        Name = ""Steeve"",
+        Age = (int?)int.MaxValue,
+        Reference = ""Test reference""
+    },
+    new 
+    {
+        Name = ""Peter"",
+        Age = (int?)null,
+        Reference = (string)null
+    }
 };
 ", result);
         }
@@ -24,15 +39,28 @@ namespace Serialization.UnitTests
         [Fact]
         public void SerializeAnonymousTypeVb()
         {
-            var anonymous = new { Name = "Peter" };
+            var anonymous = new[]
+            {
+                new { Name = "Steeve", Age = (int?)int.MaxValue, Reference = "Test reference" },
+                new { Name = "Peter", Age = (int?)null, Reference = (string)null }
+            };
 
             var serializer = new VisualBasicSerializer();
 
             var result = serializer.Serialize(anonymous, null);
 
             Assert.Equal(
-@"Dim anonymousType = New With {
-    .Name = ""Peter""
+@"Dim arrayOfAnonymousType = {
+    New With {
+        .Name = ""Steeve"",
+        .Age = CType(Integer.MaxValue, Integer?),
+        .Reference = ""Test reference""
+    },
+    New With {
+        .Name = ""Peter"",
+        .Age = CType(Nothing, Integer?),
+        .Reference = CType(Nothing, String)
+    }
 }
 ", result);
         }

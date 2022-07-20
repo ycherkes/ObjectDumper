@@ -25,10 +25,11 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom
             Expression = expression;
         }
 
-        public CodeCastExpression(Type targetType, CodeExpression expression)
+        public CodeCastExpression(Type targetType, CodeExpression expression, bool useSimpleParentheses)
         {
             TargetType = new CodeTypeReference(targetType);
             Expression = expression;
+            SimpleParentheses = useSimpleParentheses;
         }
 
         public CodeTypeReference TargetType
@@ -38,5 +39,6 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom
         }
 
         public CodeExpression Expression { get; set; }
+        public bool SimpleParentheses { get; set; }
     }
 }

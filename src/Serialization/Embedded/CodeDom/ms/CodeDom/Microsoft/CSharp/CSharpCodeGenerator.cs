@@ -392,11 +392,21 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.CShar
 
         private void GenerateCastExpression(CodeCastExpression e)
         {
-            Output.Write("((");
-            OutputType(e.TargetType);
-            Output.Write(")(");
-            GenerateExpression(e.Expression);
-            Output.Write("))");
+            if (e.SimpleParentheses)
+            {
+                Output.Write("(");
+                OutputType(e.TargetType);
+                Output.Write(")");
+                GenerateExpression(e.Expression);
+            }
+            else
+            {
+                Output.Write("((");
+                OutputType(e.TargetType);
+                Output.Write(")(");
+                GenerateExpression(e.Expression);
+                Output.Write("))");
+            }
         }
 
         public void GenerateCodeFromMember(CodeTypeMember member, TextWriter writer, CodeGeneratorOptions options)

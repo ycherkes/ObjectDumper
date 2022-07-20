@@ -67,9 +67,10 @@ internal class ObjectVisitor
                 return VisitDateTimeOffset(dateTimeOffset);
 
             if (IsRecord(@object))
-            {
                 return VisitRecord(@object);
-            }
+
+            if (IsAnonymous(@object))
+                return VisitAnonymous(@object);
 
             if (IsKeyValuePair(@object))
                 return VisitKeyValuePair(@object);
@@ -116,6 +117,28 @@ internal class ObjectVisitor
         }
     }
 
+    private CodeExpression VisitAnonymous(object o)
+    {
+        var objectType = o.GetType();
+        var result = new CodeObjectCreateAndInitializeExpression(new CodeAnonymousTypeReference())
+        {
+            InitializeExpressions = new CodeExpressionCollection(objectType.GetProperties(_getPropertiesBindingFlags)
+                .Where(p => p.CanRead)
+                .Select(p => new
+                {
+                    PropertyName = p.Name,
+                    Value = p.GetValue(o),
+                    p.PropertyType
+                })
+                .Select(pv => (CodeExpression)new CodeAssignExpression(
+                    new CodePropertyReferenceExpression(null, pv.PropertyName),
+                    ReflectionUtils.IsNullableType(pv.PropertyType) || pv.Value == null ? new CodeCastExpression(pv.PropertyType, Visit(pv.Value), true) : Visit(pv.Value)))
+                .ToArray())
+        };
+
+        return result;
+    }
+
     private static CodeExpression VisitPrimitive(object @object)
     {
         if (@object != null)
@@ -143,22 +166,13 @@ internal class ObjectVisitor
 
     private static CodeExpression GetSpecialValue(object @object, Type objectType, string fieldName)
     {
-        var maxField = objectType.GetField(fieldName, BindingFlags.Public | BindingFlags.Static);
-        if (maxField != null)
-        {
-            if (Equals(maxField.GetValue(null), @object))
-            {
-                {
-                    return new CodeFieldReferenceExpression
-                    (
-                        new CodeTypeReferenceExpression(objectType),
-                        fieldName
-                    );
-                }
-            }
-        }
+        var field = objectType.GetField(fieldName, BindingFlags.Public | BindingFlags.Static);
 
-        return null;
+        if (field == null) return null;
+
+        return Equals(field.GetValue(null), @object)
+            ? new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(objectType), fieldName)
+            : null;
     }
 
     private CodeExpression VisitRecord(object o)
@@ -321,13 +335,10 @@ internal class ObjectVisitor
         try
         {
             var objectType = o.GetType();
-            var isAnonymousType = o.GetType().IsAnonymousType();
-            var result = new CodeObjectCreateAndInitializeExpression(isAnonymousType
-                ? new CodeAnonymousTypeReference()
-                : new CodeTypeReference(objectType, _typeReferenceOptions))
+            var result = new CodeObjectCreateAndInitializeExpression(new CodeTypeReference(objectType, _typeReferenceOptions))
             {
                 InitializeExpressions = new CodeExpressionCollection(objectType.GetProperties(_getPropertiesBindingFlags)
-                    .Where(p => p.CanRead && (p.CanWrite || !_writablePropertiesOnly || isAnonymousType))
+                    .Where(p => p.CanRead && (p.CanWrite || !_writablePropertiesOnly))
                     .Select(p => new
                     {
                         PropertyName = p.Name,
@@ -771,6 +782,11 @@ internal class ObjectVisitor
     private bool IsMaxDepth()
     {
         return _depth > _maxDepth;
+    }
+
+    private static bool IsAnonymous(object o)
+    {
+        return o.GetType().IsAnonymousType();
     }
 
     private static bool IsTuple(object o)
