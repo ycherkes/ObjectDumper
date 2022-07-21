@@ -6,7 +6,7 @@ internal class XmlSettings
 
     public bool IgnoreDefaultValues { get; set; } = true;
 
-    public int MaxDepth { get; set; } = 100;
+    public int MaxDepth { get; set; } = 25;
 
     public bool UseFullTypeName { get; set; } = false;
 

@@ -8,12 +8,12 @@ internal class JsonSettings
 
     public bool IgnoreDefaultValues { get; set; } = true;
 
-    public int MaxDepth { get; set; } = 100;
+    public int MaxDepth { get; set; } = 25;
 
     public TypeNameHandling TypeNameHandling { get; set; } = TypeNameHandling.None;
 
     public string NamingStrategy { get; set; } = "CamelCase";
-    
+
     public bool SerializeEnumAsString { get; set; } = true;
 
 }
