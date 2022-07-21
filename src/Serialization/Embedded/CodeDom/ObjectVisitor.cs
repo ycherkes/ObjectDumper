@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -24,6 +25,8 @@ internal class ObjectVisitor
     private readonly bool _useNamedArgumentsForReferenceRecordTypes;
     private readonly bool _writablePropertiesOnly;
     private readonly BindingFlags _getPropertiesBindingFlags;
+    private readonly BindingFlags? _getFieldsBindingFlags;
+    private readonly ListSortDirection? _sortDirection;
 
     public ObjectVisitor(VisitorOptions visitorOptions)
     {
@@ -39,6 +42,8 @@ internal class ObjectVisitor
         _useNamedArgumentsForReferenceRecordTypes = visitorOptions.UseNamedArgumentsForReferenceRecordTypes;
         _getPropertiesBindingFlags = visitorOptions.GetPropertiesBindingFlags;
         _writablePropertiesOnly = visitorOptions.WritablePropertiesOnly;
+        _getFieldsBindingFlags = visitorOptions.GetFieldsBindingFlags;
+        _sortDirection = visitorOptions.SortDirection;
 
         _visitedObjects = new Stack<object>();
     }
@@ -235,6 +240,13 @@ internal class ObjectVisitor
                 new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), o.ToString());
         }
 
+        if (_sortDirection != null)
+        {
+            values = (_sortDirection == ListSortDirection.Ascending
+                ? values.OrderBy(x => x)
+                : values.OrderByDescending(x => x)).ToArray();
+        }
+
         var expressions = values.Select(v => (CodeExpression)new CodeFieldReferenceExpression(
                 new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), v.Trim())).ToArray();
 
@@ -302,11 +314,19 @@ internal class ObjectVisitor
             SerializationInfo serializationInfo = new SerializationInfo(objectType, new FormatterConverter());
             serializable.GetObjectData(serializationInfo, new StreamingContext());
 
+            var serializationEntries = serializationInfo.GetEnumerator()
+                                     .Cast<SerializationEntry>();
+
+            if (_sortDirection != null)
+            {
+                serializationEntries = _sortDirection == ListSortDirection.Ascending
+                    ? serializationEntries.OrderBy(x => x.Name)
+                    : serializationEntries.OrderByDescending(x => x.Name);
+            }
+
             var result = new CodeObjectCreateAndInitializeExpression(new CodeTypeReference(objectType, _typeReferenceOptions))
             {
-                InitializeExpressions = new CodeExpressionCollection(
-                    serializationInfo.GetEnumerator()
-                                     .Cast<SerializationEntry>()
+                InitializeExpressions = new CodeExpressionCollection(serializationEntries
                                      .Where(se => !_excludeTypes.Contains(se.ObjectType.FullName) &&
                                                   (!_ignoreNullValues || (_ignoreNullValues && se.Value != null)) &&
                                                   (!_ignoreDefaultValues || !se.ObjectType.IsValueType || (_ignoreDefaultValues &&
@@ -335,21 +355,44 @@ internal class ObjectVisitor
         try
         {
             var objectType = o.GetType();
-            var result = new CodeObjectCreateAndInitializeExpression(new CodeTypeReference(objectType, _typeReferenceOptions))
-            {
-                InitializeExpressions = new CodeExpressionCollection(objectType.GetProperties(_getPropertiesBindingFlags)
+
+            var initProperties = objectType.GetProperties(_getPropertiesBindingFlags)
                     .Where(p => p.CanRead && (p.CanWrite || !_writablePropertiesOnly))
                     .Select(p => new
                     {
-                        PropertyName = p.Name,
+                        p.Name,
                         Value = p.GetValue(o),
-                        p.PropertyType
-                    })
-                    .Where(pv => !_excludeTypes.Contains(pv.PropertyType.FullName) &&
+                        Type = p.PropertyType
+                    });
+
+            if (_getFieldsBindingFlags != null)
+            {
+                var fields = objectType.GetFields(_getFieldsBindingFlags.Value)
+                    .Select(f => new
+                    {
+                        f.Name,
+                        Value = f.GetValue(o),
+                        Type = f.FieldType
+                    });
+
+                initProperties = initProperties.Concat(fields);
+            }
+
+            if (_sortDirection != null)
+            {
+                initProperties = _sortDirection == ListSortDirection.Ascending
+                    ? initProperties.OrderBy(x => x.Name)
+                    : initProperties.OrderByDescending(x => x.Name);
+            }
+
+            var result = new CodeObjectCreateAndInitializeExpression(new CodeTypeReference(objectType, _typeReferenceOptions))
+            {
+                InitializeExpressions = new CodeExpressionCollection(initProperties
+                    .Where(pv => !_excludeTypes.Contains(pv.Type.FullName) &&
                                  (!_ignoreNullValues || (_ignoreNullValues && pv.Value != null)) &&
-                                 (!_ignoreDefaultValues || !pv.PropertyType.IsValueType || (_ignoreDefaultValues &&
-                                     ReflectionUtils.GetDefaultValue(pv.PropertyType)?.Equals(pv.Value) != true)))
-                    .Select(pv => (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, pv.PropertyName), Visit(pv.Value)))
+                                 (!_ignoreDefaultValues || !pv.Type.IsValueType || (_ignoreDefaultValues &&
+                                     ReflectionUtils.GetDefaultValue(pv.Type)?.Equals(pv.Value) != true)))
+                    .Select(pv => (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, pv.Name), Visit(pv.Value)))
                     .ToArray())
             };
 

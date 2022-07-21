@@ -67,6 +67,8 @@ namespace YellowFlavor.Serialization.Implementation
             newSettings.UseNamedArgumentsForReferenceRecordTypes = csharpSettings.UseNamedArgumentsForReferenceRecordTypes;
             newSettings.GetPropertiesBindingFlags = csharpSettings.GetPropertiesBindingFlags;
             newSettings.WritablePropertiesOnly = csharpSettings.WritablePropertiesOnly;
+            newSettings.GetFieldsBindingFlags = csharpSettings.GetFieldsBindingFlags;
+            newSettings.SortDirection = csharpSettings.SortDirection;
 
             return newSettings;
         }

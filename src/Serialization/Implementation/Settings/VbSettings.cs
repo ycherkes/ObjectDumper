@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel;
+using System.Reflection;
 using YellowFlavor.Serialization.Embedded.CodeDom;
 
 namespace YellowFlavor.Serialization.Implementation.Settings;
@@ -14,4 +15,6 @@ internal class VbSettings
     public bool UseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
     public BindingFlags GetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
     public bool WritablePropertiesOnly { get; set; } = true;
+    public BindingFlags? GetFieldsBindingFlags { get; set; }
+    public ListSortDirection? SortDirection { get; set; }
 }

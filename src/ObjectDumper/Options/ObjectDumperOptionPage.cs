@@ -75,6 +75,18 @@ namespace ObjectDumper.Options
         [DefaultValue(true)]
         public bool CSharpWritablePropertiesOnly { get; set; } = true;
 
+        [Category("C#")]
+        [DisplayName("Get Fields Binding Flags")]
+        [Description("Get Fields Binding Flags")]
+        [DefaultValue(null)]
+        public BindingFlags? CSharpGetFieldsBindingFlags { get; set; }
+
+        [Category("C#")]
+        [DisplayName("Sort Direction")]
+        [Description("Sort Properties, Fields and Enum values by Name")]
+        [DefaultValue(null)]
+        public ListSortDirection? CSharpSortDirection { get; set; }
+
         [Category("Json")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -165,6 +177,18 @@ namespace ObjectDumper.Options
         [DefaultValue(true)]
         public bool VisualBasicWritablePropertiesOnly { get; set; } = true;
 
+        [Category("Visual Basic")]
+        [DisplayName("Get Fields Binding Flags")]
+        [Description("Get Fields Binding Flags")]
+        [DefaultValue(null)]
+        public BindingFlags? VisualBasicGetFieldsBindingFlags { get; set; }
+
+        [Category("Visual Basic")]
+        [DisplayName("Sort Direction")]
+        [Description("Sort Properties, Fields and Enum values by Name")]
+        [DefaultValue(null)]
+        public ListSortDirection? VisualBasicSortDirection { get; set; }
+
         [Category("Xml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -228,7 +252,9 @@ namespace ObjectDumper.Options
                         DateKind = CSharpDateKind,
                         UseNamedArgumentsForReferenceRecordTypes = CSharpUseNamedArgumentsForReferenceRecordTypes,
                         GetPropertiesBindingFlags = CSharpGetPropertiesBindingFlags,
-                        WritablePropertiesOnly = CSharpWritablePropertiesOnly
+                        WritablePropertiesOnly = CSharpWritablePropertiesOnly,
+                        GetFieldsBindingFlags = CSharpGetFieldsBindingFlags,
+                        SortDirection = CSharpSortDirection
                     }.ToJson();
                 case "vb":
                     return new
@@ -241,7 +267,9 @@ namespace ObjectDumper.Options
                         DateKind = VisualBasicDateKind,
                         UseNamedArgumentsForReferenceRecordTypes = VisualBasicUseNamedArgumentsForReferenceRecordTypes,
                         GetPropertiesBindingFlags = VisualBasicGetPropertiesBindingFlags,
-                        WritablePropertiesOnly = VisualBasicWritablePropertiesOnly
+                        WritablePropertiesOnly = VisualBasicWritablePropertiesOnly,
+                        GetFieldsBindingFlags = VisualBasicGetFieldsBindingFlags,
+                        SortDirection = VisualBasicSortDirection
                     }.ToJson();
                 case "json":
                     return new
