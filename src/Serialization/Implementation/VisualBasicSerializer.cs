@@ -67,6 +67,8 @@ namespace YellowFlavor.Serialization.Implementation
             newSettings.UseNamedArgumentsForReferenceRecordTypes = vbSettings.UseNamedArgumentsForReferenceRecordTypes;
             newSettings.GetPropertiesBindingFlags = vbSettings.GetPropertiesBindingFlags;
             newSettings.WritablePropertiesOnly = vbSettings.WritablePropertiesOnly;
+            newSettings.GetFieldsBindingFlags = vbSettings.GetFieldsBindingFlags;
+            newSettings.SortDirection = vbSettings.SortDirection;
 
             return newSettings;
         }

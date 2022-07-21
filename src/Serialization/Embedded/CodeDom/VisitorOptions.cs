@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 
 namespace YellowFlavor.Serialization.Embedded.CodeDom
@@ -15,5 +16,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
         public bool UseNamedArgumentsForReferenceRecordTypes { get; set; }
         public BindingFlags GetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
         public bool WritablePropertiesOnly { get; set; } = true;
+        public ListSortDirection? SortDirection { get; set; }
+        public BindingFlags? GetFieldsBindingFlags { get; set; }
     }
 }
