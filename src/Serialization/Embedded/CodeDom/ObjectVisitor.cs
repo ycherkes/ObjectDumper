@@ -240,13 +240,6 @@ internal class ObjectVisitor
                 new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), o.ToString());
         }
 
-        if (_sortDirection != null)
-        {
-            values = (_sortDirection == ListSortDirection.Ascending
-                ? values.OrderBy(x => x)
-                : values.OrderByDescending(x => x)).ToArray();
-        }
-
         var expressions = values.Select(v => (CodeExpression)new CodeFieldReferenceExpression(
                 new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), v.Trim())).ToArray();
 

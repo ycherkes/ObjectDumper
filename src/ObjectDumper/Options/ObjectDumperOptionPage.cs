@@ -83,7 +83,7 @@ namespace ObjectDumper.Options
 
         [Category("C#")]
         [DisplayName("Sort Direction")]
-        [Description("Sort Properties, Fields and Enum values by Name")]
+        [Description("Sort Properties and Fields by Name")]
         [DefaultValue(null)]
         public ListSortDirection? CSharpSortDirection { get; set; }
 
@@ -185,7 +185,7 @@ namespace ObjectDumper.Options
 
         [Category("Visual Basic")]
         [DisplayName("Sort Direction")]
-        [Description("Sort Properties, Fields and Enum values by Name")]
+        [Description("Sort Properties and Fields by Name")]
         [DefaultValue(null)]
         public ListSortDirection? VisualBasicSortDirection { get; set; }
 
