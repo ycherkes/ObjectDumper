@@ -248,8 +248,15 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
                 return null;
             }
 
-            // possibly use IL initobj for perf here?
-            return Activator.CreateInstance(type);
+            try
+            {
+                // possibly use IL initobj for perf here?
+                return Activator.CreateInstance(type);
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public static bool IsNullableType(Type t)
