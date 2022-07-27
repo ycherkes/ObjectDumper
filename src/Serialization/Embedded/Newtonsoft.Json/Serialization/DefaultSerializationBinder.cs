@@ -23,23 +23,18 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using Embedded.Newtonsoft.Json.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using System.Runtime.Serialization;
-using Embedded.Newtonsoft.Json.Utilities;
 
 namespace Embedded.Newtonsoft.Json.Serialization
 {
     /// <summary>
     /// The default serialization binder used when resolving and loading classes from type names.
     /// </summary>
-    public class DefaultSerializationBinder :
-#pragma warning disable 618
-        SerializationBinder,
-#pragma warning restore 618
-        ISerializationBinder
+    public class DefaultSerializationBinder : ISerializationBinder
     {
         internal static readonly DefaultSerializationBinder Instance = new DefaultSerializationBinder();
 
@@ -186,7 +181,7 @@ namespace Embedded.Newtonsoft.Json.Serialization
         /// <returns>
         /// The type of the object the formatter creates a new instance of.
         /// </returns>
-        public override Type BindToType(string? assemblyName, string typeName)
+        public Type BindToType(string? assemblyName, string typeName)
         {
             return GetTypeByName(new StructMultiKey<string?, string>(assemblyName, typeName));
         }
@@ -199,7 +194,7 @@ namespace Embedded.Newtonsoft.Json.Serialization
         /// <param name="typeName">Specifies the <see cref="System.Type"/> name of the serialized object.</param>
         public
 #if HAVE_SERIALIZATION_BINDER_BIND_TO_NAME
-        override
+
 #endif
         void BindToName(Type serializedType, out string? assemblyName, out string? typeName)
         {

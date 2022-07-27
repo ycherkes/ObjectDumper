@@ -23,12 +23,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using Embedded.Newtonsoft.Json.Utilities;
 using System;
 using System.Collections;
 using System.Globalization;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
-using Embedded.Newtonsoft.Json.Utilities;
 
 namespace Embedded.Newtonsoft.Json.Serialization
 {
@@ -135,13 +135,6 @@ namespace Embedded.Newtonsoft.Json.Serialization
         {
             get => _serializer.ConstructorHandling;
             set => _serializer.ConstructorHandling = value;
-        }
-
-        [Obsolete("Binder is obsolete. Use SerializationBinder instead.")]
-        public override SerializationBinder Binder
-        {
-            get => _serializer.Binder;
-            set => _serializer.Binder = value;
         }
 
         public override ISerializationBinder SerializationBinder
