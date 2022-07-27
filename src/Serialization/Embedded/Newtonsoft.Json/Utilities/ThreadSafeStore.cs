@@ -29,7 +29,8 @@ using System.Collections.Generic;
 #if !HAVE_LINQ
 using Embedded.Newtonsoft.Json.Utilities.LinqBridge;
 #endif
-#if HAVE_CONCURRENT_DICTIONARY
+#if HAVE_MEMORY_BARRIER && !HAVE_CONCURRENT_DICTIONARY
+using System.Threading;
 #endif
 
 namespace Embedded.Newtonsoft.Json.Utilities

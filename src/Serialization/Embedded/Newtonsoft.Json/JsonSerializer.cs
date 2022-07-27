@@ -23,6 +23,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using Embedded.Newtonsoft.Json.Serialization;
+using Embedded.Newtonsoft.Json.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,8 +33,6 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
-using Embedded.Newtonsoft.Json.Serialization;
-using Embedded.Newtonsoft.Json.Utilities;
 using ErrorEventArgs = Embedded.Newtonsoft.Json.Serialization.ErrorEventArgs;
 
 namespace Embedded.Newtonsoft.Json
@@ -97,36 +97,6 @@ namespace Embedded.Newtonsoft.Json
             }
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="SerializationBinder"/> used by the serializer when resolving type names.
-        /// </summary>
-        [Obsolete("Binder is obsolete. Use SerializationBinder instead.")]
-        public virtual SerializationBinder Binder
-        {
-            get
-            {
-                if (_serializationBinder is SerializationBinder legacySerializationBinder)
-                {
-                    return legacySerializationBinder;
-                }
-
-                if (_serializationBinder is SerializationBinderAdapter adapter)
-                {
-                    return adapter.SerializationBinder;
-                }
-
-                throw new InvalidOperationException("Cannot get SerializationBinder because an ISerializationBinder was previously set.");
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Serialization binder cannot be null.");
-                }
-
-                _serializationBinder = value as ISerializationBinder ?? new SerializationBinderAdapter(value);
-            }
-        }
 
         /// <summary>
         /// Gets or sets the <see cref="ISerializationBinder"/> used by the serializer when resolving type names.
