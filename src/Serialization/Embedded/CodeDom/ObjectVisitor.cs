@@ -128,7 +128,7 @@ internal class ObjectVisitor
     private CodeExpression VisitGrouping(object o)
     {
         var objectType = o.GetType();
-        var fieldValues = objectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).Where(x => x.Name is "_key" or "_elements").Select(p => GetValue(p, o)).Select(Visit);
+        var fieldValues = objectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).Where(x => x.Name is "_key" or "key" or "_elements" or "elements").Select(p => GetValue(p, o)).Select(Visit);
         return new CodeValueTupleCreateExpression(fieldValues.ToArray());
     }
 
