@@ -92,5 +92,40 @@ namespace Serialization.UnitTests
 }.GroupBy(grp => grp.Key, grp => grp.Element).ToArray();
 ", result);
         }
+
+        [Fact]
+        public void SerializeSingleGroupingValueCSharp()
+        {
+            var grouping = new[] { new Person { Age = 32, FirstName = "Bob" } }
+            .GroupBy(x => x.FirstName)
+            .Single();
+
+            var serializer = new CSharpSerializer();
+
+            var result = serializer.Serialize(grouping, JsonConvert.SerializeObject(new
+            {
+                IgnoreDefaultValues = true,
+                IgnoreNullValues = true,
+                MaxDepth = 5,
+                UseFullTypeName = false,
+                DateTimeInstantiation = "New",
+                DateKind = "ConvertToUtc"
+            }));
+
+            Assert.Equal(
+@"var groupingOfPerson = new []
+{
+    new 
+    {
+        Key = ""Bob"",
+        Element = new Person
+        {
+            FirstName = ""Bob"",
+            Age = 32
+        }
+    }
+}.GroupBy(grp => grp.Key, grp => grp.Element).Single();
+", result);
+        }
     }
 }

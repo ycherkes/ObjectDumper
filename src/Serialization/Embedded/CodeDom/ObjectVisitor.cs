@@ -127,18 +127,15 @@ internal class ObjectVisitor
 
     private CodeExpression VisitGrouping(object o)
     {
-        var iGroupingValue = GetIGroupingValue(o);
+        CodeExpression expr = VisitGroupings(new[] { o });
 
-        var result = new CodeObjectCreateAndInitializeExpression(new CodeAnonymousTypeReference())
-        {
-            InitializeExpressions = new CodeExpressionCollection(new[]
-            {
-                new CodeAssignExpression(new CodePropertyReferenceExpression(null, "Key"), Visit(iGroupingValue.Key)),
-                (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, "Elements"), Visit(Visit(iGroupingValue.Value)))
-            })
-        };
+        var variableReferenceExpression = new CodeVariableReferenceExpression("grp");
+        var keyLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Key"), variableReferenceExpression);
+        var valueLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Element"), variableReferenceExpression);
 
-        return result;
+        expr = new CodeMethodInvokeExpression(expr, "GroupBy", keyLambdaExpression, valueLambdaExpression);
+        expr = new CodeMethodInvokeExpression(expr, "Single");
+        return expr;
     }
 
     private static KeyValuePair<object, IEnumerable> GetIGroupingValue(object o)
