@@ -98,6 +98,9 @@ internal class ObjectVisitor
             if (@object is Type type)
                 return VisitType(type);
 
+            if (IsGrouping(@object))
+                return VisitGrouping(@object);
+
             if (@object is IDictionary dict)
                 return VisitDictionary(dict);
 
@@ -120,6 +123,13 @@ internal class ObjectVisitor
         {
             _depth--;
         }
+    }
+
+    private CodeExpression VisitGrouping(object o)
+    {
+        var objectType = o.GetType();
+        var fieldValues = objectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).Where(x => x.Name is "_key" or "_elements").Select(p => GetValue(p, o)).Select(Visit);
+        return new CodeValueTupleCreateExpression(fieldValues.ToArray());
     }
 
     private CodeExpression VisitAnonymous(object o)
@@ -494,6 +504,11 @@ internal class ObjectVisitor
 
             var elementType = ReflectionUtils.GetInnerElementType(collectionType);
 
+            if (ReflectionUtils.IsGrouping(elementType))
+            {
+                return VisitGroupingCollection(collection);
+            }
+
             var result = ReflectionUtils.ContainsAnonymousType(collectionType)
                 ? VisitAnonymousCollection(collection)
                 : VisitSimpleCollection(collection, elementType);
@@ -504,6 +519,35 @@ internal class ObjectVisitor
         {
             PopVisited();
         }
+    }
+
+    private CodeExpression VisitGroupingCollection(IEnumerable collection)
+    {
+        var items = collection.Cast<object>().Select(VisitGrouping);
+        var type = collection.GetType();
+
+        CodeExpression expr = new CodeArrayCreateExpression(new CodeAnonymousTypeReference(), items.ToArray());
+
+        var variableReferenceExpression = new CodeVariableReferenceExpression("tuple");
+        var keyLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Item1"), variableReferenceExpression);
+        var valueLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Item2"), variableReferenceExpression);
+
+        var isLookup = ReflectionUtils.IsLookup(type);
+
+        expr = isLookup
+            ? new CodeMethodInvokeExpression(expr, "ToLookup", keyLambdaExpression, valueLambdaExpression)
+            : new CodeMethodInvokeExpression(expr, "GroupBy", keyLambdaExpression, valueLambdaExpression);
+
+        if (type.IsArray)
+        {
+            expr = new CodeMethodInvokeExpression(expr, "ToArray");
+        }
+        else if (collection is IList)
+        {
+            expr = new CodeMethodInvokeExpression(expr, "ToList");
+        }
+
+        return expr;
     }
 
     private CodeExpression VisitSimpleCollection(IEnumerable enumerable, Type elementType)
@@ -556,7 +600,7 @@ internal class ObjectVisitor
             new CodeAnonymousTypeReference(),
             items.ToArray());
 
-        if (isImmutable || !type.IsArray)
+        if (isImmutable || (enumerable is IList && !type.IsArray))
             expr = new CodeMethodInvokeExpression(expr, $"To{type.Name.Split('`')[0]}");
 
         return expr;
@@ -859,6 +903,12 @@ internal class ObjectVisitor
     {
         var type = o.GetType();
         return ReflectionUtils.IsKeyValuePair(type);
+    }
+
+    private static bool IsGrouping(object o)
+    {
+        var type = o.GetType();
+        return ReflectionUtils.IsGrouping(type);
     }
 
     private static bool IsValueTuple(object o)
