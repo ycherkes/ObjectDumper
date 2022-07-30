@@ -291,5 +291,19 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
 
             return true;
         }
+
+        public static bool IsGrouping(Type type)
+        {
+            var hasIGrouping = type.GetInterfaces().Concat(new[] { type }).FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IGrouping<,>)) != null;
+
+            return hasIGrouping;
+        }
+
+        public static bool IsLookup(Type type)
+        {
+            var hasILookup = type.GetInterfaces().Concat(new[] { type }).FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ILookup<,>)) != null;
+
+            return hasILookup;
+        }
     }
 }
