@@ -29,19 +29,25 @@ namespace Serialization.UnitTests
 
             Assert.Equal(
 @"Dim lookupOfGroupingOfPerson = {
-    (""Bob"", New Person(){
+    New With {
+        .Key = ""Bob"",
+        .Elements = New Person(){
             New Person With {
                 .FirstName = ""Bob"",
                 .Age = 32
             }
-        }),
-    (""Alice"", New Person(){
+        }
+    },
+    New With {
+        .Key = ""Alice"",
+        .Elements = New Person(){
             New Person With {
                 .FirstName = ""Alice"",
                 .Age = 23
             }
-        })
-}.ToLookup(Function (tuple) tuple.Item1, Function (tuple) tuple.Item2)
+        }
+    }
+}.ToLookup(Function (grp) grp.Key, Function (grp) grp.Elements)
 ", result);
         }
 
@@ -69,23 +75,31 @@ namespace Serialization.UnitTests
             Assert.Equal(
 @"var arrayOfGroupingOfPerson = new []
 {
-    (""Bob"", new Person[]
+    new 
+    {
+        Key = ""Bob"",
+        Elements = new Person[]
         {
             new Person
             {
                 FirstName = ""Bob"",
                 Age = 32
             }
-        }),
-    (""Alice"", new Person[]
+        }
+    },
+    new 
+    {
+        Key = ""Alice"",
+        Elements = new Person[]
         {
             new Person
             {
                 FirstName = ""Alice"",
                 Age = 23
             }
-        })
-}.GroupBy(tuple => tuple.Item1, tuple => tuple.Item2).ToArray();
+        }
+    }
+}.GroupBy(grp => grp.Key, grp => grp.Elements).ToArray();
 ", result);
         }
     }

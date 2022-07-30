@@ -128,8 +128,21 @@ internal class ObjectVisitor
     private CodeExpression VisitGrouping(object o)
     {
         var objectType = o.GetType();
-        var fieldValues = objectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).Where(x => x.Name is "_key" or "key" or "_elements" or "elements").Select(p => GetValue(p, o)).Select(Visit);
-        return new CodeValueTupleCreateExpression(fieldValues.ToArray());
+        var fieldValues = objectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).Where(x => x.Name is "_key" or "key" or "_elements" or "elements")
+            .Select(p => GetValue(p, o))
+            .Select(Visit)
+            .ToArray();
+
+        var result = new CodeObjectCreateAndInitializeExpression(new CodeAnonymousTypeReference())
+        {
+            InitializeExpressions = new CodeExpressionCollection(new[]
+            {
+                new CodeAssignExpression(new CodePropertyReferenceExpression(null, "Key"), fieldValues.FirstOrDefault()),
+                (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, "Elements"), fieldValues.LastOrDefault())
+            })
+        };
+
+        return result;
     }
 
     private CodeExpression VisitAnonymous(object o)
@@ -528,9 +541,9 @@ internal class ObjectVisitor
 
         CodeExpression expr = new CodeArrayCreateExpression(new CodeAnonymousTypeReference(), items.ToArray());
 
-        var variableReferenceExpression = new CodeVariableReferenceExpression("tuple");
-        var keyLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Item1"), variableReferenceExpression);
-        var valueLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Item2"), variableReferenceExpression);
+        var variableReferenceExpression = new CodeVariableReferenceExpression("grp");
+        var keyLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Key"), variableReferenceExpression);
+        var valueLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Elements"), variableReferenceExpression);
 
         var isLookup = ReflectionUtils.IsLookup(type);
 
