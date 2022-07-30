@@ -127,22 +127,38 @@ internal class ObjectVisitor
 
     private CodeExpression VisitGrouping(object o)
     {
-        var objectType = o.GetType();
-        var fieldValues = objectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).Where(x => x.Name is "_key" or "key" or "_elements" or "elements")
-            .Select(p => GetValue(p, o))
-            .Select(Visit)
-            .ToArray();
+        var iGroupingValue = GetIGroupingValue(o);
 
         var result = new CodeObjectCreateAndInitializeExpression(new CodeAnonymousTypeReference())
         {
             InitializeExpressions = new CodeExpressionCollection(new[]
             {
-                new CodeAssignExpression(new CodePropertyReferenceExpression(null, "Key"), fieldValues.FirstOrDefault()),
-                (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, "Elements"), fieldValues.LastOrDefault())
+                new CodeAssignExpression(new CodePropertyReferenceExpression(null, "Key"), Visit(iGroupingValue.Key)),
+                (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, "Elements"), Visit(Visit(iGroupingValue.Value)))
             })
         };
 
         return result;
+    }
+
+    private static KeyValuePair<object, IEnumerable> GetIGroupingValue(object o)
+    {
+        var objectType = o.GetType();
+        var fieldValues = objectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+            .Where(x => x.Name is "_key" or "key" or "_elements" or "elements")
+            .Select(p => GetValue(p, o))
+            .ToArray();
+
+        return new KeyValuePair<object, IEnumerable>(fieldValues[0], (IEnumerable)fieldValues[1]);
+    }
+
+    private CodeExpression VisitGroupings(IEnumerable<object> objects)
+    {
+        var groupingValues = objects.Select(GetIGroupingValue)
+            .SelectMany(g => g.Value.Cast<object>().Select(e => new { g.Key, Element = e }))
+            .ToArray();
+
+        return Visit(groupingValues);
     }
 
     private CodeExpression VisitAnonymous(object o)
@@ -301,11 +317,27 @@ internal class ObjectVisitor
         }
     }
 
-    private CodeExpression VisitKeyValuePairGenerateTuple(object o)
+    //private CodeExpression VisitKeyValuePairGenerateTuple(object o)
+    //{
+    //    var objectType = o.GetType();
+    //    var propertyValues = objectType.GetProperties().Select(p => GetValue(p, o)).Select(Visit);
+    //    return new CodeValueTupleCreateExpression(propertyValues.ToArray());
+    //}
+
+    private CodeExpression VisitKeyValuePairGenerateAnonymousType(object o, string keyName, string valueName)
     {
         var objectType = o.GetType();
-        var propertyValues = objectType.GetProperties().Select(p => GetValue(p, o)).Select(Visit);
-        return new CodeValueTupleCreateExpression(propertyValues.ToArray());
+        var propertyValues = objectType.GetProperties().Select(p => GetValue(p, o)).Select(Visit).ToArray();
+        var result = new CodeObjectCreateAndInitializeExpression(new CodeAnonymousTypeReference())
+        {
+            InitializeExpressions = new CodeExpressionCollection(new[]
+            {
+                (CodeExpression)new CodeAssignExpression(new CodePropertyReferenceExpression(null, keyName), propertyValues[0]),
+                new CodeAssignExpression(new CodePropertyReferenceExpression(null, valueName), propertyValues[1])
+            })
+        };
+
+        return result;
     }
 
     private CodeExpression VisitKeyValuePairGenerateImplicitly(object o)
@@ -484,14 +516,16 @@ internal class ObjectVisitor
 
     private CodeExpression VisitAnonymousDictionary(IEnumerable dictionary)
     {
-        var items = dictionary.Cast<object>().Select(VisitKeyValuePairGenerateTuple);
+        const string keyName = "Key";
+        const string valueName = "Value";
+        var items = dictionary.Cast<object>().Select(o => VisitKeyValuePairGenerateAnonymousType(o, keyName, valueName));
         var type = dictionary.GetType();
 
         CodeExpression expr = new CodeArrayCreateExpression(new CodeAnonymousTypeReference(), items.ToArray());
 
         var variableReferenceExpression = new CodeVariableReferenceExpression("kvp");
-        var keyLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Item1"), variableReferenceExpression);
-        var valueLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Item2"), variableReferenceExpression);
+        var keyLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, keyName), variableReferenceExpression);
+        var valueLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, valueName), variableReferenceExpression);
 
         var isImmutable = ReflectionUtils.IsImmutableCollection(type);
 
@@ -536,14 +570,13 @@ internal class ObjectVisitor
 
     private CodeExpression VisitGroupingCollection(IEnumerable collection)
     {
-        var items = collection.Cast<object>().Select(VisitGrouping);
         var type = collection.GetType();
 
-        CodeExpression expr = new CodeArrayCreateExpression(new CodeAnonymousTypeReference(), items.ToArray());
+        CodeExpression expr = VisitGroupings(collection.Cast<object>());
 
         var variableReferenceExpression = new CodeVariableReferenceExpression("grp");
         var keyLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Key"), variableReferenceExpression);
-        var valueLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Elements"), variableReferenceExpression);
+        var valueLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, "Element"), variableReferenceExpression);
 
         var isLookup = ReflectionUtils.IsLookup(type);
 

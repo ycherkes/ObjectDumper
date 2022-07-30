@@ -31,23 +31,19 @@ namespace Serialization.UnitTests
 @"Dim lookupOfGroupingOfPerson = {
     New With {
         .Key = ""Bob"",
-        .Elements = New Person(){
-            New Person With {
-                .FirstName = ""Bob"",
-                .Age = 32
-            }
+        .Element = New Person With {
+            .FirstName = ""Bob"",
+            .Age = 32
         }
     },
     New With {
         .Key = ""Alice"",
-        .Elements = New Person(){
-            New Person With {
-                .FirstName = ""Alice"",
-                .Age = 23
-            }
+        .Element = New Person With {
+            .FirstName = ""Alice"",
+            .Age = 23
         }
     }
-}.ToLookup(Function (grp) grp.Key, Function (grp) grp.Elements)
+}.ToLookup(Function (grp) grp.Key, Function (grp) grp.Element)
 ", result);
         }
 
@@ -78,28 +74,22 @@ namespace Serialization.UnitTests
     new 
     {
         Key = ""Bob"",
-        Elements = new Person[]
+        Element = new Person
         {
-            new Person
-            {
-                FirstName = ""Bob"",
-                Age = 32
-            }
+            FirstName = ""Bob"",
+            Age = 32
         }
     },
     new 
     {
         Key = ""Alice"",
-        Elements = new Person[]
+        Element = new Person
         {
-            new Person
-            {
-                FirstName = ""Alice"",
-                Age = 23
-            }
+            FirstName = ""Alice"",
+            Age = 23
         }
     }
-}.GroupBy(grp => grp.Key, grp => grp.Elements).ToArray();
+}.GroupBy(grp => grp.Key, grp => grp.Element).ToArray();
 ", result);
         }
     }

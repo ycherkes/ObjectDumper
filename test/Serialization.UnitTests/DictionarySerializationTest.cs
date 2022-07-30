@@ -90,6 +90,52 @@ namespace Serialization.UnitTests
         }
 
         [Fact]
+        public void SerializeDictionaryOfAnonymousTypeCSharp()
+        {
+            var dict = new[]
+            {
+                new { Age = 32, FirstName = "Bob"},
+                new { Age = 23, FirstName = "Alice"},
+            }.ToDictionary(x => x.FirstName);
+
+            var serializer = new CSharpSerializer();
+
+            var result = serializer.Serialize(dict, JsonConvert.SerializeObject(new
+            {
+                IgnoreDefaultValues = true,
+                IgnoreNullValues = true,
+                MaxDepth = 5,
+                UseFullTypeName = false,
+                DateTimeInstantiation = "New",
+                DateKind = "ConvertToUtc"
+            }));
+
+            Assert.Equal(
+@"var dictionaryOfAnonymousType = new []
+{
+    new 
+    {
+        Key = ""Bob"",
+        Value = new 
+        {
+            Age = 32,
+            FirstName = ""Bob""
+        }
+    },
+    new 
+    {
+        Key = ""Alice"",
+        Value = new 
+        {
+            Age = 23,
+            FirstName = ""Alice""
+        }
+    }
+}.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+", result);
+        }
+
+        [Fact]
         public void SerializeDictionaryOfTypeArrayCSharp()
         {
             var dict = new Dictionary<string, Type[]>
