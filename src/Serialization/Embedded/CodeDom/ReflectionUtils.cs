@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.VisualBasic;
@@ -53,7 +54,9 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
                 ? "array"
                 : type.IsAnonymousType()
                     ? "AnonymousType"
-                    : type.Name.Split('`')[0];
+                      : type.Name.StartsWith("<")
+                        ? type.Name.Substring(1).Split('>')[0]
+                        : type.Name.Split('`')[0];
 
             if (type.IsInterface() && result.StartsWith("I", StringComparison.OrdinalIgnoreCase))
             {
@@ -130,9 +133,12 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
 
         public static bool IsAnonymousType(this Type type)
         {
-            var hasCompilerGeneratedAttribute = type.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Length > 0;
-            var nameContainsAnonymousType = (type.FullName ?? "").Contains("AnonymousType");
-            var isAnonymousType = hasCompilerGeneratedAttribute && nameContainsAnonymousType;
+            var isAnonymousType = Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute), false)
+                                    && type.IsGenericType
+                                    && type.Name.Contains("AnonymousType")
+                                    && (type.Name.StartsWith("<>", StringComparison.OrdinalIgnoreCase) ||
+                                        type.Name.StartsWith("VB$", StringComparison.OrdinalIgnoreCase))
+                                    && (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic;
 
             return isAnonymousType;
         }

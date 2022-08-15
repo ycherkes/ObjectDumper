@@ -37,16 +37,12 @@ namespace YellowFlavor.Serialization.Implementation
                 InitExpression = expression
             };
 
-            CodeDomProvider provider = CodeDomProvider.CreateProvider("visualbasic");
+            CodeDomProvider provider = CodeDomProvider.CreateProvider("vb");
 
-            CodeGeneratorOptions options = new CodeGeneratorOptions
-            {
-                BracingStyle = "C"
-            };
             var stringBuilder = new StringBuilder();
             using (var sourceWriter = new StringWriter(stringBuilder))
             {
-                provider.GenerateCodeFromStatement(variableDeclaration, sourceWriter, options);
+                provider.GenerateCodeFromStatement(variableDeclaration, sourceWriter, new CodeGeneratorOptions());
             }
             var result = stringBuilder.ToString();
             return result;
