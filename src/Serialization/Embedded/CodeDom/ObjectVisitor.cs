@@ -59,7 +59,7 @@ internal class ObjectVisitor
         {
             _depth++;
 
-            if (@object == null || IsPrimitive(@object))
+            if (IsPrimitiveOrNull(@object))
                 return VisitPrimitive(@object);
 
             if (@object is TimeSpan timeSpan)
@@ -135,6 +135,7 @@ internal class ObjectVisitor
 
         expr = new CodeMethodInvokeExpression(expr, "GroupBy", keyLambdaExpression, valueLambdaExpression);
         expr = new CodeMethodInvokeExpression(expr, "Single");
+
         return expr;
     }
 
@@ -182,27 +183,36 @@ internal class ObjectVisitor
 
     private static CodeExpression VisitPrimitive(object @object)
     {
-        if (@object != null)
+        if (@object == null || ValueEquality(@object, 0) || @object is byte)
         {
-            var objectType = @object.GetType();
-
-            var specialValueExpression = new[]
-            {
-                "MaxValue",
-                "MinValue",
-                "PositiveInfinity",
-                "NegativeInfinity",
-                "NaN"
-            }.Select(specialValue => GetSpecialValue(@object, objectType, specialValue))
-             .FirstOrDefault(x => x != null);
-
-            if (specialValueExpression != null)
-            {
-                return specialValueExpression;
-            }
+            return new CodePrimitiveExpression(@object);
         }
 
-        return new CodePrimitiveExpression(@object);
+        var objectType = @object.GetType();
+
+        var specialValueExpression = new[]
+        {
+            nameof(int.MaxValue),
+            nameof(int.MinValue),
+            nameof(float.PositiveInfinity),
+            nameof(float.NegativeInfinity),
+            nameof(float.Epsilon),
+            nameof(float.NaN)
+        }
+        .Select(specialValue => GetSpecialValue(@object, objectType, specialValue))
+        .FirstOrDefault(x => x != null);
+
+        return specialValueExpression ?? new CodePrimitiveExpression(@object);
+    }
+
+    private static bool ValueEquality(object val1, object val2)
+    {
+        if (val1 is not IConvertible) return false;
+        if (val2 is not IConvertible) return false;
+
+        var converted2 = Convert.ChangeType(val2, val1.GetType());
+
+        return val1.Equals(converted2);
     }
 
     private static CodeExpression GetSpecialValue(object @object, Type objectType, string fieldName)
@@ -223,7 +233,9 @@ internal class ObjectVisitor
         var argumentValues = _useNamedArgumentsForReferenceRecordTypes ?
             properties.Select(p => (CodeExpression)new CodeNamedArgumentExpression(p.Name, Visit(GetValue(p, o))))
             : properties.Select(p => GetValue(p, o)).Select(Visit);
-        return new CodeObjectCreateExpression(new CodeTypeReference(objectType, _typeReferenceOptions),
+
+        return new CodeObjectCreateExpression(
+            new CodeTypeReference(objectType, _typeReferenceOptions),
             argumentValues.ToArray());
     }
 
@@ -313,13 +325,6 @@ internal class ObjectVisitor
             PopVisited();
         }
     }
-
-    //private CodeExpression VisitKeyValuePairGenerateTuple(object o)
-    //{
-    //    var objectType = o.GetType();
-    //    var propertyValues = objectType.GetProperties().Select(p => GetValue(p, o)).Select(Visit);
-    //    return new CodeValueTupleCreateExpression(propertyValues.ToArray());
-    //}
 
     private CodeExpression VisitKeyValuePairGenerateAnonymousType(object o, string keyName, string valueName)
     {
@@ -449,10 +454,10 @@ internal class ObjectVisitor
         }
     }
 
-    private CodeExpression VisitValueTuple(object o)
+    private CodeExpression VisitValueTuple(object @object)
     {
-        var objectType = o.GetType();
-        var propertyValues = objectType.GetFields().Select(p => GetValue(p, o)).Select(Visit);
+        var objectType = @object.GetType();
+        var propertyValues = objectType.GetFields().Select(p => GetValue(p, @object)).Select(Visit);
 
         return new CodeValueTupleCreateExpression(propertyValues.ToArray());
     }
@@ -877,6 +882,11 @@ internal class ObjectVisitor
             : new CodeDefaultValueExpression(new CodeTypeReference(@object.GetType(), _typeReferenceOptions)),
             new CodeStatementExpression(new CodeCommentStatement(new CodeComment("Max depth") { NoNewLine = true }))
         }, ", ");
+    }
+
+    private static bool IsPrimitiveOrNull(object @object)
+    {
+        return @object == null || IsPrimitive(@object);
     }
 
     private static bool IsPrimitive(object @object)
