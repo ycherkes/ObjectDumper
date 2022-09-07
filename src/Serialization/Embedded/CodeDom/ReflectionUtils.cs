@@ -174,7 +174,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
         {
             var typeFullName = type.FullName ?? "";
 
-            return type.IsValueType() && typeFullName.StartsWith("System.Collections.Immutable");
+            return typeFullName.StartsWith("System.Collections.Immutable");
         }
 
         public static bool IsReadonlyCollection(Type type)

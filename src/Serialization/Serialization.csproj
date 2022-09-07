@@ -4,8 +4,8 @@
     <TargetFrameworks>net45;netstandard2.0;netcoreapp3.1;net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <AssemblyName>YellowFlavor.Serialization</AssemblyName>
-    <AssemblyVersion>0.0.0.62</AssemblyVersion>
-    <FileVersion>0.0.0.62</FileVersion>
+    <AssemblyVersion>0.0.0.63</AssemblyVersion>
+    <FileVersion>0.0.0.63</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RootNamespace>YellowFlavor.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
   </PropertyGroup>
