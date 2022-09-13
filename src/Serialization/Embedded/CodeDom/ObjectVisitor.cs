@@ -494,7 +494,7 @@ internal class ObjectVisitor
         var items = dict.Cast<object>().Select(VisitKeyValuePairGenerateImplicitly);
 
         var type = dict.GetType();
-        var isImmutable = ReflectionUtils.IsImmutableCollection(type);
+        var isImmutable = ReflectionUtils.IsPublicImmutableCollection(type);
 
         if (isImmutable)
         {
@@ -529,7 +529,7 @@ internal class ObjectVisitor
         var keyLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, keyName), variableReferenceExpression);
         var valueLambdaExpression = new CodeLambdaExpression(new CodePropertyReferenceExpression(variableReferenceExpression, valueName), variableReferenceExpression);
 
-        var isImmutable = ReflectionUtils.IsImmutableCollection(type);
+        var isImmutable = ReflectionUtils.IsPublicImmutableCollection(type);
 
         expr = isImmutable
             ? new CodeMethodInvokeExpression(expr, $"To{type.Name.Split('`')[0]}", keyLambdaExpression, valueLambdaExpression)
@@ -604,7 +604,7 @@ internal class ObjectVisitor
 
         var type = enumerable.GetType();
 
-        var isImmutable = ReflectionUtils.IsImmutableCollection(type);
+        var isImmutable = ReflectionUtils.IsPublicImmutableCollection(type);
 
         if (!IsCollection(enumerable) || type.IsArray || isImmutable)
         {
@@ -641,7 +641,7 @@ internal class ObjectVisitor
         var items = enumerable.Cast<object>().Select(Visit);
         var type = enumerable.GetType();
 
-        var isImmutable = ReflectionUtils.IsImmutableCollection(type);
+        var isImmutable = ReflectionUtils.IsPublicImmutableCollection(type);
 
 
         CodeExpression expr = new CodeArrayCreateExpression(

@@ -170,11 +170,11 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
             return hasICollection;
         }
 
-        public static bool IsImmutableCollection(Type type)
+        public static bool IsPublicImmutableCollection(Type type)
         {
             var typeFullName = type.FullName ?? "";
 
-            return typeFullName.StartsWith("System.Collections.Immutable");
+            return type.IsPublic && typeFullName.StartsWith("System.Collections.Immutable");
         }
 
         public static bool IsReadonlyCollection(Type type)
