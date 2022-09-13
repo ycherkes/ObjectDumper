@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Serialization.UnitTests.TestModel;
+using System.Collections.Immutable;
 using YellowFlavor.Serialization.Implementation;
 
 namespace Serialization.UnitTests
@@ -173,6 +174,49 @@ namespace Serialization.UnitTests
         }
     }
 };
+", result);
+        }
+
+        [Fact]
+        public void SerializeImmutableDictionaryCsharp()
+        {
+            var immutableDictionary = new Dictionary<string, string>
+            {
+                { "Steeve", "Test reference" }
+            }.ToImmutableDictionary();
+
+            var serializer = new CSharpSerializer();
+
+            var result = serializer.Serialize(immutableDictionary, null);
+
+            Assert.Equal(@"var immutableDictionaryOfString = new Dictionary<string, string>
+{
+    {
+        ""Steeve"",
+        ""Test reference""
+    }
+}.ToImmutableDictionary();
+", result);
+        }
+
+        [Fact]
+        public void SerializeImmutableDictionaryVb()
+        {
+            var immutableDictionary = new Dictionary<string, string>
+            {
+                { "Steeve", "Test reference" }
+            }.ToImmutableDictionary();
+
+            var serializer = new VisualBasicSerializer();
+
+            var result = serializer.Serialize(immutableDictionary, null);
+
+            Assert.Equal(@"Dim immutableDictionaryOfString = New Dictionary(Of String, String) From {
+    {
+        ""Steeve"",
+        ""Test reference""
+    }
+}.ToImmutableDictionary()
 ", result);
         }
     }
