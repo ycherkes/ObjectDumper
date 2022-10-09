@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using YellowFlavor.Serialization.Embedded.CodeDom;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.VisualBasic;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.Compiler;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom;
@@ -37,12 +38,12 @@ namespace YellowFlavor.Serialization.Implementation
                 InitExpression = expression
             };
 
-            CodeDomProvider provider = CodeDomProvider.CreateProvider("vb");
+            ICodeGenerator generator = new VBCodeGenerator();
 
             var stringBuilder = new StringBuilder();
             using (var sourceWriter = new StringWriter(stringBuilder))
             {
-                provider.GenerateCodeFromStatement(variableDeclaration, sourceWriter, new CodeGeneratorOptions());
+                generator.GenerateCodeFromStatement(variableDeclaration, sourceWriter, new CodeGeneratorOptions());
             }
             var result = stringBuilder.ToString();
             return result;

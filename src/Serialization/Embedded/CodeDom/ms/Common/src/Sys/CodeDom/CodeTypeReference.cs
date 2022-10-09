@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom;
 
 #if !FEATURE_SERIALIZATION
 namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom
@@ -292,14 +291,6 @@ namespace System.Runtime.Serialization
                 TypeArguments.AddRange(typeArguments);
             }
         }
-
-#if !FEATURE_SERIALIZATION
-        public CodeTypeReference(CodeTypeParameter typeParameter) :
-            this(typeParameter?.Name)
-        {
-            Options = CodeTypeReferenceOptions.GenericTypeParameter;
-        }
-#endif
 
         public CodeTypeReference(string baseType, int rank)
         {
