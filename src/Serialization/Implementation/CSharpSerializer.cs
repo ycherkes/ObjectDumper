@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using YellowFlavor.Serialization.Embedded.CodeDom;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.CSharp;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.Compiler;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom;
@@ -37,16 +38,15 @@ namespace YellowFlavor.Serialization.Implementation
                 InitExpression = expression
             };
 
-            CodeDomProvider provider = CodeDomProvider.CreateProvider("csharp");
-
             CodeGeneratorOptions options = new CodeGeneratorOptions
             {
                 BracingStyle = "C"
             };
+            ICodeGenerator generator = new CSharpCodeGenerator();
             var stringBuilder = new StringBuilder();
             using (var sourceWriter = new StringWriter(stringBuilder))
             {
-                provider.GenerateCodeFromStatement(variableDeclaration, sourceWriter, options);
+                generator.GenerateCodeFromStatement(variableDeclaration, sourceWriter, options);
             }
             var result = stringBuilder.ToString();
             return result;

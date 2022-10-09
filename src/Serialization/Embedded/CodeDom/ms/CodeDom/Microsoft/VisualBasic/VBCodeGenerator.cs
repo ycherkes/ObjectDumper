@@ -17,9 +17,9 @@ using YellowFlavor.Serialization.Embedded.CodeDom.ms.Resources;
 
 namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.VisualBasic
 {
-    internal sealed partial class VBCodeGenerator : CodeCompiler
+    internal sealed class VBCodeGenerator : CodeGenerator
     {
-        private static readonly char[] s_periodArray = new char[] { '.' };
+        private static readonly char[] s_periodArray = { '.' };
         private const int MaxLineLength = int.MaxValue;
 
         private const GeneratorSupport LanguageSupport = GeneratorSupport.EntryPointMethod |
@@ -50,13 +50,12 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                                                          GeneratorSupport.DeclareIndexerProperties;
 
         private int _statementDepth = 0;
-        private IDictionary<string, string> _provOptions;
 
         // This is the keyword list. To minimize search time and startup time, this is stored by length
         // and then alphabetically for use by FixedStringLookup.Contains.
-        private static readonly string[][] s_keywords = new string[][] {
+        private static readonly string[][] s_keywords = {
             null,           // 1 character
-            new string[] {  // 2 characters            
+            new[] {  // 2 characters            
                 "as",
                 "do",
                 "if",
@@ -68,7 +67,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 "or",
                 "to",
             },
-            new string[] {  // 3 characters
+            new[] {  // 3 characters
                 "and",
                 "dim",
                 "end",
@@ -85,7 +84,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 "try",
                 "xor",
             },
-            new string[] {  // 4 characters
+            new[] {  // 4 characters
                 "ansi",
                 "auto",
                 "byte",
@@ -117,7 +116,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 "when",
                 "with",
             },
-            new string[] {  // 5 characters  
+            new[] {  // 5 characters  
                 "alias",
                 "byref",
                 "byval",
@@ -147,7 +146,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 "using",
                 "while",
              },
-            new string[] {  // 6 characters
+            new[] {  // 6 characters
                 "csbyte",
                 "cshort",
                 "double",
@@ -170,7 +169,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 "typeof",
                 "ushort",
             },
-            new string[] { // 7 characters
+            new[] { // 7 characters
                 "andalso",
                 "boolean",
                 "cushort",
@@ -191,7 +190,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 "unicode",
                 "variant",
             },
-            new string[] {  // 8 characters
+            new[] {  // 8 characters
                 "assembly",
                 "continue",
                 "delegate",
@@ -206,7 +205,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 "uinteger",
                 "widening"
             },
-            new string [] { // 9 characters
+            new[] { // 9 characters
                 "addressof",
                 "interface",
                 "namespace",
@@ -217,7 +216,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 "structure",
                 "writeonly",
             },
-            new string [] { // 10 characters
+            new[] { // 10 characters
                 "addhandler",
                 "directcast",
                 "implements",
@@ -225,25 +224,25 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
                 "raiseevent",
                 "withevents",
             },
-            new string[] {  // 11 characters
+            new[] {  // 11 characters
                 "mustinherit",
                 "overridable",
             },
-            new string[] { // 12 characters
+            new[] { // 12 characters
                 "mustoverride",
             },
-            new string [] { // 13 characters
+            new[] { // 13 characters
                 "removehandler",
             },
             // class_finalize and class_initialize are not keywords anymore,
             // but it will be nice to escape them to avoid warning
-            new string [] { // 14 characters
+            new[] { // 14 characters
                 "class_finalize",
                 "notinheritable",
                 "notoverridable",
             },
             null,           // 15 characters
-            new string [] {
+            new[] {
                 "class_initialize",
             }
         };
@@ -252,12 +251,11 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
 
         internal VBCodeGenerator(IDictionary<string, string> providerOptions)
         {
-            _provOptions = providerOptions;
         }
 
-        protected override string FileExtension => ".vb";
+        protected string FileExtension => ".vb";
 
-        protected override string CompilerName => "vbc.exe";
+        protected string CompilerName => "vbc.exe";
 
         /// <summary>Tells whether or not the current class should be generated as a module</summary>
         private bool IsCurrentModule => IsCurrentClass && GetUserData(CurrentClass, "Module", false);
@@ -379,17 +377,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
             b.Append(")");
         }
 
-        protected override void ProcessCompilerOutputLine(CompilerResults results, string line)
-        {
-            throw new PlatformNotSupportedException();
-        }
-
-        protected override string CmdArgsFromParameters(CompilerParameters options)
-        {
-            throw new PlatformNotSupportedException();
-        }
-
-        protected override void OutputAttributeArgument(CodeAttributeArgument arg)
+        protected void OutputAttributeArgument(CodeAttributeArgument arg)
         {
             if (!string.IsNullOrEmpty(arg.Name))
             {
@@ -673,12 +661,6 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
             }
 
             base.GenerateBinaryOperatorExpression(e);
-        }
-
-        protected override string GetResponseFileCmdArgs(CompilerParameters options, string cmdArgs)
-        {
-            // Always specify the /noconfig flag (outside of the response file) 
-            return "/noconfig " + base.GetResponseFileCmdArgs(options, cmdArgs);
         }
 
         protected override void OutputIdentifier(string ident)
@@ -2462,7 +2444,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Visua
 
         protected override bool Supports(GeneratorSupport support)
         {
-            return ((support & LanguageSupport) == support);
+            return (support & LanguageSupport) == support;
         }
 
         protected override bool IsValidIdentifier(string value)

@@ -17,8 +17,6 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.
         bool Supports(GeneratorSupport supports);
         void GenerateCodeFromExpression(CodeExpression e, TextWriter w, CodeGeneratorOptions o);
         void GenerateCodeFromStatement(CodeStatement e, TextWriter w, CodeGeneratorOptions o);
-        void GenerateCodeFromNamespace(CodeNamespace e, TextWriter w, CodeGeneratorOptions o);
-        void GenerateCodeFromCompileUnit(CodeCompileUnit e, TextWriter w, CodeGeneratorOptions o);
         void GenerateCodeFromType(CodeTypeDeclaration e, TextWriter w, CodeGeneratorOptions o);
     }
 }

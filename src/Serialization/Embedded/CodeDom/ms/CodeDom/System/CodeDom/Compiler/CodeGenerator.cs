@@ -233,7 +233,6 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.
         {
             foreach (CodeNamespace n in e.Namespaces)
             {
-                ((ICodeGenerator)this).GenerateCodeFromNamespace(n, _output.InnerWriter, _options);
             }
         }
 
@@ -296,69 +295,6 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.
             try
             {
                 GenerateExpression(e);
-            }
-            finally
-            {
-                if (setLocal)
-                {
-                    _output = null;
-                    _options = null;
-                }
-            }
-        }
-
-        void ICodeGenerator.GenerateCodeFromCompileUnit(CodeCompileUnit e, TextWriter w, CodeGeneratorOptions o)
-        {
-            bool setLocal = false;
-            if (_output != null && w != _output.InnerWriter)
-            {
-                throw new InvalidOperationException(SR.CodeGenOutputWriter);
-            }
-            if (_output == null)
-            {
-                setLocal = true;
-                _options = o ?? new CodeGeneratorOptions();
-                _output = new ExposedTabStringIndentedTextWriter(w, _options.IndentString);
-            }
-
-            try
-            {
-                if (e is CodeSnippetCompileUnit)
-                {
-                    GenerateSnippetCompileUnit((CodeSnippetCompileUnit)e);
-                }
-                else
-                {
-                    GenerateCompileUnit(e);
-                }
-            }
-            finally
-            {
-                if (setLocal)
-                {
-                    _output = null;
-                    _options = null;
-                }
-            }
-        }
-
-        void ICodeGenerator.GenerateCodeFromNamespace(CodeNamespace e, TextWriter w, CodeGeneratorOptions o)
-        {
-            bool setLocal = false;
-            if (_output != null && w != _output.InnerWriter)
-            {
-                throw new InvalidOperationException(SR.CodeGenOutputWriter);
-            }
-            if (_output == null)
-            {
-                setLocal = true;
-                _options = o ?? new CodeGeneratorOptions();
-                _output = new ExposedTabStringIndentedTextWriter(w, _options.IndentString);
-            }
-
-            try
-            {
-                GenerateNamespace(e);
             }
             finally
             {
