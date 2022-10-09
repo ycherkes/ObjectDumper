@@ -6,8 +6,8 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom;
 
 namespace YellowFlavor.Serialization.Embedded.CodeDom;
 

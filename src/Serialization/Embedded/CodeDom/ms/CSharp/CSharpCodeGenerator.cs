@@ -7,10 +7,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.Compiler;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.Resources;
 
 namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.CSharp

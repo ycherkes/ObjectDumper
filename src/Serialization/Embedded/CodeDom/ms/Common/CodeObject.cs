@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Specialized;
 
 #if !FEATURE_SERIALIZATION
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common
 #else
 namespace System.Runtime.Serialization
 #endif

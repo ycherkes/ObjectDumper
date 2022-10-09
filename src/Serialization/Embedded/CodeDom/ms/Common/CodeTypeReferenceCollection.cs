@@ -6,7 +6,7 @@ using System;
 using System.Collections;
 
 #if !FEATURE_SERIALIZATION
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common
 #else
 namespace System.Runtime.Serialization
 #endif
@@ -31,7 +31,7 @@ namespace System.Runtime.Serialization
 
         public CodeTypeReference this[int index]
         {
-            get { return ((CodeTypeReference)(List[index])); }
+            get { return (CodeTypeReference)List[index]; }
             set { List[index] = value; }
         }
 

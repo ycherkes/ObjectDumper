@@ -5,8 +5,7 @@
 using System;
 using System.Globalization;
 using System.IO;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.Resources;
 
 namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.Compiler

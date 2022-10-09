@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 
 #if !FEATURE_SERIALIZATION
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys.CodeDom
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common
 #else
 namespace System.Runtime.Serialization
 #endif
@@ -218,7 +218,7 @@ namespace System.Runtime.Serialization
                     --current;
                 }
 
-                if (current > 0 && (end - current - 1) > 0)
+                if (current > 0 && end - current - 1 > 0)
                 {
                     // push the last generic type argument name if there is any
                     if (current + 1 < subTypeNameEndIndex)

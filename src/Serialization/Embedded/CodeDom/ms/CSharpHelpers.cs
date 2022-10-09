@@ -5,14 +5,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms
 {
     /// <devdoc>
     ///    <para>Provides a base class for code generators.</para>
     /// </devdoc>
     internal abstract class CSharpHelpers
     {
-        private static Dictionary<string, object> s_fixedStringLookup;
+        private static readonly Dictionary<string, object> s_fixedStringLookup;
 
         static CSharpHelpers()
         {
@@ -41,27 +41,16 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
             return name;
         }
 
-        /// <devdoc>
-        ///    <para>
-        ///       Gets a value indicating whether the specified value is a valid language
-        ///       independent identifier.
-        ///    </para>
-        /// </devdoc>
-        public static bool IsValidLanguageIndependentIdentifier(string value)
-        {
-            return IsValidTypeNameOrIdentifier(value, false);
-        }
-
-        private static readonly string[][] s_keywords = new string[][] {
+        private static readonly string[][] s_keywords = {
             null,           // 1 character
-            new string[] {  // 2 characters
+            new[] {  // 2 characters
                 "as",
                 "do",
                 "if",
                 "in",
                 "is",
             },
-            new string[] {  // 3 characters
+            new[] {  // 3 characters
                 "for",
                 "int",
                 "new",
@@ -69,7 +58,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
                 "ref",
                 "try",
             },
-            new string[] {  // 4 characters
+            new[] {  // 4 characters
                 "base",
                 "bool",
                 "byte",
@@ -86,7 +75,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
                 "uint",
                 "void",
             },
-            new string[] {  // 5 characters
+            new[] {  // 5 characters
                 "break",
                 "catch",
                 "class",
@@ -104,7 +93,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
                 "while",
                 "yield",
             },
-            new string[] {  // 6 characters
+            new[] {  // 6 characters
                 "double",
                 "extern",
                 "object",
@@ -121,7 +110,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
                 "unsafe",
                 "ushort",
             },
-            new string[] {  // 7 characters
+            new[] {  // 7 characters
                 "checked",
                 "decimal",
                 "default",
@@ -131,7 +120,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
                 "private",
                 "virtual",
             },
-            new string[] {  // 8 characters
+            new[] {  // 8 characters
                 "abstract",
                 "continue",
                 "delegate",
@@ -143,7 +132,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
                 "readonly",
                 "volatile",
             },
-            new string[] {  // 9 characters
+            new[] {  // 9 characters
                 "__arglist",
                 "__makeref",
                 "__reftype",
@@ -152,7 +141,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
                 "protected",
                 "unchecked",
             },
-            new string[] {  // 10 characters
+            new[] {  // 10 characters
                 "__refvalue",
                 "stackalloc",
             },
@@ -171,7 +160,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
             }
             else
             {
-                return ((value[0] == '_') && (value[1] == '_') && (value[2] != '_'));
+                return value[0] == '_' && value[1] == '_' && value[2] != '_';
             }
         }
 
@@ -226,7 +215,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common.src.Sys
         // This can be a special character like a separator that shows up in a type name
         // This is an odd set of characters.  Some come from characters that are allowed by C++, like < and >.
         // Others are characters that are specified in the type and assembly name grammar.
-        internal static bool IsSpecialTypeChar(char ch, ref bool nextMustBeStartChar)
+        private static bool IsSpecialTypeChar(char ch, ref bool nextMustBeStartChar)
         {
             switch (ch)
             {
