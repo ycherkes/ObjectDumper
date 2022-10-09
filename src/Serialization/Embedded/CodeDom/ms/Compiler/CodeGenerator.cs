@@ -5,10 +5,10 @@
 using System;
 using System.Globalization;
 using System.IO;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.Resources;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.Compiler
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Compiler
 {
     public abstract class CodeGenerator : ICodeGenerator
     {

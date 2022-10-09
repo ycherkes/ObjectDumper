@@ -5,7 +5,7 @@
 using System.CodeDom.Compiler;
 using System.IO;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.Compiler
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Compiler
 {
     internal sealed class ExposedTabStringIndentedTextWriter : IndentedTextWriter
     {

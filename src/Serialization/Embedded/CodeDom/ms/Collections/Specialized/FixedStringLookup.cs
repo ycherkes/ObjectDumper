@@ -4,7 +4,7 @@
 
 using System.Globalization;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.Collections.Specialized
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Collections.Specialized
 {
     // This class provides a very efficient way to lookup an entry in a list of strings,
     // providing that they are declared in a particular way.

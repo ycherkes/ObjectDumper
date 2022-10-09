@@ -2,9 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common;
-
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common
 {
     public class CodeComment : CodeObject
     {

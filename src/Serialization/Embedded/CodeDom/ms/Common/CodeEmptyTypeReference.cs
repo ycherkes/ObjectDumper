@@ -1,4 +1,4 @@
-﻿namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common
+﻿namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common
 {
     internal class CodeEmptyTypeReference : CodeTypeReference
     {

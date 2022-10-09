@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 
 #if !FEATURE_SERIALIZATION
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common
 #else
 namespace System.Runtime.Serialization
 #endif

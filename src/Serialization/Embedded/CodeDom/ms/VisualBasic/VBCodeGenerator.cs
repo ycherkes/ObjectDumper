@@ -7,12 +7,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.Compiler;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.Collections.Specialized;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.Collections.Specialized;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.Compiler;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.VisualBasic
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.VisualBasic
 {
     internal sealed class VBCodeGenerator : CodeGenerator
     {

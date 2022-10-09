@@ -5,7 +5,7 @@
 using System.Collections;
 using System.Collections.Specialized;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.Compiler
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Compiler
 {
     public class CodeGeneratorOptions
     {

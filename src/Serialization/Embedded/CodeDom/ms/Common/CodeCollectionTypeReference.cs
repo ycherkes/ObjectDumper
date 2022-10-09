@@ -4,7 +4,7 @@
 
 using System;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common
 {
     public class CodeCollectionTypeReference : CodeTypeReference
     {

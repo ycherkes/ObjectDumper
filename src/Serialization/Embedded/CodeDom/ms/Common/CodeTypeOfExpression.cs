@@ -3,9 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common
 {
     public class CodeTypeOfExpression : CodeExpression
     {

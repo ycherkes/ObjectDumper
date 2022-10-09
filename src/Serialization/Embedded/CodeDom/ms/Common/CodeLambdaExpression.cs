@@ -4,7 +4,7 @@
 
 using System.Linq;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common
 {
     public class CodeLambdaExpression : CodeExpression
     {

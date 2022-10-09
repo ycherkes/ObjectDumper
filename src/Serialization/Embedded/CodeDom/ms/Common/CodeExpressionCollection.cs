@@ -5,7 +5,7 @@
 using System;
 using System.Collections;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common
 {
     public class CodeExpressionCollection : CollectionBase
     {

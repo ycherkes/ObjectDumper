@@ -5,9 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common;
 
-namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom
+namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Common
 {
     public class CodeObjectCreateAndInitializeExpression : CodeObjectCreateExpression
     {

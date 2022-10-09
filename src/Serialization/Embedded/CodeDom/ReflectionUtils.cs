@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.VisualBasic;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.VisualBasic;
 using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.Utilities;
 
 namespace YellowFlavor.Serialization.Embedded.CodeDom

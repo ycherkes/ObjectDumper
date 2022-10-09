@@ -3,10 +3,9 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using YellowFlavor.Serialization.Embedded.CodeDom;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.Common;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.Microsoft.VisualBasic;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CodeDom.System.CodeDom.Compiler;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.Compiler;
+using YellowFlavor.Serialization.Embedded.CodeDom.ms.VisualBasic;
 using YellowFlavor.Serialization.Implementation.Settings;
 
 namespace YellowFlavor.Serialization.Implementation
