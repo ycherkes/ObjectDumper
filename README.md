@@ -1,5 +1,7 @@
 # [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7&style=for-the-badge)](https://stand-with-ukraine.pp.ua) [Stand with the people of Ukraine: How to Help](https://stand-with-ukraine.pp.ua)
 
+<img src="https://user-images.githubusercontent.com/13467759/195113921-b53d7d4d-78f4-4e89-8e6c-1d89b2f07caa.png" width="100" height="100" />
+
 # Object Dumper
 
 [![marketplace](https://img.shields.io/visual-studio-marketplace/v/YevhenCherkes.YellowFlavorObjectDumper.svg?label=Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
