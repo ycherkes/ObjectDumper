@@ -6,7 +6,7 @@
 
 [![marketplace](https://img.shields.io/visual-studio-marketplace/v/YevhenCherkes.YellowFlavorObjectDumper.svg?label=Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
 [![downloads](https://img.shields.io/visual-studio-marketplace/d/YevhenCherkes.YellowFlavorObjectDumper?label=Downloads&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
-
+[![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
 A Visual Studio 2022 extension. Dumps the objects from the debugging session in the next formats: C# Object Initialization Code, JSON, Visual Basic Object Initialization Code, XML and YAML.
 
@@ -37,9 +37,9 @@ It opens the dumped object in a separate document window.
 
 # Powered By
 
-* [System.CodeDom](https://github.com/dotnet/runtime/tree/main/src/libraries/System.CodeDom)
-* [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
-* [YamlDotNet](https://github.com/aaubry/YamlDotNet)
+* [System.CodeDom](https://github.com/dotnet/runtime/tree/main/src/libraries/System.CodeDom) - [![MIT](https://img.shields.io/github/license/dotnet/runtime?style=flat-square)](https://github.com/dotnet/runtime/blob/main/LICENSE.TXT)
+* [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) - [![MIT](https://img.shields.io/github/license/JamesNK/Newtonsoft.Json?style=flat-square)](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)
+* [YamlDotNet](https://github.com/aaubry/YamlDotNet) - [![MIT](https://img.shields.io/github/license/aaubry/YamlDotNet?style=flat-square)](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt)
 
 This tool has been working well for my own personal needs, but outside that its future depends on your feedback. Feel free to [open an issue](https://github.com/ycherkes/ObjectDumper/issues).
 
