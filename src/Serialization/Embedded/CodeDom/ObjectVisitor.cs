@@ -70,6 +70,12 @@ internal class ObjectVisitor
             if (@object is DateTimeOffset dateTimeOffset)
                 return VisitDateTimeOffset(dateTimeOffset);
 
+            if (IsDateOnly(@object))
+                return VisitDateOnly(@object);
+
+            if (IsTimeOnly(@object))
+                return VisitTimeOnly(@object);
+
             if (IsRecord(@object))
                 return VisitRecord(@object);
 
@@ -743,7 +749,7 @@ internal class ObjectVisitor
                 new CodePrimitiveExpression(nonZeroValues[0].Value)
             );
 
-        if (timeSpan.TotalMilliseconds % TimeSpan.TicksPerMillisecond != 0)
+        if (timeSpan.Ticks % TimeSpan.TicksPerMillisecond != 0)
             return new CodeMethodInvokeExpression
             (
                 new CodeMethodReferenceExpression(
@@ -848,6 +854,108 @@ internal class ObjectVisitor
             month, day, hour, minute, second, millisecond, kind);
     }
 
+    private CodeExpression VisitDateOnly(object dateOnly)
+    {
+        var objectType = dateOnly.GetType();
+        var dateOnlyCodeTypeReference = new CodeTypeReference(objectType, _typeReferenceOptions);
+        var dayNumber = (int?)objectType.GetProperty("DayNumber")?.GetValue(dateOnly);
+
+        if (dayNumber == null)
+        {
+            return GetErrorDetectedExpression("Wrong DateOnly struct");
+        }
+
+        if (dayNumber == 3652058U)
+            return new CodeFieldReferenceExpression
+            (
+                new CodeTypeReferenceExpression(dateOnlyCodeTypeReference),
+                nameof(DateTime.MaxValue)
+            );
+
+        if (dayNumber == 1)
+            return new CodeFieldReferenceExpression
+            (
+                new CodeTypeReferenceExpression(dateOnlyCodeTypeReference),
+                nameof(DateTime.MinValue)
+            );
+
+        var dateTime = new DateTime((long)dayNumber * 864000000000L);
+
+        if (_dateTimeInstantiation == DateTimeInstantiation.Parse)
+        {
+            return new CodeMethodInvokeExpression
+            (
+                new CodeMethodReferenceExpression(
+                    new CodeTypeReferenceExpression(dateOnlyCodeTypeReference),
+                    nameof(DateTime.ParseExact)),
+                new CodePrimitiveExpression($"{dateTime:yyyy-MM-dd}"),
+                new CodePrimitiveExpression("O")
+            );
+        }
+
+        var year = new CodePrimitiveExpression(dateTime.Year);
+        var month = new CodePrimitiveExpression(dateTime.Month);
+        var day = new CodePrimitiveExpression(dateTime.Day);
+
+        return new CodeObjectCreateExpression(dateOnlyCodeTypeReference, year, month, day);
+    }
+
+    private CodeExpression VisitTimeOnly(object timeOnly)
+    {
+        var objectType = timeOnly.GetType();
+        var timeOnlyCodeTypeReference = new CodeTypeReference(objectType, _typeReferenceOptions);
+        var ticks = (long?)objectType.GetProperty("Ticks")?.GetValue(timeOnly);
+
+        if (ticks == null)
+        {
+            return GetErrorDetectedExpression("Wrong TimeOnly struct");
+        }
+
+        if (ticks == 863999999999)
+            return new CodeFieldReferenceExpression
+            (
+                new CodeTypeReferenceExpression(timeOnlyCodeTypeReference),
+                nameof(DateTime.MaxValue)
+            );
+
+        if (ticks == 0)
+            return new CodeFieldReferenceExpression
+            (
+                new CodeTypeReferenceExpression(timeOnlyCodeTypeReference),
+                nameof(DateTime.MinValue)
+            );
+
+        var timeSpan = TimeSpan.FromTicks(ticks.Value);
+
+        if (timeSpan.Ticks % TimeSpan.TicksPerMillisecond != 0)
+            return new CodeMethodInvokeExpression
+            (
+                new CodeMethodReferenceExpression(
+                    new CodeTypeReferenceExpression(timeOnlyCodeTypeReference),
+                    nameof(TimeSpan.FromTicks)),
+                new CodePrimitiveExpression(ticks.Value)
+            );
+
+        if (_dateTimeInstantiation == DateTimeInstantiation.Parse)
+        {
+            return new CodeMethodInvokeExpression
+            (
+                new CodeMethodReferenceExpression(
+                    new CodeTypeReferenceExpression(timeOnlyCodeTypeReference),
+                    nameof(DateTime.ParseExact)),
+                new CodePrimitiveExpression($"{timeSpan:c}"),
+                new CodePrimitiveExpression("O")
+            );
+        }
+
+        var hour = new CodePrimitiveExpression(timeSpan.Hours);
+        var minute = new CodePrimitiveExpression(timeSpan.Minutes);
+        var second = new CodePrimitiveExpression(timeSpan.Seconds);
+        var millisecond = new CodePrimitiveExpression(timeSpan.Milliseconds);
+
+        return new CodeObjectCreateExpression(timeOnlyCodeTypeReference, hour, minute, second, millisecond);
+    }
+
     private void PushVisited(object value)
     {
         _visitedObjects.Push(value);
@@ -861,6 +969,15 @@ internal class ObjectVisitor
     private static bool IsCollection(object obj)
     {
         return obj is ICollection || ReflectionUtils.IsGenericCollection(obj.GetType());
+    }
+
+    private static CodeExpression GetErrorDetectedExpression(string errorMessage)
+    {
+        return new CodeSeparatedExpressionCollection(new CodeExpression[]
+        {
+            new CodePrimitiveExpression(null),
+            new CodeStatementExpression(new CodeCommentStatement(new CodeComment(errorMessage) { NoNewLine = true }))
+        }, ", ");
     }
 
     private static CodeExpression GetCircularReferenceDetectedExpression()
@@ -967,5 +1084,16 @@ internal class ObjectVisitor
     {
         var type = o.GetType();
         return ReflectionUtils.IsValueTuple(type);
+    }
+    private static bool IsDateOnly(object o)
+    {
+        var objectType = o.GetType();
+        return objectType.Namespace == "System" && objectType.Name == "DateOnly";
+    }
+
+    private static bool IsTimeOnly(object o)
+    {
+        var objectType = o.GetType();
+        return objectType.Namespace == "System" && objectType.Name == "TimeOnly";
     }
 }
