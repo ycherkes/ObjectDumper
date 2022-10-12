@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8FD04DB2-FB0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0BD90D7A-4327-495B-8C72-53CD9453F000}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Serialization.UnitTests.FSharp", "..\test\Serialization.UnitTests.FSharp\Serialization.UnitTests.FSharp.fsproj", "{40AD795A-91FF-46EF-B0FD-9B2B49DA6A22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,14 @@ Global
 		{F4AC0B51-45F1-46A0-B641-959D7AB42B0A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F4AC0B51-45F1-46A0-B641-959D7AB42B0A}.Release|x86.ActiveCfg = Release|Any CPU
 		{F4AC0B51-45F1-46A0-B641-959D7AB42B0A}.Release|x86.Build.0 = Release|Any CPU
+		{40AD795A-91FF-46EF-B0FD-9B2B49DA6A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40AD795A-91FF-46EF-B0FD-9B2B49DA6A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40AD795A-91FF-46EF-B0FD-9B2B49DA6A22}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{40AD795A-91FF-46EF-B0FD-9B2B49DA6A22}.Debug|x86.Build.0 = Debug|Any CPU
+		{40AD795A-91FF-46EF-B0FD-9B2B49DA6A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40AD795A-91FF-46EF-B0FD-9B2B49DA6A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40AD795A-91FF-46EF-B0FD-9B2B49DA6A22}.Release|x86.ActiveCfg = Release|Any CPU
+		{40AD795A-91FF-46EF-B0FD-9B2B49DA6A22}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +63,7 @@ Global
 		{038A571A-82B6-4667-8C18-E6FFEEE32192} = {8FD04DB2-FB06-4588-AD0D-A3D7CD45BFE0}
 		{C771494C-494B-4C4D-A4D0-7FE09CB5A7E9} = {8FD04DB2-FB06-4588-AD0D-A3D7CD45BFE0}
 		{F4AC0B51-45F1-46A0-B641-959D7AB42B0A} = {0BD90D7A-4327-495B-8C72-53CD9453F000}
+		{40AD795A-91FF-46EF-B0FD-9B2B49DA6A22} = {0BD90D7A-4327-495B-8C72-53CD9453F000}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {29C0C2A9-946A-4CB4-9AF6-79FF7B79F388}
