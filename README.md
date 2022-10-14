@@ -8,9 +8,9 @@
 [![downloads](https://img.shields.io/visual-studio-marketplace/d/YevhenCherkes.YellowFlavorObjectDumper?label=Downloads&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
 [![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
-A Visual Studio 2022 extension. Dumps the objects from the debugging session in the next formats: C# Object Initialization Code, JSON, Visual Basic Object Initialization Code, XML and YAML.
+This Visual Studio 2022 extension allows you dumping in-memory objects during debugging in the following formats: C# Object Initialization Code, JSON, Visual Basic Object Initialization Code, XML, and YAML.
 
-It opens the dumped object in a separate document window.
+The result is shown in a separate document window.
 
 ![Presentation](https://user-images.githubusercontent.com/13467759/175763360-6d714f96-8b90-48a9-bff0-8bceac4c2502.gif)
 
