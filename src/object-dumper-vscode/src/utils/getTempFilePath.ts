@@ -17,7 +17,7 @@ export function getTempFilePath(baseFilename?: string, extension?: string): stri
         randomName += String.fromCharCode(64 + Math.random() * 26);
     }
 
-    let tempName = `${baseFilename ? `${baseFilename}.` : ''}${randomName}${extension}`;
+    let tempName = `${baseFilename ? `${baseFilename}.` : ''}${randomName.toLowerCase()}${extension}`;
 
     return path.join(os.tmpdir(), tempName);
 }

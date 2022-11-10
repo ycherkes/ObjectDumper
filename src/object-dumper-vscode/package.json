@@ -10,7 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:csharp"
+    "onLanguage:csharp",
+    "onLanguage:fsharp"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -39,34 +40,34 @@
     "menus": {
       "editor/context": [
         {
-          "when": "resourceLangId == csharp && inDebugMode",
+          "when": "inDebugMode && editorLangId =~ /fsharp|csharp/",
           "submenu": "ObjectDumper.DumpAs",
           "group": "dumpAs"
         }
       ],
       "ObjectDumper.DumpAs":[
         {
-          "when": "resourceLangId == csharp && inDebugMode",
+          "when": "inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "ObjectDumper.dumpAsCsharp",
           "group": "dumpAs"
         },
         {
-          "when": "resourceLangId == csharp && inDebugMode",
+          "when": "inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "ObjectDumper.dumpAsJson",
           "group": "dumpAs"
         },
         {
-          "when": "resourceLangId == csharp && inDebugMode",
+          "when": "inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "ObjectDumper.dumpAsVb",
           "group": "dumpAs"
         },
         {
-          "when": "resourceLangId == csharp && inDebugMode",
+          "when": "inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "ObjectDumper.dumpAsXml",
           "group": "dumpAs"
         },
         {
-          "when": "resourceLangId == csharp && inDebugMode",
+          "when": "inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "ObjectDumper.dumpAsYaml",
           "group": "dumpAs"
         }
