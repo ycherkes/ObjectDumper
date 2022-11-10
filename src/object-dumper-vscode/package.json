@@ -1,0 +1,109 @@
+{
+  "name": "object-dumper",
+  "displayName": "ObjectDumper",
+  "description": "ObjectDumper",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.73.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:csharp"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "ObjectDumper.dumpAsCsharp",
+        "title": "Dump As C#"
+      },
+      {
+        "command": "ObjectDumper.dumpAsJson",
+        "title": "Dump As Json"
+      },
+      {
+        "command": "ObjectDumper.dumpAsVb",
+        "title": "Dump As Vb"
+      },
+      {
+        "command": "ObjectDumper.dumpAsXml",
+        "title": "Dump As Xml"
+      },
+      {
+        "command": "ObjectDumper.dumpAsYaml",
+        "title": "Dump As Yaml"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceLangId == csharp && inDebugMode",
+          "submenu": "ObjectDumper.DumpAs",
+          "group": "dumpAs"
+        }
+      ],
+      "ObjectDumper.DumpAs":[
+        {
+          "when": "resourceLangId == csharp && inDebugMode",
+          "command": "ObjectDumper.dumpAsCsharp",
+          "group": "dumpAs"
+        },
+        {
+          "when": "resourceLangId == csharp && inDebugMode",
+          "command": "ObjectDumper.dumpAsJson",
+          "group": "dumpAs"
+        },
+        {
+          "when": "resourceLangId == csharp && inDebugMode",
+          "command": "ObjectDumper.dumpAsVb",
+          "group": "dumpAs"
+        },
+        {
+          "when": "resourceLangId == csharp && inDebugMode",
+          "command": "ObjectDumper.dumpAsXml",
+          "group": "dumpAs"
+        },
+        {
+          "when": "resourceLangId == csharp && inDebugMode",
+          "command": "ObjectDumper.dumpAsYaml",
+          "group": "dumpAs"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "ObjectDumper.DumpAs",
+        "label": "Dump As",
+        "icon": "$(something)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.73.0",
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "eslint": "^8.26.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.8.4",
+    "@vscode/test-electron": "^2.2.0"
+  },
+  "dependencies": {
+    "@vscode/debugprotocol": "^1.58.0",
+    "sanitize-filename-ts": "^1.0.2",
+    "vscode-debugprotocol": "^1.51.0"
+  }
+}
