@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey{fill: #212121; opacity: 1;}.light-defaultgrey-10{fill: #212121; opacity: 0.1;}.cls-1{opacity:0.75;}</style>
+  </defs>
+  <title>IconLightYamlFile</title>
+  <g id="canvas" class="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-defaultgrey" d="M3.57,10.4h.985L2.719,13.965V16h-.93V13.984L0,10.4H1.059l1.1,2.4c.013.028.052.137.117.324h.012a2.138,2.138,0,0,1,.129-.324Zm4.953,3.715q-.088.216-.234.657H8.27a5.7,5.7,0,0,0-.219-.641L6.578,10.4H5.27V16h.859V12.383c0-.508-.011-.874-.031-1.1h.015a3.867,3.867,0,0,0,.149.559L7.938,16h.64l1.672-4.188a3.722,3.722,0,0,0,.152-.527h.016c-.036.43-.055.793-.055,1.09V16h.922V10.4H10.023Zm5.071,1.1V10.4h-.93V16h3.1v-.785Z" />
+    <g class="cls-1">
+      <path class="light-defaultgrey-10" d="M13.5,4.5V9H2.5V1.5h8Z" />
+      <path class="light-defaultgrey" d="M14,4.5V9H13V5H10V2H3V9H2V1.5L2.5,1h8l.354.146,3,3Z" />
+    </g>
+  </g>
+</svg>

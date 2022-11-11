@@ -1,0 +1,394 @@
+{
+  "name": "object-dumper",
+  "displayName": "ObjectDumper",
+  "description": "ObjectDumper",
+  "version": "0.0.1",
+  "repository": {"url": "https://github.com/ycherkes/ObjectDumper/tree/main/src/object-dumper-vscode"},
+  "icon": "https://github.com/ycherkes/ObjectDumper/tree/main/src/object-dumper-vscode/art/PackageIcon.png",
+  "engines": {
+    "vscode": "^1.73.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:csharp",
+    "onLanguage:fsharp"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "keybindings": [
+      {
+        "command": "objectDumper.dumpAsCsharp",
+        "key": "ctrl+k d",
+        "mac": "cmd+k d",
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+      },
+      {
+        "command": "objectDumper.dumpAsJson",
+        "key": "ctrl+k j",
+        "mac": "cmd+k j",
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+      },
+      {
+        "command": "objectDumper.dumpAsVb",
+        "key": "ctrl+k v",
+        "mac": "cmd+k v",
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+      },
+      {
+        "command": "objectDumper.dumpAsXml",
+        "key": "ctrl+k x",
+        "mac": "cmd+k x",
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+      },
+      {
+        "command": "objectDumper.dumpAsYaml",
+        "key": "ctrl+k y",
+        "mac": "cmd+k y",
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+      }
+    ],
+    "commands": [
+      {
+        "command": "objectDumper.dumpAsCsharp",
+        "title": "Dump As C#",
+        "enablement": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "icon":{
+          "dark": "./art/commandIcons/CSFileNode.svg",
+          "light": "./art/commandIcons/CSFileNode.svg"
+        }
+      },
+      {
+        "command": "objectDumper.dumpAsJson",
+        "title": "Dump As Json",
+        "enablement": "objectDumper.dumpAsJson.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "icon":{
+          "dark": "./art/commandIcons/JsonFile.svg",
+          "light": "./art/commandIcons/JsonFile.svg"
+        }
+      },
+      {
+        "command": "objectDumper.dumpAsVb",
+        "title": "Dump As Vb",
+        "enablement": "objectDumper.dumpAsVb.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "icon":{
+          "dark": "./art/commandIcons/VBFileNode.svg",
+          "light": "./art/commandIcons/VBFileNode.svg"
+        }
+      },
+      {
+        "command": "objectDumper.dumpAsXml",
+        "title": "Dump As Xml",
+        "enablement": "objectDumper.dumpAsXml.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "icon":{
+          "dark": "./art/commandIcons/XmlFile.svg",
+          "light": "./art/commandIcons/XmlFile.svg"
+        }
+      },
+      {
+        "command": "objectDumper.dumpAsYaml",
+        "title": "Dump As Yaml",
+        "icon":{
+          "dark": "./art/commandIcons/YamlFile.svg",
+          "light": "./art/commandIcons/YamlFile.svg"
+        }
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "submenu": "objectDumper.dumpAs",
+          "group": "dumpAs"
+        }
+      ],
+      "objectDumper.dumpAs":[
+        {
+          "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "command": "objectDumper.dumpAsCsharp",
+          "group": "dumpAs"          
+        },
+        {
+          "when": "objectDumper.dumpAsJson.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "command": "objectDumper.dumpAsJson",
+          "group": "dumpAs"
+        },
+        {
+          "when": "objectDumper.dumpAsVb.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "command": "objectDumper.dumpAsVb",
+          "group": "dumpAs"
+        },
+        {
+          "when": "objectDumper.dumpAsXml.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "command": "objectDumper.dumpAsXml",
+          "group": "dumpAs"
+        },
+        {
+          "when": "objectDumper.dumpAsYaml.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "command": "objectDumper.dumpAsYaml",
+          "group": "dumpAs"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "objectDumper.dumpAs",
+        "label": "Dump As",
+        "icon": "$(something)"
+      }
+    ],
+    "configuration":{
+      "title": "Object Dumper",
+      "properties": {
+        "objectDumper.common.maxDepth":{
+          "type":"integer",
+          "default": 25,
+          "description": "The maximum depth allowed when analyzing the object."
+        },
+        "objectDumper.csharp.enabled":{
+          "type": "boolean",
+          "default": true,
+          "description": "Enables the Dump As C# command."
+        },
+        "objectDumper.csharp.ignoreNullValues":{
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore Null Values."
+        },
+        "objectDumper.csharp.ignoreDefaultValues":{
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore Default Values."
+        },
+        "objectDumper.csharp.useFullTypeName":{
+          "type": "boolean",
+          "default": false,
+          "description": "Use Full Type Name."
+        },
+        "objectDumper.csharp.dateTimeInstantiation":{
+          "type": "string",
+          "enum": ["new", "parse"],
+          "default": "new",
+          "description": "Configures how to DateTime, DateTimeOffset, TimeSpan will be instantiated."
+        },
+        "objectDumper.csharp.dateKind":{
+          "type": "string",
+          "enum": ["convertToUtc", "original"],
+          "default": "convertToUtc",
+          "description": "DateTime Kind."
+        },
+        "objectDumper.csharp.useNamedArgumentsForReferenceRecordTypes":{
+          "type": "boolean",
+          "default": false,
+          "description": "Use Named Arguments For Reference Record Types."
+        },
+        "objectDumper.csharp.getPropertiesBindingFlagsModifiers":{
+          "type": "string",
+          "enum": ["public", "nonPublic", "all"],
+          "default": "public",
+          "description": "Get Properties Binding Flags Modifiers."
+        },
+        "objectDumper.csharp.getPropertiesBindingFlagsInstanceOrStatic":{
+          "type": "string",
+          "enum": ["instance", "static", "all"],
+          "default": "instance",
+          "description": "Get Properties Binding Flags Instance or Static."
+        },
+        "objectDumper.csharp.writablePropertiesOnly":{
+          "type": "boolean",
+          "default": true,
+          "description": "Writable Properties Only."
+        },
+        "objectDumper.csharp.getFieldsBindingFlagsModifiers":{
+          "type": [null, "public", "nonPublic", "all"],
+          "default": null,
+          "description": "Get Fields Binding Flags Modifiers."
+        },
+        "objectDumper.csharp.getFieldsBindingFlagsInstanceOrStatic":{
+          "type": "string",
+          "enum": [null, "instance", "static", "all"],
+          "default": null,
+          "description": "Get Fields Binding Flags Instance or Static."
+        },
+        "objectDumper.csharp.sortDirection":{
+          "type": "string",
+          "enum": [null, "ascending", "descending"],
+          "default": null,
+          "description": "Sort Properties and Fields by Name."
+        },
+        "objectDumper.json.enabled":{
+          "type": "boolean",
+          "default": true,
+          "description": "Enables the Dump As Json command."
+        },
+        "objectDumper.json.ignoreNullValues":{
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore Null Values."
+        },
+        "objectDumper.json.ignoreDefaultValues":{
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore Default Values."
+        },
+        "objectDumper.json.namingStrategy":{
+          "type": "string",
+          "enum": ["default", "camelCase", "kebabCase", "snakeCase"],
+          "default": "camelCase",
+          "description": "Naming Startegy."
+        },
+        "objectDumper.json.serializeEnumAsString":{
+          "type": "boolean",
+          "default": true,
+          "description": "Serialize Enums As Strings."
+        },
+        "objectDumper.json.typeNameHandling":{
+          "type": "string",
+          "enum": ["none", "objects", "arrays", "all", "auto"],
+          "default": "none",
+          "description": "Type Name Handling."
+        },
+        "objectDumper.vb.enabled":{
+          "type": "boolean",
+          "default": true,
+          "description": "Enables the Dump As Vb command."
+        },
+        "objectDumper.vb.ignoreNullValues":{
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore Null Values."
+        },
+        "objectDumper.vb.ignoreDefaultValues":{
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore Default Values."
+        },
+        "objectDumper.vb.useFullTypeName":{
+          "type": "boolean",
+          "default": false,
+          "description": "Use Full Type Name."
+        },
+        "objectDumper.vb.dateTimeInstantiation":{
+          "type": "string",
+          "enum": ["new", "parse"],
+          "default": "new",
+          "description": "Configures how to DateTime, DateTimeOffset, TimeSpan will be instantiated."
+        },
+        "objectDumper.vb.dateKind":{
+          "type": "string",
+          "enum": ["convertToUtc", "original"],
+          "default": "convertToUtc",
+          "description": "DateTime Kind."
+        },
+        "objectDumper.vb.useNamedArgumentsForReferenceRecordTypes":{
+          "type": "boolean",
+          "default": false,
+          "description": "Use Named Arguments For Reference Record Types."
+        },
+        "objectDumper.vb.getPropertiesBindingFlagsModifiers":{
+          "type": "string",
+          "enum": ["public", "nonPublic", "all"],
+          "default": "public",
+          "description": "Get Properties Binding Flags Modifiers."
+        },
+        "objectDumper.vb.getPropertiesBindingFlagsInstanceOrStatic":{
+          "type": "string",
+          "enum": ["instance", "static", "all"],
+          "default": "instance",
+          "description": "Get Properties Binding Flags Instance or Static."
+        },
+        "objectDumper.vb.writablePropertiesOnly":{
+          "type": "boolean",
+          "default": true,
+          "description": "Writable Properties Only."
+        },
+        "objectDumper.vb.getFieldsBindingFlagsModifiers":{
+          "type": [null, "public", "nonPublic", "all"],
+          "default": null,
+          "description": "Get Fields Binding Flags Modifiers."
+        },
+        "objectDumper.vb.getFieldsBindingFlagsInstanceOrStatic":{
+          "type": "string",
+          "enum": [null, "instance", "static", "all"],
+          "default": null,
+          "description": "Get Fields Binding Flags Instance or Static."
+        },
+        "objectDumper.vb.sortDirection":{
+          "type": "string",
+          "enum": [null, "ascending", "descending"],
+          "default": null,
+          "description": "Sort Properties and Fields by Name."
+        },
+        "objectDumper.xml.enabled":{
+          "type": "boolean",
+          "default": true,
+          "description": "Enables the Dump As Xml command."
+        },
+        "objectDumper.xml.ignoreNullValues":{
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore Null Values."
+        },
+        "objectDumper.xml.ignoreDefaultValues":{
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore Default Values."
+        },
+        "objectDumper.xml.namingStrategy":{
+          "type": "string",
+          "enum": ["default", "camelCase", "kebabCase", "snakeCase"],
+          "default": "camelCase",
+          "description": "Naming Startegy."
+        },
+        "objectDumper.xml.serializeEnumAsString":{
+          "type": "boolean",
+          "default": true,
+          "description": "Serialize Enums As Strings."
+        },
+        "objectDumper.xml.useFullTypeName":{
+          "type": "boolean",
+          "default": false,
+          "description": "Use Full Type Name."
+        },
+        "objectDumper.yaml.enabled":{
+          "type": "boolean",
+          "default": true,
+          "description": "Enables the Dump As Yaml command."
+        },
+        "objectDumper.yaml.namingConvention":{
+          "type": "string",
+          "enum": ["camelCase", "hyphenated", "lowerCase", "null", "pascalCase", "underscored"],
+          "default": "null",
+          "description": "Naming Convention."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.73.0",
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "eslint": "^8.26.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.8.4",
+    "@vscode/test-electron": "^2.2.0"
+  },
+  "dependencies": {
+    "@vscode/debugprotocol": "^1.58.0",
+    "sanitize-filename-ts": "^1.0.2",
+    "vscode-debugprotocol": "^1.51.0"
+  }
+}

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey{fill: #212121; opacity: 1;}.light-defaultgrey-10{fill: #212121; opacity: 0.1;}.cls-1{opacity:0.75;}</style>
+  </defs>
+  <title>IconLightXmlFile</title>
+  <g id="canvas" class="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-defaultgrey" d="M3.079,10.672,1.262,12.5l1.816,1.82-.707.707L.2,12.853v-.707L2.37,9.967Zm5.632-.7-.7.709L9.837,12.5,8.006,14.32l.705.709L10.9,12.856v-.709ZM4.025,15.342l.95.316,2-6-.95-.316Z" />
+    <g class="cls-1">
+      <path class="light-defaultgrey" d="M13.854,4.146l-3-3L10.5,1h-8L2,1.5V9H3V2h7V5h3v9H11.166L10.16,15H13.5l.5-.5V4.5Z" />
+      <path class="light-defaultgrey-10" d="M13.5,4.5v10H10.663L11.9,13.272v-1.54L9,9H2.5V1.5h8Z" />
+    </g>
+  </g>
+</svg>
