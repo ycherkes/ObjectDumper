@@ -18,7 +18,7 @@ The result is shown in a separate document window.
 ![image](https://user-images.githubusercontent.com/13467759/201370963-716fbb73-ed7a-47e1-a105-9ac9ee79a287.PNG)
 
 ### Known restrictions:
-- [C#, F# and VisualBasic](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper/DebuggeeInteraction/InteractionService.cs#L25-L30) project languages are currently supported only.
+- C# and F# project languages are currently supported only.
 - the debugging code mustn't be optimized so the Expression Evaluator can be run.
 - local debugging only.
 - it doesn't work for UWP applications, because [UAP doesn't support Assembly.LoadFrom](https://github.com/dotnet/runtime/issues/7543). You can bypass this restriction by referencing the .nestandard20 version of [Serialization lib](https://github.com/ycherkes/ObjectDumper/tree/main/src/Serialization) and calling: ```_ = ObjectSerializer.Serialize(null, "cs");``` for loading the serializer into executing assembly. [Example](https://github.com/ycherkes/ObjectDumper/blob/main/samples/uwp/TestUwp/App.xaml.cs#L26)
