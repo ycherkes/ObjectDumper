@@ -49,13 +49,26 @@ export async function activate(context: vscode.ExtensionContext) {
 		const tempDocumentEditor = new tempUtils.TempEditor(tempDocument);
 
 		await tempDocumentEditor.open();
+		context.subscriptions.push(tempDocumentEditor);
 	}
 
-	context.subscriptions.push(vscode.commands.registerCommand('ObjectDumper.dumpAsCsharp', () => dumpAs("cs")));
-	context.subscriptions.push(vscode.commands.registerCommand('ObjectDumper.dumpAsJson', () => dumpAs("json")));
-	context.subscriptions.push(vscode.commands.registerCommand('ObjectDumper.dumpAsVb', () => dumpAs("vb")));
-	context.subscriptions.push(vscode.commands.registerCommand('ObjectDumper.dumpAsXml', () => dumpAs("xml")));
-	context.subscriptions.push(vscode.commands.registerCommand('ObjectDumper.dumpAsYaml', () => dumpAs("yaml")));
+	function refreshCommandAvailibility(){
+		const extensionConfiguration = vscode.workspace.getConfiguration().get('objectDumper') as any;
+	    vscode.commands.executeCommand("setContext", 'objectDumper.dumpAsCsharp.enabled', extensionConfiguration.csharp.enabled);
+        vscode.commands.executeCommand("setContext", 'objectDumper.dumpAsJson.enabled', extensionConfiguration.json.enabled);
+        vscode.commands.executeCommand("setContext", 'objectDumper.dumpAsVb.enabled', extensionConfiguration.vb.enabled);
+        vscode.commands.executeCommand("setContext", 'objectDumper.dumpAsXml.enabled', extensionConfiguration.xml.enabled);
+        vscode.commands.executeCommand("setContext", 'objectDumper.dumpAsYaml.enabled', extensionConfiguration.yaml.enabled);
+	}
+
+	context.subscriptions.push(vscode.commands.registerCommand('objectDumper.dumpAsCsharp', () => dumpAs("cs")));
+	context.subscriptions.push(vscode.commands.registerCommand('objectDumper.dumpAsJson', () => dumpAs("json")));
+	context.subscriptions.push(vscode.commands.registerCommand('objectDumper.dumpAsVb', () => dumpAs("vb")));
+	context.subscriptions.push(vscode.commands.registerCommand('objectDumper.dumpAsXml', () => dumpAs("xml")));
+	context.subscriptions.push(vscode.commands.registerCommand('objectDumper.dumpAsYaml', () => dumpAs("yaml")));
+
+	context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(() => refreshCommandAvailibility()));
+	refreshCommandAvailibility();
 }
 
 // This method is called when your extension is deactivated

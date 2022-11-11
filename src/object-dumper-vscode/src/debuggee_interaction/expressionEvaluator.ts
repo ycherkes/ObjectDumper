@@ -13,14 +13,18 @@ export class ExpressionEvaluator{
 		}
 
         const frameId = 1000;
+
+		// Context: 'clipboard' will never truncate the response, see https://github.com/microsoft/vscode-js-debug/issues/689#issuecomment-669257847
+
 		const args = {
 			expression: expression,
 			frameId: frameId,
-			context: 'repl'
+			context: 'clipboard'
 		  };
 
         var resultValue: string = "";
         var isValidValue: boolean = false;
+		
 		await debugSession.customRequest('evaluate', args).then(({result}) => {
 				resultValue = result as string;
                 isValidValue = !resultValue.startsWith("error");
