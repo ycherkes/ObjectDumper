@@ -70,33 +70,6 @@
           "group": "dumpAs"
         }
       ],
-      "debug/toolBar":[
-        {
-          "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
-          "command": "objectDumper.dumpAsCsharp",
-          "group": "dumpAs"
-        },
-        {
-          "when": "objectDumper.dumpAsJson.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
-          "command": "objectDumper.dumpAsJson",
-          "group": "dumpAs"
-        },
-        {
-          "when": "objectDumper.dumpAsVb.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
-          "command": "objectDumper.dumpAsVb",
-          "group": "dumpAs"
-        },
-        {
-          "when": "objectDumper.dumpAsXml.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
-          "command": "objectDumper.dumpAsXml",
-          "group": "dumpAs"
-        },
-        {
-          "when": "objectDumper.dumpAsYaml.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
-          "command": "objectDumper.dumpAsYaml",
-          "group": "dumpAs"
-        }
-      ],
       "objectDumper.dumpAs":[
         {
           "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
