@@ -3,6 +3,7 @@
   "displayName": "ObjectDumper",
   "description": "ObjectDumper",
   "version": "0.0.1",
+  "repository": {"url": "https://github.com/ycherkes/ObjectDumper/tree/main/src/object-dumper-vscode"},
   "icon": "https://github.com/ycherkes/ObjectDumper/tree/main/src/object-dumper-vscode/art/PackageIcon.png",
   "engines": {
     "vscode": "^1.73.0"
