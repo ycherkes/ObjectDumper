@@ -1,7 +1,8 @@
 {
   "name": "object-dumper",
   "displayName": "ObjectDumper",
-  "description": "ObjectDumper",
+  "description": "The ObjectDumper allows you to dump in-memory objects during debugging to the following formats: C# Object Initialization Code, JSON, Visual Basic Object Initialization Code, XML, and YAML",
+  "publisher": "YevhenCherkes",
   "version": "0.0.1",
   "repository": {"url": "https://github.com/ycherkes/ObjectDumper/tree/main/src/object-dumper-vscode"},
   "icon": "art/PackageIcon.png",
