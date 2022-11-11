@@ -12,11 +12,10 @@ This Visual Studio Code extension allows you to dump in-memory objects during de
 
 The result is shown in a separate document window.
 
-![Presentation](https://user-images.githubusercontent.com/13467759/175763360-6d714f96-8b90-48a9-bff0-8bceac4c2502.gif)
+![Presentation](https://user-images.githubusercontent.com/13467759/201370888-c8aa6d18-a732-4538-8466-3251665bbfe6.gif)
 
 # Configurable:
-
-![image](https://user-images.githubusercontent.com/13467759/180246198-dfbb4809-c2cb-4a3f-9ea4-f9c52c67c47a.png)
+![image](https://user-images.githubusercontent.com/13467759/201370963-716fbb73-ed7a-47e1-a105-9ac9ee79a287.PNG)
 
 ### Known restrictions:
 - [C#, F# and VisualBasic](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper/DebuggeeInteraction/InteractionService.cs#L25-L30) project languages are currently supported only.
