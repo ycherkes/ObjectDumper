@@ -9,9 +9,9 @@
         return "nameof(YellowFlavor.Serialization.ObjectSerializer.Serialize)";
     }
 
-    public getSerializedValueExpressionText(expression: string, format: string): string
+    public getSerializedValueExpressionText(expression: string, format: string, options: string): string
     {
-        return `YellowFlavor.Serialization.ObjectSerializer.Serialize(${expression}, "${format}")`;
+        return `YellowFlavor.Serialization.ObjectSerializer.Serialize(${expression}, "${format}", "${options}")`;
     }
 
     public getLoadAssemblyExpressionText(serializerFileName: string): string

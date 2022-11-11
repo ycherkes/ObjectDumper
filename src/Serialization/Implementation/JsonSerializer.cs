@@ -1,9 +1,10 @@
 ﻿using Embedded.Newtonsoft.Json;
 using Embedded.Newtonsoft.Json.Converters;
 using Embedded.Newtonsoft.Json.Serialization;
+using System;
+using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.Utilities;
 using YellowFlavor.Serialization.Implementation.Json;
 using YellowFlavor.Serialization.Implementation.Settings;
-using System;
 
 namespace YellowFlavor.Serialization.Implementation
 {
@@ -40,11 +41,13 @@ namespace YellowFlavor.Serialization.Implementation
                 newSettings.Converters = null;
             }
 
-            if (jsonSettings.NamingStrategy != "CamelCase")
+            var namingStrategy = jsonSettings.NamingStrategy.ToPascalCase();
+
+            if (namingStrategy != "CamelCase")
             {
                 newSettings.ContractResolver = new SpecificContractResolver
                 {
-                    NamingStrategy = (NamingStrategy)Activator.CreateInstance(Type.GetType($"Embedded.Newtonsoft.Json.Serialization.{jsonSettings.NamingStrategy}NamingStrategy")),
+                    NamingStrategy = (NamingStrategy)Activator.CreateInstance(Type.GetType($"Embedded.Newtonsoft.Json.Serialization.{namingStrategy}NamingStrategy")),
                     ExcludeTypes = new[] { "Avro.Schema" }
                 };
             }

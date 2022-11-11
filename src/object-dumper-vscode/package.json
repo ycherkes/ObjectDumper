@@ -16,6 +16,38 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "keybindings": [
+      {
+        "command": "objectDumper.dumpAsCsharp",
+        "key": "ctrl+k d",
+        "mac": "cmd+k d",
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+      },
+      {
+        "command": "objectDumper.dumpAsJson",
+        "key": "ctrl+k j",
+        "mac": "cmd+k j",
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+      },
+      {
+        "command": "objectDumper.dumpAsVb",
+        "key": "ctrl+k v",
+        "mac": "cmd+k v",
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+      },
+      {
+        "command": "objectDumper.dumpAsXml",
+        "key": "ctrl+k x",
+        "mac": "cmd+k x",
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+      },
+      {
+        "command": "objectDumper.dumpAsYaml",
+        "key": "ctrl+k y",
+        "mac": "cmd+k y",
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+      }
+    ],
     "commands": [
       {
         "command": "objectDumper.dumpAsCsharp",
@@ -74,7 +106,7 @@
         {
           "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "objectDumper.dumpAsCsharp",
-          "group": "dumpAs"
+          "group": "dumpAs"          
         },
         {
           "when": "objectDumper.dumpAsJson.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
@@ -108,7 +140,7 @@
     "configuration":{
       "title": "Object Dumper",
       "properties": {
-        "common.maxDepth":{
+        "objectDumper.common.maxDepth":{
           "type":"integer",
           "default": 25,
           "description": "The maximum depth allowed when analyzing the object."

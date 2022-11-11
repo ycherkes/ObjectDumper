@@ -1,11 +1,13 @@
 import path = require("node:path");
 import { ExpressionEvaluator } from './expressionEvaluator';
 import { CSharpExpressionProvider } from './expressionProviders/csharpExpressionProvider';
+import { OptionsProvider } from "./optionsProvider";
 
 export class InteractionService    {
 
     constructor(
         private readonly expressionEvaluator: ExpressionEvaluator,
+        private readonly optionsProvider: OptionsProvider,
         private readonly extensionLocation: string,
         private readonly expressionProvider: CSharpExpressionProvider
     ) {}
@@ -33,7 +35,10 @@ export class InteractionService    {
 
         public async getSerializedValue(expression: string, language: string): Promise<string>
         {
-            const serializeExpressionText = this.expressionProvider.getSerializedValueExpressionText(expression, language);
+            const options = this.optionsProvider.getOptions(language);
+            const optionsJson = JSON.stringify(options);
+            const base64Options = Buffer.from(optionsJson, 'binary').toString('base64');
+            const serializeExpressionText = this.expressionProvider.getSerializedValueExpressionText(expression, language, base64Options);
             const [value, isValidValue] = await this.expressionEvaluator.evaluateExpression(serializeExpressionText, 25000);
             var trimmedValue = value.replace(/^"(.*)"$/, '$1');
 

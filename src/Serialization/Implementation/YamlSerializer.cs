@@ -1,11 +1,12 @@
 ﻿using Embedded.Newtonsoft.Json;
-using YellowFlavor.Serialization.Implementation.Settings;
-using YellowFlavor.Serialization.Embedded.YamlDotNet.Core;
-using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization;
 using System;
 using System.CodeDom.Compiler;
 using System.IO;
 using System.Text;
+using YellowFlavor.Serialization.Embedded.YamlDotNet.Core;
+using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization;
+using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.Utilities;
+using YellowFlavor.Serialization.Implementation.Settings;
 
 namespace YellowFlavor.Serialization.Implementation
 {
@@ -20,8 +21,10 @@ namespace YellowFlavor.Serialization.Implementation
         {
             var yamlSettings = GetYamlSettings(settings);
 
+            var namingConvention = yamlSettings.NamingConvention.ToPascalCase();
+
             var valueSerializer = new SerializerBuilder()
-                .WithNamingConvention((INamingConvention)Activator.CreateInstance(Type.GetType($"YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.NamingConventions.{yamlSettings.NamingConvention}NamingConvention")))
+                .WithNamingConvention((INamingConvention)Activator.CreateInstance(Type.GetType($"YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.NamingConventions.{namingConvention}NamingConvention")))
                 .WithMaximumRecursion(yamlSettings.MaxDepth)
                 .BuildValueSerializer();
 
