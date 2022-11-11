@@ -22,7 +22,6 @@ export class InteractionService    {
             }
 
             var serializerFileName = path.join(this.extensionLocation,
-                "src",
                 "injectable_libraries",
                 "netstandard2.0",
                 "YellowFlavor.Serialization.dll");
