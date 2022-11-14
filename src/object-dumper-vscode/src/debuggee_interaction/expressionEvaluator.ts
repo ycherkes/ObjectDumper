@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 export class ExpressionEvaluator{
     
-    public async evaluateExpression(expression: string, timeoutMilliseconds: number): Promise<[value: string, isValidValue: boolean]>
+    public async evaluateExpression(expression: string): Promise<[value: string, isValidValue: boolean]>
     {
         const debugSession = vscode.debug.activeDebugSession;
 
@@ -25,9 +25,9 @@ export class ExpressionEvaluator{
         var resultValue: string = "";
         var isValidValue: boolean = false;
 		
-		await debugSession.customRequest('evaluate', args).then(({result}) => {
-				resultValue = result as string;
-                isValidValue = !resultValue.startsWith("error");
+		await debugSession.customRequest('evaluate', args).then((response) => {
+				resultValue = response.result as string;
+				isValidValue = !response.presentationHint?.attributes?.includes('failedEvaluation');
 			  }, error => {
                 resultValue = error.message;
 			});
