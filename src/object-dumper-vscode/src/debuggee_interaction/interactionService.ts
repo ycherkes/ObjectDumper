@@ -1,7 +1,8 @@
 import path = require("node:path");
 import { ExpressionEvaluator } from './expressionEvaluator';
-import { CSharpExpressionProvider } from './expressionProviders/csharpExpressionProvider';
+import { IExpressionProvider } from "./expressionProviders/iExpressionProvider";
 import { OptionsProvider } from "./optionsProvider";
+import * as vscode from 'vscode';
 
 export class InteractionService {
 
@@ -9,7 +10,7 @@ export class InteractionService {
         private readonly expressionEvaluator: ExpressionEvaluator,
         private readonly optionsProvider: OptionsProvider,
         private readonly extensionLocation: string,
-        private readonly expressionProvider: CSharpExpressionProvider
+        private readonly expressionProviders: Map<string, IExpressionProvider>
     ) {}
 
         public async injectSerializer(): Promise<[evaluationResult: string, success: boolean]>
@@ -26,7 +27,7 @@ export class InteractionService {
                 "netstandard2.0",
                 "YellowFlavor.Serialization.dll");
 
-            let loadAssemblyExpressionText = this.expressionProvider.getLoadAssemblyExpressionText(serializerFileName);
+            let loadAssemblyExpressionText = this.getExpressionProvider().getLoadAssemblyExpressionText(serializerFileName);
             let evaluationResult = await this.expressionEvaluator.evaluateExpression(loadAssemblyExpressionText);
 
             return evaluationResult;
@@ -37,7 +38,7 @@ export class InteractionService {
             const options = this.optionsProvider.getOptions(language);
             const optionsJson = JSON.stringify(options);
             const base64Options = Buffer.from(optionsJson, 'binary').toString('base64');
-            const serializeExpressionText = this.expressionProvider.getSerializedValueExpressionText(expression, language, base64Options);
+            const serializeExpressionText = this.getExpressionProvider().getSerializedValueExpressionText(expression, language, base64Options);
             const [value, isValidValue] = await this.expressionEvaluator.evaluateExpression(serializeExpressionText);
             var trimmedValue = value.replace(/^"(.*)"$/, '$1');
 
@@ -48,8 +49,17 @@ export class InteractionService {
 
         private async isSerializerInjected(): Promise<boolean>
         {
-            var isSerializerInjectedExpressionText = this.expressionProvider.getIsSerializerInjectedExpressionText();
+            var isSerializerInjectedExpressionText = this.getExpressionProvider().getIsSerializerInjectedExpressionText();
             const [_, isValidValue] = await this.expressionEvaluator.evaluateExpression(isSerializerInjectedExpressionText);
             return isValidValue;
-        }        
+        }
+
+        private getExpressionProvider(): IExpressionProvider{
+            const editor = vscode.window.activeTextEditor;
+            const [firstValue] = this.expressionProviders.values();
+
+            return editor 
+            ? this.expressionProviders.get(editor.document.languageId) ?? firstValue 
+            : firstValue;            
+        }
     }

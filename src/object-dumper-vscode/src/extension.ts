@@ -5,13 +5,21 @@ import { InteractionService } from './debuggee_interaction/interactionService';
 import * as tempUtils from './utils/TempFile'; 
 import * as sanitazeUtil from 'sanitize-filename-ts';
 import { OptionsProvider } from './debuggee_interaction/optionsProvider';
+import { IExpressionProvider } from './debuggee_interaction/expressionProviders/iExpressionProvider';
+import { VbExpressionProvider } from './debuggee_interaction/expressionProviders/vbExpressionProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
 
 	const expressionEvaluator = new ExpressionEvaluator();
-	const expressionProvider = new CSharpExpressionProvider();
+	const csharpExpressionProvider = new CSharpExpressionProvider();
+	const vbExpressionProvider = new VbExpressionProvider();
+	let expressionProviders = new Map<string, IExpressionProvider>();
+	expressionProviders.set("csharp", csharpExpressionProvider);
+	expressionProviders.set("fsharp", csharpExpressionProvider);
+	expressionProviders.set("vb", vbExpressionProvider);
+	
 	const optionsProvider = new OptionsProvider();
-    const interactionService = new InteractionService(expressionEvaluator, optionsProvider, context.extensionPath, expressionProvider);
+    const interactionService = new InteractionService(expressionEvaluator, optionsProvider, context.extensionPath, expressionProviders);
 
 	async function dumpAs(format: string): Promise<void>{
 		const [result, success] = await interactionService.injectSerializer();

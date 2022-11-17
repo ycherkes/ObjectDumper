@@ -1,14 +1,14 @@
-﻿import { IExpressionProvider } from "./iExpressionProvider";
+import { IExpressionProvider } from "./iExpressionProvider";
 
-export class CSharpExpressionProvider implements IExpressionProvider{
+export class VbExpressionProvider implements IExpressionProvider{
     public getStringTypeAssemblyLocationExpressionText(): string
     {
-        return "typeof(System.String).Assembly.Location";
+        return "GetType(System.String).Assembly.Location";
     }
 
     public getIsSerializerInjectedExpressionText(): string
     {
-        return "nameof(YellowFlavor.Serialization.ObjectSerializer.Serialize)";
+        return "NameOf(YellowFlavor.Serialization.ObjectSerializer.Serialize)";
     }
 
     public getSerializedValueExpressionText(expression: string, format: string, options: string): string
@@ -18,6 +18,6 @@ export class CSharpExpressionProvider implements IExpressionProvider{
 
     public getLoadAssemblyExpressionText(serializerFileName: string): string
     {
-        return `System.Reflection.Assembly.LoadFile(@\"${serializerFileName}\")`;
+        return `System.Reflection.Assembly.LoadFile(\"${serializerFileName}\")`;
     }
 }

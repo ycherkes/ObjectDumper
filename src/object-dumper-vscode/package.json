@@ -26,38 +26,38 @@
         "command": "objectDumper.dumpAsCsharp",
         "key": "ctrl+k d",
         "mac": "cmd+k d",
-        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp|vb/"
       },
       {
         "command": "objectDumper.dumpAsJson",
         "key": "ctrl+k j",
         "mac": "cmd+k j",
-        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp|vb/"
       },
       {
         "command": "objectDumper.dumpAsVb",
         "key": "ctrl+k v",
         "mac": "cmd+k v",
-        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp|vb/"
       },
       {
         "command": "objectDumper.dumpAsXml",
         "key": "ctrl+k x",
         "mac": "cmd+k x",
-        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp|vb/"
       },
       {
         "command": "objectDumper.dumpAsYaml",
         "key": "ctrl+k y",
         "mac": "cmd+k y",
-        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp|vb/"
       }
     ],
     "commands": [
       {
         "command": "objectDumper.dumpAsCsharp",
         "title": "Dump As C#",
-        "enablement": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "enablement": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp|vb/",
         "icon": {
           "dark": "./art/commandIcons/CSFileNode.svg",
           "light": "./art/commandIcons/CSFileNode.svg"
@@ -66,7 +66,7 @@
       {
         "command": "objectDumper.dumpAsJson",
         "title": "Dump As Json",
-        "enablement": "objectDumper.dumpAsJson.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "enablement": "objectDumper.dumpAsJson.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp|vb/",
         "icon": {
           "dark": "./art/commandIcons/JsonFile.svg",
           "light": "./art/commandIcons/JsonFile.svg"
@@ -75,7 +75,7 @@
       {
         "command": "objectDumper.dumpAsVb",
         "title": "Dump As Vb",
-        "enablement": "objectDumper.dumpAsVb.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "enablement": "objectDumper.dumpAsVb.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp|vb/",
         "icon": {
           "dark": "./art/commandIcons/VBFileNode.svg",
           "light": "./art/commandIcons/VBFileNode.svg"
@@ -84,7 +84,7 @@
       {
         "command": "objectDumper.dumpAsXml",
         "title": "Dump As Xml",
-        "enablement": "objectDumper.dumpAsXml.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "enablement": "objectDumper.dumpAsXml.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp|vb/",
         "icon": {
           "dark": "./art/commandIcons/XmlFile.svg",
           "light": "./art/commandIcons/XmlFile.svg"
@@ -102,34 +102,34 @@
     "menus": {
       "editor/context": [
         {
-          "when": "inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "inDebugMode && editorLangId =~ /fsharp|csharp|vb/",
           "submenu": "objectDumper.dumpAs",
           "group": "dumpAs"
         }
       ],
       "objectDumper.dumpAs": [
         {
-          "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && editorLangId =~ /fsharp|csharp|vb/",
           "command": "objectDumper.dumpAsCsharp",
           "group": "dumpAs"
         },
         {
-          "when": "objectDumper.dumpAsJson.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "objectDumper.dumpAsJson.enabled && inDebugMode && editorLangId =~ /fsharp|csharp|vb/",
           "command": "objectDumper.dumpAsJson",
           "group": "dumpAs"
         },
         {
-          "when": "objectDumper.dumpAsVb.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "objectDumper.dumpAsVb.enabled && inDebugMode && editorLangId =~ /fsharp|csharp|vb/",
           "command": "objectDumper.dumpAsVb",
           "group": "dumpAs"
         },
         {
-          "when": "objectDumper.dumpAsXml.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "objectDumper.dumpAsXml.enabled && inDebugMode && editorLangId =~ /fsharp|csharp|vb/",
           "command": "objectDumper.dumpAsXml",
           "group": "dumpAs"
         },
         {
-          "when": "objectDumper.dumpAsYaml.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "objectDumper.dumpAsYaml.enabled && inDebugMode && editorLangId =~ /fsharp|csharp|vb/",
           "command": "objectDumper.dumpAsYaml",
           "group": "dumpAs"
         }
