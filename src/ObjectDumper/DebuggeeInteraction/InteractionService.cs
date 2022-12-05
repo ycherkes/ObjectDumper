@@ -58,12 +58,13 @@ namespace ObjectDumper.DebuggeeInteraction
                 return (false, assemblyLocation);
             }
 
-            var isNetStandardMustBeInjected = assemblyLocation.IndexOf("NETCore", StringComparison.OrdinalIgnoreCase) >= 0
-                                          || assemblyLocation.IndexOf("NETStandard", StringComparison.OrdinalIgnoreCase) >= 0;
+            var isNetStandardMustBeInjected = assemblyLocation.IndexOf("NETStandard", StringComparison.OrdinalIgnoreCase) >= 0;
+
+            var isNetCoreMustBeInjected = assemblyLocation.IndexOf("NETCore", StringComparison.OrdinalIgnoreCase) >= 0;
 
             var serializerFileName = Path.Combine(dllLocation,
                 "InjectableLibs",
-                isNetStandardMustBeInjected ? "netstandard2.0" : "net45",
+                isNetStandardMustBeInjected ? "netstandard2.0" : isNetCoreMustBeInjected ? "netcoreapp3.1" : "net45",
                 "YellowFlavor.Serialization.dll");
 
             var loadAssemblyExpressionText = expressionProvider.GetLoadAssemblyExpressionText(serializerFileName);
