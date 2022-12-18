@@ -19,6 +19,7 @@ The result is shown in a separate document window.
 
 ### Known restrictions:
 - C# and F# project languages are currently supported only.
+- netstandard 2.0+, netcore3.1+, netframework is not supported yet.
 - the debugging code mustn't be optimized so the Expression Evaluator can be run.
 - local debugging only.
 - it doesn't work for UWP applications, because [UAP doesn't support Assembly.LoadFrom](https://github.com/dotnet/runtime/issues/7543). You can bypass this restriction by referencing the .nestandard20 version of [Serialization lib](https://github.com/ycherkes/ObjectDumper/tree/main/src/Serialization) and calling: ```_ = ObjectSerializer.Serialize(null, "cs");``` for loading the serializer into executing assembly. [Example](https://github.com/ycherkes/ObjectDumper/blob/main/samples/uwp/TestUwp/App.xaml.cs#L26)
