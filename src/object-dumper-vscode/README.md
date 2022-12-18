@@ -10,6 +10,8 @@
 
 A Visual Studio Code extension for dumping in-memory objects during debugging to the following formats: C# Object Initialization Code, JSON, Visual Basic Object Initialization Code, XML, and YAML. Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
+"Dump as" commands are available via context menu in the Code window only.
+
 The result is shown in a separate document window.
 
 ![Presentation](https://user-images.githubusercontent.com/13467759/201370888-c8aa6d18-a732-4538-8466-3251665bbfe6.gif)
