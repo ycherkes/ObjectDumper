@@ -187,6 +187,15 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CSharp
             }
         }
 
+        private void GenerateArrayDimensionExpression(CodeArrayDimensionExpression e)
+        {
+            Output.Write("{");
+            Output.WriteLine();
+            OutputExpressionList(e.Initializers, newlineBetweenItems: true);
+            Output.WriteLine();
+            Output.Write("}");
+        }
+
         private void GenerateBinaryOperatorExpression(CodeBinaryOperatorExpression e)
         {
             bool indentedExpression = false;
@@ -351,11 +360,11 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CSharp
             GenerateStatement(e.Statement);
         }
 
-        private void GenerateStatements(CodeStatementCollection stmts)
+        private void GenerateStatements(CodeStatementCollection statements)
         {
-            foreach (CodeStatement stmt in stmts)
+            foreach (CodeStatement statement in statements)
             {
-                ((ICodeGenerator)this).GenerateCodeFromStatement(stmt, _output.InnerWriter, _options);
+                ((ICodeGenerator)this).GenerateCodeFromStatement(statement, _output.InnerWriter, _options);
             }
         }
 
@@ -722,6 +731,10 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.CSharp
             else if (e is CodeArrayCreateExpression)
             {
                 GenerateArrayCreateExpression((CodeArrayCreateExpression)e);
+            }
+            else if (e is CodeArrayDimensionExpression)
+            {
+                GenerateArrayDimensionExpression((CodeArrayDimensionExpression)e);
             }
             else if (e is CodeFlagsBinaryOperatorExpression)
             {

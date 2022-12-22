@@ -32,7 +32,7 @@ namespace YellowFlavor.Serialization.Implementation
             var objVisitor = new ObjectVisitor(visitorOptions);
             var expression = objVisitor.Visit(obj);
             var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(),
-                obj != null ? ReflectionUtils.ComposeVariableName(obj.GetType()) : "nullValue")
+                obj != null ? ReflectionUtils.ComposeCsharpVariableName(obj.GetType()) : "nullValue")
             {
                 InitExpression = expression
             };

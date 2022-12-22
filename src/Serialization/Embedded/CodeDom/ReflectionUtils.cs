@@ -15,11 +15,34 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
 {
     internal static class ReflectionUtils
     {
-        public static string ComposeVariableName(Type type)
+        public static string ComposeCsharpVariableName(Type type)
+        {
+            var result = ComposeVariableName(type, GetFormattedCsharpTypeName);
+
+            if (CSharpHelpers.IsKeyword(result))
+            {
+                result += "Value";
+            }
+
+            return result;
+        }
+
+        public static string ComposeVisualBasicVariableName(Type type)
+        {
+            var result = ComposeVariableName(type, GetFormattedVisualBasicTypeName);
+
+            if (VBCodeGenerator.IsKeyword(result))
+            {
+                result += "Value";
+            }
+
+            return result;
+        }
+        private static string ComposeVariableName(Type type, Func<Type, string> typeNameFormatter)
         {
             var stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(GetFormattedTypeName(type).ToCamelCase());
+            stringBuilder.Append(typeNameFormatter(type).ToCamelCase());
             var innerType = GetCollectionItemType(type);
 
             while (innerType != type)
@@ -33,19 +56,53 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
                 {
                     innerType = type.GetGenericArguments().LastOrDefault() ?? typeof(object);
                 }
-                stringBuilder.Append(GetFormattedTypeName(innerType).ToPascalCase());
+                stringBuilder.Append(typeNameFormatter(innerType).ToPascalCase());
                 type = innerType;
                 innerType = GetCollectionItemType(type);
             }
 
-            var result = stringBuilder.ToString();
+            return stringBuilder.ToString();
+        }
 
-            if (CSharpHelpers.IsKeyword(result) || VBCodeGenerator.IsKeyword(result))
-            {
-                result += "Value";
-            }
+        private static readonly Dictionary<string, string> VisualBasicReplacements = new(StringComparer.OrdinalIgnoreCase)
+        {
+            { "int16", "Short" },
+            { "int32", "Integer" },
+            { "int64", "Long" },
+            { "uint16", "UShort" },
+            { "uint32", "UInteger" },
+            { "uint64", "ULong" },
+            { "datetime", "Date" },
+        };
 
-            return result;
+        private static string GetFormattedVisualBasicTypeName(Type type)
+        {
+            var result = GetFormattedTypeName(type);
+
+            return VisualBasicReplacements.TryGetValue(result, out string replacement)
+                ? replacement
+                : result;
+        }
+
+        private static readonly Dictionary<string, string> CSharpReplacements = new(StringComparer.OrdinalIgnoreCase)
+        {
+            { "int16", "short" },
+            { "int32", "int" },
+            { "int64", "long" },
+            { "boolean", "bool" },
+            { "uint16", "ushort" },
+            { "uint32", "uint" },
+            { "uint64", "ulong" },
+            { "single", "float" }
+        };
+
+        private static string GetFormattedCsharpTypeName(Type type)
+        {
+            var result = GetFormattedTypeName(type);
+
+            return CSharpReplacements.TryGetValue(result, out string replacement)
+                ? replacement
+                : result;
         }
 
         private static string GetFormattedTypeName(Type type)
@@ -158,7 +215,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
 
         public static Type GetInnerElementType(Type type)
         {
-            var elementType = type.GetInterfaces().FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>))?.GenericTypeArguments.FirstOrDefault() ?? typeof(object);
+            var elementType = type.IsArray ? type.GetElementType() : type.GetInterfaces().FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>))?.GenericTypeArguments.FirstOrDefault() ?? typeof(object);
 
             return elementType;
         }
