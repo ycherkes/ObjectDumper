@@ -522,7 +522,13 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.VisualBasic
                 {
                     string typeName = GetTypeOutput(e.CreateType);
                     Output.Write(typeName);
-                    Output.Write("()");
+                    if (e.CreateType.ArrayRank == 0)
+                    {
+                        // Unfortunately, many clients are already calling this without array
+                        // types. This will allow new clients to correctly use the array type and
+                        // not break existing clients. For VNext, stop doing this.
+                        Output.Write("()");
+                    }
                 }
 
                 //Output.WriteLine("");
@@ -572,6 +578,15 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.VisualBasic
 
                 Output.Write(" {}");
             }
+        }
+
+        protected override void GenerateCodeArrayDimensionExpression(CodeArrayDimensionExpression e)
+        {
+            Output.Write("{");
+            Output.WriteLine();
+            OutputExpressionList(e.Initializers, newlineBetweenItems: true, newLineContinuation: false);
+            Output.WriteLine();
+            Output.Write("}");
         }
 
         protected override void GenerateCastExpression(CodeCastExpression e)

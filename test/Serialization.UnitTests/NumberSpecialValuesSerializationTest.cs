@@ -13,7 +13,7 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(max, null);
 
-            Assert.Equal("var singleValue = float.MaxValue;\r\n", result);
+            Assert.Equal("var floatValue = float.MaxValue;\r\n", result);
         }
 
         [Fact]
@@ -25,7 +25,7 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(min, null);
 
-            Assert.Equal("var singleValue = float.MinValue;\r\n", result);
+            Assert.Equal("var floatValue = float.MinValue;\r\n", result);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(nan, null);
 
-            Assert.Equal("var singleValue = float.NaN;\r\n", result);
+            Assert.Equal("var floatValue = float.NaN;\r\n", result);
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(zero, null);
 
-            Assert.Equal("var uInt16 = 0;\r\n", result);
+            Assert.Equal("var ushortValue = 0;\r\n", result);
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(zero, null);
 
-            Assert.Equal("Dim uInt16 = 0US\r\n", result);
+            Assert.Equal("Dim uShortValue = 0US\r\n", result);
         }
     }
 }

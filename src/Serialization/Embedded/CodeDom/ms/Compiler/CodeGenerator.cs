@@ -99,6 +99,10 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Compiler
             {
                 GenerateArrayCreateExpression((CodeArrayCreateExpression)e);
             }
+            else if (e is CodeArrayDimensionExpression)
+            {
+                GenerateCodeArrayDimensionExpression((CodeArrayDimensionExpression)e);
+            }
             else if (e is CodeFlagsBinaryOperatorExpression)
             {
                 GenerateFlagsBinaryOperatorExpression((CodeFlagsBinaryOperatorExpression)e);
@@ -337,6 +341,8 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.Compiler
         }
 
         protected abstract void GenerateArrayCreateExpression(CodeArrayCreateExpression e);
+
+        protected abstract void GenerateCodeArrayDimensionExpression(CodeArrayDimensionExpression e);
 
         protected void GenerateFlagsBinaryOperatorExpression(CodeFlagsBinaryOperatorExpression e)
         {

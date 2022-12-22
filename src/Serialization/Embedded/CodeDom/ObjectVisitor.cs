@@ -611,10 +611,15 @@ internal class ObjectVisitor
 
         var isImmutable = ReflectionUtils.IsPublicImmutableCollection(type);
 
-        if (!IsCollection(enumerable) || type.IsArray || isImmutable)
+        if (type.IsArray || isImmutable || !IsCollection(enumerable))
         {
+            if (type.IsArray && ((Array)enumerable).Rank > 1)
+            {
+                items = ChunkMultiDimensionalArrayExpression((Array)enumerable, items);
+            }
+
             CodeExpression expr = new CodeArrayCreateExpression(
-                new CodeTypeReference(elementType, _typeReferenceOptions),
+                new CodeTypeReference(type.IsArray ? type : elementType.MakeArrayType(), _typeReferenceOptions),
                 items.ToArray());
 
             if (isImmutable) expr = new CodeMethodInvokeExpression(expr, $"To{type.Name.Split('`')[0]}");
@@ -641,6 +646,26 @@ internal class ObjectVisitor
         return initializeExpression;
     }
 
+    private static IEnumerable<CodeExpression> ChunkMultiDimensionalArrayExpression(Array array, IEnumerable<CodeExpression> enumerable)
+    {
+        var dimensions = new int[array.Rank - 1];
+
+        for (var i = 0; i < dimensions.Length; i++)
+        {
+            dimensions[i] = array.GetLength(i + 1);
+        }
+
+        IEnumerable<CodeExpression> result = enumerable;
+
+        for (var index = dimensions.Length - 1; index >= 0; index--)
+        {
+            var dimension = dimensions[index];
+            result = result.Chunk(dimension).Select(x => new CodeArrayDimensionExpression(x));
+        }
+
+        return result;
+    }
+
     private CodeExpression VisitAnonymousCollection(IEnumerable enumerable)
     {
         var items = enumerable.Cast<object>().Select(Visit);
@@ -648,9 +673,16 @@ internal class ObjectVisitor
 
         var isImmutable = ReflectionUtils.IsPublicImmutableCollection(type);
 
+        var typeReference = new CodeAnonymousTypeReference();
+
+        if (type.IsArray && ((Array)enumerable).Rank > 1)
+        {
+            typeReference.ArrayRank = ((Array)enumerable).Rank;
+            items = ChunkMultiDimensionalArrayExpression((Array)enumerable, items);
+        }
 
         CodeExpression expr = new CodeArrayCreateExpression(
-            new CodeAnonymousTypeReference(),
+            typeReference,
             items.ToArray());
 
         if (isImmutable || (enumerable is IList && !type.IsArray))
