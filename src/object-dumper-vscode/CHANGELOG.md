@@ -4,6 +4,12 @@ All notable changes to the "ObjectDumper" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [0.0.5]
 
-- Initial release
+### C# & Visual Basic
+
+### Improved Array serialization:
+- Multi dimensional arrays
+- Arrays of arrays
+
+### Improved variable name generation
