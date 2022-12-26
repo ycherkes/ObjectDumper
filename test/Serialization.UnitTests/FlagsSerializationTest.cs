@@ -25,7 +25,7 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(flagsVar, null);
 
-            Assert.Equal("Dim testEnum = TestEnum.Second Or TestEnum.Third\r\n", result);
+            Assert.Equal("Dim testEnumValue = TestEnum.Second Or TestEnum.Third\r\n", result);
         }
 
         [Flags]

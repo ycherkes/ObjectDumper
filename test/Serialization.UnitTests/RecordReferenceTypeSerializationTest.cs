@@ -25,7 +25,7 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(person, null);
 
-            Assert.Equal("Dim person = New Person(\"Boris\", \"Johnson\")\r\n", result);
+            Assert.Equal("Dim personValue = New Person(\"Boris\", \"Johnson\")\r\n", result);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace Serialization.UnitTests
             var result = serializer.Serialize(person1, null);
 
             Assert.Equal(
-@"Dim person1 = New Person1 With {
+@"Dim person1Value = New Person1 With {
     .FirstName = ""Boris"",
     .LastName = ""Johnson""
 }

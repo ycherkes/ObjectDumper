@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms;
@@ -19,7 +18,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
         {
             var result = ComposeVariableName(type, GetFormattedCsharpTypeName);
 
-            if (CSharpHelpers.IsKeyword(result))
+            if (CSharpHelpers.IsKeyword(result) || string.Equals(type.Name, result, StringComparison.Ordinal))
             {
                 result += "Value";
             }
@@ -31,7 +30,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
         {
             var result = ComposeVariableName(type, GetFormattedVisualBasicTypeName);
 
-            if (VBCodeGenerator.IsKeyword(result))
+            if (VBCodeGenerator.IsKeyword(result) || string.Equals(type.Name, result, StringComparison.OrdinalIgnoreCase))
             {
                 result += "Value";
             }
@@ -107,13 +106,15 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
 
         private static string GetFormattedTypeName(Type type)
         {
+            var typeName = type.Name;
+
             var result = type.IsArray
                 ? "array"
                 : type.IsAnonymousType()
                     ? "AnonymousType"
-                      : type.Name.StartsWith("<")
-                        ? type.Name.Substring(1).Split('>')[0]
-                        : type.Name.Split('`')[0];
+                      : typeName.StartsWith("<")
+                        ? typeName.Substring(1).Split('>')[0]
+                        : typeName.Split('`')[0];
 
             if (type.IsInterface() && result.StartsWith("I", StringComparison.OrdinalIgnoreCase))
             {
@@ -146,7 +147,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
             return type;
         }
 
-        private static bool ImplementsGenericDefinition(Type type, Type genericInterfaceDefinition, [NotNullWhen(true)] out Type? implementingType)
+        private static bool ImplementsGenericDefinition(Type type, Type genericInterfaceDefinition, out Type implementingType)
         {
             ValidationUtils.ArgumentNotNull(type, nameof(type));
             ValidationUtils.ArgumentNotNull(genericInterfaceDefinition, nameof(genericInterfaceDefinition));
@@ -194,8 +195,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
                                     && type.IsGenericType
                                     && type.Name.Contains("AnonymousType")
                                     && (type.Name.StartsWith("<>", StringComparison.OrdinalIgnoreCase) ||
-                                        type.Name.StartsWith("VB$", StringComparison.OrdinalIgnoreCase))
-                                    && (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic;
+                                        type.Name.StartsWith("VB$", StringComparison.OrdinalIgnoreCase));
 
             return isAnonymousType;
         }

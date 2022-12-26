@@ -44,7 +44,7 @@ namespace Serialization.UnitTests
             var result = serializer.Serialize(person, null);
 
             Assert.Equal(
-@"Dim person = New Person With {
+@"Dim personValue = New Person With {
     .FirstName = ""Boris"",
     .LastName = ""Johnson"",
     .BirthDate = New Date(1964, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc)
