@@ -91,8 +91,8 @@ internal class ObjectVisitor
             if (IsValueTuple(@object))
                 return VisitValueTuple(@object);
 
-            if (@object is Enum)
-                return VisitEnum(@object);
+            if (@object is Enum @enum)
+                return VisitEnum(@enum);
 
             if (@object is Guid guid)
                 return VisitGuid(guid);
@@ -283,18 +283,18 @@ internal class ObjectVisitor
             new CodePrimitiveExpression(cultureInfo.ToString()));
     }
 
-    private CodeExpression VisitEnum(object o)
+    private CodeExpression VisitEnum(Enum e)
     {
-        var values = o.ToString().Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+        var values = e.ToString().Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
         if (values.Length == 1)
         {
             return new CodeFieldReferenceExpression(
-                new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), o.ToString());
+                new CodeTypeReferenceExpression(new CodeTypeReference(e.GetType(), _typeReferenceOptions)), e.ToString());
         }
 
         var expressions = values.Select(v => (CodeExpression)new CodeFieldReferenceExpression(
-                new CodeTypeReferenceExpression(new CodeTypeReference(o.GetType(), _typeReferenceOptions)), v.Trim())).ToArray();
+                new CodeTypeReferenceExpression(new CodeTypeReference(e.GetType(), _typeReferenceOptions)), v.Trim())).ToArray();
 
         var bitwiseOrExpression = new CodeFlagsBinaryOperatorExpression(CodeBinaryOperatorType.BitwiseOr, expressions);
 
@@ -412,7 +412,10 @@ internal class ObjectVisitor
             var objectType = o.GetType();
 
             var initProperties = objectType.GetProperties(_getPropertiesBindingFlags)
-                    .Where(p => p.CanRead && (p.CanWrite || !_writablePropertiesOnly))
+                    .Where(p => p.CanRead
+                                && (p.CanWrite || !_writablePropertiesOnly)
+                                // Ignores indexers
+                                && p.GetIndexParameters().Length == 0)
                     .Select(p => new
                     {
                         p.Name,

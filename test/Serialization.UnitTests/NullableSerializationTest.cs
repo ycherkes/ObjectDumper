@@ -28,7 +28,7 @@ namespace Serialization.UnitTests
             var result = serializer.Serialize(value, null);
 
             Assert.Equal(
-@"Dim myEnum = MyEnum.TestValue
+@"Dim myEnumValue = MyEnum.TestValue
 ", result);
         }
 
