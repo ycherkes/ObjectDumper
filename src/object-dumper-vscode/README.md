@@ -5,10 +5,12 @@
 # Object Dumper
 
 [![marketplace](https://img.shields.io/visual-studio-marketplace/v/YevhenCherkes.object-dumper.svg?label=Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
-[![downloads](https://img.shields.io/visual-studio-marketplace/i/YevhenCherkes.object-dumper?label=Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
+[![installs](https://img.shields.io/visual-studio-marketplace/i/YevhenCherkes.object-dumper?label=Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
 [![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
-A Visual Studio Code extension for dumping in-memory objects during debugging to the following formats: C# Object Initialization Code, JSON, Visual Basic Object Initialization Code, XML, and YAML. Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
+A Visual Studio Code extension to export in-memory objects during debugging to the **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** format.
+
+Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
 "**Dump as**" commands are available via context menu in the **Code** window only.
 
@@ -32,7 +34,7 @@ The result is shown in a separate document window.
 
 | Repository  | License |
 | ------------- | ------------- |
-| [System.CodeDom](https://github.com/dotnet/runtime/tree/main/src/libraries/System.CodeDom)  | [![MIT](https://img.shields.io/github/license/dotnet/runtime?style=flat-square)](https://github.com/dotnet/runtime/blob/main/LICENSE.TXT)  |
+| [A heavily customized version](https://github.com/ycherkes/ObjectDumper/tree/main/src/Serialization/Embedded/CodeDom/ms) of [System.CodeDom](https://github.com/dotnet/runtime/tree/main/src/libraries/System.CodeDom)  | [![MIT](https://img.shields.io/github/license/dotnet/runtime?style=flat-square)](https://github.com/dotnet/runtime/blob/main/LICENSE.TXT)  |
 | [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)  | [![MIT](https://img.shields.io/github/license/JamesNK/Newtonsoft.Json?style=flat-square)](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)  |
 | [YamlDotNet](https://github.com/aaubry/YamlDotNet)  | [![MIT](https://img.shields.io/github/license/aaubry/YamlDotNet?style=flat-square)](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt)  |
 

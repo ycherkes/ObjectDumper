@@ -11,7 +11,7 @@
 
 [![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
-A Visual Studio 2019-2022 and [Visual Studio Code](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) extensions for dumping in-memory objects during debugging to the following formats: C# Object Initialization Code, JSON, Visual Basic Object Initialization Code, XML, and YAML. Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
+A Visual Studio and [Visual Studio Code](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) extensions to export in-memory objects during debugging to the **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** format.
 
 "**Dump as**" commands are available via context menu in the **Code** and **Immediate** windows.
 
