@@ -13,3 +13,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Arrays of arrays
 
 ### Improved variable name generation
+
+## [0.0.6]
+- Fixed VB & C# variable naming when the generated name is the same as type name.
+- Excludes indexers from being exported.
