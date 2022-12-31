@@ -1,12 +1,12 @@
-﻿using Embedded.Newtonsoft.Json;
-using Embedded.Newtonsoft.Json.Converters;
-using Embedded.Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.Utilities;
+using YellowFlavor.Serialization.Extensions;
 using YellowFlavor.Serialization.Implementation.Json;
 using YellowFlavor.Serialization.Implementation.Settings;
 

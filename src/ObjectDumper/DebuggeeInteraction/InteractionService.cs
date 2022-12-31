@@ -62,15 +62,33 @@ namespace ObjectDumper.DebuggeeInteraction
 
             var isNetCoreMustBeInjected = assemblyLocation.IndexOf("NETCore", StringComparison.OrdinalIgnoreCase) >= 0;
 
+            var isNetCore6OrAbove = isNetCoreMustBeInjected && ExtractVersionNumber(assemblyLocation).Major >= 6;
+
+            var directoryName = isNetStandardMustBeInjected
+                ? "netstandard2.0"
+                : isNetCore6OrAbove
+                    ? "net6.0"
+                    : isNetCoreMustBeInjected
+                        ? "netcoreapp3.1"
+                        : "net45";
+
             var serializerFileName = Path.Combine(dllLocation,
-                "InjectableLibs",
-                isNetStandardMustBeInjected ? "netstandard2.0" : isNetCoreMustBeInjected ? "netcoreapp3.1" : "net45",
-                "YellowFlavor.Serialization.dll");
+            "InjectableLibs",
+            directoryName,
+            "YellowFlavor.Serialization.dll");
 
             var loadAssemblyExpressionText = expressionProvider.GetLoadAssemblyExpressionText(serializerFileName);
             var evaluationResult = _debugger.GetExpression(loadAssemblyExpressionText);
 
             return (evaluationResult.IsValidValue, evaluationResult.Value);
+        }
+
+        private static Version ExtractVersionNumber(string input)
+        {
+            var regex = new Regex(@"\d+(\.\d+)+");
+            var match = regex.Match(input);
+            Version.TryParse(match.Value, out var version);
+            return version;
         }
 
         public string GetSerializedValue(string expression, string format)

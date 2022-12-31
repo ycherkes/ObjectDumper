@@ -1,11 +1,11 @@
-﻿using Embedded.Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.CodeDom.Compiler;
 using System.IO;
 using System.Text;
-using YellowFlavor.Serialization.Embedded.YamlDotNet.Core;
-using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization;
-using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.Utilities;
+using YamlDotNet.Core;
+using YamlDotNet.Serialization;
+using YellowFlavor.Serialization.Extensions;
 using YellowFlavor.Serialization.Implementation.Settings;
 
 namespace YellowFlavor.Serialization.Implementation

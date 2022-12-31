@@ -8,7 +8,7 @@
 [![installs](https://img.shields.io/visual-studio-marketplace/i/YevhenCherkes.object-dumper?label=Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
 [![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
-A Visual Studio Code extension to export in-memory objects during debugging to the **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** format.
+A Visual Studio Code extension for exporting in-memory objects during debugging to the **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** format.
 
 Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 

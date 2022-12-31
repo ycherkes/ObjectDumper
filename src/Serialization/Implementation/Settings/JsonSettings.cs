@@ -1,4 +1,4 @@
-﻿using Embedded.Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace YellowFlavor.Serialization.Implementation.Settings;
 

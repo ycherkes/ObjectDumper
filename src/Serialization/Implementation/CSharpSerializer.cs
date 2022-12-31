@@ -1,4 +1,4 @@
-﻿using Embedded.Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;
 using System.Text;
