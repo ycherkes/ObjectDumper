@@ -1,14 +1,12 @@
-﻿using Embedded.Newtonsoft.Json.Utilities;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms;
 using YellowFlavor.Serialization.Embedded.CodeDom.ms.VisualBasic;
-using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.Utilities;
+using YellowFlavor.Serialization.Extensions;
 
 namespace YellowFlavor.Serialization.Embedded.CodeDom
 {
@@ -133,7 +131,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
             {
                 if (genericListType.IsGenericTypeDefinition())
                 {
-                    throw new Exception("Type {0} is not a collection.".FormatWith(CultureInfo.InvariantCulture, type));
+                    throw new Exception($"Type {type} is not a collection.");
                 }
 
                 return genericListType!.GetGenericArguments()[0];
@@ -149,12 +147,9 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
 
         private static bool ImplementsGenericDefinition(Type type, Type genericInterfaceDefinition, out Type implementingType)
         {
-            ValidationUtils.ArgumentNotNull(type, nameof(type));
-            ValidationUtils.ArgumentNotNull(genericInterfaceDefinition, nameof(genericInterfaceDefinition));
-
             if (!genericInterfaceDefinition.IsInterface() || !genericInterfaceDefinition.IsGenericTypeDefinition())
             {
-                throw new ArgumentNullException("'{0}' is not a generic interface definition.".FormatWith(CultureInfo.InvariantCulture, genericInterfaceDefinition));
+                throw new ArgumentNullException($"'{genericInterfaceDefinition}' is not a generic interface definition.");
             }
 
             if (type.IsInterface())
@@ -327,6 +322,24 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
             return t.IsGenericType() && t.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
+        public static bool IsInterface(this Type type)
+        {
+#if HAVE_FULL_REFLECTION
+            return type.IsInterface;
+#else
+            return type.GetTypeInfo().IsInterface;
+#endif
+        }
+
+        public static bool IsGenericTypeDefinition(this Type type)
+        {
+#if HAVE_FULL_REFLECTION
+            return type.IsGenericTypeDefinition;
+#else
+            return type.GetTypeInfo().IsGenericTypeDefinition;
+#endif
+        }
+
         public static bool IsGenericType(this Type type)
         {
 #if HAVE_FULL_REFLECTION
@@ -345,7 +358,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom
 #endif
         }
 
-        public static bool IsNullable(Type t)
+        private static bool IsNullable(Type t)
         {
             if (t.IsValueType())
             {

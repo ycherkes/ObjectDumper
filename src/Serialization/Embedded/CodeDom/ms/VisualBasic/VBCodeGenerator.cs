@@ -429,7 +429,7 @@ namespace YellowFlavor.Serialization.Embedded.CodeDom.ms.VisualBasic
         }
 
 
-        protected void OutputTypeNamePair(CodeTypeReference typeRef, string name)
+        private void OutputTypeNamePair(CodeTypeReference typeRef, string name)
         {
             if (string.IsNullOrEmpty(name))
                 name = "__exception";

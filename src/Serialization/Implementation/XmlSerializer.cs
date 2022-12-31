@@ -1,12 +1,13 @@
-﻿using Embedded.Newtonsoft.Json;
-using Embedded.Newtonsoft.Json.Converters;
-using Embedded.Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
-using YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.Utilities;
+using YellowFlavor.Serialization.Extensions;
 using YellowFlavor.Serialization.Implementation.Json;
 using YellowFlavor.Serialization.Implementation.Settings;
 
@@ -55,9 +56,17 @@ namespace YellowFlavor.Serialization.Implementation
 
             if (namingStrategy != "CamelCase")
             {
+                var namingStrategyType = namingStrategy switch
+                {
+                    "Default" => typeof(DefaultNamingStrategy),
+                    "SnakeCase" => typeof(SnakeCaseNamingStrategy),
+                    "KebabCase" => typeof(KebabCaseNamingStrategy),
+                    _ => throw new InvalidOperationException($"Invalid naming strategy: {namingStrategy}")
+                };
+
                 newSettings.ContractResolver = new SpecificContractResolver
                 {
-                    NamingStrategy = (NamingStrategy)Activator.CreateInstance(Type.GetType($"Embedded.Newtonsoft.Json.Serialization.{namingStrategy}NamingStrategy")),
+                    NamingStrategy = (NamingStrategy)Activator.CreateInstance(namingStrategyType),
                     ExcludeTypes = new[] { "Avro.Schema" }
                 };
             }
@@ -101,7 +110,7 @@ namespace YellowFlavor.Serialization.Implementation
             string xml;
             if (IsSimpleType(objectType))
             {
-                elementName = GetElementName(obj, useFullTypeName);
+                elementName = XmlConvert.EncodeName(GetElementName(obj, useFullTypeName));
                 xml = $"<{elementName}>{json.Trim('"')}</{elementName}>";
             }
             else
@@ -118,7 +127,9 @@ namespace YellowFlavor.Serialization.Implementation
         {
             return type.IsPrimitive
                 || type.IsValueType
-                || type == typeof(string);
+                || type == typeof(string)
+                || type == typeof(Type)
+                || typeof(TypeInfo).IsAssignableFrom(type);
         }
 
         private static string GetElementName(object obj, bool useFullTypeName)

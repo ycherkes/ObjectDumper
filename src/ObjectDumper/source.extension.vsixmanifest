@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="ObjectDumper.7c57976c-bdc9-4edc-a4fd-48c114054ad5" Version="0.0.0.68" Language="en-US" Publisher="Yevhen Cherkes" />
+        <Identity Id="ObjectDumper.7c57976c-bdc9-4edc-a4fd-48c114054ad5" Version="0.0.0.69" Language="en-US" Publisher="Yevhen Cherkes" />
         <DisplayName>Object Dumper</DisplayName>
-        <Description xml:space="preserve">Object Dumper is an open source Visual Studio extension to export in-memory objects during debugging to the C#, JSON, VB, XML, and YAML format.</Description>
+        <Description xml:space="preserve">Object Dumper is an open source Visual Studio extension for exporting in-memory objects during debugging to the C#, JSON, VB, XML, and YAML format.</Description>
         <License>LICENSE.txt</License>
         <Icon>Resources\PackageIcon.png</Icon>
         <Preview>true</Preview>
