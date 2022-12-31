@@ -17,3 +17,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.6]
 - Fixed VB & C# variable naming when the generated name is the same as type name.
 - Excludes indexers from being exported.
+
+## [0.0.7]
+- Removed all Json.Net and DotNetYaml embedded code. Replaced with ILRepack msbuild task.
+- Fix Xml System.Type serialization. 
+- Fix Xml naming issues.
+- .Net6+ assemblies use .Net6 version of serialization library. It adds for example DateOnly & TimeOnly structs support.
