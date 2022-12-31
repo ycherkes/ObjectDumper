@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 using YellowFlavor.Serialization.Extensions;
 using YellowFlavor.Serialization.Implementation.Settings;
 
@@ -23,8 +24,19 @@ namespace YellowFlavor.Serialization.Implementation
 
             var namingConvention = yamlSettings.NamingConvention.ToPascalCase();
 
+            var namingConventionType = namingConvention switch
+            {
+                "CamelCase" => typeof(CamelCaseNamingConvention),
+                "Hyphenated" => typeof(HyphenatedNamingConvention),
+                "LowerCase" => typeof(LowerCaseNamingConvention),
+                "Null" => typeof(NullNamingConvention),
+                "PascalCase" => typeof(PascalCaseNamingConvention),
+                "Underscored" => typeof(UnderscoredNamingConvention),
+                _ => throw new InvalidOperationException($"Invalid naming convention: {namingConvention}")
+            };
+
             var valueSerializer = new SerializerBuilder()
-                .WithNamingConvention((INamingConvention)Activator.CreateInstance(Type.GetType($"YellowFlavor.Serialization.Embedded.YamlDotNet.Serialization.NamingConventions.{namingConvention}NamingConvention")))
+                .WithNamingConvention((INamingConvention)Activator.CreateInstance(namingConventionType))
                 .WithMaximumRecursion(yamlSettings.MaxDepth)
                 .BuildValueSerializer();
 

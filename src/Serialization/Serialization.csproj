@@ -66,7 +66,7 @@
 		</PropertyGroup>
 		<Error Condition="!Exists('$(NuGetPackageRoot)ILRepack\2.0.18\build\ILRepack.props')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)ILRepack\2.0.18\build\ILRepack.props'))" />
 	</Target>
-	<Target Name="Merge libs" AfterTargets="PostBuildEvent">
+	<Target Name="Merge libs" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release'" >
 		<ItemGroup>
 			<MergeAssemblies Include="$(OutputPath)\*.dll" Exclude="$(OutputPath)\$(AssemblyName).dll" />
 			<RootAssembly Include="$(OutputPath)\$(AssemblyName).dll" />

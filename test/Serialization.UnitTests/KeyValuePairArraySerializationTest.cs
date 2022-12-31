@@ -64,5 +64,25 @@ namespace Serialization.UnitTests
 ", result);
         }
 
+        [Fact]
+        public void SerializeKeyValuePairArrayXml()
+        {
+            var kvpArray = new KeyValuePair<int, string>[]
+            {
+                new(1, "First"),
+                new(2, "Second")
+            };
+
+            var serializer = new XmlSerializer();
+
+            var result = serializer.Serialize(kvpArray, null);
+
+            Assert.Equal(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<ArrayOfKeyValuePair_x0060_2>
+  <KeyValuePair_x0060_2>{""Key"":1,""Value"":""First""}</KeyValuePair_x0060_2>
+  <KeyValuePair_x0060_2>{""Key"":2,""Value"":""Second""}</KeyValuePair_x0060_2>
+</ArrayOfKeyValuePair_x0060_2>", result);
+        }
     }
 }
