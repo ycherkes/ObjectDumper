@@ -88,7 +88,7 @@ namespace ObjectDumper.DebuggeeInteraction
             var regex = new Regex(@"\d+(\.\d+)+");
             var match = regex.Match(input);
             Version.TryParse(match.Value, out var version);
-            return version;
+            return version ?? new Version(0, 0, 0);
         }
 
         public string GetSerializedValue(string expression, string format)
