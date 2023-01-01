@@ -13,6 +13,8 @@
 
 A Visual Studio and [Visual Studio Code](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) extensions for exporting in-memory objects during debugging to the **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** format.
 
+Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
+
 "**Dump as**" commands are available via context menu in the **Code** and **Immediate** windows.
 
 The result is shown in a separate document window.
