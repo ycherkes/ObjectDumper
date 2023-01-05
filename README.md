@@ -8,6 +8,7 @@
 [![VS installs](https://img.shields.io/visual-studio-marketplace/i/YevhenCherkes.YellowFlavorObjectDumper?label=VS%20installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
 [![VS Code marketplace](https://img.shields.io/visual-studio-marketplace/v/YevhenCherkes.object-dumper.svg?label=VS%20Code%20marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
 [![VS Code installs](https://img.shields.io/visual-studio-marketplace/i/YevhenCherkes.object-dumper?label=VS%20Code%20installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fycherkes%2FObjectDumper.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fycherkes%2FObjectDumper?ref=badge_shield)
 
 [![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
@@ -61,3 +62,7 @@ Any donations during this time will be directed to local charities at my own dis
 Thanks to [JetBrains](https://www.jetbrains.com) for providing an [OSS development license](https://www.jetbrains.com/community/opensource/#support) of [All Products Pack](https://www.jetbrains.com/all/).
 
 [<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" height="50" alt="All Products Pack logo.">](https://www.jetbrains.com/all/)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fycherkes%2FObjectDumper.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fycherkes%2FObjectDumper?ref=badge_large)
