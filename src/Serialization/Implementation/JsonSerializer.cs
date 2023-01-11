@@ -43,11 +43,20 @@ namespace YellowFlavor.Serialization.Implementation
 
             var namingStrategy = jsonSettings.NamingStrategy.ToPascalCase();
 
+            var namingStrategyType = namingStrategy switch
+            {
+                "CamelCase" => typeof(CamelCaseNamingStrategy),
+                "Default" => typeof(DefaultNamingStrategy),
+                "KebabCase" => typeof(KebabCaseNamingStrategy),
+                "SnakeCase" => typeof(SnakeCaseNamingStrategy),
+                _ => throw new InvalidOperationException($"Invalid naming strategy: {namingStrategy}")
+            };
+
             if (namingStrategy != "CamelCase")
             {
                 newSettings.ContractResolver = new SpecificContractResolver
                 {
-                    NamingStrategy = (NamingStrategy)Activator.CreateInstance(Type.GetType($"Embedded.Newtonsoft.Json.Serialization.{namingStrategy}NamingStrategy")),
+                    NamingStrategy = (NamingStrategy)Activator.CreateInstance(namingStrategyType),
                     ExcludeTypes = new[] { "Avro.Schema" }
                 };
             }

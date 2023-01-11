@@ -23,3 +23,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fix Xml System.Type serialization. 
 - Fix Xml naming issues.
 - .Net6+ assemblies use .Net6 version of serialization library. It adds for example DateOnly & TimeOnly structs support.
+
+## [0.0.8]
+- Fix NamingStrategy Json Serialization setting behavior. 
