@@ -47,9 +47,11 @@ The result is shown in a separate document window.
 
 | Repository  | License |
 | ------------- | ------------- |
-| [A heavily customized version](https://github.com/ycherkes/ObjectDumper/tree/main/src/Serialization/Embedded/CodeDom/ms) of [System.CodeDom](https://github.com/dotnet/runtime/tree/main/src/libraries/System.CodeDom)  | [![MIT](https://img.shields.io/github/license/dotnet/runtime?style=flat-square)](https://github.com/dotnet/runtime/blob/main/LICENSE.TXT)  |
+| [ILRepack](https://github.com/gluck/il-repack)  | [![Apache-2.0](https://img.shields.io/github/license/gluck/il-repack?style=flat-square)](https://github.com/gluck/il-repack/blob/master/LICENSE)  |
 | [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)  | [![MIT](https://img.shields.io/github/license/JamesNK/Newtonsoft.Json?style=flat-square)](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)  |
+| [Heavily customized version](https://github.com/ycherkes/ObjectDumper/tree/main/src/Serialization/Embedded/CodeDom/ms) of [System.CodeDom](https://github.com/dotnet/runtime/tree/main/src/libraries/System.CodeDom)  | [![MIT](https://img.shields.io/github/license/dotnet/runtime?style=flat-square)](https://github.com/dotnet/runtime/blob/main/LICENSE.TXT)  |
 | [YamlDotNet](https://github.com/aaubry/YamlDotNet)  | [![MIT](https://img.shields.io/github/license/aaubry/YamlDotNet?style=flat-square)](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt)  |
+
 
 This tool has been working well for my own personal needs, but outside that its future depends on your feedback. Feel free to [open an issue](https://github.com/ycherkes/ObjectDumper/issues).
 
