@@ -1,18 +1,14 @@
 ﻿using Newtonsoft.Json;
-using System.IO;
 using System.Reflection;
-using System.Text;
-using YellowFlavor.Serialization.Embedded.CodeDom;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.Compiler;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.VisualBasic;
+using VarDump;
+using VarDump.Visitor;
 using YellowFlavor.Serialization.Implementation.Settings;
 
 namespace YellowFlavor.Serialization.Implementation
 {
     internal class VisualBasicSerializer : ISerializer
     {
-        private static VisitorOptions VisualBasicVisitorOptions => new()
+        private static DumpOptions VisualBasicDumpOptions => new()
         {
             IgnoreDefaultValues = true,
             IgnoreNullValues = true,
@@ -28,29 +24,15 @@ namespace YellowFlavor.Serialization.Implementation
 
         public string Serialize(object obj, string settings)
         {
-            var visitorOptions = GetVbSettings(settings);
-            var objVisitor = new ObjectVisitor(visitorOptions);
-            var expression = objVisitor.Visit(obj);
-            var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(),
-                obj != null ? ReflectionUtils.ComposeVisualBasicVariableName(obj.GetType()) : "nullValue")
-            {
-                InitExpression = expression
-            };
-
-            ICodeGenerator generator = new VBCodeGenerator();
-
-            var stringBuilder = new StringBuilder();
-            using (var sourceWriter = new StringWriter(stringBuilder))
-            {
-                generator.GenerateCodeFromStatement(variableDeclaration, sourceWriter, new CodeGeneratorOptions());
-            }
-            var result = stringBuilder.ToString();
+            var dumpOptions = GetVbDumpOptions(settings);
+            var dumper = new VisualBasicDumper();
+            var result = dumper.Dump(obj, dumpOptions);
             return result;
         }
 
-        private static VisitorOptions GetVbSettings(string settings)
+        private static DumpOptions GetVbDumpOptions(string settings)
         {
-            var newSettings = VisualBasicVisitorOptions;
+            var newSettings = VisualBasicDumpOptions;
             if (settings == null) return newSettings;
 
             var vbSettings = JsonConvert.DeserializeObject<VbSettings>(settings);

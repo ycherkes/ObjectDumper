@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
-using YellowFlavor.Serialization.Embedded.CodeDom;
+using VarDump.Visitor;
 
 namespace YellowFlavor.Serialization.Implementation.Settings;
 
