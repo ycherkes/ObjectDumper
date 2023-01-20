@@ -1,18 +1,14 @@
 ﻿using Newtonsoft.Json;
-using System.IO;
 using System.Reflection;
-using System.Text;
-using YellowFlavor.Serialization.Embedded.CodeDom;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.Common;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.Compiler;
-using YellowFlavor.Serialization.Embedded.CodeDom.ms.CSharp;
+using VarDump;
+using VarDump.Visitor;
 using YellowFlavor.Serialization.Implementation.Settings;
 
 namespace YellowFlavor.Serialization.Implementation
 {
     internal class CSharpSerializer : ISerializer
     {
-        private static VisitorOptions CsharpVisitorOptions => new()
+        private static DumpOptions CsharpDumpOptions => new()
         {
             IgnoreDefaultValues = true,
             IgnoreNullValues = true,
@@ -28,32 +24,15 @@ namespace YellowFlavor.Serialization.Implementation
 
         public string Serialize(object obj, string settings)
         {
-            var visitorOptions = GetCsharpSettings(settings);
-            var objVisitor = new ObjectVisitor(visitorOptions);
-            var expression = objVisitor.Visit(obj);
-            var variableDeclaration = new CodeVariableDeclarationStatement(new CodeImplicitlyTypedTypeReference(),
-                obj != null ? ReflectionUtils.ComposeCsharpVariableName(obj.GetType()) : "nullValue")
-            {
-                InitExpression = expression
-            };
-
-            CodeGeneratorOptions options = new CodeGeneratorOptions
-            {
-                BracingStyle = "C"
-            };
-            ICodeGenerator generator = new CSharpCodeGenerator();
-            var stringBuilder = new StringBuilder();
-            using (var sourceWriter = new StringWriter(stringBuilder))
-            {
-                generator.GenerateCodeFromStatement(variableDeclaration, sourceWriter, options);
-            }
-            var result = stringBuilder.ToString();
+            var dumpOptions = GetCsharpDumpOptions(settings);
+            var dumper = new CSharpDumper();
+            var result = dumper.Dump(obj, dumpOptions);
             return result;
         }
 
-        private static VisitorOptions GetCsharpSettings(string settings)
+        private static DumpOptions GetCsharpDumpOptions(string settings)
         {
-            var newSettings = CsharpVisitorOptions;
+            var newSettings = CsharpDumpOptions;
             if (settings == null) return newSettings;
 
             var csharpSettings = JsonConvert.DeserializeObject<CSharpSettings>(settings);

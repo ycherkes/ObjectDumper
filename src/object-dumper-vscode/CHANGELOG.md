@@ -26,3 +26,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.8]
 - Fix NamingStrategy Json Serialization setting behavior. 
+
+## [0.0.9]
+- Extract CSharpDumper and VisualBasicDumper to the external package https://www.nuget.org/packages/VarDump.

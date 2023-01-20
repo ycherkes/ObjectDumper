@@ -4,8 +4,8 @@
     <TargetFrameworks>net45;netstandard2.0;netcoreapp3.1;net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <AssemblyName>YellowFlavor.Serialization</AssemblyName>
-    <AssemblyVersion>0.0.0.70</AssemblyVersion>
-    <FileVersion>0.0.0.70</FileVersion>
+    <AssemblyVersion>0.0.0.71</AssemblyVersion>
+    <FileVersion>0.0.0.71</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RootNamespace>YellowFlavor.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -41,9 +41,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2"/>
-    <PackageReference Include="YamlDotNet" Version="12.3.1"/>
-    <PackageReference Include="ILRepack" Version="2.0.18" PrivateAssets="All"/>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="VarDump" Version="0.0.2" />
+    <PackageReference Include="YamlDotNet" Version="12.3.1" />
+    <PackageReference Include="ILRepack" Version="2.0.18" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,13 +61,31 @@
       <LastGenOutput>SR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="VarDump">
+      <Version>0.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="VarDump">
+      <Version>0.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="VarDump">
+      <Version>0.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
 	<Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
 		<PropertyGroup>
 			<ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
 		</PropertyGroup>
 		<Error Condition="!Exists('$(NuGetPackageRoot)ILRepack\2.0.18\build\ILRepack.props')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)ILRepack\2.0.18\build\ILRepack.props'))" />
 	</Target>
-	<Target Name="Merge libs" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release'" >
+	<Target Name="Merge libs" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release'">
 		<ItemGroup>
 			<MergeAssemblies Include="$(OutputPath)\*.dll" Exclude="$(OutputPath)\$(AssemblyName).dll" />
 			<RootAssembly Include="$(OutputPath)\$(AssemblyName).dll" />
