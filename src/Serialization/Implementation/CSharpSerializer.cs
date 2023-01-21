@@ -25,8 +25,8 @@ namespace YellowFlavor.Serialization.Implementation
         public string Serialize(object obj, string settings)
         {
             var dumpOptions = GetCsharpDumpOptions(settings);
-            var dumper = new CSharpDumper();
-            var result = dumper.Dump(obj, dumpOptions);
+            var dumper = new CSharpDumper(dumpOptions);
+            var result = dumper.Dump(obj);
             return result;
         }
 
