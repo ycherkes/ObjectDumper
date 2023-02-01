@@ -51,18 +51,18 @@ namespace ObjectDumper.DebuggeeInteraction
 
             var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
 
-            var (isValid, assemblyLocation) = GetStringTypeAssemblyLocation(expressionProvider);
+            var (isValid, targetFrameworkName) = GetTargetFrameworkName(expressionProvider);
 
             if (!isValid)
             {
-                return (false, assemblyLocation);
+                return (false, targetFrameworkName);
             }
 
-            var isNetStandardMustBeInjected = assemblyLocation.IndexOf("NETStandard", StringComparison.OrdinalIgnoreCase) >= 0;
+            var isNetStandardMustBeInjected = targetFrameworkName.IndexOf("NETStandard", StringComparison.OrdinalIgnoreCase) >= 0;
 
-            var isNetCoreMustBeInjected = assemblyLocation.IndexOf("NETCore", StringComparison.OrdinalIgnoreCase) >= 0;
+            var isNetCoreMustBeInjected = targetFrameworkName.IndexOf("NETCore", StringComparison.OrdinalIgnoreCase) >= 0;
 
-            var isNetCore6OrAbove = isNetCoreMustBeInjected && ExtractVersionNumber(assemblyLocation).Major >= 6;
+            var isNetCore6OrAbove = isNetCoreMustBeInjected && ExtractVersionNumber(targetFrameworkName).Major >= 6;
 
             var directoryName = isNetStandardMustBeInjected
                 ? "netstandard2.0"
@@ -128,10 +128,10 @@ namespace ObjectDumper.DebuggeeInteraction
             return _debugger.GetExpression(isSerializerInjectedExpressionText).IsValidValue;
         }
 
-        private (bool isValid, string value) GetStringTypeAssemblyLocation(IExpressionProvider expressionProvider)
+        private (bool isValid, string value) GetTargetFrameworkName(IExpressionProvider expressionProvider)
         {
-            var assemblyLocationExpressionText = expressionProvider.GetStringTypeAssemblyLocationExpressionText();
-            var evaluationResult = _debugger.GetExpression(assemblyLocationExpressionText);
+            var targetFrameworkExpressionText = expressionProvider.GetTargetFrameworkExpressionText();
+            var evaluationResult = _debugger.GetExpression(targetFrameworkExpressionText);
             return (evaluationResult.IsValidValue, evaluationResult.Value);
         }
     }

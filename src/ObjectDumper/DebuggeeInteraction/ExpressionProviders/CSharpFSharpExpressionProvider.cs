@@ -2,9 +2,9 @@
 {
     internal class CSharpFSharpExpressionProvider : IExpressionProvider
     {
-        public string GetStringTypeAssemblyLocationExpressionText()
+        public string GetTargetFrameworkExpressionText()
         {
-            return "typeof(System.String).Assembly.Location";
+            return "System.AppContext.TargetFrameworkName";
         }
 
         public string GetIsSerializerInjectedExpressionText()
