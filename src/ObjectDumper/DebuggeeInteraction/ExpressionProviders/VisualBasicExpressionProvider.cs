@@ -2,9 +2,9 @@
 {
     internal class VisualBasicExpressionProvider : IExpressionProvider
     {
-        public string GetStringTypeAssemblyLocationExpressionText()
+        public string GetTargetFrameworkExpressionText()
         {
-            return "GetType(System.String).Assembly.Location";
+            return "System.AppContext.TargetFrameworkName";
         }
 
         public string GetIsSerializerInjectedExpressionText()
