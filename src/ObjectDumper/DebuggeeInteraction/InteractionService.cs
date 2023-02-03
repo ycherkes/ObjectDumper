@@ -58,24 +58,12 @@ namespace ObjectDumper.DebuggeeInteraction
                 return (false, targetFrameworkName);
             }
 
-            var isNetStandardMustBeInjected = targetFrameworkName.IndexOf("NETStandard", StringComparison.OrdinalIgnoreCase) >= 0;
+            var (success, directoryName) = GetSerializerDirectoryName(targetFrameworkName);
 
-            var isNetCoreMustBeInjected = targetFrameworkName.IndexOf("NETCore", StringComparison.OrdinalIgnoreCase) >= 0;
+            if (!success)
+                return (false, directoryName);
 
-            var isNetCore6OrAbove = isNetCoreMustBeInjected && ExtractVersionNumber(targetFrameworkName).Major >= 6;
-
-            var directoryName = isNetStandardMustBeInjected
-                ? "netstandard2.0"
-                : isNetCore6OrAbove
-                    ? "net6.0"
-                    : isNetCoreMustBeInjected
-                        ? "netcoreapp3.1"
-                        : "net45";
-
-            var serializerFileName = Path.Combine(dllLocation,
-            "InjectableLibs",
-            directoryName,
-            "YellowFlavor.Serialization.dll");
+            var serializerFileName = Path.Combine(dllLocation, "InjectableLibs", directoryName, "YellowFlavor.Serialization.dll");
 
             var loadAssemblyExpressionText = expressionProvider.GetLoadAssemblyExpressionText(serializerFileName);
             var evaluationResult = _debugger.GetExpression(loadAssemblyExpressionText);
@@ -83,12 +71,49 @@ namespace ObjectDumper.DebuggeeInteraction
             return (evaluationResult.IsValidValue, evaluationResult.Value);
         }
 
-        private static Version ExtractVersionNumber(string input)
+        private static (bool success, string directoryName) GetSerializerDirectoryName(string targetFrameworkName)
         {
-            var regex = new Regex(@"\d+(\.\d+)+");
-            var match = regex.Match(input);
-            Version.TryParse(match.Value, out var version);
-            return version ?? new Version(0, 0, 0);
+            targetFrameworkName = targetFrameworkName?.Trim('"');
+
+            if (string.IsNullOrWhiteSpace(targetFrameworkName))
+            {
+                return (false, $"Wrong TargetFramework: {targetFrameworkName}");
+            }
+
+            var match = Regex.Match(targetFrameworkName, "(?<frameworkName>.+?),Version=v(?<frameworkVersion>\\d+(\\.\\d+)+?)", RegexOptions.Compiled);
+
+            if (!match.Success ||
+                !match.Groups["frameworkVersion"].Success ||
+                !match.Groups["frameworkName"].Success ||
+                !Version.TryParse(match.Groups["frameworkVersion"].Value, out var version))
+            {
+                return (false, $"Wrong TargetFramework: {targetFrameworkName}");
+            }
+
+            switch (match.Groups["frameworkName"].Value.ToLowerInvariant())
+            {
+                case ".netframework":
+                    return version < new Version(4, 5)
+                        ? (false, "The .NET Framework with a version lower than 4.5 is not supported.")
+                        : (true, "net45");
+
+                case ".netcoreapp":
+                    if (version < new Version(3, 1))
+                    {
+                        return (false, "The .NET Core with a version lower than 3.1 is not supported.");
+                    }
+                    return version >= new Version(6, 0)
+                        ? (true, "net6.0")
+                        : (true, "netcoreapp3.1");
+
+                case ".netstandard":
+                    return version < new Version(2, 0)
+                        ? (false, "The .NET Standard with a version lower than 2.0 is not supported.")
+                        : (true, "netstandard2.0");
+
+                default:
+                    return (false, $"Unsupported TargetFramework: {targetFrameworkName}");
+            }
         }
 
         public string GetSerializedValue(string expression, string format)
