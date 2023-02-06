@@ -4,7 +4,7 @@
     {
         public string GetTargetFrameworkExpressionText()
         {
-            return "System.AppContext.TargetFrameworkName";
+            return "System.AppContext.TargetFrameworkName?.StartsWith(\".NETFra\") != false ? System.AppContext.TargetFrameworkName : System.AppContext.TargetFrameworkName?.Split(\",\")[0] + \",Version=v\" + System.Environment.Version";
         }
 
         public string GetIsSerializerInjectedExpressionText()
