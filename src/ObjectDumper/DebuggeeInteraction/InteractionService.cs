@@ -98,10 +98,16 @@ namespace ObjectDumper.DebuggeeInteraction
                         : (true, "net45");
 
                 case ".netcoreapp":
+                    if (version < new Version(2, 0))
+                    {
+                        return (false, "The .NET Core with a version lower than 2.0 is not supported.");
+                    }
+
                     if (version < new Version(3, 1))
                     {
-                        return (false, "The .NET Core with a version lower than 3.1 is not supported.");
+                        return (true, "netstandard2.0");
                     }
+
                     return version >= new Version(6, 0)
                         ? (true, "net6.0")
                         : (true, "netcoreapp3.1");
