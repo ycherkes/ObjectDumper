@@ -45,12 +45,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Commands\DumpAsCommand.cs" />
     <Compile Include="DebuggeeInteraction\ExpressionProviders\VisualBasicExpressionProvider.cs" />
     <Compile Include="DebuggeeInteraction\ExpressionProviders\CSharpFSharpExpressionProvider.cs" />
     <Compile Include="DebuggeeInteraction\ExpressionProviders\IExpressionProvider.cs" />
     <Compile Include="Extensions\Base64Extensions.cs" />
-    <Compile Include="Commands\DumpAsYamlCommand.cs" />
-    <Compile Include="Commands\DumpAsVbCommand.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="DebuggeeInteraction\InteractionService.cs" />
     <Compile Include="Options\DateTimeOptions.cs" />
@@ -63,9 +62,6 @@
     <Compile Include="ObjectDumperPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\DumpAsCommandHelper.cs" />
-    <Compile Include="Commands\DumpAsCSharpCommand.cs" />
-    <Compile Include="Commands\DumpAsJsonCommand.cs" />
-    <Compile Include="Commands\DumpAsXmlCommand.cs" />
     <Compile Include="Utils\TextViewUtils.cs" />
   </ItemGroup>
   <ItemGroup>

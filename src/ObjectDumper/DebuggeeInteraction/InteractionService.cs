@@ -1,6 +1,4 @@
 ﻿using EnvDTE;
-using EnvDTE80;
-using Microsoft.VisualStudio.Shell;
 using ObjectDumper.DebuggeeInteraction.ExpressionProviders;
 using ObjectDumper.Extensions;
 using ObjectDumper.Options;
@@ -17,10 +15,10 @@ namespace ObjectDumper.DebuggeeInteraction
         private readonly Dictionary<string, IExpressionProvider> _expressionProvidersByLanguage;
         private readonly Debugger _debugger;
 
-        public InteractionService(DTE2 dte, Package package)
+        public InteractionService(Debugger debugger, ObjectDumperOptionPage optionPage)
         {
-            _debugger = dte.Debugger;
-            _optionsPage = (ObjectDumperOptionPage)package.GetDialogPage(typeof(ObjectDumperOptionPage));
+            _debugger = debugger ?? throw new ArgumentNullException(nameof(debugger));
+            _optionsPage = optionPage ?? throw new ArgumentNullException(nameof(optionPage));
 
             var cSharpFSharpProvider = new CSharpFSharpExpressionProvider();
             _expressionProvidersByLanguage = new Dictionary<string, IExpressionProvider>(StringComparer.OrdinalIgnoreCase)
