@@ -2,11 +2,11 @@
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using ObjectDumper.DebuggeeInteraction;
+using ObjectDumper.Options;
 using ObjectDumper.Utils;
 using System;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Constants = EnvDTE.Constants;
 
 namespace ObjectDumper.Commands
@@ -16,18 +16,18 @@ namespace ObjectDumper.Commands
         private const string ImmediateWindowObjectKind = "{ECB7191A-597B-41F5-9843-03A4CF275DDE}";
         private readonly DTE2 _dte;
         private readonly InteractionService _interactionService;
-        private readonly AsyncPackage _package;
+        private readonly IServiceProvider _serviceProvider;
 
-        public DumpAsCommandHelper(DTE2 dte, AsyncPackage package)
+        public DumpAsCommandHelper(DTE2 dte, IServiceProvider serviceProvider, ObjectDumperOptionPage optionPage)
         {
             _dte = dte ?? throw new ArgumentNullException(nameof(dte));
-            _package = package ?? throw new ArgumentNullException(nameof(package));
-            _interactionService = new InteractionService(dte, package);
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _interactionService = new InteractionService(dte.Debugger, optionPage);
         }
 
-        public async Task<bool> IsCommandAvailableAsync()
+        public bool IsCommandAvailable()
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             return _dte.Debugger != null
                 && _dte.Debugger.CurrentMode == dbgDebugMode.dbgBreakMode
@@ -41,7 +41,7 @@ namespace ObjectDumper.Commands
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var (success, selectionText) = TextViewUtils.GetSelectedText(_package);
+            var (success, selectionText) = TextViewUtils.GetSelectedText(_serviceProvider);
 
             if (!success)
             {

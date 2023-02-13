@@ -1,10 +1,14 @@
 ﻿using EnvDTE;
 using EnvDTE80;
+using Microsoft;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using ObjectDumper.Commands;
 using ObjectDumper.Options;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Task = System.Threading.Tasks.Task;
@@ -29,19 +33,18 @@ namespace ObjectDumper
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     [Guid(PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideOptionPage(typeof(ObjectDumperOptionPage), "Object Dumper", "General", 0, 0, true)]
     public sealed class ObjectDumperPackage : AsyncPackage
     {
+        private List<IDisposable> _menuItems;
+
         /// <summary>
         /// ObjectDumperPackage GUID string.
         /// </summary>
         private const string PackageGuidString = "75562b3a-ff38-4ad7-94f8-dc7f08140914";
-
-        public DTE2 Dte { get; private set; }
 
         #region Package Members
 
@@ -58,13 +61,65 @@ namespace ObjectDumper
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            Dte = (DTE2)GetGlobalService(typeof(DTE));
+            var dte = (DTE2)GetGlobalService(typeof(DTE));
+            var menuCommandService = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
+            Assumes.Present(menuCommandService);
+            var optionsPage = (ObjectDumperOptionPage)GetDialogPage(typeof(ObjectDumperOptionPage));
+            var commandHelper = new DumpAsCommandHelper(dte, this, optionsPage);
 
-            await Task.WhenAll(DumpAsCSharpCommand.InitializeAsync(this),
-                DumpAsJsonCommand.InitializeAsync(this),
-                DumpAsXmlCommand.InitializeAsync(this),
-                DumpAsVbCommand.InitializeAsync(this),
-                DumpAsYamlCommand.InitializeAsync(this));
+            _menuItems = new[]
+            {
+                new DumpAsCommand
+                (
+                    commandId: 0x0100,
+                    commandHelper,
+                    commandFormat: "cs",
+                    commandConfigEnabledFunc: () => optionsPage.CSharpEnabled
+                ),
+                new DumpAsCommand
+                (
+                    commandId: 0x0200,
+                    commandHelper,
+                    commandFormat: "json",
+                    commandConfigEnabledFunc: () => optionsPage.JsonEnabled
+                ),
+                new DumpAsCommand
+                (
+                    commandId: 0x0300,
+                    commandHelper,
+                    commandFormat: "xml",
+                    commandConfigEnabledFunc: () => optionsPage.XmlEnabled
+                ),
+                new DumpAsCommand
+                (
+                    commandId: 0x0400,
+                    commandHelper,
+                    commandFormat: "vb",
+                    commandConfigEnabledFunc: () => optionsPage.VisualBasicEnabled
+                ),
+                new DumpAsCommand
+                (
+                    commandId: 0x0500,
+                    commandHelper,
+                    commandFormat: "yaml",
+                    commandConfigEnabledFunc: () => optionsPage.YamlEnabled
+                )
+            }
+            .Select(x => x.AddMenuCommand(menuCommandService))
+            .ToList();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var menuItem in _menuItems)
+                {
+                    menuItem.Dispose();
+                }
+                _menuItems.Clear();
+            }
+            base.Dispose(disposing);
         }
 
         #endregion
