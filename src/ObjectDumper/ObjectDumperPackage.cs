@@ -39,14 +39,14 @@ namespace ObjectDumper
     [ProvideOptionPage(typeof(ObjectDumperOptionPage), "Object Dumper", "General", 0, 0, true)]
     public sealed class ObjectDumperPackage : AsyncPackage
     {
-        private List<IDisposable> _menuItems;
-
         /// <summary>
         /// ObjectDumperPackage GUID string.
         /// </summary>
         private const string PackageGuidString = "75562b3a-ff38-4ad7-94f8-dc7f08140914";
 
-        #region Package Members
+        private List<IDisposable> _menuItems;
+        private OleMenuCommandService _menuCommandService;
+        private ObjectDumperOptionPage _optionsPage;
 
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
@@ -62,10 +62,10 @@ namespace ObjectDumper
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             var dte = (DTE2)GetGlobalService(typeof(DTE));
-            var menuCommandService = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
-            Assumes.Present(menuCommandService);
-            var optionsPage = (ObjectDumperOptionPage)GetDialogPage(typeof(ObjectDumperOptionPage));
-            var commandHelper = new DumpAsCommandHelper(dte, this, optionsPage);
+            _menuCommandService = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
+            Assumes.Present(_menuCommandService);
+            _optionsPage = (ObjectDumperOptionPage)GetDialogPage(typeof(ObjectDumperOptionPage));
+            var commandHelper = new DumpAsCommandHelper(dte, this, _optionsPage);
 
             _menuItems = new[]
             {
@@ -74,38 +74,38 @@ namespace ObjectDumper
                     commandId: 0x0100,
                     commandHelper,
                     commandFormat: "cs",
-                    commandConfigEnabledFunc: () => optionsPage.CSharpEnabled
+                    commandConfigEnabledFunc: () => _optionsPage.CSharpEnabled
                 ),
                 new DumpAsCommand
                 (
                     commandId: 0x0200,
                     commandHelper,
                     commandFormat: "json",
-                    commandConfigEnabledFunc: () => optionsPage.JsonEnabled
+                    commandConfigEnabledFunc: () => _optionsPage.JsonEnabled
                 ),
                 new DumpAsCommand
                 (
                     commandId: 0x0300,
                     commandHelper,
                     commandFormat: "xml",
-                    commandConfigEnabledFunc: () => optionsPage.XmlEnabled
+                    commandConfigEnabledFunc: () => _optionsPage.XmlEnabled
                 ),
                 new DumpAsCommand
                 (
                     commandId: 0x0400,
                     commandHelper,
                     commandFormat: "vb",
-                    commandConfigEnabledFunc: () => optionsPage.VisualBasicEnabled
+                    commandConfigEnabledFunc: () => _optionsPage.VisualBasicEnabled
                 ),
                 new DumpAsCommand
                 (
                     commandId: 0x0500,
                     commandHelper,
                     commandFormat: "yaml",
-                    commandConfigEnabledFunc: () => optionsPage.YamlEnabled
+                    commandConfigEnabledFunc: () => _optionsPage.YamlEnabled
                 )
             }
-            .Select(x => x.AddMenuCommand(menuCommandService))
+            .Select(x => x.AddMenuCommand(_menuCommandService))
             .ToList();
         }
 
@@ -113,6 +113,9 @@ namespace ObjectDumper
         {
             if (disposing)
             {
+                _menuCommandService.Dispose();
+                _optionsPage.Dispose();
+
                 foreach (var menuItem in _menuItems)
                 {
                     menuItem.Dispose();
@@ -121,7 +124,5 @@ namespace ObjectDumper
             }
             base.Dispose(disposing);
         }
-
-        #endregion
     }
 }
