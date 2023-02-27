@@ -1,9 +1,4 @@
 ﻿export class CSharpExpressionProvider{
-    public getStringTypeAssemblyLocationExpressionText(): string
-    {
-        return "typeof(System.String).Assembly.Location";
-    }
-
     public getIsSerializerInjectedExpressionText(): string
     {
         return "nameof(YellowFlavor.Serialization.ObjectSerializer.Serialize)";

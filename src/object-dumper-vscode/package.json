@@ -3,7 +3,7 @@
   "displayName": "Object Dumper",
   "description": "Object Dumper is an open source Visual Studio Code and Visual Studio extension for exporting in-memory objects during debugging to C#, JSON, VB, XML, and YAML string.",
   "publisher": "YevhenCherkes",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "repository": {
     "url": "https://github.com/ycherkes/ObjectDumper"
   },
@@ -292,6 +292,17 @@
           "default": "none",
           "description": "Type Name Handling."
         },
+        "objectDumper.json.dateTimeZoneHandling": {
+          "type": "string",
+          "enum": [
+            "local",
+            "utc",
+            "unspecified",
+            "roundtripKind"
+          ],
+          "default": "roundtripKind",
+          "description": "DateTime Zone Handling."
+        },
         "objectDumper.vb.enabled": {
           "type": "boolean",
           "default": true,
@@ -426,6 +437,17 @@
           "type": "boolean",
           "default": false,
           "description": "Use Full Type Name."
+        },
+        "objectDumper.xml.dateTimeZoneHandling": {
+          "type": "string",
+          "enum": [
+            "local",
+            "utc",
+            "unspecified",
+            "roundtripKind"
+          ],
+          "default": "roundtripKind",
+          "description": "DateTime Zone Handling."
         },
         "objectDumper.yaml.enabled": {
           "type": "boolean",

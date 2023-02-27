@@ -16,4 +16,6 @@ internal class JsonSettings
 
     public bool SerializeEnumAsString { get; set; } = true;
 
+    public DateTimeZoneHandling DateTimeZoneHandling { get; set; } = DateTimeZoneHandling.RoundtripKind;
+
 }

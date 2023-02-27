@@ -33,3 +33,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.10]
 - Update DotNetYaml to v 13.0.0.
 - Rename internalized classes to avoid conflicts with user's code.
+
+## [0.0.11]
+- Update DotNetYaml to v 13.0.1.
+- Add JsonDateTimeZoneHandling & XmlDateTimeZoneHandling options.
