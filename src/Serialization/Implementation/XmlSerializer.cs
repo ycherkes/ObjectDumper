@@ -46,10 +46,11 @@ namespace YellowFlavor.Serialization.Implementation
             newSettings.DefaultValueHandling = xmlSettings.IgnoreDefaultValues ? DefaultValueHandling.Ignore : DefaultValueHandling.Include;
             newSettings.MaxDepth = xmlSettings.MaxDepth;
             newSettings.TypeNameHandling = xmlSettings.UseFullTypeName ? TypeNameHandling.All : TypeNameHandling.None;
+            newSettings.DateTimeZoneHandling = xmlSettings.DateTimeZoneHandling;
 
             if (!xmlSettings.SerializeEnumAsString)
             {
-                newSettings.Converters = null;
+                newSettings.Converters.Clear();
             }
 
             var namingStrategy = xmlSettings.NamingStrategy.ToPascalCase();

@@ -45,7 +45,8 @@ export class OptionsProvider{
 					maxDepth: extensionConfiguration.common.maxDepth,
 					typeNameHandling: extensionConfiguration.json.typeNameHandling,
 					namingStrategy: extensionConfiguration.json.namingStrategy,
-					serializeEnumAsString: extensionConfiguration.json.serializeEnumAsString
+					serializeEnumAsString: extensionConfiguration.json.serializeEnumAsString,
+					dateTimeZoneHandling: extensionConfiguration.json.dateTimeZoneHandling
 				};
 			}
 			case "xml":{
@@ -54,7 +55,8 @@ export class OptionsProvider{
 					ignoreNullValues: extensionConfiguration.xml.ignoreNullValues,
 					maxDepth: extensionConfiguration.common.maxDepth,
 					namingStrategy: extensionConfiguration.xml.namingStrategy,
-					serializeEnumAsString: extensionConfiguration.xml.serializeEnumAsString
+					serializeEnumAsString: extensionConfiguration.xml.serializeEnumAsString,
+					dateTimeZoneHandling: extensionConfiguration.xml.dateTimeZoneHandling
 				};
 			}
 			case "yaml":{

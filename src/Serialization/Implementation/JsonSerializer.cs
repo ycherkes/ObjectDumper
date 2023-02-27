@@ -22,6 +22,7 @@ namespace YellowFlavor.Serialization.Implementation
             Formatting = Formatting.Indented,
             Converters = { new StringEnumConverter() },
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
             MaxDepth = 25
         };
 
@@ -35,10 +36,11 @@ namespace YellowFlavor.Serialization.Implementation
             newSettings.DefaultValueHandling = jsonSettings.IgnoreDefaultValues ? DefaultValueHandling.Ignore : DefaultValueHandling.Include;
             newSettings.MaxDepth = jsonSettings.MaxDepth;
             newSettings.TypeNameHandling = jsonSettings.TypeNameHandling;
+            newSettings.DateTimeZoneHandling = jsonSettings.DateTimeZoneHandling;
 
             if (!jsonSettings.SerializeEnumAsString)
             {
-                newSettings.Converters = null;
+                newSettings.Converters.Clear();
             }
 
             var namingStrategy = jsonSettings.NamingStrategy.ToPascalCase();

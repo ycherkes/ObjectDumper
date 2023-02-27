@@ -123,6 +123,12 @@ namespace ObjectDumper.Options
         [DefaultValue(TypeNameHandling.None)]
         public TypeNameHandling JsonTypeNameHandling { get; set; } = TypeNameHandling.None;
 
+        [Category("Json")]
+        [DisplayName("DateTime Zone Handling")]
+        [Description("DateTime Zone Handling")]
+        [DefaultValue(DateTimeZoneHandling.RoundtripKind)]
+        public DateTimeZoneHandling JsonDateTimeZoneHandling { get; set; } = DateTimeZoneHandling.RoundtripKind;
+
         [Category("Visual Basic")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -225,6 +231,12 @@ namespace ObjectDumper.Options
         [DefaultValue(false)]
         public bool XmlUseFullTypeName { get; set; }
 
+        [Category("Xml")]
+        [DisplayName("DateTime Zone Handling")]
+        [Description("DateTime Zone Handling")]
+        [DefaultValue(DateTimeZoneHandling.RoundtripKind)]
+        public DateTimeZoneHandling XmlDateTimeZoneHandling { get; set; } = DateTimeZoneHandling.RoundtripKind;
+
         [Category("Yaml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -279,7 +291,8 @@ namespace ObjectDumper.Options
                         MaxDepth = CommonMaxDepth,
                         TypeNameHandling = JsonTypeNameHandling,
                         NamingStrategy = JsonNamingStrategy,
-                        SerializeEnumAsString = JsonSerializeEnumAsString
+                        SerializeEnumAsString = JsonSerializeEnumAsString,
+                        DateTimeZoneHandling = JsonDateTimeZoneHandling
                     }.ToJson();
                 case "xml":
                     return new
@@ -289,7 +302,8 @@ namespace ObjectDumper.Options
                         MaxDepth = CommonMaxDepth,
                         UseFullTypeName = XmlUseFullTypeName,
                         NamingStrategy = XmlNamingStrategy,
-                        SerializeEnumAsString = XmlSerializeEnumAsString
+                        SerializeEnumAsString = XmlSerializeEnumAsString,
+                        DateTimeZoneHandling = XmlDateTimeZoneHandling
                     }.ToJson();
                 case "yaml":
                     return new

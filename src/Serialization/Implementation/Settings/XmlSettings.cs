@@ -1,4 +1,6 @@
-﻿namespace YellowFlavor.Serialization.Implementation.Settings;
+﻿using Newtonsoft.Json;
+
+namespace YellowFlavor.Serialization.Implementation.Settings;
 
 internal class XmlSettings
 {
@@ -13,4 +15,6 @@ internal class XmlSettings
     public string NamingStrategy { get; set; } = "Default";
 
     public bool SerializeEnumAsString { get; set; } = true;
+
+    public DateTimeZoneHandling DateTimeZoneHandling { get; set; } = DateTimeZoneHandling.RoundtripKind;
 }
