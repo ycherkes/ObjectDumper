@@ -37,3 +37,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.11]
 - Update DotNetYaml to v 13.0.1.
 - Add JsonDateTimeZoneHandling & XmlDateTimeZoneHandling options.
+
+## [0.0.12]
+- Fix the Grouping collection serialization to C# & VB (Update VarDump NuGet).
