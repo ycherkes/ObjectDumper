@@ -1,4 +1,5 @@
 ﻿using EnvDTE;
+using EnvDTE80;
 using ObjectDumper.DebuggeeInteraction.ExpressionProviders;
 using ObjectDumper.Extensions;
 using ObjectDumper.Options;
@@ -14,11 +15,17 @@ namespace ObjectDumper.DebuggeeInteraction
         private readonly ObjectDumperOptionPage _optionsPage;
         private readonly Dictionary<string, IExpressionProvider> _expressionProvidersByLanguage;
         private readonly Debugger _debugger;
+        private readonly OutputWindowPane _owp;
 
-        public InteractionService(Debugger debugger, ObjectDumperOptionPage optionPage)
+        public InteractionService(DTE2 dte, Debugger debugger, ObjectDumperOptionPage optionPage)
         {
             _debugger = debugger ?? throw new ArgumentNullException(nameof(debugger));
             _optionsPage = optionPage ?? throw new ArgumentNullException(nameof(optionPage));
+            _ = dte ?? throw new ArgumentNullException(nameof(dte));
+
+            var win = dte.Windows.Item(Constants.vsWindowKindOutput);
+            var ow = (OutputWindow)win.Object;
+            _owp = ow.OutputWindowPanes.Add("ObjectDumper");
 
             var cSharpFSharpProvider = new CSharpFSharpExpressionProvider();
             _expressionProvidersByLanguage = new Dictionary<string, IExpressionProvider>(StringComparer.OrdinalIgnoreCase)
@@ -33,6 +40,8 @@ namespace ObjectDumper.DebuggeeInteraction
 
         public (bool success, string evaluationResult) InjectSerializer()
         {
+            _owp.OutputString($"Get expression provider by language: {Language}\r\n");
+
             var isProviderFound = _expressionProvidersByLanguage.TryGetValue(Language, out var expressionProvider);
 
             if (!isProviderFound)
@@ -40,19 +49,27 @@ namespace ObjectDumper.DebuggeeInteraction
                 return (false, $"Unsupported language: {Language}");
             }
 
+            _owp.OutputString("Expression provider successfully found.\r\n");
+
             var isSerializerInjected = IsSerializerInjected(expressionProvider);
 
             if (isSerializerInjected)
             {
+                _owp.OutputString("Serializer already injected.\r\n");
                 return (true, null);
             }
 
+            _owp.OutputString("Serializer hasn't been injected yet. Trying inject it.\r\n");
+
             var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
+
+            _owp.OutputString($"ObjectDumper package location: {dllLocation}\r\n");
 
             var (isValid, targetFrameworkName) = GetTargetFrameworkName(expressionProvider);
 
             if (!isValid)
             {
+                _owp.OutputString($"Target framework is not valid: {targetFrameworkName}\r\n");
                 return (false, targetFrameworkName);
             }
 
@@ -60,6 +77,8 @@ namespace ObjectDumper.DebuggeeInteraction
 
             if (!success)
                 return (false, directoryName);
+
+            _owp.OutputString($"Serializer directoryName: {directoryName} \r\n");
 
             var serializerFileName = Path.Combine(dllLocation, "InjectableLibs", directoryName, "YellowFlavor.Serialization.dll");
 
@@ -69,24 +88,35 @@ namespace ObjectDumper.DebuggeeInteraction
             return (evaluationResult.IsValidValue, evaluationResult.Value);
         }
 
-        private static (bool success, string directoryName) GetSerializerDirectoryName(string targetFrameworkName)
+        private (bool success, string directoryName) GetSerializerDirectoryName(string targetFrameworkName)
         {
+            _owp.OutputString($"Get serializer directory name by targetFrameworkName: {targetFrameworkName} \r\n");
+
             targetFrameworkName = targetFrameworkName?.Trim('"');
 
             if (string.IsNullOrWhiteSpace(targetFrameworkName))
             {
+                _owp.OutputString($"TargetFrameworkName is null or whitespace: {targetFrameworkName} \r\n");
                 return (false, $"Wrong TargetFramework: {targetFrameworkName}");
             }
 
-            var match = Regex.Match(targetFrameworkName, "(?<frameworkName>.+?),Version=v(?<frameworkVersion>\\d+(\\.\\d+)+?)", RegexOptions.Compiled);
+            var match = Regex.Match(targetFrameworkName, "(?<frameworkName>.+?),Version=v(?<frameworkVersion>\\d+((\\.\\d+)*)?)", RegexOptions.Compiled);
 
             if (!match.Success ||
                 !match.Groups["frameworkVersion"].Success ||
                 !match.Groups["frameworkName"].Success ||
                 !Version.TryParse(match.Groups["frameworkVersion"].Value, out var version))
             {
+                _owp.OutputString($"Regex match.Success: {match.Success}\r\n");
+                _owp.OutputString($"Regex match.Groups[\"frameworkVersion\"]: {match.Groups["frameworkVersion"].Success}\r\n");
+                _owp.OutputString($"Regex match.Groups[\"frameworkName\"]: {match.Groups["frameworkName"].Success}\r\n");
+                _owp.OutputString($"Version.TryParse: {Version.TryParse(match.Groups["frameworkVersion"].Value, out _)}\r\n");
                 return (false, $"Wrong TargetFramework: {targetFrameworkName}");
             }
+
+            _owp.OutputString($"Regex match.Groups[\"frameworkVersion\"].Value: {match.Groups["frameworkVersion"].Value}\r\n");
+            _owp.OutputString($"Regex match.Groups[\"frameworkName\"].Value: {match.Groups["frameworkName"].Value}\r\n");
+            _owp.OutputString($"Version: {version}\r\n");
 
             switch (match.Groups["frameworkName"].Value.ToLowerInvariant())
             {

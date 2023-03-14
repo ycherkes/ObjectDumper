@@ -22,7 +22,7 @@ namespace ObjectDumper.Commands
         {
             _dte = dte ?? throw new ArgumentNullException(nameof(dte));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _interactionService = new InteractionService(dte.Debugger, optionPage);
+            _interactionService = new InteractionService(dte, dte.Debugger, optionPage);
         }
 
         public bool IsCommandAvailable()
