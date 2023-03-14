@@ -59,7 +59,7 @@ namespace ObjectDumper.DebuggeeInteraction
                 return (true, null);
             }
 
-            _owp.OutputString("Serializer hasn't been injected yet. Trying inject it.\r\n");
+            _owp.OutputString("Serializer hasn't been injected yet. Trying to inject it.\r\n");
 
             var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
 
