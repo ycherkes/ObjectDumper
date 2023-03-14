@@ -108,8 +108,8 @@ namespace ObjectDumper.DebuggeeInteraction
                 !Version.TryParse(match.Groups["frameworkVersion"].Value, out var version))
             {
                 _owp.OutputString($"Regex match.Success: {match.Success}\r\n");
-                _owp.OutputString($"Regex match.Groups[\"frameworkVersion\"]: {match.Groups["frameworkVersion"].Success}\r\n");
-                _owp.OutputString($"Regex match.Groups[\"frameworkName\"]: {match.Groups["frameworkName"].Success}\r\n");
+                _owp.OutputString($"Regex match.Groups[\"frameworkVersion\"].Success: {match.Groups["frameworkVersion"].Success}\r\n");
+                _owp.OutputString($"Regex match.Groups[\"frameworkName\"].Success: {match.Groups["frameworkName"].Success}\r\n");
                 _owp.OutputString($"Version.TryParse: {Version.TryParse(match.Groups["frameworkVersion"].Value, out _)}\r\n");
                 return (false, $"Wrong TargetFramework: {targetFrameworkName}");
             }
