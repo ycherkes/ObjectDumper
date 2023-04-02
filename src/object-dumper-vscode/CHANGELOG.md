@@ -40,3 +40,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.12]
 - Fix the Grouping collection serialization to C# & VB (Update VarDump NuGet).
+
+## [0.0.13]
+- Update DotNetYaml to v 13.0.2.
+- Update Newtonsoft.Json to v 13.0.3.
