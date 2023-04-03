@@ -103,7 +103,7 @@ namespace ObjectDumper.DebuggeeInteraction
 
                     if (version < new Version(3, 1))
                     {
-                        return (true, "netstandard2.0");
+                        return (true, "netcoreapp2.0");
                     }
 
                     return version >= new Version(6, 0)
