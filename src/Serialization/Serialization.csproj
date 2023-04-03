@@ -4,7 +4,7 @@
   </PropertyGroup>
   <Import Project="$(NuGetPackageRoot)ILRepack\2.0.18\build\ILRepack.props" Condition="Exists('$(NuGetPackageRoot)ILRepack\2.0.18\build\ILRepack.props') And '$(IlRepackImported)' == ''" />
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0;netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard2.0;netcoreapp2.0;netcoreapp3.1;net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <AssemblyName>YellowFlavor.Serialization</AssemblyName>
     <AssemblyVersion>0.0.0.79</AssemblyVersion>
