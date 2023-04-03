@@ -36,7 +36,7 @@ The result is shown in a separate document window.
 
 ### Known restrictions:
 - [C#, F# and VisualBasic](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper/DebuggeeInteraction/InteractionService.cs#L25-L30) project languages are currently supported only.
-- netstandard 2.0+, netcore3.1+, netframework 4.5+
+- netstandard 2.0+, netcore2.0+, netframework 4.5+
 - if you are debugging the solution in **Release mode** or debuging DLLs from another source, such as a nuget package, you'll get an error message: "Cannot evaluate expression because the code of the current method is optimized" or "error CS0103: The name 'YellowFlavor' does not exist in the current context". Solution: switch to **Debug mode** or turn the [Tools > Options > Debugging > General > Suppress JIT optimization on module load](https://learn.microsoft.com/en-us/visualstudio/debugger/jit-optimization-and-debugging?view=vs-2022#the-suppress-jit-optimization-on-module-load-managed-only-option) option on.
 - local debugging only.
 - if you see any encoding-related issues, please select the option: **Tools > Options > Environment > Documents > Save documents as Unicode when data cannot be saved in codepage**.
