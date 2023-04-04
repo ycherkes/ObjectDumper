@@ -34,16 +34,12 @@ namespace ObjectDumper
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
-    [Guid(PackageGuidString)]
+    [InstalledProductRegistration("#110", "#112", PackageConstants.Version, IconResourceID = 400)] // Info on this package for Help/About
+    [Guid(PackageConstants.Id)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideOptionPage(typeof(ObjectDumperOptionPage), "Object Dumper", "General", 0, 0, true)]
     public sealed class ObjectDumperPackage : AsyncPackage
     {
-        /// <summary>
-        /// ObjectDumperPackage GUID string.
-        /// </summary>
-        private const string PackageGuidString = "75562b3a-ff38-4ad7-94f8-dc7f08140914";
-
         private List<IDisposable> _menuItems;
         private OleMenuCommandService _menuCommandService;
         private ObjectDumperOptionPage _optionsPage;
