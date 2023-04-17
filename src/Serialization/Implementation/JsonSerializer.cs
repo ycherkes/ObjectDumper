@@ -10,6 +10,7 @@ namespace YellowFlavor.Serialization.Implementation
 {
     internal class JsonSerializer : ISerializer
     {
+        private static readonly JsonConverter StringEnumConverter = new StringEnumConverter();
         private static JsonSerializerSettings JsonSettings => new()
         {
             NullValueHandling = NullValueHandling.Ignore,
@@ -20,7 +21,7 @@ namespace YellowFlavor.Serialization.Implementation
                 ExcludeTypes = new[] { "Avro.Schema" }
             },
             Formatting = Formatting.Indented,
-            Converters = { new StringEnumConverter() },
+            Converters = { StringEnumConverter, new IpAddressConverter() },
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
             MaxDepth = 25
@@ -40,7 +41,7 @@ namespace YellowFlavor.Serialization.Implementation
 
             if (!jsonSettings.SerializeEnumAsString)
             {
-                newSettings.Converters.Clear();
+                newSettings.Converters.Remove(StringEnumConverter);
             }
 
             var namingStrategy = jsonSettings.NamingStrategy.ToPascalCase();

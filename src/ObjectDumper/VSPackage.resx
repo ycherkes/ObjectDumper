@@ -121,7 +121,7 @@
     <value>Object Dumper</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>Object Dumper is an open source Visual Studio and Visual Studio Code extension for exporting in-memory objects during debugging to C#, JSON, VB, XML, and YAML string. For more information, visit https://github.com/ycherkes/ObjectDumper</value>
+    <value>Extension for exporting in-memory objects during debugging to C#, JSON, VB, XML, and YAML string. For more information, visit https://github.com/ycherkes/ObjectDumper</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">

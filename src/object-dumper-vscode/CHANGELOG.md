@@ -19,7 +19,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Excludes indexers from being exported.
 
 ## [0.0.7]
-- Removed all Json.Net and DotNetYaml embedded code. Replaced with ILRepack msbuild task.
+- Removed all Json.Net and YamlDotNet embedded code. Replaced with ILRepack msbuild task.
 - Fix Xml System.Type serialization. 
 - Fix Xml naming issues.
 - .Net6+ assemblies use .Net6 version of serialization library. It adds for example DateOnly & TimeOnly structs support.
@@ -31,17 +31,21 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Extract CSharpDumper and VisualBasicDumper to the external package https://www.nuget.org/packages/VarDump.
 
 ## [0.0.10]
-- Update DotNetYaml to v 13.0.0.
+- Update YamlDotNet to v 13.0.0.
 - Rename internalized classes to avoid conflicts with user's code.
 
 ## [0.0.11]
-- Update DotNetYaml to v 13.0.1.
+- Update YamlDotNet to v 13.0.1.
 - Add JsonDateTimeZoneHandling & XmlDateTimeZoneHandling options.
 
 ## [0.0.12]
 - Fix the Grouping collection serialization to C# & VB (Update VarDump NuGet).
 
 ## [0.0.13]
-- Update DotNetYaml to v 13.0.2.
+- Update YamlDotNet to v 13.0.2.
 - Update Newtonsoft.Json to v 13.0.3.
 - Fix F# anonymous type detection (update VarDump NuGet to v 0.0.8)
+
+## [0.0.14]
+- Update YamlDotNet to v 13.1.0.
+- Support for dumping NATS objects (IPAddress serializers, ignore delegates serialization) - read more about NATS: http://thinkmicroservices.com/blog/2021/jetstream/nats-jetstream.html

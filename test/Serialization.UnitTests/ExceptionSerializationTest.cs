@@ -15,7 +15,7 @@ namespace Serialization.UnitTests
             {
                 var serializer = new VisualBasicSerializer();
 
-                var result = serializer.Serialize(e, null);
+                var result = serializer.Serialize(e, "{ WritablePropertiesOnly: false }");
 
                 Assert.Contains(".Message = \"Index was outside the bounds of the array.\"", result);
             }

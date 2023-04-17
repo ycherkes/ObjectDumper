@@ -2,6 +2,7 @@
 using System.Reflection;
 using VarDump;
 using VarDump.Visitor;
+using YellowFlavor.Serialization.Implementation.Dotnet;
 using YellowFlavor.Serialization.Implementation.Settings;
 
 namespace YellowFlavor.Serialization.Implementation
@@ -14,6 +15,12 @@ namespace YellowFlavor.Serialization.Implementation
             IgnoreNullValues = true,
             MaxDepth = 25,
             ExcludeTypes = new[] { "Avro.Schema" },
+            Descriptors =
+            {
+                new DelegateMiddleware(),
+                new MemberInfoMiddleware(),
+                new FileSystemInfoMiddleware()
+            },
             UseTypeFullName = false,
             DateTimeInstantiation = DateTimeInstantiation.New,
             DateKind = DateKind.ConvertToUtc,
