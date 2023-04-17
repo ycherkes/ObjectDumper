@@ -8,6 +8,7 @@ using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using YellowFlavor.Serialization.Extensions;
 using YellowFlavor.Serialization.Implementation.Settings;
+using YellowFlavor.Serialization.Implementation.Yaml;
 
 namespace YellowFlavor.Serialization.Implementation
 {
@@ -38,6 +39,8 @@ namespace YellowFlavor.Serialization.Implementation
             var valueSerializer = new SerializerBuilder()
                 .WithNamingConvention((INamingConvention)Activator.CreateInstance(namingConventionType))
                 .WithMaximumRecursion(yamlSettings.MaxDepth)
+                .WithTypeConverter(new IpAddressConverter())
+                .WithTypeInspector(ti => new IgnoreDelegatesTypeInspector(ti))
                 .BuildValueSerializer();
 
             return Serializer.FromValueSerializer(valueSerializer, EmitterSettings.Default);

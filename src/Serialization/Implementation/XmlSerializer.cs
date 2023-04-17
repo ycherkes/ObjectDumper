@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Xml;
 using YellowFlavor.Serialization.Extensions;
@@ -15,6 +16,7 @@ namespace YellowFlavor.Serialization.Implementation
 {
     internal class XmlSerializer : ISerializer
     {
+        private static readonly JsonConverter StringEnumConverter = new StringEnumConverter();
         private static JsonSerializerSettings XmlSettings => new()
         {
             NullValueHandling = NullValueHandling.Ignore,
@@ -23,7 +25,7 @@ namespace YellowFlavor.Serialization.Implementation
             {
                 ExcludeTypes = new[] { "Avro.Schema" }
             },
-            Converters = { new StringEnumConverter() },
+            Converters = { StringEnumConverter, new IpAddressConverter() },
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             MaxDepth = 25
         };
@@ -50,7 +52,7 @@ namespace YellowFlavor.Serialization.Implementation
 
             if (!xmlSettings.SerializeEnumAsString)
             {
-                newSettings.Converters.Clear();
+                newSettings.Converters.Remove(StringEnumConverter);
             }
 
             var namingStrategy = xmlSettings.NamingStrategy.ToPascalCase();
@@ -130,6 +132,7 @@ namespace YellowFlavor.Serialization.Implementation
                 || type.IsValueType
                 || type == typeof(string)
                 || type == typeof(Type)
+                || type == typeof(IPAddress)
                 || typeof(TypeInfo).IsAssignableFrom(type);
         }
 
