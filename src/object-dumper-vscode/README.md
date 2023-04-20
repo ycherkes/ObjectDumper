@@ -12,6 +12,8 @@ A Visual Studio Code and [Visual Studio](https://marketplace.visualstudio.com/it
 
 Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
+The closest alternative is proprietary [OzCode export](https://github.com/oz-code/OzCodeDemo/tree/master/OzCodeDemo/12.Export) functionality.
+
 "**Dump as**" commands are available via context menu in the **Code** window only.
 
 The result is shown in a separate document window.
