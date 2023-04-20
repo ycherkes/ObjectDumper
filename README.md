@@ -15,6 +15,8 @@ A Visual Studio and [Visual Studio Code](https://github.com/ycherkes/ObjectDumpe
 
 Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
+Another alternative is [OzCode export](https://github.com/oz-code/OzCodeDemo/tree/master/OzCodeDemo/12.Export) functionality.
+
 "**Dump as**" commands are available via context menu in the **Code** and **Immediate** windows.
 
 The result is shown in a separate document window.
