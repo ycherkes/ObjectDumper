@@ -49,3 +49,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.14]
 - Update YamlDotNet to v 13.1.0.
 - Support for dumping NATS objects (IPAddress serializers, ignore delegates serialization) - read more about NATS: http://thinkmicroservices.com/blog/2021/jetstream/nats-jetstream.html
+
+## [0.0.15]
+- Update YamlDotNet to v 13.1.1.
+- Update VarDump to v 0.2.0 (date-time serialization fix and custom collection fix)
