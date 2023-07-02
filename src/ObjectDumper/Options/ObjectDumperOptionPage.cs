@@ -48,14 +48,14 @@ namespace ObjectDumper.Options
         [Category("C#")]
         [DisplayName("DateTime Instantiation")]
         [Description("Configures how to DateTime, DateTimeOffset, TimeSpan will be instantiated")]
-        [DefaultValue(DateTimeInstantiation.New)]
-        public DateTimeInstantiation CSharpDateTimeInstantiation { get; set; } = DateTimeInstantiation.New;
+        [DefaultValue(DateTimeInstantiation.Parse)]
+        public DateTimeInstantiation CSharpDateTimeInstantiation { get; set; } = DateTimeInstantiation.Parse;
 
         [Category("C#")]
         [DisplayName("DateTime Kind")]
         [Description("DateTime Kind")]
-        [DefaultValue(DateKind.ConvertToUtc)]
-        public DateKind CSharpDateKind { get; set; } = DateKind.ConvertToUtc;
+        [DefaultValue(DateKind.Original)]
+        public DateKind CSharpDateKind { get; set; } = DateKind.Original;
 
         [Category("C#")]
         [DisplayName("Use Named Arguments For Reference Record Types")]
@@ -156,14 +156,14 @@ namespace ObjectDumper.Options
         [Category("Visual Basic")]
         [DisplayName("DateTime Instantiation")]
         [Description("Configures how to DateTime, DateTimeOffset, TimeSpan will be instantiated")]
-        [DefaultValue(DateTimeInstantiation.New)]
-        public DateTimeInstantiation VisualBasicDateTimeInstantiation { get; set; } = DateTimeInstantiation.New;
+        [DefaultValue(DateTimeInstantiation.Parse)]
+        public DateTimeInstantiation VisualBasicDateTimeInstantiation { get; set; } = DateTimeInstantiation.Parse;
 
         [Category("Visual Basic")]
         [DisplayName("DateTime Kind")]
         [Description("DateTime Kind")]
-        [DefaultValue(DateKind.ConvertToUtc)]
-        public DateKind VisualBasicDateKind { get; set; } = DateKind.ConvertToUtc;
+        [DefaultValue(DateKind.Original)]
+        public DateKind VisualBasicDateKind { get; set; } = DateKind.Original;
 
         [Category("Visual Basic")]
         [DisplayName("Use Named Arguments For Reference Record Types")]

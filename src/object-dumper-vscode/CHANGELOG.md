@@ -53,3 +53,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.15]
 - Update YamlDotNet to v 13.1.1.
 - Update VarDump to v 0.2.0 (date-time serialization fix and custom collection fix)
+
+## [0.0.16]
+- Changed default settings for c# & vb date time: "dateTimeInstantiation": "parse", "dateKind": "original"
