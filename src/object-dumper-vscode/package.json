@@ -3,7 +3,7 @@
   "displayName": "Object Dumper",
   "description": "Extension for exporting in-memory objects during debugging to C#, JSON, VB, XML, and YAML string.",
   "publisher": "YevhenCherkes",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "repository": {
     "url": "https://github.com/ycherkes/ObjectDumper"
   },
@@ -176,7 +176,7 @@
             "new",
             "parse"
           ],
-          "default": "new",
+          "default": "parse",
           "description": "Configures how to DateTime, DateTimeOffset, TimeSpan will be instantiated."
         },
         "objectDumper.csharp.dateKind": {
@@ -185,7 +185,7 @@
             "convertToUtc",
             "original"
           ],
-          "default": "convertToUtc",
+          "default": "original",
           "description": "DateTime Kind."
         },
         "objectDumper.csharp.useNamedArgumentsForReferenceRecordTypes": {
@@ -329,7 +329,7 @@
             "new",
             "parse"
           ],
-          "default": "new",
+          "default": "parse",
           "description": "Configures how to DateTime, DateTimeOffset, TimeSpan will be instantiated."
         },
         "objectDumper.vb.dateKind": {
@@ -338,7 +338,7 @@
             "convertToUtc",
             "original"
           ],
-          "default": "convertToUtc",
+          "default": "original",
           "description": "DateTime Kind."
         },
         "objectDumper.vb.useNamedArgumentsForReferenceRecordTypes": {
