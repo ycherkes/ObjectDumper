@@ -7,8 +7,8 @@
     <TargetFrameworks>net45;netstandard2.0;netcoreapp2.0;netcoreapp3.1;net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <AssemblyName>YellowFlavor.Serialization</AssemblyName>
-    <AssemblyVersion>0.0.0.83</AssemblyVersion>
-    <FileVersion>0.0.0.83</FileVersion>
+    <AssemblyVersion>0.0.0.85</AssemblyVersion>
+    <FileVersion>0.0.0.85</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RootNamespace>YellowFlavor.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -45,7 +45,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="VarDump" Version="0.2.1" />
+    <PackageReference Include="VarDump" Version="0.2.2" />
     <PackageReference Include="YamlDotNet" Version="13.1.1" />
     <PackageReference Include="ILRepack" Version="2.0.18" PrivateAssets="All" />
   </ItemGroup>
