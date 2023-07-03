@@ -249,6 +249,12 @@ namespace ObjectDumper.Options
         [DefaultValue(NamingConvention.Null)]
         public NamingConvention YamlNamingConvention { get; set; } = NamingConvention.Null;
 
+        [Category("Txt")]
+        [DisplayName("Enabled")]
+        [Description("Enabled")]
+        [DefaultValue(true)]
+        public bool TxtEnabled { get; set; } = true;
+
         public string ToJson(string format)
         {
             switch (format)
