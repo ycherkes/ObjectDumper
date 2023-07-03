@@ -56,3 +56,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.16]
 - Changed default settings for c# & vb date time: "dateTimeInstantiation": "parse", "dateKind": "original"
+
+## [0.0.17]
+- update VarDump to v 0.2.2 [use array initializer for non-public collection](https://github.com/ycherkes/VarDump/pull/11)
