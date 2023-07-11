@@ -207,36 +207,6 @@ namespace ObjectDumper.Options
         [DefaultValue(true)]
         public bool XmlIgnoreNullValues { get; set; } = true;
 
-        [Category("Xml")]
-        [DisplayName("Ignore Default Values")]
-        [Description("Ignore Default Values")]
-        [DefaultValue(true)]
-        public bool XmlIgnoreDefaultValues { get; set; } = true;
-
-        [Category("Xml")]
-        [DisplayName("Naming Strategy")]
-        [Description("Naming Strategy")]
-        [DefaultValue(NamingStrategy.Default)]
-        public NamingStrategy XmlNamingStrategy { get; set; } = NamingStrategy.Default;
-
-        [Category("Xml")]
-        [DisplayName("Serialize Enums As Strings")]
-        [Description("Serialize Enums As Strings")]
-        [DefaultValue(true)]
-        public bool XmlSerializeEnumAsString { get; set; } = true;
-
-        [Category("Xml")]
-        [DisplayName("Use Full Type Name")]
-        [Description("Use Full Type Name")]
-        [DefaultValue(false)]
-        public bool XmlUseFullTypeName { get; set; }
-
-        [Category("Xml")]
-        [DisplayName("DateTime Zone Handling")]
-        [Description("DateTime Zone Handling")]
-        [DefaultValue(DateTimeZoneHandling.RoundtripKind)]
-        public DateTimeZoneHandling XmlDateTimeZoneHandling { get; set; } = DateTimeZoneHandling.RoundtripKind;
-
         [Category("Yaml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -297,13 +267,8 @@ namespace ObjectDumper.Options
                 case "xml":
                     return new
                     {
-                        IgnoreDefaultValues = XmlIgnoreDefaultValues,
                         IgnoreNullValues = XmlIgnoreNullValues,
-                        MaxDepth = CommonMaxDepth,
-                        UseFullTypeName = XmlUseFullTypeName,
-                        NamingStrategy = XmlNamingStrategy,
-                        SerializeEnumAsString = XmlSerializeEnumAsString,
-                        DateTimeZoneHandling = XmlDateTimeZoneHandling
+                        MaxDepth = CommonMaxDepth
                     }.ToJson();
                 case "yaml":
                     return new

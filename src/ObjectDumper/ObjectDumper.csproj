@@ -98,7 +98,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="InjectableLibs\net45\YellowFlavor.Serialization.dll">
+    <Content Include="InjectableLibs\net461\YellowFlavor.Serialization.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
