@@ -91,6 +91,46 @@ namespace Serialization.UnitTests
         }
 
         [Fact]
+        public void SerializeDictionaryXml()
+        {
+            var dict = new[]
+            {
+                new Person{ Age = 0, FirstName = "Bob"},
+                new Person{ Age = 23, FirstName = "Alice"},
+            }.ToDictionary(x => x.FirstName);
+
+            var serializer = new XmlSerializer();
+
+            var settings = JsonConvert.SerializeObject(new
+            {
+                IgnoreDefaultValues = true,
+                IgnoreNullValues = true,
+                MaxDepth = 5
+            });
+
+            var result = serializer.Serialize(dict, settings);
+
+            Assert.Equal("""
+<?xml version="1.0" encoding="utf-8"?>
+<DictionaryOfStringPerson>
+  <KeyValuePairOfStringPerson>
+    <Key>Bob</Key>
+    <Value>
+      <FirstName>Bob</FirstName>
+    </Value>
+  </KeyValuePairOfStringPerson>
+  <KeyValuePairOfStringPerson>
+    <Key>Alice</Key>
+    <Value>
+      <FirstName>Alice</FirstName>
+      <Age>23</Age>
+    </Value>
+  </KeyValuePairOfStringPerson>
+</DictionaryOfStringPerson>
+""", result);
+        }
+
+        [Fact]
         public void SerializeDictionaryOfAnonymousTypeCSharp()
         {
             var dict = new[]

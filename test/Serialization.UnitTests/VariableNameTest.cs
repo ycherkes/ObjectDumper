@@ -40,11 +40,11 @@ namespace Serialization.UnitTests
         [Fact]
         public void HashSet()
         {
-            var hashSet = new[]
+            var hashSet = new HashSet<Person>
             {
                 new Person{ Age = 32, FirstName = "Bob"},
                 new Person{ Age = 23, FirstName = "Alice"},
-            }.ToHashSet();
+            };
 
             var serializer = new CSharpSerializer();
 

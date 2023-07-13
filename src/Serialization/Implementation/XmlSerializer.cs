@@ -1,23 +1,27 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Net;
 using YAXLib;
 using YAXLib.Enums;
+using YAXLib.KnownTypes;
 using YAXLib.Options;
 using YellowFlavor.Serialization.Implementation.Settings;
+using YellowFlavor.Serialization.Implementation.Xml;
 
 namespace YellowFlavor.Serialization.Implementation
 {
     internal class XmlSerializer : ISerializer
     {
-        private static readonly SerializerOptions SerializerOptions = new SerializerOptions
+        private static SerializerOptions SerializerOptions => new()
         {
             ExceptionHandlingPolicies = YAXExceptionHandlingPolicies.ThrowErrorsOnly,
             ExceptionBehavior = YAXExceptionTypes.Ignore,
-            SerializationOptions = YAXSerializationOptions.SuppressMetadataAttributes | YAXSerializationOptions.DontSerializeNullObjects,
-            MaxRecursion = 25
+            SerializationOptions = YAXSerializationOptions.SuppressMetadataAttributes | YAXSerializationOptions.DontSerializeNullObjects | YAXSerializationOptions.DontSerializeDefaultValues,
+            MaxRecursion = 25,
+            ExcludeTypes = { "Avro.Schema" }
         };
 
-        private static readonly string XmlHeader = $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{Environment.NewLine}";
+        private static readonly string XmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine;
 
         public string Serialize(object obj, string settings)
         {
@@ -26,10 +30,15 @@ namespace YellowFlavor.Serialization.Implementation
                 return XmlHeader;
             }
 
+            if (!WellKnownTypes.TryGetKnownType(typeof(IPAddress), out _))
+            {
+                WellKnownTypes.Add(new IpAddressKnownType());
+            }
+            
             var xmlSettings = GetXmlSettings(settings);
             var serializer = new YAXSerializer(obj.GetType(), xmlSettings);
-
-            return $"{XmlHeader}{serializer.Serialize(obj)}";
+            var serializedValue = serializer.Serialize(obj);
+            return XmlHeader + serializedValue;
         }
 
         private static SerializerOptions GetXmlSettings(string settings)
@@ -47,6 +56,15 @@ namespace YellowFlavor.Serialization.Implementation
             newSettings.SerializationOptions ^= xmlSettings.IgnoreNullValues
                 ? YAXSerializationOptions.SerializeNullObjects
                 : YAXSerializationOptions.DontSerializeNullObjects;
+
+            if (xmlSettings.IgnoreDefaultValues)
+            {
+                newSettings.SerializationOptions |= YAXSerializationOptions.DontSerializeDefaultValues;
+            }
+            else
+            {
+                newSettings.SerializationOptions ^= YAXSerializationOptions.DontSerializeDefaultValues;
+            }
 
             return newSettings;
         }

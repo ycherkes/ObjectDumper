@@ -207,6 +207,12 @@ namespace ObjectDumper.Options
         [DefaultValue(true)]
         public bool XmlIgnoreNullValues { get; set; } = true;
 
+        [Category("Xml")]
+        [DisplayName("Ignore Default Values")]
+        [Description("Ignore Default Values")]
+        [DefaultValue(true)]
+        public bool XmlIgnoreDefaultValues { get; set; } = true;
+
         [Category("Yaml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -267,6 +273,7 @@ namespace ObjectDumper.Options
                 case "xml":
                     return new
                     {
+                        IgnoreDefaultValues = XmlIgnoreDefaultValues,
                         IgnoreNullValues = XmlIgnoreNullValues,
                         MaxDepth = CommonMaxDepth
                     }.ToJson();

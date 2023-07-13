@@ -13,13 +13,14 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(types, null);
 
-            Assert.Equal(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<ArrayOfType>
-  <RuntimeType>System.String, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</RuntimeType>
-  <RuntimeType>System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</RuntimeType>
-  <RuntimeType>System.Decimal, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</RuntimeType>
-</ArrayOfType>", result);
+            Assert.Equal("""
+                <?xml version="1.0" encoding="utf-8"?>
+                <Array1OfType>
+                  <Type>System.String</Type>
+                  <Type>System.Int32</Type>
+                  <Type>System.Decimal</Type>
+                </Array1OfType>
+                """, result);
         }
     }
 }

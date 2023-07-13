@@ -1,7 +1,6 @@
-using YellowFlavor.Serialization.Implementation;
-
 namespace Serialization.UnitTests
 {
+#if net461
     public class RecordReferenceTypeSerializationTest
     {
         [Fact]
@@ -88,4 +87,5 @@ namespace Serialization.UnitTests
             public string LastName { get; set; }
         }
     }
+#endif
 }

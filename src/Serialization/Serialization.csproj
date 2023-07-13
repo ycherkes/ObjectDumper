@@ -48,7 +48,7 @@
     <PackageReference Include="VarDump" Version="0.2.2" />
     <PackageReference Include="YamlDotNet" Version="13.1.1" />
     <PackageReference Include="ILRepack" Version="2.0.18" PrivateAssets="All" />
-    <PackageReference Include="YAXLib" Version="4.1.0" />
+    <PackageReference Include="YAXLib" Version="4.2.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,30 +65,7 @@
       <LastGenOutput>SR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="YAXLib">
-      <Version>4.1.0</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <PackageReference Include="YAXLib">
-      <Version>4.1.0</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="YAXLib">
-      <Version>4.1.0</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
-    <PackageReference Include="YAXLib">
-      <Version>4.1.0</Version>
-    </PackageReference>
-  </ItemGroup>
+  
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
   	<PropertyGroup>
   		<ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>

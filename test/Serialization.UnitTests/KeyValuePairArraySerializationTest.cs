@@ -77,12 +77,19 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(kvpArray, null);
 
-            Assert.Equal(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<ArrayOfKeyValuePair_x0060_2>
-  <KeyValuePair_x0060_2>{""Key"":1,""Value"":""First""}</KeyValuePair_x0060_2>
-  <KeyValuePair_x0060_2>{""Key"":2,""Value"":""Second""}</KeyValuePair_x0060_2>
-</ArrayOfKeyValuePair_x0060_2>", result);
+            Assert.Equal("""
+                <?xml version="1.0" encoding="utf-8"?>
+                <Array1OfKeyValuePairOfInt32String>
+                  <KeyValuePairOfInt32String>
+                    <Key>1</Key>
+                    <Value>First</Value>
+                  </KeyValuePairOfInt32String>
+                  <KeyValuePairOfInt32String>
+                    <Key>2</Key>
+                    <Value>Second</Value>
+                  </KeyValuePairOfInt32String>
+                </Array1OfKeyValuePairOfInt32String>
+                """, result);
         }
     }
 }
