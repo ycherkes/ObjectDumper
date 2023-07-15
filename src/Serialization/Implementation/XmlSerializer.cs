@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using YAXLib;
 using YAXLib.Enums;
@@ -18,7 +20,7 @@ namespace YellowFlavor.Serialization.Implementation
             ExceptionBehavior = YAXExceptionTypes.Ignore,
             SerializationOptions = YAXSerializationOptions.SuppressMetadataAttributes | YAXSerializationOptions.DontSerializeNullObjects | YAXSerializationOptions.DontSerializeDefaultValues,
             MaxRecursion = 25,
-            ExcludeTypes = { "Avro.Schema" }
+            MemberResolver = new AvroSchemaTypeMemberFilter()
         };
 
         private static readonly string XmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine;
@@ -67,6 +69,14 @@ namespace YellowFlavor.Serialization.Implementation
             }
 
             return newSettings;
+        }
+
+        private class AvroSchemaTypeMemberFilter : ITypeMemberResolver
+        {
+            public IList<IYaxMemberInfo> ResolveMembers(IList<IYaxMemberInfo> sourceMembers, Type underlyingType, SerializerOptions options)
+            {
+                return sourceMembers.Where(member => !string.Equals("Avro.Schema", member.Type.FullName, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
         }
     }
 }
