@@ -22,9 +22,9 @@ namespace YellowFlavor.Serialization.Implementation.Xml
             Type = fieldInfo.Type;
         }
 
-        public Attribute[] GetCustomAttributesByType(Type attrType, bool inherit)
+        public Attribute[] GetCustomAttributes(Type attrType, bool inherit)
         {
-            return _wrappedFieldInfo.GetCustomAttributesByType(attrType, inherit);
+            return _wrappedFieldInfo.GetCustomAttributes(attrType, inherit);
         }
 
         public Attribute[] GetCustomAttributes(bool inherit)

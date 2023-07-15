@@ -26,9 +26,9 @@ namespace YellowFlavor.Serialization.Implementation.Xml
             Type = propertyInfo.Type;
         }
 
-        public Attribute[] GetCustomAttributesByType(Type attrType, bool inherit)
+        public Attribute[] GetCustomAttributes(Type attrType, bool inherit)
         {
-            return _wrappedPropertyInfo.GetCustomAttributesByType(attrType, inherit);
+            return _wrappedPropertyInfo.GetCustomAttributes(attrType, inherit);
         }
 
         public Attribute[] GetCustomAttributes(bool inherit)
