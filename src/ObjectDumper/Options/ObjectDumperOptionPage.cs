@@ -213,6 +213,12 @@ namespace ObjectDumper.Options
         [DefaultValue(true)]
         public bool XmlIgnoreDefaultValues { get; set; } = true;
 
+        [Category("Xml")]
+        [DisplayName("Naming Strategy")]
+        [Description("Naming Strategy")]
+        [DefaultValue(NamingStrategy.Default)]
+        public NamingStrategy XmlNamingStrategy { get; set; } = NamingStrategy.Default;
+
         [Category("Yaml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -275,6 +281,7 @@ namespace ObjectDumper.Options
                     {
                         IgnoreDefaultValues = XmlIgnoreDefaultValues,
                         IgnoreNullValues = XmlIgnoreNullValues,
+                        NamingStrategy = XmlNamingStrategy,
                         MaxDepth = CommonMaxDepth
                     }.ToJson();
                 case "yaml":
