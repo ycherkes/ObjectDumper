@@ -48,7 +48,7 @@
     <PackageReference Include="VarDump" Version="0.2.2" />
     <PackageReference Include="YamlDotNet" Version="13.1.1" />
     <PackageReference Include="ILRepack" Version="2.0.18" PrivateAssets="All" />
-    <PackageReference Include="YAXLib" Version="4.2.10" />
+    <PackageReference Include="YAXLib" Version="4.2.11" />
   </ItemGroup>
 
   <ItemGroup>
