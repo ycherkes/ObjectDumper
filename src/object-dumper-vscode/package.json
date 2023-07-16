@@ -3,7 +3,7 @@
   "displayName": "Object Dumper",
   "description": "Extension for exporting in-memory objects during debugging to C#, JSON, VB, XML, and YAML string.",
   "publisher": "YevhenCherkes",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "repository": {
     "url": "https://github.com/ycherkes/ObjectDumper"
   },
@@ -425,29 +425,8 @@
             "kebabCase",
             "snakeCase"
           ],
-          "default": "camelCase",
+          "default": "default",
           "description": "Naming Startegy."
-        },
-        "objectDumper.xml.serializeEnumAsString": {
-          "type": "boolean",
-          "default": true,
-          "description": "Serialize Enums As Strings."
-        },
-        "objectDumper.xml.useFullTypeName": {
-          "type": "boolean",
-          "default": false,
-          "description": "Use Full Type Name."
-        },
-        "objectDumper.xml.dateTimeZoneHandling": {
-          "type": "string",
-          "enum": [
-            "local",
-            "utc",
-            "unspecified",
-            "roundtripKind"
-          ],
-          "default": "roundtripKind",
-          "description": "DateTime Zone Handling."
         },
         "objectDumper.yaml.enabled": {
           "type": "boolean",
