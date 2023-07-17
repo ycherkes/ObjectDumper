@@ -25,19 +25,19 @@ namespace YellowFlavor.Serialization.Implementation
 
             var namingConvention = yamlSettings.NamingConvention.ToPascalCase();
 
-            var namingConventionType = namingConvention switch
+            var namingConventionInstance= namingConvention switch
             {
-                "CamelCase" => typeof(CamelCaseNamingConvention),
-                "Hyphenated" => typeof(HyphenatedNamingConvention),
-                "LowerCase" => typeof(LowerCaseNamingConvention),
-                "Null" => typeof(NullNamingConvention),
-                "PascalCase" => typeof(PascalCaseNamingConvention),
-                "Underscored" => typeof(UnderscoredNamingConvention),
+                "CamelCase" => CamelCaseNamingConvention.Instance,
+                "Hyphenated" => HyphenatedNamingConvention.Instance,
+                "LowerCase" => LowerCaseNamingConvention.Instance,
+                "Null" => NullNamingConvention.Instance,
+                "PascalCase" => PascalCaseNamingConvention.Instance,
+                "Underscored" => UnderscoredNamingConvention.Instance,
                 _ => throw new InvalidOperationException($"Invalid naming convention: {namingConvention}")
             };
 
             var valueSerializer = new SerializerBuilder()
-                .WithNamingConvention((INamingConvention)Activator.CreateInstance(namingConventionType))
+                .WithNamingConvention(namingConventionInstance)
                 .WithMaximumRecursion(yamlSettings.MaxDepth)
                 .WithTypeConverter(new IpAddressConverter())
                 .WithTypeInspector(ti => new IgnoreDelegatesTypeInspector(ti))
