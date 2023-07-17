@@ -219,6 +219,12 @@ namespace ObjectDumper.Options
         [DefaultValue(NamingStrategy.Default)]
         public NamingStrategy XmlNamingStrategy { get; set; } = NamingStrategy.Default;
 
+        [Category("Xml")]
+        [DisplayName("DateTime Zone Handling")]
+        [Description("DateTime Zone Handling")]
+        [DefaultValue(DateTimeZoneHandling.RoundtripKind)]
+        public DateTimeZoneHandling XmlDateTimeZoneHandling { get; set; } = DateTimeZoneHandling.RoundtripKind;
+
         [Category("Yaml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -282,7 +288,8 @@ namespace ObjectDumper.Options
                         IgnoreDefaultValues = XmlIgnoreDefaultValues,
                         IgnoreNullValues = XmlIgnoreNullValues,
                         NamingStrategy = XmlNamingStrategy,
-                        MaxDepth = CommonMaxDepth
+                        MaxDepth = CommonMaxDepth,
+                        DateTimeZoneHandling = XmlDateTimeZoneHandling
                     }.ToJson();
                 case "yaml":
                     return new

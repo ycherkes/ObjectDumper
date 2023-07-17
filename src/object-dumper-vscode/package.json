@@ -428,6 +428,17 @@
           "default": "default",
           "description": "Naming Startegy."
         },
+        "objectDumper.xml.dateTimeZoneHandling": {
+          "type": "string",
+          "enum": [
+            "local",
+            "utc",
+            "unspecified",
+            "roundtripKind"
+          ],
+          "default": "roundtripKind",
+          "description": "DateTime Zone Handling."
+        },
         "objectDumper.yaml.enabled": {
           "type": "boolean",
           "default": true,

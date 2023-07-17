@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Xml;
 using YAXLib;
 using YAXLib.Enums;
 using YAXLib.KnownTypes;
@@ -34,23 +35,38 @@ internal class XmlSerializer : ISerializer
             return XmlHeader;
         }
 
+        var xmlSettings = settings != null ? JsonConvert.DeserializeObject<XmlSettings>(settings) : new XmlSettings();
+
+        var objType = obj.GetType();
+
+        if (objType == typeof(DateTime))
+        {
+            var doc = new XmlDocument();
+            var elem = doc.CreateElement(null, XmlConvert.EncodeName(objType.Name), null);
+            doc.AppendChild(elem);
+            elem.InnerText = JsonConvert.ToString((DateTime)obj, DateFormatHandling.IsoDateFormat, xmlSettings.DateTimeZoneHandling).Trim('"');
+            
+            return XmlHeader + doc.InnerXml;
+        }
+
+        var yaxSettings = GetYaxSettings(xmlSettings);
+
         if (!WellKnownTypes.TryGetKnownType(typeof(IPAddress), out _))
         {
             WellKnownTypes.Add(new IpAddressKnownType());
+            WellKnownTypes.Add(new DateTimeOffsetKnownType());
         }
-            
-        var xmlSettings = GetXmlSettings(settings);
-        var serializer = new YAXSerializer(obj.GetType(), xmlSettings);
+
+        var serializer = new YAXSerializer(obj.GetType(), yaxSettings);
         var serializedValue = serializer.Serialize(obj);
         return XmlHeader + serializedValue;
     }
 
-    private static SerializerOptions GetXmlSettings(string settings)
+    private static SerializerOptions GetYaxSettings(XmlSettings xmlSettings)
     {
         var newSettings = SerializerOptions;
-        if (settings == null) return newSettings;
+        if (xmlSettings == null) return newSettings;
 
-        var xmlSettings = JsonConvert.DeserializeObject<XmlSettings>(settings);
         newSettings.MaxRecursion = xmlSettings.MaxDepth > 0 ? xmlSettings.MaxDepth : 1;
 
         newSettings.SerializationOptions |= xmlSettings.IgnoreNullValues
@@ -72,13 +88,9 @@ internal class XmlSerializer : ISerializer
 
         var namingStrategy = xmlSettings.NamingStrategy.ToPascalCase();
 
-        if (namingStrategy == "Default")
-        {
-            return newSettings;
-        }
-
         Func<string, string> namingStrategyType = namingStrategy switch
         {
+            "Default"   => name => name,
             "CamelCase" => name => name.ToCamelCase(),
             "KebabCase" => name => name.ToKebabCase(),
             "SnakeCase" => name => name.ToSnakeCase(),
@@ -87,7 +99,8 @@ internal class XmlSerializer : ISerializer
 
         newSettings.TypeResolver = new CustomResolver
         {
-            NamingPolicy = namingStrategyType
+            NamingPolicy = namingStrategyType,
+            DateTimeZoneHandling = xmlSettings.DateTimeZoneHandling
         };
 
         return newSettings;
@@ -119,16 +132,19 @@ internal class XmlSerializer : ISerializer
             {
                 MemberTypes.Field => new YaxFieldMemberWrapper((IYaxFieldInfo)filteredMember)
                 {
-                    Name = NamingPolicy(filteredMember.Name)
+                    Name = NamingPolicy(filteredMember.Name),
+                    DateTimeZoneHandling = DateTimeZoneHandling
                 },
                 MemberTypes.Property => new YaxPropertyMemberWrapper((IYaxPropertyInfo)filteredMember)
                 {
-                    Name = NamingPolicy(filteredMember.Name)
+                    Name = NamingPolicy(filteredMember.Name),
+                    DateTimeZoneHandling = DateTimeZoneHandling
                 },
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
 
         public Func<string, string> NamingPolicy { get; set; }
+        public DateTimeZoneHandling DateTimeZoneHandling { get; set; }
     }
 }

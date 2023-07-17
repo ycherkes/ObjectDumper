@@ -54,7 +54,8 @@ export class OptionsProvider{
 					ignoreDefaultValues: extensionConfiguration.xml.ignoreDefaultValues,
 					ignoreNullValues: extensionConfiguration.xml.ignoreNullValues,
 					maxDepth: extensionConfiguration.common.maxDepth,
-					namingStrategy: extensionConfiguration.xml.namingStrategy
+					namingStrategy: extensionConfiguration.xml.namingStrategy,
+					dateTimeZoneHandling: extensionConfiguration.xml.dateTimeZoneHandling
 				};
 			}
 			case "yaml":{

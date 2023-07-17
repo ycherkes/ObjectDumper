@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Newtonsoft.Json;
 using YAXLib;
 
 namespace YellowFlavor.Serialization.Implementation.Xml
@@ -12,6 +13,7 @@ namespace YellowFlavor.Serialization.Implementation.Xml
         public MemberTypes MemberType { get; }
         public bool IsPublic { get; }
         public Type Type { get; }
+        public DateTimeZoneHandling DateTimeZoneHandling { get; set; }
 
         public YaxFieldMemberWrapper(IYaxFieldInfo fieldInfo)
         {
@@ -34,7 +36,20 @@ namespace YellowFlavor.Serialization.Implementation.Xml
 
         public object GetValue(object obj)
         {
-            return _wrappedFieldInfo.GetValue(obj);
+            var value = _wrappedFieldInfo.GetValue(obj);
+            if (Type != typeof(DateTime) && Type != typeof(DateTime?))
+            {
+                return value;
+            }
+
+            if (Type == typeof(DateTime?) && value == null)
+            {
+                return null;
+            }
+
+            value = JsonConvert.ToString((DateTime)value, DateFormatHandling.IsoDateFormat, DateTimeZoneHandling).Trim('"');
+
+            return value;
         }
 
         public void SetValue(object obj, object value)
