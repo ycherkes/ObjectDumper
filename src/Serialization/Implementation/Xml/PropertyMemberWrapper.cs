@@ -5,38 +5,42 @@ using YAXLib;
 
 namespace YellowFlavor.Serialization.Implementation.Xml
 {
-    internal class YaxFieldMemberWrapper : IYaxFieldInfo
+    internal class PropertyMemberWrapper : IPropertyInfo
     {
-        private readonly IYaxFieldInfo _wrappedFieldInfo;
+        private readonly IPropertyInfo _wrappedPropertyInfo;
 
         public string Name { get; set; }
         public MemberTypes MemberType { get; }
         public bool IsPublic { get; }
         public Type Type { get; }
+        public bool CanRead { get; }
+        public bool CanWrite { get; }
         public DateTimeZoneHandling DateTimeZoneHandling { get; set; }
 
-        public YaxFieldMemberWrapper(IYaxFieldInfo fieldInfo)
+        public PropertyMemberWrapper(IPropertyInfo propertyInfo)
         {
-            _wrappedFieldInfo = fieldInfo;
-            Name = fieldInfo.Name;
-            MemberType = fieldInfo.MemberType;
-            IsPublic = fieldInfo.IsPublic;
-            Type = fieldInfo.Type;
+            _wrappedPropertyInfo = propertyInfo;
+            Name = propertyInfo.Name;
+            MemberType = propertyInfo.MemberType;
+            CanRead = propertyInfo.CanRead;
+            CanWrite = propertyInfo.CanWrite;
+            IsPublic = propertyInfo.IsPublic;
+            Type = propertyInfo.Type;
         }
 
         public Attribute[] GetCustomAttributes(Type attrType, bool inherit)
         {
-            return _wrappedFieldInfo.GetCustomAttributes(attrType, inherit);
+            return _wrappedPropertyInfo.GetCustomAttributes(attrType, inherit);
         }
 
         public Attribute[] GetCustomAttributes(bool inherit)
         {
-            return _wrappedFieldInfo.GetCustomAttributes(inherit);
+            return _wrappedPropertyInfo.GetCustomAttributes(inherit);
         }
 
-        public object GetValue(object obj)
+        public object GetValue(object obj, object[] index)
         {
-            var value = _wrappedFieldInfo.GetValue(obj);
+            var value = _wrappedPropertyInfo.GetValue(obj, index);
             if (Type != typeof(DateTime) && Type != typeof(DateTime?))
             {
                 return value;
@@ -52,9 +56,9 @@ namespace YellowFlavor.Serialization.Implementation.Xml
             return value;
         }
 
-        public void SetValue(object obj, object value)
+        public void SetValue(object obj, object value, object[] index)
         {
-            _wrappedFieldInfo.SetValue(obj, value);
+            _wrappedPropertyInfo.SetValue(obj, value, index);
         }
     }
 }

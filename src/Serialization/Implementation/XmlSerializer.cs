@@ -23,7 +23,7 @@ internal class XmlSerializer : ISerializer
         ExceptionBehavior = YAXExceptionTypes.Ignore,
         SerializationOptions = YAXSerializationOptions.SuppressMetadataAttributes | YAXSerializationOptions.DontSerializeNullObjects | YAXSerializationOptions.DontSerializeDefaultValues,
         MaxRecursion = 25,
-        TypeResolver = new CustomResolver()
+        TypeInfoResolver = new CustomResolver()
     };
 
     private static readonly string XmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine;
@@ -97,7 +97,7 @@ internal class XmlSerializer : ISerializer
             _ => throw new InvalidOperationException($"Invalid naming strategy: {namingStrategy}")
         };
 
-        newSettings.TypeResolver = new CustomResolver
+        newSettings.TypeInfoResolver = new CustomResolver
         {
             NamingPolicy = namingStrategyType,
             DateTimeZoneHandling = xmlSettings.DateTimeZoneHandling
@@ -106,11 +106,11 @@ internal class XmlSerializer : ISerializer
         return newSettings;
     }
 
-    private class CustomResolver : ITypeResolver
+    private class CustomResolver : ITypeInfoResolver
     {
-        public IList<IYaxMemberInfo> ResolveMembers(IList<IYaxMemberInfo> sourceMembers, Type underlyingType, SerializerOptions options)
+        public IList<IMemberInfo> ResolveMembers(IList<IMemberInfo> proposedMembers, Type type, SerializerOptions options)
         {
-            var filteredMembers = sourceMembers.Where(member =>
+            var filteredMembers = proposedMembers.Where(member =>
                 !string.Equals("Avro.Schema", member.Type.FullName, StringComparison.OrdinalIgnoreCase));
 
             if (NamingPolicy != null)
@@ -121,21 +121,21 @@ internal class XmlSerializer : ISerializer
             return filteredMembers.ToList();
         }
 
-        public string GetTypeName(string proposedName, Type udtType, SerializerOptions serializerOptions)
+        public string GetTypeName(string proposedName, Type type, SerializerOptions options)
         {
             return NamingPolicy?.Invoke(proposedName) ?? proposedName;
         }
 
-        private IYaxMemberInfo WrapAndApplyNamingPolicy(IYaxMemberInfo filteredMember)
+        private IMemberInfo WrapAndApplyNamingPolicy(IMemberInfo filteredMember)
         {
             return filteredMember.MemberType switch
             {
-                MemberTypes.Field => new YaxFieldMemberWrapper((IYaxFieldInfo)filteredMember)
+                MemberTypes.Field => new FieldMemberWrapper((IFieldInfo)filteredMember)
                 {
                     Name = NamingPolicy(filteredMember.Name),
                     DateTimeZoneHandling = DateTimeZoneHandling
                 },
-                MemberTypes.Property => new YaxPropertyMemberWrapper((IYaxPropertyInfo)filteredMember)
+                MemberTypes.Property => new PropertyMemberWrapper((IPropertyInfo)filteredMember)
                 {
                     Name = NamingPolicy(filteredMember.Name),
                     DateTimeZoneHandling = DateTimeZoneHandling
