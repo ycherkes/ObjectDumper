@@ -78,7 +78,7 @@ namespace ObjectDumper.DebuggeeInteraction
                 return (false, $"Wrong TargetFramework: {targetFrameworkName}");
             }
 
-            var match = Regex.Match(targetFrameworkName, "(?<frameworkName>.+?),\\s*Version\\s*=\\s*v(?<frameworkVersion>\\d+(\\.\\d+)+?)", RegexOptions.Compiled);
+            var match = Regex.Match(targetFrameworkName, "(?<frameworkName>.+?),\\s*Version\\s*=\\s*v(?<frameworkVersion>\\d+(\\.\\d+)+)", RegexOptions.Compiled);
 
             if (!match.Success ||
                 !match.Groups["frameworkVersion"].Success ||
