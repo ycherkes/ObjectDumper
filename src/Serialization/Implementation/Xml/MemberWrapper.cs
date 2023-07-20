@@ -5,38 +5,37 @@ using YAXLib;
 
 namespace YellowFlavor.Serialization.Implementation.Xml
 {
-    internal class FieldMemberWrapper : IFieldInfo
+    internal class MemberWrapper : IMemberDescriptor
     {
-        private readonly IFieldInfo _wrappedFieldInfo;
+        private readonly IMemberDescriptor _wrappedMember;
 
         public string Name { get; set; }
         public MemberTypes MemberType { get; }
         public bool IsPublic { get; }
         public Type Type { get; }
+        public bool CanRead { get; }
+        public bool CanWrite { get; }
         public DateTimeZoneHandling DateTimeZoneHandling { get; set; }
 
-        public FieldMemberWrapper(IFieldInfo fieldInfo)
+        public MemberWrapper(IMemberDescriptor member)
         {
-            _wrappedFieldInfo = fieldInfo;
-            Name = fieldInfo.Name;
-            MemberType = fieldInfo.MemberType;
-            IsPublic = fieldInfo.IsPublic;
-            Type = fieldInfo.Type;
+            _wrappedMember = member;
+            Name = member.Name;
+            MemberType = member.MemberType;
+            CanRead = member.CanRead;
+            CanWrite = member.CanWrite;
+            IsPublic = member.IsPublic;
+            Type = member.Type;
         }
 
-        public Attribute[] GetCustomAttributes(Type attrType, bool inherit)
+       public Attribute[] GetCustomAttributes()
         {
-            return _wrappedFieldInfo.GetCustomAttributes(attrType, inherit);
-        }
-
-        public Attribute[] GetCustomAttributes(bool inherit)
-        {
-            return _wrappedFieldInfo.GetCustomAttributes(inherit);
+            return _wrappedMember.GetCustomAttributes();
         }
 
         public object GetValue(object obj)
         {
-            var value = _wrappedFieldInfo.GetValue(obj);
+            var value = _wrappedMember.GetValue(obj);
             if (Type != typeof(DateTime) && Type != typeof(DateTime?))
             {
                 return value;
@@ -54,7 +53,7 @@ namespace YellowFlavor.Serialization.Implementation.Xml
 
         public void SetValue(object obj, object value)
         {
-            _wrappedFieldInfo.SetValue(obj, value);
+            _wrappedMember.SetValue(obj, value);
         }
     }
 }

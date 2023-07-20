@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Xml;
 using YAXLib;
 using YAXLib.Enums;
@@ -23,7 +22,7 @@ internal class XmlSerializer : ISerializer
         ExceptionBehavior = YAXExceptionTypes.Ignore,
         SerializationOptions = YAXSerializationOptions.SuppressMetadataAttributes | YAXSerializationOptions.DontSerializeNullObjects | YAXSerializationOptions.DontSerializeDefaultValues,
         MaxRecursion = 25,
-        TypeInfoResolver = new CustomResolver()
+        TypeInspector = new CustomInspector()
     };
 
     private static readonly string XmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine;
@@ -97,7 +96,7 @@ internal class XmlSerializer : ISerializer
             _ => throw new InvalidOperationException($"Invalid naming strategy: {namingStrategy}")
         };
 
-        newSettings.TypeInfoResolver = new CustomResolver
+        newSettings.TypeInspector = new CustomInspector
         {
             NamingPolicy = namingStrategyType,
             DateTimeZoneHandling = xmlSettings.DateTimeZoneHandling
@@ -106,11 +105,13 @@ internal class XmlSerializer : ISerializer
         return newSettings;
     }
 
-    private class CustomResolver : ITypeInfoResolver
+    private class CustomInspector : DefaultTypeInspector
     {
-        public IList<IMemberInfo> ResolveMembers(IList<IMemberInfo> proposedMembers, Type type, SerializerOptions options)
+        public override IEnumerable<IMemberDescriptor> GetMembers(Type type, SerializerOptions options, bool includePrivateMembersFromBaseTypes)
         {
-            var filteredMembers = proposedMembers.Where(member =>
+            var members = base.GetMembers(type, options, includePrivateMembersFromBaseTypes);
+
+            var filteredMembers = members.Where(member =>
                 !string.Equals("Avro.Schema", member.Type.FullName, StringComparison.OrdinalIgnoreCase));
 
             if (NamingPolicy != null)
@@ -118,29 +119,21 @@ internal class XmlSerializer : ISerializer
                 filteredMembers = filteredMembers.Select(WrapAndApplyNamingPolicy);
             }
 
-            return filteredMembers.ToList();
+            return filteredMembers;
         }
 
-        public string GetTypeName(string proposedName, Type type, SerializerOptions options)
+        public override string GetTypeName(Type type, SerializerOptions options)
         {
-            return NamingPolicy?.Invoke(proposedName) ?? proposedName;
+            var typeName = base.GetTypeName(type, options);
+            return NamingPolicy?.Invoke(typeName) ?? typeName;
         }
 
-        private IMemberInfo WrapAndApplyNamingPolicy(IMemberInfo filteredMember)
+        private IMemberDescriptor WrapAndApplyNamingPolicy(IMemberDescriptor filteredMember)
         {
-            return filteredMember.MemberType switch
+            return new MemberWrapper(filteredMember)
             {
-                MemberTypes.Field => new FieldMemberWrapper((IFieldInfo)filteredMember)
-                {
-                    Name = NamingPolicy(filteredMember.Name),
-                    DateTimeZoneHandling = DateTimeZoneHandling
-                },
-                MemberTypes.Property => new PropertyMemberWrapper((IPropertyInfo)filteredMember)
-                {
-                    Name = NamingPolicy(filteredMember.Name),
-                    DateTimeZoneHandling = DateTimeZoneHandling
-                },
-                _ => throw new ArgumentOutOfRangeException()
+                Name = NamingPolicy(filteredMember.Name),
+                DateTimeZoneHandling = DateTimeZoneHandling
             };
         }
 
