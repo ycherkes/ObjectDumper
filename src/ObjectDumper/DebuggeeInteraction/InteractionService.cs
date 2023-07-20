@@ -91,9 +91,9 @@ namespace ObjectDumper.DebuggeeInteraction
             switch (match.Groups["frameworkName"].Value.ToLowerInvariant())
             {
                 case ".netframework":
-                    return version < new Version(4, 6, 1)
-                        ? (false, "The .NET Framework with a version lower than 4.6.1 is not supported.")
-                        : (true, "net461");
+                    return version < new Version(4, 5)
+                        ? (false, "The .NET Framework with a version lower than 4.5 is not supported.")
+                        : (true, version >= new Version(4, 6, 1) ? "net461" : "net45");
 
                 case ".netcoreapp":
                     if (version < new Version(2, 0))
