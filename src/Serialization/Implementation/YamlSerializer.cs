@@ -25,7 +25,7 @@ namespace YellowFlavor.Serialization.Implementation
 
             var namingConvention = yamlSettings.NamingConvention.ToPascalCase();
 
-            var namingConventionInstance= namingConvention switch
+            var namingConventionInstance = namingConvention switch
             {
                 "CamelCase" => CamelCaseNamingConvention.Instance,
                 "Hyphenated" => HyphenatedNamingConvention.Instance,

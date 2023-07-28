@@ -4,7 +4,7 @@
   </PropertyGroup>
   <Import Project="$(NuGetPackageRoot)ILRepack\2.0.18\build\ILRepack.props" Condition="Exists('$(NuGetPackageRoot)ILRepack\2.0.18\build\ILRepack.props') And '$(IlRepackImported)' == ''" />
   <PropertyGroup>
-    <TargetFrameworks>net45;net461;netstandard2.0;netcoreapp2.0;netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard2.0;netcoreapp2.0;netcoreapp3.1;net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <AssemblyName>YellowFlavor.Serialization</AssemblyName>
     <AssemblyVersion>0.0.0.87</AssemblyVersion>
@@ -27,12 +27,8 @@
     <DefineConstants>$(DefineConstants)TRACE;HAVE_FULL_REFLECTION;CODEDOM</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
-    <AssemblyTitle>YellowFlavor.Serialization .NET 4.5</AssemblyTitle>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
-	  <AssemblyTitle>YellowFlavor.Serialization .NET 4.6.1</AssemblyTitle>
+    <AssemblyTitle>YellowFlavor.Serialization .NET 4.6.1</AssemblyTitle>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
