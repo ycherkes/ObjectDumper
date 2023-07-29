@@ -11,21 +11,22 @@ namespace YellowFlavor.Serialization.Implementation
     {
         private static DumpOptions CsharpDumpOptions => new()
         {
-            IgnoreDefaultValues = true,
-            IgnoreNullValues = true,
-            MaxDepth = 25,
-            ExcludeTypes = new[] { "Avro.Schema" },
+            DateKind = DateKind.Original,
+            DateTimeInstantiation = DateTimeInstantiation.Parse,
             Descriptors =
             {
                 new DelegateMiddleware(),
                 new MemberInfoMiddleware(),
                 new FileSystemInfoMiddleware()
             },
-            UseTypeFullName = false,
-            DateTimeInstantiation = DateTimeInstantiation.New,
-            DateKind = DateKind.ConvertToUtc,
-            UseNamedArgumentsForReferenceRecordTypes = false,
+            ExcludeTypes = new[] { "Avro.Schema" },
+            GenerateVariableInitializer = true,
             GetPropertiesBindingFlags = BindingFlags.Instance | BindingFlags.Public,
+            IgnoreDefaultValues = true,
+            IgnoreNullValues = true,
+            MaxDepth = 25,
+            UseNamedArgumentsForReferenceRecordTypes = false,
+            UseTypeFullName = false,
             WritablePropertiesOnly = true
         };
 
@@ -54,6 +55,7 @@ namespace YellowFlavor.Serialization.Implementation
             newSettings.WritablePropertiesOnly = csharpSettings.WritablePropertiesOnly;
             newSettings.GetFieldsBindingFlags = csharpSettings.GetFieldsBindingFlags;
             newSettings.SortDirection = csharpSettings.SortDirection;
+            newSettings.GenerateVariableInitializer = csharpSettings.GenerateVariableInitializer;
 
             return newSettings;
         }

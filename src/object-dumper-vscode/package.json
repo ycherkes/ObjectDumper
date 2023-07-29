@@ -249,6 +249,11 @@
           "default": null,
           "description": "Sort Properties and Fields by Name."
         },
+        "objectDumper.csharp.generateVariableInitializer": {
+          "type": "boolean",
+          "default": true,
+          "description": "Generate Variable Initializer."
+        },
         "objectDumper.json.enabled": {
           "type": "boolean",
           "default": true,
@@ -401,6 +406,11 @@
           ],
           "default": null,
           "description": "Sort Properties and Fields by Name."
+        },
+        "objectDumper.vb.generateVariableInitializer": {
+          "type": "boolean",
+          "default": true,
+          "description": "Generate Variable Initializer."
         },
         "objectDumper.xml.enabled": {
           "type": "boolean",
