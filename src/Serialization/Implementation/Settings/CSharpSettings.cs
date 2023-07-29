@@ -17,4 +17,5 @@ internal class CSharpSettings
     public bool WritablePropertiesOnly { get; set; } = true;
     public ListSortDirection? SortDirection { get; set; }
     public BindingFlags? GetFieldsBindingFlags { get; set; }
+    public bool GenerateVariableInitializer { get; set; } = true;
 }

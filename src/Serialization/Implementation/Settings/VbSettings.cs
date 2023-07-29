@@ -17,4 +17,5 @@ internal class VbSettings
     public bool WritablePropertiesOnly { get; set; } = true;
     public BindingFlags? GetFieldsBindingFlags { get; set; }
     public ListSortDirection? SortDirection { get; set; }
+    public bool GenerateVariableInitializer { get; set; } = true;
 }

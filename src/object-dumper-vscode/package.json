@@ -3,7 +3,7 @@
   "displayName": "Object Dumper",
   "description": "Extension for exporting in-memory objects during debugging to C#, JSON, VB, XML, and YAML string.",
   "publisher": "YevhenCherkes",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "repository": {
     "url": "https://github.com/ycherkes/ObjectDumper"
   },
@@ -249,6 +249,11 @@
           "default": null,
           "description": "Sort Properties and Fields by Name."
         },
+        "objectDumper.csharp.generateVariableInitializer": {
+          "type": "boolean",
+          "default": true,
+          "description": "Generate Variable Initializer."
+        },
         "objectDumper.json.enabled": {
           "type": "boolean",
           "default": true,
@@ -401,6 +406,11 @@
           ],
           "default": null,
           "description": "Sort Properties and Fields by Name."
+        },
+        "objectDumper.vb.generateVariableInitializer": {
+          "type": "boolean",
+          "default": true,
+          "description": "Generate Variable Initializer."
         },
         "objectDumper.xml.enabled": {
           "type": "boolean",

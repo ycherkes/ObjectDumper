@@ -5,6 +5,8 @@ using ObjectDumper.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
 
 namespace ObjectDumper.DebuggeeInteraction
@@ -47,8 +49,6 @@ namespace ObjectDumper.DebuggeeInteraction
                 return (true, null);
             }
 
-            var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
-
             var (isValid, targetFrameworkName) = GetTargetFrameworkName(expressionProvider);
 
             if (!isValid)
@@ -61,6 +61,7 @@ namespace ObjectDumper.DebuggeeInteraction
             if (!success)
                 return (false, directoryName);
 
+            var dllLocation = Path.GetDirectoryName(new Uri(typeof(ObjectDumperPackage).Assembly.CodeBase, UriKind.Absolute).LocalPath);
             var serializerFileName = Path.Combine(dllLocation, "InjectableLibs", directoryName, "YellowFlavor.Serialization.dll");
 
             var loadAssemblyExpressionText = expressionProvider.GetLoadAssemblyExpressionText(serializerFileName);
@@ -71,52 +72,47 @@ namespace ObjectDumper.DebuggeeInteraction
 
         private static (bool success, string directoryName) GetSerializerDirectoryName(string targetFrameworkName)
         {
-            targetFrameworkName = targetFrameworkName?.Trim('"');
+            var targetFramework = targetFrameworkName?
+                .Split(new []{';'}, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => new FrameworkName(x.Trim('"')))
+                .OrderBy(fn => fn.Identifier.ToLowerInvariant() == "netstandard" ? 1 : 0)
+                .ThenByDescending(fn => fn.Version)
+                .FirstOrDefault();
 
-            if (string.IsNullOrWhiteSpace(targetFrameworkName))
+            if (targetFramework == null)
             {
                 return (false, $"Wrong TargetFramework: {targetFrameworkName}");
             }
 
-            var match = Regex.Match(targetFrameworkName, "(?<frameworkName>.+?),\\s*Version\\s*=\\s*v(?<frameworkVersion>\\d+(\\.\\d+)+)", RegexOptions.Compiled);
-
-            if (!match.Success ||
-                !match.Groups["frameworkVersion"].Success ||
-                !match.Groups["frameworkName"].Success ||
-                !Version.TryParse(match.Groups["frameworkVersion"].Value, out var version))
-            {
-                return (false, $"Wrong TargetFramework: {targetFrameworkName}");
-            }
-
-            switch (match.Groups["frameworkName"].Value.ToLowerInvariant())
+            switch (targetFramework.Identifier.ToLowerInvariant())
             {
                 case ".netframework":
-                    return version < new Version(4, 5)
+                    return targetFramework.Version < new Version(4, 5)
                         ? (false, "The .NET Framework with a version lower than 4.5 is not supported.")
                         : (true, "net45");
 
                 case ".netcoreapp":
-                    if (version < new Version(2, 0))
+                    if (targetFramework.Version < new Version(2, 0))
                     {
                         return (false, "The .NET Core with a version lower than 2.0 is not supported.");
                     }
 
-                    if (version < new Version(3, 1))
+                    if (targetFramework.Version < new Version(3, 1))
                     {
                         return (true, "netcoreapp2.0");
                     }
 
-                    return version >= new Version(6, 0)
+                    return targetFramework.Version >= new Version(6, 0)
                         ? (true, "net6.0")
                         : (true, "netcoreapp3.1");
 
                 case ".netstandard":
-                    return version < new Version(2, 0)
+                    return targetFramework.Version < new Version(2, 0)
                         ? (false, "The .NET Standard with a version lower than 2.0 is not supported.")
                         : (true, "netstandard2.0");
 
                 default:
-                    return (false, $"Unsupported TargetFramework: {targetFrameworkName}");
+                    return (false, $"Unsupported TargetFramework: {targetFramework}");
             }
         }
 

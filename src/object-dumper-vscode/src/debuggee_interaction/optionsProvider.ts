@@ -20,22 +20,24 @@ export class OptionsProvider{
 					getPropertiesBindingFlags: this.getBindingFlags(extensionConfiguration.csharp.getPropertiesBindingFlagsModifiers, extensionConfiguration.csharp.getPropertiesBindingFlagsInstanceOrStatic),
 					writablePropertiesOnly: extensionConfiguration.csharp.writablePropertiesOnly,
 					getFieldsBindingFlags: this.getBindingFlags(extensionConfiguration.csharp.getFieldsBindingFlagsModifiers, extensionConfiguration.csharp.getFieldsBindingFlagsInstanceOrStatic),
-					sortDirection: extensionConfiguration.csharp.sortDirection
+					sortDirection: extensionConfiguration.csharp.sortDirection,
+					generateVariableInitializer: extensionConfiguration.csharp.generateVariableInitializer
 				  };
 			}
 			case "vb":{
 				return {
-				  ignoreDefaultValues: extensionConfiguration.vb.ignoreDefaultValues,
-				  ignoreNullValues: extensionConfiguration.vb.ignoreNullValues,
-				  maxDepth: extensionConfiguration.common.maxDepth,
-				  useFullTypeName: extensionConfiguration.vb.useFullTypeName,
-				  dateTimeInstantiation: extensionConfiguration.vb.dateTimeInstantiation,
-				  dateKind: extensionConfiguration.vb.dateKind,
-				  useNamedArgumentsForReferenceRecordTypes: extensionConfiguration.vb.useNamedArgumentsForReferenceRecordTypes,
-				  getPropertiesBindingFlags: this.getBindingFlags(extensionConfiguration.vb.getPropertiesBindingFlagsModifiers, extensionConfiguration.vb.getPropertiesBindingFlagsInstanceOrStatic),
-				  writablePropertiesOnly: extensionConfiguration.vb.writablePropertiesOnly,
-				  getFieldsBindingFlags: this.getBindingFlags(extensionConfiguration.vb.getFieldsBindingFlagsModifiers, extensionConfiguration.vb.getFieldsBindingFlagsInstanceOrStatic),
-				  sortDirection: extensionConfiguration.vb.sortDirection
+					ignoreDefaultValues: extensionConfiguration.vb.ignoreDefaultValues,
+					ignoreNullValues: extensionConfiguration.vb.ignoreNullValues,
+					maxDepth: extensionConfiguration.common.maxDepth,
+					useFullTypeName: extensionConfiguration.vb.useFullTypeName,
+					dateTimeInstantiation: extensionConfiguration.vb.dateTimeInstantiation,
+					dateKind: extensionConfiguration.vb.dateKind,
+					useNamedArgumentsForReferenceRecordTypes: extensionConfiguration.vb.useNamedArgumentsForReferenceRecordTypes,
+					getPropertiesBindingFlags: this.getBindingFlags(extensionConfiguration.vb.getPropertiesBindingFlagsModifiers, extensionConfiguration.vb.getPropertiesBindingFlagsInstanceOrStatic),
+					writablePropertiesOnly: extensionConfiguration.vb.writablePropertiesOnly,
+					getFieldsBindingFlags: this.getBindingFlags(extensionConfiguration.vb.getFieldsBindingFlagsModifiers, extensionConfiguration.vb.getFieldsBindingFlagsInstanceOrStatic),
+					sortDirection: extensionConfiguration.vb.sortDirection,
+					generateVariableInitializer: extensionConfiguration.vb.generateVariableInitializer
 				};
 			}
 			case "json":{
