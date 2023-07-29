@@ -4,7 +4,7 @@
     {
         public string GetTargetFrameworkExpressionText()
         {
-            return "If(System.AppDomain.CurrentDomain?.SetupInformation?.TargetFrameworkName?.StartsWith(\".NETF\") <> False, If(System.AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName, DirectCast(System.Reflection.Assembly.GetExecutingAssembly().GetCustomAttributes(GetType(System.Runtime.Versioning.TargetFrameworkAttribute), True)(0), System.Runtime.Versioning.TargetFrameworkAttribute).FrameworkName), System.AppDomain.CurrentDomain?.SetupInformation?.TargetFrameworkName?.Split(\",\")(0) & \",Version=v\" & System.Environment.Version.ToString)";
+            return "CType(System.Attribute.GetCustomAttribute(If(System.Reflection.Assembly.GetEntryAssembly(), System.Reflection.Assembly.GetExecutingAssembly()), GetType(System.Runtime.Versioning.TargetFrameworkAttribute)), System.Runtime.Versioning.TargetFrameworkAttribute)?.FrameworkName & \";\" & CType(System.Attribute.GetCustomAttribute(System.Reflection.Assembly.GetExecutingAssembly(), GetType(System.Runtime.Versioning.TargetFrameworkAttribute)), System.Runtime.Versioning.TargetFrameworkAttribute)?.FrameworkName";
         }
 
         public string GetIsSerializerInjectedExpressionText()
