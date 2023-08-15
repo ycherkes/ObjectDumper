@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Reflection;
-using Newtonsoft.Json;
 using YAXLib;
 
 namespace YellowFlavor.Serialization.Implementation.Xml
@@ -33,7 +33,7 @@ namespace YellowFlavor.Serialization.Implementation.Xml
             return _wrappedMember.GetCustomAttributes();
         }
 
-        public object GetValue(object obj)
+        public object GetValue(object obj, object[] index)
         {
             var value = _wrappedMember.GetValue(obj);
             if (Type != typeof(DateTime) && Type != typeof(DateTime?))
@@ -51,7 +51,7 @@ namespace YellowFlavor.Serialization.Implementation.Xml
             return value;
         }
 
-        public void SetValue(object obj, object value)
+        public void SetValue(object obj, object value, object[] index)
         {
             _wrappedMember.SetValue(obj, value);
         }

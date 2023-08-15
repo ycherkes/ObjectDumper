@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Xml;
 using YAXLib;
@@ -20,9 +18,9 @@ internal class XmlSerializer : ISerializer
     {
         ExceptionHandlingPolicies = YAXExceptionHandlingPolicies.ThrowErrorsOnly,
         ExceptionBehavior = YAXExceptionTypes.Ignore,
-        SerializationOptions = YAXSerializationOptions.SuppressMetadataAttributes | YAXSerializationOptions.DontSerializeNullObjects | YAXSerializationOptions.DontSerializeDefaultValues,
+        SerializationOptions = YAXSerializationOptions.SuppressMetadataAttributes | YAXSerializationOptions.DontSerializeNullObjects | YAXSerializationOptions.DoNotSerializeDefaultValues,
         MaxRecursion = 25,
-        TypeInspector = new CustomInspector()
+        TypeInspector = new CustomTypeInspector()
     };
 
     private static readonly string XmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine;
@@ -78,11 +76,11 @@ internal class XmlSerializer : ISerializer
 
         if (xmlSettings.IgnoreDefaultValues)
         {
-            newSettings.SerializationOptions |= YAXSerializationOptions.DontSerializeDefaultValues;
+            newSettings.SerializationOptions |= YAXSerializationOptions.DoNotSerializeDefaultValues;
         }
         else
         {
-            newSettings.SerializationOptions ^= YAXSerializationOptions.DontSerializeDefaultValues;
+            newSettings.SerializationOptions ^= YAXSerializationOptions.DoNotSerializeDefaultValues;
         }
 
         var namingStrategy = xmlSettings.NamingStrategy.ToPascalCase();
@@ -96,48 +94,12 @@ internal class XmlSerializer : ISerializer
             _ => throw new InvalidOperationException($"Invalid naming strategy: {namingStrategy}")
         };
 
-        newSettings.TypeInspector = new CustomInspector
+        newSettings.TypeInspector = new CustomTypeInspector
         {
             NamingPolicy = namingStrategyType,
             DateTimeZoneHandling = xmlSettings.DateTimeZoneHandling
         };
 
         return newSettings;
-    }
-
-    private class CustomInspector : DefaultTypeInspector
-    {
-        public override IEnumerable<IMemberDescriptor> GetMembers(Type type, SerializerOptions options, bool includePrivateMembersFromBaseTypes)
-        {
-            var members = base.GetMembers(type, options, includePrivateMembersFromBaseTypes);
-
-            var filteredMembers = members.Where(member =>
-                !string.Equals("Avro.Schema", member.Type.FullName, StringComparison.OrdinalIgnoreCase));
-
-            if (NamingPolicy != null)
-            {
-                filteredMembers = filteredMembers.Select(WrapAndApplyNamingPolicy);
-            }
-
-            return filteredMembers;
-        }
-
-        public override string GetTypeName(Type type, SerializerOptions options)
-        {
-            var typeName = base.GetTypeName(type, options);
-            return NamingPolicy?.Invoke(typeName) ?? typeName;
-        }
-
-        private IMemberDescriptor WrapAndApplyNamingPolicy(IMemberDescriptor filteredMember)
-        {
-            return new MemberWrapper(filteredMember)
-            {
-                Name = NamingPolicy(filteredMember.Name),
-                DateTimeZoneHandling = DateTimeZoneHandling
-            };
-        }
-
-        public Func<string, string> NamingPolicy { get; set; }
-        public DateTimeZoneHandling DateTimeZoneHandling { get; set; }
     }
 }

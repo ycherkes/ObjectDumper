@@ -63,3 +63,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.18]
 - Fix minor dotnet version parsing
 - Fix Yaml serializer's camelCase naming convention instantiation
+
+## [0.0.19]
+- Update VarDump to v 0.2.4 (Version support + generateVariableInitializer option)
+- Add generateVariableInitializer option to vb & c# settings
+
+## [0.0.20]
+- Use [YAXLib](https://github.com/YAXLib/YAXLib) for XML serialization

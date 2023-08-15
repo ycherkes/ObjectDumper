@@ -87,6 +87,12 @@ namespace ObjectDumper.Options
         [DefaultValue(null)]
         public ListSortDirection? CSharpSortDirection { get; set; }
 
+        [Category("C#")]
+        [DisplayName("Generate Variable Initializer")]
+        [Description("Generate Variable Initializer")]
+        [DefaultValue(true)]
+        public bool CSharpGenerateVariableInitializer { get; set; } = true;
+
         [Category("Json")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -195,6 +201,12 @@ namespace ObjectDumper.Options
         [DefaultValue(null)]
         public ListSortDirection? VisualBasicSortDirection { get; set; }
 
+        [Category("Visual Basic")]
+        [DisplayName("Generate Variable Initializer")]
+        [Description("Generate Variable Initializer")]
+        [DefaultValue(true)]
+        public bool VisualBasicGenerateVariableInitializer { get; set; } = true;
+
         [Category("Xml")]
         [DisplayName("Enabled")]
         [Description("Enabled")]
@@ -254,7 +266,8 @@ namespace ObjectDumper.Options
                         GetPropertiesBindingFlags = CSharpGetPropertiesBindingFlags,
                         WritablePropertiesOnly = CSharpWritablePropertiesOnly,
                         GetFieldsBindingFlags = CSharpGetFieldsBindingFlags,
-                        SortDirection = CSharpSortDirection
+                        SortDirection = CSharpSortDirection,
+                        GenerateVariableInitializer = CSharpGenerateVariableInitializer
                     }.ToJson();
                 case "vb":
                     return new
@@ -269,7 +282,8 @@ namespace ObjectDumper.Options
                         GetPropertiesBindingFlags = VisualBasicGetPropertiesBindingFlags,
                         WritablePropertiesOnly = VisualBasicWritablePropertiesOnly,
                         GetFieldsBindingFlags = VisualBasicGetFieldsBindingFlags,
-                        SortDirection = VisualBasicSortDirection
+                        SortDirection = VisualBasicSortDirection,
+                        GenerateVariableInitializer = VisualBasicGenerateVariableInitializer
                     }.ToJson();
                 case "json":
                     return new

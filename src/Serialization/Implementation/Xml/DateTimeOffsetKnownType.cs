@@ -11,7 +11,7 @@ namespace YellowFlavor.Serialization.Implementation.Xml
         public override void Serialize(DateTimeOffset dateTimeOffset, XElement elem, XNamespace overridingNamespace,
             ISerializationContext serializationContext)
         {
-            elem.Add(JsonConvert.ToString(dateTimeOffset).Trim('"'));
+            elem.Add(JsonConvert.ToString(dateTimeOffset, DateFormatHandling.IsoDateFormat).Trim('"'));
         }
 
         public override DateTimeOffset Deserialize(XElement elem, XNamespace overridingNamespace, ISerializationContext serializationContext)
