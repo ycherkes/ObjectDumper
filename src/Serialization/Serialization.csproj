@@ -4,7 +4,7 @@
   </PropertyGroup>
   <Import Project="$(NuGetPackageRoot)ILRepack\2.0.18\build\ILRepack.props" Condition="Exists('$(NuGetPackageRoot)ILRepack\2.0.18\build\ILRepack.props') And '$(IlRepackImported)' == ''" />
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard2.0;netcoreapp2.0;netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>net471;netstandard2.0;netcoreapp2.0;netcoreapp3.1;net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <AssemblyName>YellowFlavor.Serialization</AssemblyName>
     <AssemblyVersion>0.0.0.88</AssemblyVersion>
@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
-    <AssemblyTitle>YellowFlavor.Serialization .NET 4.6.1</AssemblyTitle>
+    <AssemblyTitle>YellowFlavor.Serialization .NET 4.7.1</AssemblyTitle>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
@@ -43,10 +43,15 @@
     <AssemblyTitle>YellowFlavor.Serialization Standard 2.0</AssemblyTitle>
   </PropertyGroup>
 
+	<!--<ItemGroup Condition="'$(TargetFramework)'=='net461'">
+	  <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>-->
+
   <ItemGroup>
+    <PackageReference Include="Dumpify" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="VarDump" Version="0.2.5" />
-    <PackageReference Include="YamlDotNet" Version="13.1.1" />
+    <PackageReference Include="YamlDotNet" Version="13.2.0" />
     <PackageReference Include="ILRepack" Version="2.0.18" PrivateAssets="All" />
     <PackageReference Include="YAXLib" Version="4.2.0" />
   </ItemGroup>

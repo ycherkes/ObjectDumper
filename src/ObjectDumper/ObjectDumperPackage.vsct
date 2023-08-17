@@ -70,7 +70,18 @@
           <ButtonText>Dump As Json</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsXmlCommandId" priority="0x0300" type="Button">
+      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsTxtCommandId" priority="0x0300" type="Button">
+        <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="TextFile" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Dump As Text</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsXmlCommandId" priority="0x0400" type="Button">
         <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="XMLFile" />
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -81,7 +92,7 @@
           <ButtonText>Dump As Xml</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsVbCommandId" priority="0x0400" type="Button">
+      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsVbCommandId" priority="0x0500" type="Button">
         <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="VBFileNode" />
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -92,7 +103,7 @@
           <ButtonText>Dump As Vb</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsYamlCommandId" priority="0x0500" type="Button">
+      <Button guid="guidObjectDumperPackageCmdSet" id="DumpAsYamlCommandId" priority="0x0600" type="Button">
         <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="3775" />
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -112,6 +123,8 @@
         mod1="CONTROL" key1="E" key2="J" editor="guidVSStd97" />
     <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsXmlCommandId"
         mod1="CONTROL" key1="E" key2="X" editor="guidVSStd97" />
+    <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsTxtCommandId"
+                mod1="CONTROL" key1="E" key2="O" editor="guidVSStd97" />
     <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsVbCommandId"
         mod1="CONTROL" key1="E" key2="V" editor="guidVSStd97" />
     <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsYamlCommandId"
@@ -126,9 +139,10 @@
       <IDSymbol name="DumpAsSubMenu" value="0x1200"/>
       <IDSymbol name="DumpAsCSharpCommandId" value="0x0100" />
       <IDSymbol name="DumpAsJsonCommandId" value="0x0200" />
-      <IDSymbol name="DumpAsXmlCommandId" value="0x0300" />
-      <IDSymbol name="DumpAsVbCommandId" value="0x0400" />
-      <IDSymbol name="DumpAsYamlCommandId" value="0x0500" />
+      <IDSymbol name="DumpAsTxtCommandId" value="0x0300" />
+      <IDSymbol name="DumpAsXmlCommandId" value="0x0400" />
+      <IDSymbol name="DumpAsVbCommandId" value="0x0500" />
+      <IDSymbol name="DumpAsYamlCommandId" value="0x0600" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

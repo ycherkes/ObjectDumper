@@ -249,6 +249,12 @@ namespace ObjectDumper.Options
         [DefaultValue(NamingConvention.Null)]
         public NamingConvention YamlNamingConvention { get; set; } = NamingConvention.Null;
 
+        [Category("Text")]
+        [DisplayName("Enabled")]
+        [Description("Enabled")]
+        [DefaultValue(true)]
+        public bool TxtEnabled { get; set; } = true;
+
         public string ToJson(string format)
         {
             switch (format)
@@ -310,6 +316,11 @@ namespace ObjectDumper.Options
                     {
                         MaxDepth = CommonMaxDepth,
                         NamingConvention = YamlNamingConvention
+                    }.ToJson();
+                case "txt":
+                    return new
+                    {
+                        MaxDepth = CommonMaxDepth
                     }.ToJson();
                 default:
                     return new object().ToJson();

@@ -13,7 +13,8 @@ namespace YellowFlavor.Serialization
             {"cs", new CSharpSerializer()},
             {"vb", new VisualBasicSerializer()},
             {"xml", new XmlSerializer()},
-            {"yaml", new YamlSerializer()}
+            {"yaml", new YamlSerializer()},
+            {"txt", new TextSerializer()}
         };
 
         public static string Serialize(object obj, string format, string settings = null)

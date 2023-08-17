@@ -87,9 +87,9 @@ namespace ObjectDumper.DebuggeeInteraction
             switch (targetFramework.Identifier.ToLowerInvariant())
             {
                 case ".netframework":
-                    return targetFramework.Version < new Version(4, 6, 1)
-                        ? (false, "The .NET Framework with a version lower than 4.6.1 is not supported.")
-                        : (true, "net461");
+                    return targetFramework.Version < new Version(4, 7, 1)
+                        ? (false, "The .NET Framework with a version lower than 4.7.1 is not supported.")
+                        : (true, "net471");
 
                 case ".netcoreapp":
                     if (targetFramework.Version < new Version(2, 0))

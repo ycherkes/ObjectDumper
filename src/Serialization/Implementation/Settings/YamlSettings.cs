@@ -1,7 +1,7 @@
 ﻿namespace YellowFlavor.Serialization.Implementation.Settings;
 
-internal class YamlSettings
+internal class TextSettings
 {
     public int MaxDepth { get; set; } = 25;
-    public string NamingConvention { get; set; } = "Null";
+    public string Label { get; set; }
 }

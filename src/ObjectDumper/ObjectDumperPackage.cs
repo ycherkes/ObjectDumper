@@ -83,19 +83,26 @@ namespace ObjectDumper
                 (
                     commandId: 0x0300,
                     commandHelper,
+                    commandFormat: "txt",
+                    commandConfigEnabledFunc: () => _optionsPage.TxtEnabled
+                ),
+                new DumpAsCommand
+                (
+                    commandId: 0x0400,
+                    commandHelper,
                     commandFormat: "xml",
                     commandConfigEnabledFunc: () => _optionsPage.XmlEnabled
                 ),
                 new DumpAsCommand
                 (
-                    commandId: 0x0400,
+                    commandId: 0x0500,
                     commandHelper,
                     commandFormat: "vb",
                     commandConfigEnabledFunc: () => _optionsPage.VisualBasicEnabled
                 ),
                 new DumpAsCommand
                 (
-                    commandId: 0x0500,
+                    commandId: 0x0600,
                     commandHelper,
                     commandFormat: "yaml",
                     commandConfigEnabledFunc: () => _optionsPage.YamlEnabled
