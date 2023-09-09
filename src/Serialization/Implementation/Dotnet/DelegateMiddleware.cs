@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using VarDump.Visitor.Descriptors;
+using VarDumpExtended.Visitor.Descriptors;
 
 namespace YellowFlavor.Serialization.Implementation.Dotnet
 {

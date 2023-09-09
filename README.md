@@ -1,6 +1,6 @@
 # [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7&style=for-the-badge)](https://stand-with-ukraine.pp.ua) [Stand with the people of Ukraine: How to Help](https://stand-with-ukraine.pp.ua)
 
-<img src="https://yevhencherkes.gallerycdn.vsassets.io/extensions/yevhencherkes/yellowflavorobjectdumper/0.0.0.64/1665328424655/Microsoft.VisualStudio.Services.Icons.Default" width="100" height="100" />
+<img src="https://yevhencherkes.gallerycdn.vsassets.io/extensions/yevhencherkes/yellowflavorobjectdumper/0.0.0.88/1665328424655/Microsoft.VisualStudio.Services.Icons.Default" width="100" height="100" />
 
 # Object Dumper
 
@@ -31,12 +31,12 @@ The result is shown in a separate document window.
 - How to compare two dumped objects:
   1. Enable option "Show Miscellaneous files in Solution Explorer":
   ![image](https://user-images.githubusercontent.com/13467759/173348566-e5768350-321a-4fbd-85fc-10e3a366a5ae.png)
-  2. Install a diff extension - I verified the [Heku.VsDiff](https://marketplace.visualstudio.com/items?itemName=Heku.VsDiff2022)
-  3. Select files in Solution Explorer under the Miscellaneous Files folder -> Right click -> Compare Selected Files:
+  2. If you use Visual Studio 17.7 or above - just skip this step (it's an embedded), otherwise install a diff extension - I verified the [Heku.VsDiff](https://marketplace.visualstudio.com/items?itemName=Heku.VsDiff2022)
+  3. Select files in Solution Explorer under the Miscellaneous Files folder -> Right click -> Compare Selected(Files):
   ![image](https://user-images.githubusercontent.com/13467759/173349566-518f89e1-9d21-4ab6-a4e1-da2dc86e3a78.png)
 
 
-### Known restrictions:
+### Known limitations:
 - [C#, F# and VisualBasic](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper/DebuggeeInteraction/InteractionService.cs#L25-L30) project languages are currently supported only.
 - netstandard 2.0+, netcore2.0+, netframework 4.5+
 - if you are debugging the solution in **Release mode** or debuging DLLs from another source, such as a nuget package, you'll get an error message: "Cannot evaluate expression because the code of the current method is optimized" or "error CS0103: The name 'YellowFlavor' does not exist in the current context". Solution: switch to **Debug mode** or turn the [Tools > Options > Debugging > General > Suppress JIT optimization on module load](https://learn.microsoft.com/en-us/visualstudio/debugger/jit-optimization-and-debugging?view=vs-2022#the-suppress-jit-optimization-on-module-load-managed-only-option) option on.
