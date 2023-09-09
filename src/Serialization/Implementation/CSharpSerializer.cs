@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.Reflection;
-using VarDump;
-using VarDump.Visitor;
+using VarDumpExtended;
+using VarDumpExtended.Visitor;
+using VarDumpExtended.Visitor.KnownTypes;
 using YellowFlavor.Serialization.Implementation.Dotnet;
 using YellowFlavor.Serialization.Implementation.Settings;
 
@@ -27,7 +29,12 @@ namespace YellowFlavor.Serialization.Implementation
             MaxDepth = 25,
             UseNamedArgumentsForReferenceRecordTypes = false,
             UseTypeFullName = false,
-            WritablePropertiesOnly = true
+            WritablePropertiesOnly = true,
+            ConfigureKnownTypes = (knownTypes, visitor, opts) =>
+            {
+                var serviceDescriptorKnownObject = new ServiceDescriptorKnownObject(visitor, opts);
+                knownTypes.Add(new KeyValuePair<string, IKnownObjectVisitor>(serviceDescriptorKnownObject.Id, serviceDescriptorKnownObject));
+            }
         };
 
         public string Serialize(object obj, string settings)

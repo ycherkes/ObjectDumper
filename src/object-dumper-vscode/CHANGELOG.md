@@ -67,3 +67,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.19]
 - Update VarDump to v 0.2.4 (Version support + generateVariableInitializer option)
 - Add generateVariableInitializer option to vb & c# settings
+
+## [0.0.20]
+- Update YamlDotNet to v 13.3.1.
+- Update VarDump to VarDumpExtended v 0.2.6 (improved DateTime serialization, added DependencyInjection.ServiceDescriptor serialization).
