@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ObjectDumper")]
-[assembly: AssemblyCopyright("Yevhen Cherkes 2022 - present")]
+[assembly: AssemblyCopyright("Yevhen Cherkes 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
