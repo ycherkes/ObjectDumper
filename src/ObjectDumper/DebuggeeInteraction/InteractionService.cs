@@ -126,7 +126,16 @@ namespace ObjectDumper.DebuggeeInteraction
             }
 
             var settings = _optionsPage.ToJson(format).ToBase64();
+            var noSideEffectMatch = Regex.Match(expression, ",\\s+nse", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            if (noSideEffectMatch.Success)
+            {
+                expression = expression.Substring(0, noSideEffectMatch.Index);
+            }
             var serializeExpressionText = expressionComposer.GetSerializedValueExpressionText(expression, format, settings);
+            if (noSideEffectMatch.Success)
+            {
+                serializeExpressionText += ", nse";
+            }
             var evaluationResult = _debugger.GetExpression(serializeExpressionText, Timeout: _optionsPage.CommonOperationTimeoutSeconds * 1000);
             var trimmedValue = evaluationResult.Value.Trim('"');
 
