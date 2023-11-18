@@ -132,7 +132,7 @@ namespace ObjectDumper.DebuggeeInteraction
 
             if (evaluationResult.IsValidValue)
             {
-                return trimmedValue.Base64Decode();
+                return GetTextFromFile(trimmedValue);
             }
 
             trimmedValue = Regex.Unescape(trimmedValue);
@@ -145,6 +145,27 @@ namespace ObjectDumper.DebuggeeInteraction
             }
 
             return trimmedValue;
+        }
+
+        private static string GetTextFromFile(string fileName)
+        {
+            var tempFolderPAth = Path.GetTempPath();
+            var fullPath = Path.Combine(tempFolderPAth, fileName);
+            try
+            {
+                return File.ReadAllText(fullPath);
+            }
+            finally
+            {
+                try
+                {
+                    File.Delete(fullPath);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
         }
 
         private bool IsSerializerInjected(IExpressionProvider expressionProvider)
