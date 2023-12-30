@@ -103,6 +103,17 @@
           <ButtonText>Dump As Yaml</ButtonText>
         </Strings>
       </Button>
+	    <Button guid="guidObjectDumperPackageCmdSet" id="ReplayLastDumpCommandId" priority="0x0600" type="Button">
+		    <Parent guid="guidObjectDumperPackageCmdSet" id="DumpAsSubMenuGroup" />
+		    <Icon guid="ImageCatalogGuid" id="Restart" />
+		    <CommandFlag>DefaultInvisible</CommandFlag>
+		    <CommandFlag>DynamicVisibility</CommandFlag>
+		    <CommandFlag>IconAndText</CommandFlag>
+		    <CommandFlag>IconIsMoniker</CommandFlag>
+		    <Strings>
+			    <ButtonText>Replay Last Command</ButtonText>
+		    </Strings>
+	    </Button>
     </Buttons>
   </Commands>
   <KeyBindings>
@@ -116,6 +127,8 @@
         mod1="CONTROL" key1="E" key2="V" editor="guidVSStd97" />
     <KeyBinding guid="guidObjectDumperPackageCmdSet" id="DumpAsYamlCommandId"
         mod1="CONTROL" key1="E" key2="Y" editor="guidVSStd97" />
+    <KeyBinding guid="guidObjectDumperPackageCmdSet" id="ReplayLastDumpCommandId"
+                mod1="CONTROL" key1="E" key2="R" editor="guidVSStd97" />
   </KeyBindings>
   <Symbols>
     <GuidSymbol name="guidObjectDumperPackage" value="{75562b3a-ff38-4ad7-94f8-dc7f08140914}" />
@@ -129,6 +142,7 @@
       <IDSymbol name="DumpAsXmlCommandId" value="0x0300" />
       <IDSymbol name="DumpAsVbCommandId" value="0x0400" />
       <IDSymbol name="DumpAsYamlCommandId" value="0x0500" />
+	  <IDSymbol name="ReplayLastDumpCommandId" value="0x0600" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

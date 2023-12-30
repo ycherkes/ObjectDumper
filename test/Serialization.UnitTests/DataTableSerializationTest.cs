@@ -1,3 +1,4 @@
+using Serialization.UnitTests.Extensions;
 using Serialization.UnitTests.TestModel;
 using System.Data;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -62,7 +63,7 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(products, null);
 
-            Assert.Equal(@"", result);
+            Assert.Equal("", result);
         }
     }
 }

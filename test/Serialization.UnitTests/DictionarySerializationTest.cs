@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Serialization.UnitTests.Extensions;
 using Serialization.UnitTests.TestModel;
 using System.Collections.Immutable;
 using YellowFlavor.Serialization.Implementation;

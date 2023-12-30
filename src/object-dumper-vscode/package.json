@@ -3,7 +3,7 @@
   "displayName": "Object Dumper",
   "description": "Extension for exporting in-memory objects during debugging to C#, JSON, VB, XML, and YAML string.",
   "publisher": "YevhenCherkes",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "repository": {
     "url": "https://github.com/ycherkes/ObjectDumper"
   },

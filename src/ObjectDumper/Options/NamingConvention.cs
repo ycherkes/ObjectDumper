@@ -1,12 +1,11 @@
-﻿namespace ObjectDumper.Options
+﻿namespace ObjectDumper.Options;
+
+public enum NamingConvention
 {
-    public enum NamingConvention
-    {
-        CamelCase,
-        Hyphenated,
-        LowerCase,
-        Null,
-        PascalCase,
-        Underscored
-    }
+    CamelCase,
+    Hyphenated,
+    LowerCase,
+    Null,
+    PascalCase,
+    Underscored
 }

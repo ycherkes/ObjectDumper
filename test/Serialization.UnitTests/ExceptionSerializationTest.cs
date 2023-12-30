@@ -1,4 +1,5 @@
-﻿using YellowFlavor.Serialization.Implementation;
+﻿using Serialization.UnitTests.Extensions;
+using YellowFlavor.Serialization.Implementation;
 
 namespace Serialization.UnitTests
 {
