@@ -9,12 +9,12 @@ internal class VisualBasicExpressionProvider : IExpressionProvider
 
     public string GetIsSerializerInjectedExpressionText()
     {
-        return "NameOf(YellowFlavor.Serialization.ObjectSerializer.Serialize)";
+        return "NameOf(YellowFlavor.Serialization.ObjectSerializer.SerializeToTempFile)";
     }
 
     public string GetSerializedValueExpressionText(string expression, string format, string settings)
     {
-        return $@"YellowFlavor.Serialization.ObjectSerializer.Serialize({expression}, ""{format}"", ""{settings}"")";
+        return $"""YellowFlavor.Serialization.ObjectSerializer.SerializeToTempFile({expression}, "{format}", "{settings}")""";
     }
 
     public string GetLoadAssemblyExpressionText(string serializerFileName)

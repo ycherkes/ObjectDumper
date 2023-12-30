@@ -14,7 +14,7 @@ internal class CSharpFSharpExpressionProvider : IExpressionProvider
 
     public string GetSerializedValueExpressionText(string expression, string format, string settings)
     {
-        return $@"YellowFlavor.Serialization.ObjectSerializer.SerializeToTempFile({expression}, ""{format}"", ""{settings}"")";
+        return $"""YellowFlavor.Serialization.ObjectSerializer.SerializeToTempFile({expression}, "{format}", "{settings}")""";
     }
 
     public string GetLoadAssemblyExpressionText(string serializerFileName)
