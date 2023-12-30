@@ -25,7 +25,7 @@ The result will be output to a separate document window or copied to the clipboa
 
 # Configurable:
 
-![image](https://github.com/ycherkes/ObjectDumper/assets/13467759/01272bda-408a-491b-8db5-d4fb40a77be1)
+![image](https://github.com/ycherkes/ObjectDumper/assets/13467759/9c592cca-2253-4e05-abea-f7a2385cfad2)
 
 # Quick tips:
 - How to compare two dumped objects:
