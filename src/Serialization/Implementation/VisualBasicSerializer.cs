@@ -1,70 +1,69 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
-using VarDumpExtended;
-using VarDumpExtended.Visitor;
-using VarDumpExtended.Visitor.KnownTypes;
+using VarDump;
+using VarDump.Visitor;
+using VarDump.Visitor.KnownTypes;
 using YellowFlavor.Serialization.Implementation.Dotnet;
 using YellowFlavor.Serialization.Implementation.Settings;
 
-namespace YellowFlavor.Serialization.Implementation
+namespace YellowFlavor.Serialization.Implementation;
+
+internal class VisualBasicSerializer : ISerializer
 {
-    internal class VisualBasicSerializer : ISerializer
+    private static DumpOptions VisualBasicDumpOptions => new()
     {
-        private static DumpOptions VisualBasicDumpOptions => new()
+        DateKind = DateKind.Original,
+        DateTimeInstantiation = DateTimeInstantiation.Parse,
+        Descriptors =
         {
-            DateKind = DateKind.Original,
-            DateTimeInstantiation = DateTimeInstantiation.Parse,
-            Descriptors =
-            {
-                new DelegateMiddleware(),
-                new MemberInfoMiddleware(),
-                new FileSystemInfoMiddleware()
-            },
-            ExcludeTypes = new[] { "Avro.Schema" },
-            GenerateVariableInitializer = true,
-            GetPropertiesBindingFlags = BindingFlags.Instance | BindingFlags.Public,
-            IgnoreDefaultValues = true,
-            IgnoreNullValues = true,
-            MaxDepth = 25,
-            UseNamedArgumentsForReferenceRecordTypes = false,
-            UseTypeFullName = false,
-            WritablePropertiesOnly = true,
-            ConfigureKnownTypes = (knownTypes, visitor, opts) =>
-            {
-                var serviceDescriptorKnownObject = new ServiceDescriptorKnownObject(visitor, opts);
-                knownTypes.Add(new KeyValuePair<string, IKnownObjectVisitor>(serviceDescriptorKnownObject.Id, serviceDescriptorKnownObject));
-            }
-        };
-
-        public string Serialize(object obj, string settings)
+            new DelegateMiddleware(),
+            new MemberInfoMiddleware(),
+            new FileSystemInfoMiddleware()
+        },
+        ExcludeTypes = new[] { "Avro.Schema" },
+        GenerateVariableInitializer = true,
+        GetPropertiesBindingFlags = BindingFlags.Instance | BindingFlags.Public,
+        IgnoreDefaultValues = true,
+        IgnoreNullValues = true,
+        MaxDepth = 25,
+        UseNamedArgumentsForReferenceRecordTypes = false,
+        UseTypeFullName = false,
+        WritablePropertiesOnly = true,
+        ConfigureKnownTypes = (knownTypes, visitor, opts) =>
         {
-            var dumpOptions = GetVbDumpOptions(settings);
-            var dumper = new VisualBasicDumper(dumpOptions);
-            var result = dumper.Dump(obj);
-            return result;
+            var serviceDescriptorKnownObject = new ServiceDescriptorKnownObject(visitor, opts);
+            knownTypes.Add(new KeyValuePair<string, IKnownObjectVisitor>(serviceDescriptorKnownObject.Id, serviceDescriptorKnownObject));
         }
+    };
 
-        private static DumpOptions GetVbDumpOptions(string settings)
-        {
-            var newSettings = VisualBasicDumpOptions;
-            if (settings == null) return newSettings;
+    public void Serialize(object obj, string settings, TextWriter textWriter)
+    {
+        var dumpOptions = GetVbDumpOptions(settings);
+        var dumper = new VisualBasicDumper(dumpOptions);
+        dumper.Dump(obj, textWriter);
+    }
 
-            var vbSettings = JsonConvert.DeserializeObject<VbSettings>(settings);
-            newSettings.IgnoreDefaultValues = vbSettings.IgnoreDefaultValues;
-            newSettings.IgnoreNullValues = vbSettings.IgnoreNullValues;
-            newSettings.UseTypeFullName = vbSettings.UseFullTypeName;
-            newSettings.MaxDepth = vbSettings.MaxDepth;
-            newSettings.DateTimeInstantiation = vbSettings.DateTimeInstantiation;
-            newSettings.DateKind = vbSettings.DateKind;
-            newSettings.UseNamedArgumentsForReferenceRecordTypes = vbSettings.UseNamedArgumentsForReferenceRecordTypes;
-            newSettings.GetPropertiesBindingFlags = vbSettings.GetPropertiesBindingFlags;
-            newSettings.WritablePropertiesOnly = vbSettings.WritablePropertiesOnly;
-            newSettings.GetFieldsBindingFlags = vbSettings.GetFieldsBindingFlags;
-            newSettings.SortDirection = vbSettings.SortDirection;
-            newSettings.GenerateVariableInitializer = vbSettings.GenerateVariableInitializer;
+    private static DumpOptions GetVbDumpOptions(string settings)
+    {
+        var newSettings = VisualBasicDumpOptions;
+        if (settings == null) return newSettings;
 
-            return newSettings;
-        }
+        var vbSettings = JsonConvert.DeserializeObject<VbSettings>(settings);
+        newSettings.IgnoreDefaultValues = vbSettings.IgnoreDefaultValues;
+        newSettings.IgnoreNullValues = vbSettings.IgnoreNullValues;
+        newSettings.UseTypeFullName = vbSettings.UseFullTypeName;
+        newSettings.MaxDepth = vbSettings.MaxDepth;
+        newSettings.DateTimeInstantiation = vbSettings.DateTimeInstantiation;
+        newSettings.DateKind = vbSettings.DateKind;
+        newSettings.UseNamedArgumentsForReferenceRecordTypes = vbSettings.UseNamedArgumentsForReferenceRecordTypes;
+        newSettings.GetPropertiesBindingFlags = vbSettings.GetPropertiesBindingFlags;
+        newSettings.WritablePropertiesOnly = vbSettings.WritablePropertiesOnly;
+        newSettings.GetFieldsBindingFlags = vbSettings.GetFieldsBindingFlags;
+        newSettings.SortDirection = vbSettings.SortDirection;
+        newSettings.GenerateVariableInitializer = vbSettings.GenerateVariableInitializer;
+
+        return newSettings;
     }
 }

@@ -18,16 +18,16 @@ export class TempFile {
         return new TempFile({ contents, baseFilename, extension });
     }
 
-    public static fromExistingFile(existingFilePath: string): TempFile {
+    public static fromExistingFile(existingFilePath: string, shouldDelete: boolean): TempFile {
         assert(fs.existsSync(existingFilePath), `TempFile: Couldn't find path ${existingFilePath}`);
-        return new TempFile({ path: existingFilePath });
+        return new TempFile({ path: existingFilePath, shouldDelete: shouldDelete });
     }
 
-    private constructor(args: { path: string } | { contents: string; baseFilename?: string; extension?: string }) {
+    private constructor(args: { path: string; shouldDelete: boolean } | { contents: string; baseFilename?: string; extension?: string }) {
         if ("path" in args) {
             // Use an existing file
             this.fsPath = args.path;
-            this.shouldDelete = false;
+            this.shouldDelete = args.shouldDelete;
         } else {
             // Create temp file from contents
             this.fsPath = getTempFilePath(args.baseFilename, args.extension);

@@ -1,3 +1,4 @@
+using Serialization.UnitTests.Extensions;
 using System.Collections.Immutable;
 using YellowFlavor.Serialization.Implementation;
 

@@ -4,6 +4,18 @@
     <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|arm64'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|arm64'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -35,6 +47,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,21 +56,32 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Commands\DisposableMenuCommand.cs" />
+    <Compile Include="Commands\ReplayDumpAsCommand.cs" />
     <Compile Include="Commands\DumpAsCommand.cs" />
     <Compile Include="DebuggeeInteraction\ExpressionProviders\VisualBasicExpressionProvider.cs" />
     <Compile Include="DebuggeeInteraction\ExpressionProviders\CSharpFSharpExpressionProvider.cs" />
     <Compile Include="DebuggeeInteraction\ExpressionProviders\IExpressionProvider.cs" />
+    <Compile Include="Debugger\DebuggerEvents.cs" />
     <Compile Include="Extensions\Base64Extensions.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="DebuggeeInteraction\InteractionService.cs" />
+    <Compile Include="Notifications\StatusBarHelper.cs" />
     <Compile Include="Options\DateTimeOptions.cs" />
+    <Compile Include="Options\DumpDestination.cs" />
     <Compile Include="Options\NamingConvention.cs" />
     <Compile Include="Options\NamingStrategy.cs" />
     <Compile Include="Options\ObjectDumperOptionPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Output\DumpToClipboard.cs" />
+    <Compile Include="Output\DumpToNewDocumentTab.cs" />
+    <Compile Include="Output\IDumpOutput.cs" />
+    <Compile Include="Recording\CommandRecorder.cs" />
+    <Compile Include="Recording\RecordedCommand.cs" />
     <Compile Include="Utils\ShellUtils.cs" />
     <Compile Include="ObjectDumperPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,6 +151,7 @@
   <ItemGroup>
     <EmbeddedResource Include="VSPackage.resx" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

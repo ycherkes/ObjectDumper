@@ -3,85 +3,59 @@ using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using ObjectDumper.DebuggeeInteraction;
 using ObjectDumper.Options;
+using ObjectDumper.Output;
 using ObjectDumper.Utils;
 using System;
-using System.IO;
-using System.Linq;
+using Microsoft.VisualStudio.Shell.Interop;
+using ObjectDumper.Recording;
 using Constants = EnvDTE.Constants;
+using ObjectDumper.Notifications;
 
-namespace ObjectDumper.Commands
+namespace ObjectDumper.Commands;
+
+internal class DumpAsCommandHelper(
+    DTE2 dte,
+    IServiceProvider serviceProvider,
+    ObjectDumperOptionPage optionPage,
+    CommandRecorder commandRecorder,
+    IVsStatusbar statusBar)
 {
-    internal class DumpAsCommandHelper
+    private const string ImmediateWindowObjectKind = "{ECB7191A-597B-41F5-9843-03A4CF275DDE}";
+    private readonly DTE2 _dte = dte ?? throw new ArgumentNullException(nameof(dte));
+    private readonly InteractionService _interactionService = new(dte.Debugger, optionPage);
+    private readonly IServiceProvider _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+    private readonly IVsStatusbar _statusBar = statusBar ?? throw new ArgumentNullException(nameof(statusBar));
+
+    public bool IsCommandAvailable()
     {
-        private const string ImmediateWindowObjectKind = "{ECB7191A-597B-41F5-9843-03A4CF275DDE}";
-        private readonly DTE2 _dte;
-        private readonly InteractionService _interactionService;
-        private readonly IServiceProvider _serviceProvider;
+        ThreadHelper.ThrowIfNotOnUIThread();
 
-        public DumpAsCommandHelper(DTE2 dte, IServiceProvider serviceProvider, ObjectDumperOptionPage optionPage)
+        return _dte.Debugger is { CurrentMode: dbgDebugMode.dbgBreakMode, CurrentStackFrame: not null }
+               && _dte.ActiveWindow.ObjectKind is Constants.vsDocumentKindText or ImmediateWindowObjectKind;
+
+    }
+
+    public void ExecuteCommand(string format, IDumpOutput dumpOutput)
+    {
+        ThreadHelper.ThrowIfNotOnUIThread();
+
+        var (success, selectionText) = TextViewUtils.GetSelectedText(_serviceProvider);
+
+        if (!success)
         {
-            _dte = dte ?? throw new ArgumentNullException(nameof(dte));
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _interactionService = new InteractionService(dte.Debugger, optionPage);
+            return;
         }
 
-        public bool IsCommandAvailable()
+        var recordedCommand = new RecordedCommand
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            Format = format,
+            SelectionText = selectionText,
+            DumpOutput = dumpOutput,
+            InteractionService = _interactionService
+        };
 
-            return _dte.Debugger != null
-                && _dte.Debugger.CurrentMode == dbgDebugMode.dbgBreakMode
-                && _dte.Debugger.CurrentStackFrame != null
-                && (_dte.ActiveWindow.ObjectKind == Constants.vsDocumentKindText ||
-                    _dte.ActiveWindow.ObjectKind == ImmediateWindowObjectKind);
+        commandRecorder.SetCommand(recordedCommand);
 
-        }
-
-        public void ExecuteCommand(string format)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            var (success, selectionText) = TextViewUtils.GetSelectedText(_serviceProvider);
-
-            if (!success)
-            {
-                return;
-            }
-
-            var (isInjected, injectionEvaluationResult) = _interactionService.InjectSerializer();
-
-            var fileName = SanitizeFileName(selectionText.Any(char.IsWhiteSpace) ? "expression" : selectionText);
-
-            var fileContent = isInjected
-                ? _interactionService.GetSerializedValue(selectionText, format)
-                : injectionEvaluationResult;
-
-            var fileExtension = $".{format}";
-
-            CreateNewFile($"{fileName}{fileExtension}", fileContent);
-        }
-
-        private static string SanitizeFileName(string fileName)
-        {
-            var invalids = Path.GetInvalidFileNameChars();
-            return invalids.Aggregate(fileName, (current, c) => current.Replace(c, '_'));
-        }
-
-        private void CreateNewFile(string fileName, string fileContent)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            var newFileWindow = _dte.ItemOperations.NewFile(Name: fileName);
-            var newDocument = newFileWindow.Document;
-
-            if (!string.IsNullOrEmpty(fileContent))
-            {
-                var selection = (TextSelection)newDocument.Selection;
-                selection?.Insert(fileContent);
-                selection?.StartOfDocument();
-            }
-
-            newDocument.Save();
-        }
+        recordedCommand.Run((currentStep, numberOfSteps, statusText) => _statusBar.ShowProgress(statusText, currentStep, numberOfSteps));
     }
 }

@@ -32,18 +32,18 @@ export class InteractionService {
             return evaluationResult;
         }
 
-        public async getSerializedValue(expression: string, language: string): Promise<string>
+        public async getSerializedValue(expression: string, language: string, filePath: string): Promise<[isValid: boolean, data: string]>
         {
             const options = this.optionsProvider.getOptions(language);
             const optionsJson = JSON.stringify(options);
             const base64Options = Buffer.from(optionsJson, 'binary').toString('base64');
-            const serializeExpressionText = this.expressionProvider.getSerializedValueExpressionText(expression, language, base64Options);
+            const serializeExpressionText = this.expressionProvider.getSerializedValueExpressionText(expression, language, filePath, base64Options);
             const [value, isValidValue] = await this.expressionEvaluator.evaluateExpression(serializeExpressionText);
             var trimmedValue = value.replace(/^"(.*)"$/, '$1');
 
             return isValidValue
-                ? Buffer.from(trimmedValue, 'base64').toString('binary')
-                : trimmedValue;
+                ? [true, trimmedValue]
+                : [false, trimmedValue];
         }
 
         private async isSerializerInjected(): Promise<boolean>
