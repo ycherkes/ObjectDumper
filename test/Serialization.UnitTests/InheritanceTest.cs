@@ -1,3 +1,4 @@
+using Serialization.UnitTests.Extensions;
 using YellowFlavor.Serialization.Implementation;
 
 namespace Serialization.UnitTests
@@ -24,7 +25,7 @@ namespace Serialization.UnitTests
 {
     FirstName = ""Boris"",
     LastName = ""Johnson"",
-    BirthDate = new DateTime(1964, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc)
+    BirthDate = DateTime.ParseExact(""1964-06-19T00:00:00.0000000Z"", ""O"", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)
 };
 ", result);
         }
@@ -47,7 +48,7 @@ namespace Serialization.UnitTests
 @"Dim personValue = New Person With {
     .FirstName = ""Boris"",
     .LastName = ""Johnson"",
-    .BirthDate = New Date(1964, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc)
+    .BirthDate = Date.ParseExact(""1964-06-19T00:00:00.0000000Z"", ""O"", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)
 }
 ", result);
         }

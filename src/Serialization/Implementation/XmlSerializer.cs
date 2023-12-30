@@ -4,6 +4,7 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -12,142 +13,142 @@ using YellowFlavor.Serialization.Extensions;
 using YellowFlavor.Serialization.Implementation.Json;
 using YellowFlavor.Serialization.Implementation.Settings;
 
-namespace YellowFlavor.Serialization.Implementation
+namespace YellowFlavor.Serialization.Implementation;
+
+internal class XmlSerializer : ISerializer
 {
-    internal class XmlSerializer : ISerializer
+    private static readonly JsonConverter StringEnumConverter = new StringEnumConverter();
+    private static JsonSerializerSettings XmlSettings => new()
     {
-        private static readonly JsonConverter StringEnumConverter = new StringEnumConverter();
-        private static JsonSerializerSettings XmlSettings => new()
+        NullValueHandling = NullValueHandling.Ignore,
+        DefaultValueHandling = DefaultValueHandling.Ignore,
+        ContractResolver = new SpecificContractResolver
         {
-            NullValueHandling = NullValueHandling.Ignore,
-            DefaultValueHandling = DefaultValueHandling.Ignore,
-            ContractResolver = new SpecificContractResolver
+            ExcludeTypes = ["Avro.Schema"]
+        },
+        Converters = { StringEnumConverter, new IpAddressConverter() },
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+        MaxDepth = 25
+    };
+
+    public void Serialize(object obj, string settings, TextWriter textWriter)
+    {
+        var xmlSettings = GetXmlSettings(settings);
+        var useFullTypeName = xmlSettings.TypeNameHandling == TypeNameHandling.All;
+        xmlSettings.TypeNameHandling = TypeNameHandling.None;
+        var xml = $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{Environment.NewLine}{GetXml(obj, xmlSettings, useFullTypeName)}";
+        textWriter.Write(xml);
+    }
+
+    private static JsonSerializerSettings GetXmlSettings(string settings)
+    {
+        var newSettings = XmlSettings;
+        if (settings == null) return newSettings;
+
+        var xmlSettings = JsonConvert.DeserializeObject<XmlSettings>(settings);
+        newSettings.NullValueHandling = xmlSettings.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include;
+        newSettings.DefaultValueHandling = xmlSettings.IgnoreDefaultValues ? DefaultValueHandling.Ignore : DefaultValueHandling.Include;
+        newSettings.MaxDepth = xmlSettings.MaxDepth;
+        newSettings.TypeNameHandling = xmlSettings.UseFullTypeName ? TypeNameHandling.All : TypeNameHandling.None;
+        newSettings.DateTimeZoneHandling = xmlSettings.DateTimeZoneHandling;
+
+        if (!xmlSettings.SerializeEnumAsString)
+        {
+            newSettings.Converters.Remove(StringEnumConverter);
+        }
+
+        var namingStrategy = xmlSettings.NamingStrategy.ToPascalCase();
+
+        if (namingStrategy != "CamelCase")
+        {
+            var namingStrategyType = namingStrategy switch
             {
-                ExcludeTypes = new[] { "Avro.Schema" }
-            },
-            Converters = { StringEnumConverter, new IpAddressConverter() },
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            MaxDepth = 25
-        };
+                "Default" => typeof(DefaultNamingStrategy),
+                "SnakeCase" => typeof(SnakeCaseNamingStrategy),
+                "KebabCase" => typeof(KebabCaseNamingStrategy),
+                _ => throw new InvalidOperationException($"Invalid naming strategy: {namingStrategy}")
+            };
 
-        public string Serialize(object obj, string settings)
-        {
-            var xmlSettings = GetXmlSettings(settings);
-            var useFullTypeName = xmlSettings.TypeNameHandling == TypeNameHandling.All;
-            xmlSettings.TypeNameHandling = TypeNameHandling.None;
-            return $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{Environment.NewLine}{GetXml(obj, xmlSettings, useFullTypeName)}";
-        }
-
-        private static JsonSerializerSettings GetXmlSettings(string settings)
-        {
-            var newSettings = XmlSettings;
-            if (settings == null) return newSettings;
-
-            var xmlSettings = JsonConvert.DeserializeObject<XmlSettings>(settings);
-            newSettings.NullValueHandling = xmlSettings.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include;
-            newSettings.DefaultValueHandling = xmlSettings.IgnoreDefaultValues ? DefaultValueHandling.Ignore : DefaultValueHandling.Include;
-            newSettings.MaxDepth = xmlSettings.MaxDepth;
-            newSettings.TypeNameHandling = xmlSettings.UseFullTypeName ? TypeNameHandling.All : TypeNameHandling.None;
-            newSettings.DateTimeZoneHandling = xmlSettings.DateTimeZoneHandling;
-
-            if (!xmlSettings.SerializeEnumAsString)
+            newSettings.ContractResolver = new SpecificContractResolver
             {
-                newSettings.Converters.Remove(StringEnumConverter);
-            }
-
-            var namingStrategy = xmlSettings.NamingStrategy.ToPascalCase();
-
-            if (namingStrategy != "CamelCase")
-            {
-                var namingStrategyType = namingStrategy switch
-                {
-                    "Default" => typeof(DefaultNamingStrategy),
-                    "SnakeCase" => typeof(SnakeCaseNamingStrategy),
-                    "KebabCase" => typeof(KebabCaseNamingStrategy),
-                    _ => throw new InvalidOperationException($"Invalid naming strategy: {namingStrategy}")
-                };
-
-                newSettings.ContractResolver = new SpecificContractResolver
-                {
-                    NamingStrategy = (NamingStrategy)Activator.CreateInstance(namingStrategyType),
-                    ExcludeTypes = new[] { "Avro.Schema" }
-                };
-            }
-
-            return newSettings;
+                NamingStrategy = (NamingStrategy)Activator.CreateInstance(namingStrategyType),
+                ExcludeTypes = ["Avro.Schema"]
+            };
         }
 
-        private const int XmlIndentSize = 2;
-        private static string GetXml(object obj, JsonSerializerSettings xmlSettings, bool useFullTypeName, int nestingLevel = 0)
+        return newSettings;
+    }
+
+    private const int XmlIndentSize = 2;
+    private static string GetXml(object obj, JsonSerializerSettings xmlSettings, bool useFullTypeName, int nestingLevel = 0)
+    {
+        string indent = new(' ', nestingLevel * XmlIndentSize);
+
+        if (obj == null) return $"{indent}<!--NULL VALUE-->";
+
+        var elementName = GetElementName(obj, useFullTypeName);
+
+        if (obj is IEnumerable and not IDictionary and not string)
         {
-            string indent = new(' ', nestingLevel * XmlIndentSize);
+            var xmlCollection = string.Join(Environment.NewLine,
+                ((IEnumerable)obj)
+                .Cast<object>()
+                .Select(o => GetXml(o, xmlSettings, useFullTypeName, nestingLevel + 1)));
 
-            if (obj == null) return $"{indent}<!--NULL VALUE-->";
+            var itemTypeName = obj.GetType()
+                .GetInterfaces()
+                .FirstOrDefault(x => x.IsGenericType
+                                     && x.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                ?.GenericTypeArguments
+                .FirstOrDefault()
+                ?.Name;
 
-            var elementName = GetElementName(obj, useFullTypeName);
+            elementName = GetElementName(itemTypeName) ?? elementName;
+            elementName = XmlConvert.EncodeName($"ArrayOf{elementName}");
 
-            if (obj is IEnumerable and not IDictionary and not string)
-            {
-                var xmlCollection = string.Join(Environment.NewLine,
-                    ((IEnumerable)obj)
-                    .Cast<object>()
-                    .Select(o => GetXml(o, xmlSettings, useFullTypeName, nestingLevel + 1)));
-
-                var itemTypeName = obj.GetType()
-                    .GetInterfaces()
-                    .FirstOrDefault(x => x.IsGenericType
-                    && x.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-                    ?.GenericTypeArguments
-                    .FirstOrDefault()
-                    ?.Name;
-
-                elementName = GetElementName(itemTypeName) ?? elementName;
-                elementName = XmlConvert.EncodeName($"ArrayOf{elementName}");
-
-                return $"<{elementName}>{Environment.NewLine}{xmlCollection}{Environment.NewLine}</{elementName}>";
-            }
-
-            var json = JsonConvert.SerializeObject(obj, xmlSettings);
-            var objectType = obj.GetType();
-
-            string xml;
-            if (IsSimpleType(objectType))
-            {
-                elementName = XmlConvert.EncodeName(GetElementName(obj, useFullTypeName));
-                xml = $"<{elementName}>{json.Trim('"')}</{elementName}>";
-            }
-            else
-                xml = JsonConvert.DeserializeXNode(json, elementName)?.ToString();
-
-            if (nestingLevel == 0) return xml;
-
-            return string.Join(Environment.NewLine,
-                               xml?.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
-                                   .Select(x => $"{indent}{x}") ?? Enumerable.Empty<string>());
+            return $"<{elementName}>{Environment.NewLine}{xmlCollection}{Environment.NewLine}</{elementName}>";
         }
 
-        private static bool IsSimpleType(Type type)
+        var json = JsonConvert.SerializeObject(obj, xmlSettings);
+        var objectType = obj.GetType();
+
+        string xml;
+        if (IsSimpleType(objectType))
         {
-            return type.IsPrimitive
-                || type.IsValueType
-                || type == typeof(string)
-                || type == typeof(Type)
-                || type == typeof(IPAddress)
-                || typeof(TypeInfo).IsAssignableFrom(type);
+            elementName = XmlConvert.EncodeName(GetElementName(obj, useFullTypeName));
+            xml = $"<{elementName}>{json.Trim('"')}</{elementName}>";
         }
+        else
+            xml = JsonConvert.DeserializeXNode(json, elementName)?.ToString();
 
-        private static string GetElementName(object obj, bool useFullTypeName)
-        {
-            var type = obj.GetType();
-            var typeName = useFullTypeName ? type.FullName : type.Name;
-            return GetElementName(typeName);
-        }
+        if (nestingLevel == 0) return xml;
 
-        private static string GetElementName(string typeName)
-        {
-            return typeName?.Contains("AnonymousType") == true
-                ? "AnonymousType"
-                : typeName;
-        }
+        return string.Join(Environment.NewLine,
+            xml?.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => $"{indent}{x}") ?? Enumerable.Empty<string>());
+    }
+
+    private static bool IsSimpleType(Type type)
+    {
+        return type.IsPrimitive
+               || type.IsValueType
+               || type == typeof(string)
+               || type == typeof(Type)
+               || type == typeof(IPAddress)
+               || typeof(TypeInfo).IsAssignableFrom(type);
+    }
+
+    private static string GetElementName(object obj, bool useFullTypeName)
+    {
+        var type = obj.GetType();
+        var typeName = useFullTypeName ? type.FullName : type.Name;
+        return GetElementName(typeName);
+    }
+
+    private static string GetElementName(string typeName)
+    {
+        return typeName?.Contains("AnonymousType") == true
+            ? "AnonymousType"
+            : typeName;
     }
 }

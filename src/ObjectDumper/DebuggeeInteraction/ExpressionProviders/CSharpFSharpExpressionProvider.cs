@@ -1,25 +1,24 @@
-﻿namespace ObjectDumper.DebuggeeInteraction.ExpressionProviders
+﻿namespace ObjectDumper.DebuggeeInteraction.ExpressionProviders;
+
+internal class CSharpFSharpExpressionProvider : IExpressionProvider
 {
-    internal class CSharpFSharpExpressionProvider : IExpressionProvider
+    public string GetTargetFrameworkExpressionText()
     {
-        public string GetTargetFrameworkExpressionText()
-        {
-            return "((System.Runtime.Versioning.TargetFrameworkAttribute)System.Attribute.GetCustomAttribute(System.Reflection.Assembly.GetEntryAssembly() ?? System.Reflection.Assembly.GetExecutingAssembly(), typeof(System.Runtime.Versioning.TargetFrameworkAttribute)))?.FrameworkName + \";\" + ((System.Runtime.Versioning.TargetFrameworkAttribute)System.Attribute.GetCustomAttribute(System.Reflection.Assembly.GetExecutingAssembly(), typeof(System.Runtime.Versioning.TargetFrameworkAttribute)))?.FrameworkName";
-        }
+        return "((System.Runtime.Versioning.TargetFrameworkAttribute)System.Attribute.GetCustomAttribute(System.Reflection.Assembly.GetEntryAssembly() ?? System.Reflection.Assembly.GetExecutingAssembly(), typeof(System.Runtime.Versioning.TargetFrameworkAttribute)))?.FrameworkName + \";\" + ((System.Runtime.Versioning.TargetFrameworkAttribute)System.Attribute.GetCustomAttribute(System.Reflection.Assembly.GetExecutingAssembly(), typeof(System.Runtime.Versioning.TargetFrameworkAttribute)))?.FrameworkName";
+    }
 
-        public string GetIsSerializerInjectedExpressionText()
-        {
-            return "nameof(YellowFlavor.Serialization.ObjectSerializer.Serialize)";
-        }
+    public string GetIsSerializerInjectedExpressionText()
+    {
+        return "nameof(YellowFlavor.Serialization.ObjectSerializer.SerializeToTempFile)";
+    }
 
-        public string GetSerializedValueExpressionText(string expression, string format, string settings)
-        {
-            return $@"YellowFlavor.Serialization.ObjectSerializer.Serialize({expression}, ""{format}"", ""{settings}"")";
-        }
+    public string GetSerializedValueExpressionText(string expression, string format, string settings)
+    {
+        return $@"YellowFlavor.Serialization.ObjectSerializer.SerializeToTempFile({expression}, ""{format}"", ""{settings}"")";
+    }
 
-        public string GetLoadAssemblyExpressionText(string serializerFileName)
-        {
-            return $"System.Reflection.Assembly.LoadFile(@\"{serializerFileName}\")";
-        }
+    public string GetLoadAssemblyExpressionText(string serializerFileName)
+    {
+        return $"System.Reflection.Assembly.LoadFile(@\"{serializerFileName}\")";
     }
 }
