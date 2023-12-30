@@ -3,6 +3,8 @@ module Tests
 open Newtonsoft.Json
 open YellowFlavor.Serialization.Implementation
 open Xunit
+open System.Text
+open System.IO
 
 [<Fact>]
 let ``SerializeDictionaryOfAnonymousTypeCSharp`` () =
@@ -12,15 +14,18 @@ let ``SerializeDictionaryOfAnonymousTypeCSharp`` () =
         let list = [ (1, data); (2, data); (3, data) ] 
         System.Linq.Enumerable.ToDictionary(list, fst, snd)
     let serializer = new CSharpSerializer()
-    let result = serializer.Serialize(anonymousDictionary, JsonConvert.SerializeObject(
-    {|
+    let stringBuilder = new StringBuilder()
+    use stringWriter  = new StringWriter(stringBuilder)
+    serializer.Serialize(anonymousDictionary, JsonConvert.SerializeObject({|
         IgnoreDefaultValues = true;
         IgnoreNullValues = true;
         MaxDepth = 5;
         UseFullTypeName = false;
         DateTimeInstantiation = "New";
         DateKind = "ConvertToUtc"
-    |}))
+    |}), stringWriter)
+    let result = stringBuilder.ToString()
+
 
     Assert.Equal(result,"var dictionaryOfAnonymousType = new []
 {

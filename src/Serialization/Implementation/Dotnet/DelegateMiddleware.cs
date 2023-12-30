@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using VarDumpExtended.Visitor.Descriptors;
+using VarDump.Visitor.Descriptors;
 
-namespace YellowFlavor.Serialization.Implementation.Dotnet
+namespace YellowFlavor.Serialization.Implementation.Dotnet;
+
+internal class DelegateMiddleware : IObjectDescriptorMiddleware
 {
-    internal class DelegateMiddleware : IObjectDescriptorMiddleware
+    public IEnumerable<IReflectionDescriptor> Describe(object @object, Type objectType, Func<IEnumerable<IReflectionDescriptor>> prev)
     {
-        public IEnumerable<IReflectionDescriptor> Describe(object @object, Type objectType, Func<IEnumerable<IReflectionDescriptor>> prev)
+        if (typeof(Delegate).IsAssignableFrom(objectType))
         {
-            if (typeof(Delegate).IsAssignableFrom(objectType))
-            {
-                return Enumerable.Empty<IReflectionDescriptor>();
-            }
-
-            return prev();
+            return Enumerable.Empty<IReflectionDescriptor>();
         }
+
+        return prev();
     }
 }

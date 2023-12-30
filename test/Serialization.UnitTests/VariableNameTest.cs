@@ -1,3 +1,4 @@
+using Serialization.UnitTests.Extensions;
 using Serialization.UnitTests.TestModel;
 using YellowFlavor.Serialization.Implementation;
 

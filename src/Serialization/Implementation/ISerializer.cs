@@ -1,7 +1,8 @@
-﻿namespace YellowFlavor.Serialization.Implementation
+﻿using System.IO;
+
+namespace YellowFlavor.Serialization.Implementation;
+
+internal interface ISerializer
 {
-    internal interface ISerializer
-    {
-        string Serialize(object obj, string settings);
-    }
+    void Serialize(object obj, string settings, TextWriter textWriter);
 }

@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CodeAnalysis.Text;
 using Newtonsoft.Json;
+using Serialization.UnitTests.Extensions;
 using System.Text;
 using YellowFlavor.Serialization.Implementation;
 

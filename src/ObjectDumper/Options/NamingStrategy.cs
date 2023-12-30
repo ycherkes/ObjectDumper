@@ -1,10 +1,9 @@
-﻿namespace ObjectDumper.Options
+﻿namespace ObjectDumper.Options;
+
+public enum NamingStrategy
 {
-    public enum NamingStrategy
-    {
-        Default,
-        CamelCase,
-        KebabCase,
-        SnakeCase
-    }
+    Default,
+    CamelCase,
+    KebabCase,
+    SnakeCase
 }
