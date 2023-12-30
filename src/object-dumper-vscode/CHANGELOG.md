@@ -71,3 +71,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.20]
 - Update YamlDotNet to v 13.3.1.
 - Update VarDump to VarDumpExtended v 0.2.6 (improved DateTime serialization, added DependencyInjection.ServiceDescriptor serialization).
+
+## [0.0.21]
+- Update YamlDotNet to v 13.7.1.
+- Update ILRepack to v 2.0.21.
+- Update VarDump to v 0.2.11 (removed VarDumpExtended, added dump to textWriter feature).

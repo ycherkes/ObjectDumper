@@ -24,7 +24,7 @@ public class ObjectDumperOptionPage : DialogPage
     public int CommonOperationTimeoutSeconds { get; set; } = 10;
 
     [Category(" Common Settings")]
-    [DisplayName("DumpTo")]
+    [DisplayName("Dump To")]
     [Description("Outputs the dump result to the selected destination.")]
     [DefaultValue(DumpDestination.NewDocumentTab)]
     public DumpDestination DumpTo { get; set; } = DumpDestination.NewDocumentTab;
