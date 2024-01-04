@@ -18,7 +18,7 @@ The result is shown in a separate document window.
 
 ![Presentation](https://user-images.githubusercontent.com/13467759/201370888-c8aa6d18-a732-4538-8466-3251665bbfe6.gif)
 
-**Pay attention: you can use this extension in a vs-code of a GitHub codespaces.**
+**Pay attention: you can use this extension in GitHub codespaces.**
 
 # Configurable:
 ![image](https://user-images.githubusercontent.com/13467759/201370963-716fbb73-ed7a-47e1-a105-9ac9ee79a287.PNG)
