@@ -40,10 +40,7 @@ export class InteractionService {
             const serializeExpressionText = this.expressionProvider.getSerializedValueExpressionText(expression, language, filePath, base64Options);
             const [value, isValidValue] = await this.expressionEvaluator.evaluateExpression(serializeExpressionText);
             var trimmedValue = value.replace(/^"(.*)"$/, '$1');
-
-            return isValidValue
-                ? [true, trimmedValue]
-                : [false, trimmedValue];
+            return [isValidValue, trimmedValue];
         }
 
         private async isSerializerInjected(): Promise<boolean>

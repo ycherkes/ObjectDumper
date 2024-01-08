@@ -76,3 +76,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Update YamlDotNet to v 13.7.1.
 - Update ILRepack to v 2.0.21.
 - Update VarDump to v 0.2.11 (removed VarDumpExtended, added dump to textWriter feature).
+
+## [0.0.22]
+- Fixed. Previously when expression timed out, the temporary file created for output was not deleted.
+- Update ILRepack to v 2.0.25.
+- Update VarDump to v 0.2.12 (fixed readonly collection serialization).

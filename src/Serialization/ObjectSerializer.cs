@@ -17,14 +17,6 @@ public static class ObjectSerializer
         {"yaml", new YamlSerializer()}
     };
 
-    public static string SerializeToTempFile(object obj, string format, string settings = null)
-    {
-        var tempFilePath = GenerateTempFilePath();
-        using var textWriter = CreateFile(tempFilePath);
-        SerializeInternal(obj, format, settings, textWriter);
-        return tempFilePath;
-    }
-
     public static void SerializeToFile(object obj, string format, string filePath, string settings = null)
     {
         using var textWriter = CreateFile(filePath);
@@ -57,15 +49,8 @@ public static class ObjectSerializer
             throw new ArgumentNullException(nameof(filePath));
         }
 
-        var file = new FileStream(filePath, FileMode.CreateNew, FileAccess.Write);
+        var file = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
 
         return new StreamWriter(file);
-    }
-
-    private static string GenerateTempFilePath()
-    {
-        var fileName = Path.ChangeExtension(Guid.NewGuid().ToString("N"), "txt");
-        var filePath = Path.Combine(Path.GetTempPath(), fileName);
-        return filePath;
     }
 }
