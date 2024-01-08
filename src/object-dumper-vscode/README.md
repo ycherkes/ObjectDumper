@@ -39,8 +39,10 @@ The result is shown in a separate document window.
 | [VarDump](https://github.com/ycherkes/VarDump)  | [![Apache-2.0](https://img.shields.io/github/license/ycherkes/vardump?style=flat-square)](https://github.com/ycherkes/VarDump/blob/main/LICENSE)  |
 | [YamlDotNet](https://github.com/aaubry/YamlDotNet)  | [![MIT](https://img.shields.io/github/license/aaubry/YamlDotNet?style=flat-square)](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt)  |
 
-This tool has been working well for my own personal needs, but outside that its future depends on your feedback. Feel free to [open an issue](https://github.com/ycherkes/ObjectDumper/issues).
+# ❤ Like this project and want to contribute?
 
-[![PayPal](https://img.shields.io/badge/Donate-PayPal-ffd700.svg?labelColor=0057b7&style=for-the-badge)](https://www.paypal.com/donate/?business=KXGF7CMW8Y8WJ&no_recurring=0&item_name=Help+Object+Dumper+become+better%21)
-
-Any donations during this time will be directed to local charities at my own discretion.
+- ⭐ Star this repo on [GitHub](https://github.com/ycherkes/ObjectDumper).
+- ✏️ Write a review  and star this extension on [Visual Studio MarketPlace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper&ssr=false#review-details) or [Visual Studio Code MarketPlace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper&ssr=false#review-details).
+- 🐞 Open an issue or browse more such issues to contribute to on [GitHub](https://github.com/ycherkes/ObjectDumper/issues).
+- 🔗 Share with your friends.
+- 🍪 Sponsor me on [GitHub](https://github.com/sponsors/ycherkes) or [PayPal](https://www.paypal.com/donate/?business=KXGF7CMW8Y8WJ&no_recurring=0&item_name=Help+Object+Dumper+become+better%21).

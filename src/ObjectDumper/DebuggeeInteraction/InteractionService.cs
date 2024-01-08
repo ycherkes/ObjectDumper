@@ -1,5 +1,4 @@
-﻿using EnvDTE;
-using ObjectDumper.DebuggeeInteraction.ExpressionProviders;
+﻿using ObjectDumper.DebuggeeInteraction.ExpressionProviders;
 using ObjectDumper.Extensions;
 using ObjectDumper.Options;
 using System;
@@ -116,7 +115,7 @@ internal class InteractionService
         }
     }
 
-    public (string value, bool isFileName) Serialize(string expression, string format)
+    public (string value, bool isFilePath) Serialize(string expression, string format)
     {
         var isProviderFound = _expressionProvidersByLanguage.TryGetValue(Language, out var expressionComposer);
 
@@ -126,15 +125,28 @@ internal class InteractionService
         }
 
         var settings = _optionsPage.ToJson(format).ToBase64();
-        var serializeExpressionText = expressionComposer.GetSerializedValueExpressionText(expression, format, settings);
+        var filePath = Path.GetTempFileName();
+        var serializeExpressionText = expressionComposer.GetSerializedValueExpressionText(expression, format, filePath, settings);
         var evaluationResult = _debugger.GetExpression(serializeExpressionText, Timeout: _optionsPage.CommonOperationTimeoutSeconds * 1000);
-        var trimmedValue = evaluationResult.Value.Trim('"');
 
         if (evaluationResult.IsValidValue)
         {
-            return (trimmedValue, true);
+            return (filePath, true);
         }
 
+        try
+        {
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+        catch
+        {
+            // ignored temp file deletion error
+        }
+
+        var trimmedValue = evaluationResult.Value.Trim('"');
         trimmedValue = Regex.Unescape(trimmedValue);
 
         if (Language == "Basic")

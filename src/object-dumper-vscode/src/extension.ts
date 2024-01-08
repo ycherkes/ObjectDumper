@@ -6,6 +6,7 @@ import * as tempUtils from './utils/TempFile';
 import * as sanitazeUtil from 'sanitize-filename-ts';
 import { OptionsProvider } from './debuggee_interaction/optionsProvider';
 import { getTempFilePath } from './utils/getTempFilePath';
+import * as fs from 'fs';
 
 export async function activate(context: vscode.ExtensionContext) {
 
@@ -50,9 +51,21 @@ export async function activate(context: vscode.ExtensionContext) {
 		const filePath = getTempFilePath(baseFileName, fileExtension);
 		const [isValid, data] = await interactionService.getSerializedValue(text, format, filePath);
 		
-		const tempFile = isValid 
-			? tempUtils.TempFile.fromExistingFile(filePath, true)
-			: tempUtils.TempFile.fromContents(data, baseFileName, fileExtension);
+		var tempFile: tempUtils.TempFile;
+
+		if(isValid){
+			tempFile = tempUtils.TempFile.fromExistingFile(filePath, true);
+		}
+		else{			
+			try {
+				if(fs.existsSync(filePath)){
+					fs.unlinkSync(filePath);
+				}				
+			} 
+			catch{}
+						
+			tempFile = tempUtils.TempFile.fromContents(data, baseFileName, fileExtension);
+		}
 
         const tempDocument = new tempUtils.TempDocument(tempFile);
 		const tempDocumentEditor = new tempUtils.TempEditor(tempDocument);
