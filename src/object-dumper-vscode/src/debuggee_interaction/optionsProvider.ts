@@ -12,6 +12,7 @@ export class OptionsProvider{
                   return {
 					ignoreDefaultValues: extensionConfiguration.csharp.ignoreDefaultValues,
 					ignoreNullValues: extensionConfiguration.csharp.ignoreNullValues,
+					maxCollectionSize: extensionConfiguration.csharp.maxCollectionSize,
 					maxDepth: extensionConfiguration.common.maxDepth,
 					useFullTypeName: extensionConfiguration.csharp.useFullTypeName,
 					dateTimeInstantiation: extensionConfiguration.csharp.dateTimeInstantiation,
@@ -28,6 +29,7 @@ export class OptionsProvider{
 				return {
 					ignoreDefaultValues: extensionConfiguration.vb.ignoreDefaultValues,
 					ignoreNullValues: extensionConfiguration.vb.ignoreNullValues,
+					maxCollectionSize: extensionConfiguration.vb.maxCollectionSize,
 					maxDepth: extensionConfiguration.common.maxDepth,
 					useFullTypeName: extensionConfiguration.vb.useFullTypeName,
 					dateTimeInstantiation: extensionConfiguration.vb.dateTimeInstantiation,

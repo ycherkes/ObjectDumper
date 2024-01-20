@@ -28,6 +28,7 @@ internal class CSharpSerializer : ISerializer
         IgnoreDefaultValues = true,
         IgnoreNullValues = true,
         MaxDepth = 25,
+        MaxCollectionSize = int.MaxValue,
         UseNamedArgumentsForReferenceRecordTypes = false,
         UseTypeFullName = false,
         WritablePropertiesOnly = true,
@@ -55,6 +56,7 @@ internal class CSharpSerializer : ISerializer
         newSettings.IgnoreNullValues = csharpSettings.IgnoreNullValues;
         newSettings.UseTypeFullName = csharpSettings.UseFullTypeName;
         newSettings.MaxDepth = csharpSettings.MaxDepth;
+        newSettings.MaxCollectionSize = csharpSettings.MaxCollectionSize;
         newSettings.DateTimeInstantiation = csharpSettings.DateTimeInstantiation;
         newSettings.DateKind = csharpSettings.DateKind;
         newSettings.UseNamedArgumentsForReferenceRecordTypes = csharpSettings.UseNamedArgumentsForReferenceRecordTypes;

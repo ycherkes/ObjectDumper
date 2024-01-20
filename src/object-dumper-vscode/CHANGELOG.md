@@ -81,3 +81,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixed. Previously when expression timed out, the temporary file created for output was not deleted.
 - Update ILRepack to v 2.0.25.
 - Update VarDump to v 0.2.12 (fixed readonly collection serialization).
+
+## [0.0.23]
+- Update VarDump to v 0.2.14 (laziness + MaxCollectionSize).

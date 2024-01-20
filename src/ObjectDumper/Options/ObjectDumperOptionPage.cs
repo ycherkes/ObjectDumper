@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.Shell;
 using Newtonsoft.Json;
 using ObjectDumper.Extensions;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using EnvDTE80;
 using ObjectDumper.Output;
@@ -65,6 +66,13 @@ public class ObjectDumperOptionPage : DialogPage
     [Description("DateTime Kind")]
     [DefaultValue(DateKind.Original)]
     public DateKind CSharpDateKind { get; set; } = DateKind.Original;
+
+    [Category("C#")]
+    [DisplayName("Max Collection Size")]
+    [Description("Max Collection Size [1, int.MaxValue]")]
+    [DefaultValue(int.MaxValue)]
+    [Range(1, int.MaxValue)]
+    public int CSharpMaxCollectionSize { get; set; } = int.MaxValue;
 
     [Category("C#")]
     [DisplayName("Use Named Arguments For Reference Record Types")]
@@ -181,6 +189,13 @@ public class ObjectDumperOptionPage : DialogPage
     public DateKind VisualBasicDateKind { get; set; } = DateKind.Original;
 
     [Category("Visual Basic")]
+    [DisplayName("Max Collection Size")]
+    [Description("Max Collection Size [1, int.MaxValue]")]
+    [DefaultValue(int.MaxValue)]
+    [Range(1, int.MaxValue)]
+    public int VisualBasicMaxCollectionSize { get; set; } = int.MaxValue;
+
+    [Category("Visual Basic")]
     [DisplayName("Use Named Arguments For Reference Record Types")]
     [Description("Use Named Arguments For Reference Record Types")]
     [DefaultValue(false)]
@@ -288,7 +303,8 @@ public class ObjectDumperOptionPage : DialogPage
                     WritablePropertiesOnly = CSharpWritablePropertiesOnly,
                     GetFieldsBindingFlags = CSharpGetFieldsBindingFlags,
                     SortDirection = CSharpSortDirection,
-                    GenerateVariableInitializer = CSharpGenerateVariableInitializer
+                    GenerateVariableInitializer = CSharpGenerateVariableInitializer,
+                    MaxCollectionSize = CSharpMaxCollectionSize
                 }.ToJson();
             case "vb":
                 return new
@@ -304,7 +320,8 @@ public class ObjectDumperOptionPage : DialogPage
                     WritablePropertiesOnly = VisualBasicWritablePropertiesOnly,
                     GetFieldsBindingFlags = VisualBasicGetFieldsBindingFlags,
                     SortDirection = VisualBasicSortDirection,
-                    GenerateVariableInitializer = VisualBasicGenerateVariableInitializer
+                    GenerateVariableInitializer = VisualBasicGenerateVariableInitializer,
+                    MaxCollectionSize = VisualBasicMaxCollectionSize
                 }.ToJson();
             case "json":
                 return new
@@ -339,6 +356,16 @@ public class ObjectDumperOptionPage : DialogPage
         }
     }
 
+    protected override void OnApply(PageApplyEventArgs e)
+    {
+        if (CSharpMaxCollectionSize < 1 || VisualBasicMaxCollectionSize < 1)
+        {
+            e.ApplyBehavior = ApplyKind.CancelNoNavigate;
+            LoadSettingsFromStorage();
+        }
+
+        base.OnApply(e);
+    }
     public IDumpOutput GetDumpOutput(DTE2 dte)
     {
         return DumpTo switch
