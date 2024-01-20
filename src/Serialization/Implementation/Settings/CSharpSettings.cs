@@ -11,6 +11,7 @@ internal class CSharpSettings
     public bool IgnoreNullValues { get; set; } = true;
     public bool IgnoreDefaultValues { get; set; } = true;
     public int MaxDepth { get; set; } = 25;
+    public int MaxCollectionSize { get; set; } = int.MaxValue;
     public bool UseFullTypeName { get; set; } = false;
     public bool UseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
     public BindingFlags GetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;

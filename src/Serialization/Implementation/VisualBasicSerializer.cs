@@ -28,6 +28,7 @@ internal class VisualBasicSerializer : ISerializer
         IgnoreDefaultValues = true,
         IgnoreNullValues = true,
         MaxDepth = 25,
+        MaxCollectionSize = int.MaxValue,
         UseNamedArgumentsForReferenceRecordTypes = false,
         UseTypeFullName = false,
         WritablePropertiesOnly = true,
@@ -55,6 +56,7 @@ internal class VisualBasicSerializer : ISerializer
         newSettings.IgnoreNullValues = vbSettings.IgnoreNullValues;
         newSettings.UseTypeFullName = vbSettings.UseFullTypeName;
         newSettings.MaxDepth = vbSettings.MaxDepth;
+        newSettings.MaxCollectionSize = vbSettings.MaxCollectionSize;
         newSettings.DateTimeInstantiation = vbSettings.DateTimeInstantiation;
         newSettings.DateKind = vbSettings.DateKind;
         newSettings.UseNamedArgumentsForReferenceRecordTypes = vbSettings.UseNamedArgumentsForReferenceRecordTypes;
