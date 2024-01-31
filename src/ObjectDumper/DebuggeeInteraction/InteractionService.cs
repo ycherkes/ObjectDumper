@@ -1,4 +1,5 @@
-﻿using ObjectDumper.DebuggeeInteraction.ExpressionProviders;
+﻿using EnvDTE80;
+using ObjectDumper.DebuggeeInteraction.ExpressionProviders;
 using ObjectDumper.Extensions;
 using ObjectDumper.Options;
 using System;
@@ -125,7 +126,7 @@ internal class InteractionService
         }
 
         var settings = _optionsPage.ToJson(format).ToBase64();
-        var filePath = Path.GetTempFileName();
+        var filePath = GetTempFilePath();
         var serializeExpressionText = expressionComposer.GetSerializedValueExpressionText(expression, format, filePath, settings);
         var evaluationResult = _debugger.GetExpression(serializeExpressionText, Timeout: _optionsPage.CommonOperationTimeoutSeconds * 1000);
 
@@ -157,6 +158,30 @@ internal class InteractionService
         }
 
         return (trimmedValue, false);
+    }
+
+    private string GetTempFilePath()
+    {
+        var filePath = Path.GetTempFileName();
+        if (_debugger.DebuggedProcesses.Count <= 0)
+        {
+            return filePath;
+        }
+        
+        var process = (Process2)_debugger.DebuggedProcesses.Item(1);
+        if (!process.Name.Contains(@"\AppX\"))
+        {
+            return filePath;
+        }
+        
+        var tempFileNameExpression = _debugger.GetExpression("System.IO.Path.GetTempFileName()");
+        if(!tempFileNameExpression.IsValidValue)
+        {
+            return filePath;
+        }
+        filePath = Regex.Unescape(tempFileNameExpression.Value.Trim('"'));
+
+        return filePath;
     }
 
     private bool IsSerializerInjected(IExpressionProvider expressionProvider)

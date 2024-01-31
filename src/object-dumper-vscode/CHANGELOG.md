@@ -84,3 +84,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.23]
 - Update VarDump to v 0.2.14 (laziness + MaxCollectionSize).
+
+## [0.0.24]
+- Update VarDump to v 0.2.15 (Fix the non-public collection serialization (regression .net 8.0)).

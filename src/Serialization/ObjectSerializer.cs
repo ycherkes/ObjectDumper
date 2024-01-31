@@ -17,6 +17,14 @@ public static class ObjectSerializer
         {"yaml", new YamlSerializer()}
     };
 
+    /// <summary>
+    /// Just a stub - used in UWP only as a workaround - see https://github.com/ycherkes/ObjectDumper/blob/main/samples/uwp/TestUwp/App.xaml.cs#L26
+    /// </summary>
+    public static void WarmUp()
+    {
+        _ = Serializers["cs"];
+    }
+    
     public static void SerializeToFile(object obj, string format, string filePath, string settings = null)
     {
         using var textWriter = CreateFile(filePath);
