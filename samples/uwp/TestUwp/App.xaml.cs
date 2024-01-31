@@ -5,6 +5,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 #if DEBUG
+using System.IO;
 using YellowFlavor.Serialization;
 #endif
 
@@ -23,7 +24,7 @@ namespace TestUwp
         public App()
         {
 #if DEBUG
-            _ = ObjectSerializer.Serialize(null, "cs");
+            ObjectSerializer.WarmUp();
 #endif
             InitializeComponent();
             Suspending += OnSuspending;

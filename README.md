@@ -11,7 +11,7 @@
 
 [![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
-A Visual Studio and [Visual Studio Code](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) extension for exporting in-memory objects during debugging to **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** string.
+Reflection-based Visual Studio and [Visual Studio Code](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) extension for exporting in-memory objects during debugging to **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** string.
 
 Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
