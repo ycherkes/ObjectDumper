@@ -11,7 +11,7 @@
     <FileVersion>0.0.0.96</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RootNamespace>YellowFlavor.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 	
   <ItemGroup>
