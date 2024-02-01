@@ -4,11 +4,6 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-#if DEBUG
-using System.IO;
-using YellowFlavor.Serialization;
-#endif
-
 
 namespace TestUwp
 {
@@ -24,7 +19,7 @@ namespace TestUwp
         public App()
         {
 #if DEBUG
-            ObjectSerializer.WarmUp();
+            YellowFlavor.Serialization.ObjectSerializer.WarmUp();
 #endif
             InitializeComponent();
             Suspending += OnSuspending;
