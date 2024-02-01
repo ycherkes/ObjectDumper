@@ -1,12 +1,12 @@
 ﻿export class CSharpExpressionProvider{
     public getIsSerializerInjectedExpressionText(): string
     {
-        return "nameof(YellowFlavor.Serialization.ObjectSerializer.Serialize)";
+        return "nameof(YellowFlavor.Serialization.ObjectSerializer.SerializeToFile)";
     }
 
-    public getSerializedValueExpressionText(expression: string, format: string, filePath: string, options: string): string
+    public getSerializedValueExpressionText(expression: string, options: string): string
     {
-        return `YellowFlavor.Serialization.ObjectSerializer.SerializeToFile(${expression}, "${format}", @"${filePath}", "${options}")`;
+        return `YellowFlavor.Serialization.ObjectSerializer.SerializeToFile(${expression}, "${options}")`;
     }
 
     public getLoadAssemblyExpressionText(serializerFileName: string): string

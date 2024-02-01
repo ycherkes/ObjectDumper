@@ -12,9 +12,9 @@ internal class CSharpFSharpExpressionProvider : IExpressionProvider
         return "nameof(YellowFlavor.Serialization.ObjectSerializer.SerializeToFile)";
     }
 
-    public string GetSerializedValueExpressionText(string expression, string format, string filePath, string settings)
+    public string GetSerializedValueExpressionText(string expression, string settings)
     {
-        return $"""YellowFlavor.Serialization.ObjectSerializer.SerializeToFile({expression}, "{format}", @"{filePath}", "{settings}")""";
+        return $"""YellowFlavor.Serialization.ObjectSerializer.SerializeToFile({expression}, "{settings}")""";
     }
 
     public string GetLoadAssemblyExpressionText(string serializerFileName)

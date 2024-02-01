@@ -4,6 +4,6 @@ internal interface IExpressionProvider
 {
     string GetTargetFrameworkExpressionText();
     string GetIsSerializerInjectedExpressionText();
-    string GetSerializedValueExpressionText(string expression, string format, string filePath, string settings);
+    string GetSerializedValueExpressionText(string expression, string settings);
     string GetLoadAssemblyExpressionText(string serializerFileName);
 }

@@ -125,10 +125,15 @@ internal class InteractionService
             return ($"Unsupported language: {Language}", false);
         }
 
-        var settings = _optionsPage.ToJson(format).ToBase64();
         var fileName = GetTempFileName();
-        var serializeExpressionText = expressionComposer.GetSerializedValueExpressionText(expression, format, fileName, settings);
-        var evaluationResult = _debugger.GetExpression(serializeExpressionText, Timeout: _optionsPage.CommonOperationTimeoutSeconds * 1000);
+
+        var settings = string.Join(";", format, fileName, _optionsPage.ToJson(format))
+                                   .ToBase64();
+        
+        var serializeExpressionText = expressionComposer.GetSerializedValueExpressionText(expression, settings);
+
+        var evaluationResult = _debugger.GetExpression(serializeExpressionText,
+                Timeout: _optionsPage.CommonOperationTimeoutSeconds * 1000);
 
         if (evaluationResult.IsValidValue)
         {

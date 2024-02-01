@@ -22,13 +22,22 @@ public static class ObjectSerializer
     /// </summary>
     public static void WarmUp()
     {
-        _ = Serializers["cs"];
     }
     
-    public static void SerializeToFile(object obj, string format, string filePath, string settings = null)
+    public static void SerializeToFile(object obj, string settings)
     {
-        using var textWriter = CreateFile(filePath);
-        SerializeInternal(obj, format, settings, textWriter);
+        var settingsArray = settings.FromBase64().Split(';');
+        if (settingsArray.Length != 3)
+        {
+            throw new ArgumentOutOfRangeException(nameof(settings), "Settings must contain a semicolon separated array with 3 items.");
+        }
+
+        var format = settingsArray[0];
+        var fileName = settingsArray[1];
+        var dumpOptions = settingsArray[2];
+        
+        using var textWriter = CreateFile(fileName);
+        SerializeInternal(obj, format, dumpOptions, textWriter);
     }
 
     private static void SerializeInternal(object obj, string format, string settings, TextWriter textWriter)
@@ -37,7 +46,7 @@ public static class ObjectSerializer
         {
             if (Serializers.TryGetValue(format, out var serializer))
             {
-                serializer.Serialize(obj, settings.FromBase64(), textWriter);
+                serializer.Serialize(obj, settings, textWriter);
             }
             else
             {

@@ -36,8 +36,9 @@ export class InteractionService {
         {
             const options = this.optionsProvider.getOptions(language);
             const optionsJson = JSON.stringify(options);
-            const base64Options = Buffer.from(optionsJson, 'binary').toString('base64');
-            const serializeExpressionText = this.expressionProvider.getSerializedValueExpressionText(expression, language, filePath, base64Options);
+            const settings = `${language};${filePath};${optionsJson}`;
+            const base64Settings = Buffer.from(settings, 'binary').toString('base64');
+            const serializeExpressionText = this.expressionProvider.getSerializedValueExpressionText(expression, base64Settings);
             const [value, isValidValue] = await this.expressionEvaluator.evaluateExpression(serializeExpressionText);
             var trimmedValue = value.replace(/^"(.*)"$/, '$1');
             return [isValidValue, trimmedValue];
