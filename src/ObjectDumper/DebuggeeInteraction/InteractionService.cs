@@ -126,20 +126,20 @@ internal class InteractionService
         }
 
         var settings = _optionsPage.ToJson(format).ToBase64();
-        var filePath = GetTempFilePath();
-        var serializeExpressionText = expressionComposer.GetSerializedValueExpressionText(expression, format, filePath, settings);
+        var fileName = GetTempFileName();
+        var serializeExpressionText = expressionComposer.GetSerializedValueExpressionText(expression, format, fileName, settings);
         var evaluationResult = _debugger.GetExpression(serializeExpressionText, Timeout: _optionsPage.CommonOperationTimeoutSeconds * 1000);
 
         if (evaluationResult.IsValidValue)
         {
-            return (filePath, true);
+            return (fileName, true);
         }
 
         try
         {
-            if (File.Exists(filePath))
+            if (File.Exists(fileName))
             {
-                File.Delete(filePath);
+                File.Delete(fileName);
             }
         }
         catch
@@ -160,28 +160,36 @@ internal class InteractionService
         return (trimmedValue, false);
     }
 
-    private string GetTempFilePath()
+    private string GetTempFileName()
     {
-        var filePath = Path.GetTempFileName();
-        if (_debugger.DebuggedProcesses.Count <= 0)
+        var isUwpApplication = IsUwpApplication();
+
+        if (!isUwpApplication)
         {
-            return filePath;
-        }
-        
-        var process = (Process2)_debugger.DebuggedProcesses.Item(1);
-        if (!process.Name.Contains(@"\AppX\"))
-        {
-            return filePath;
+            return Path.GetTempFileName();
         }
         
         var tempFileNameExpression = _debugger.GetExpression("System.IO.Path.GetTempFileName()");
-        if(!tempFileNameExpression.IsValidValue)
-        {
-            return filePath;
-        }
-        filePath = Regex.Unescape(tempFileNameExpression.Value.Trim('"'));
 
-        return filePath;
+        if (!tempFileNameExpression.IsValidValue)
+        {
+            return Path.GetTempFileName();
+        }
+
+        return Regex.Unescape(tempFileNameExpression.Value.Trim('"'));
+
+    }
+
+    private bool IsUwpApplication()
+    {
+        if (_debugger.DebuggedProcesses.Count <= 0)
+        {
+            return false;
+        }
+
+        var process = (Process2)_debugger.DebuggedProcesses.Item(1);
+        
+        return process.Name.Contains(@"\AppX\");
     }
 
     private bool IsSerializerInjected(IExpressionProvider expressionProvider)
