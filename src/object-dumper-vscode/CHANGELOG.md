@@ -87,3 +87,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.24]
 - Update VarDump to v 0.2.15 (Fix the non-public collection serialization (regression .net 8.0)).
+
+## [0.0.25]
+- Update YellowFlavor.Serialization lib to v 0.0.0.96 (pass all the parameters as a single base64 encoded string).
