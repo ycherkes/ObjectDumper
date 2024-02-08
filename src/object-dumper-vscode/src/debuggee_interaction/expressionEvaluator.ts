@@ -2,6 +2,27 @@ import * as vscode from 'vscode';
 
 export class ExpressionEvaluator{
     
+	private frameId: number = 1000;
+	
+	public initialize(){
+		var onDidSendMessageMethod = this.onDidSendMessage;
+		vscode.debug.registerDebugAdapterTrackerFactory("coreclr", {
+			createDebugAdapterTracker(_session: vscode.DebugSession) {
+			  return {
+				onDidSendMessage: onDidSendMessageMethod
+			  };
+			},
+		  });	
+	}
+
+	private onDidSendMessage(m: any){
+		if (m.success && m.command === 'stackTrace') {
+			if (m.body?.stackFrames && m.body.stackFrames.length > 0) {
+				this.frameId = m.body.stackFrames[0].id;
+			}		
+	  }
+	}
+
     public async evaluateExpression(expression: string): Promise<[value: string, isValidValue: boolean]>
     {
         const debugSession = vscode.debug.activeDebugSession;
@@ -12,13 +33,11 @@ export class ExpressionEvaluator{
 			return ["", false];
 		}
 
-        const frameId = 1000;
-
-		// Context: 'clipboard' will never truncate the response, see https://github.com/microsoft/vscode-js-debug/issues/689#issuecomment-669257847
+        // Context: 'clipboard' will never truncate the response, see https://github.com/microsoft/vscode-js-debug/issues/689#issuecomment-669257847
 
 		const args = {
 			expression: expression,
-			frameId: frameId,
+			frameId: this.frameId,
 			context: 'clipboard'
 		  };
 
