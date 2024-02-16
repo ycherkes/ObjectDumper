@@ -11,6 +11,7 @@ import * as fs from 'fs';
 export async function activate(context: vscode.ExtensionContext) {
 
 	const expressionEvaluator = new ExpressionEvaluator();
+	expressionEvaluator.initialize();
 	const expressionProvider = new CSharpExpressionProvider();
 	const optionsProvider = new OptionsProvider();
     const interactionService = new InteractionService(expressionEvaluator, optionsProvider, context.extensionPath, expressionProvider);
