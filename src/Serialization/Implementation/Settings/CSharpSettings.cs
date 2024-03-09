@@ -13,7 +13,7 @@ internal class CSharpSettings
     public int MaxDepth { get; set; } = 25;
     public int MaxCollectionSize { get; set; } = int.MaxValue;
     public bool UseFullTypeName { get; set; } = false;
-    public bool UseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
+    public bool UseNamedArgumentsInConstructors { get; set; } = false;
     public BindingFlags GetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
     public bool WritablePropertiesOnly { get; set; } = true;
     public ListSortDirection? SortDirection { get; set; }

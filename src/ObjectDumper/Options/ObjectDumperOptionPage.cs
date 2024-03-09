@@ -75,10 +75,10 @@ public class ObjectDumperOptionPage : DialogPage
     public int CSharpMaxCollectionSize { get; set; } = int.MaxValue;
 
     [Category("C#")]
-    [DisplayName("Use Named Arguments For Reference Record Types")]
-    [Description("Use Named Arguments For Reference Record Types")]
+    [DisplayName("Use Named Arguments For Constructors")]
+    [Description("Use Named Arguments For Constructors")]
     [DefaultValue(false)]
-    public bool CSharpUseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
+    public bool CSharpUseNamedArgumentsInConstructors { get; set; } = false;
 
     [Category("C#")]
     [DisplayName("Get Properties Binding Flags")]
@@ -196,10 +196,10 @@ public class ObjectDumperOptionPage : DialogPage
     public int VisualBasicMaxCollectionSize { get; set; } = int.MaxValue;
 
     [Category("Visual Basic")]
-    [DisplayName("Use Named Arguments For Reference Record Types")]
-    [Description("Use Named Arguments For Reference Record Types")]
+    [DisplayName("Use Named Arguments For Constructors")]
+    [Description("Use Named Arguments For Constructors")]
     [DefaultValue(false)]
-    public bool VisualBasicUseNamedArgumentsForReferenceRecordTypes { get; set; } = false;
+    public bool VisualBasicUseNamedArgumentsInConstructors { get; set; } = false;
 
     [Category("Visual Basic")]
     [DisplayName("Get Properties Binding Flags")]
@@ -292,58 +292,58 @@ public class ObjectDumperOptionPage : DialogPage
             case "cs":
                 return new
                 {
+                    DateKind = CSharpDateKind,
+                    DateTimeInstantiation = CSharpDateTimeInstantiation,
+                    GenerateVariableInitializer = CSharpGenerateVariableInitializer,
+                    GetFieldsBindingFlags = CSharpGetFieldsBindingFlags,
+                    GetPropertiesBindingFlags = CSharpGetPropertiesBindingFlags,
                     IgnoreDefaultValues = CSharpIgnoreDefaultValues,
                     IgnoreNullValues = CSharpIgnoreNullValues,
+                    MaxCollectionSize = CSharpMaxCollectionSize,
                     MaxDepth = CommonMaxDepth,
-                    UseFullTypeName = CSharpUseFullTypeName,
-                    DateTimeInstantiation = CSharpDateTimeInstantiation,
-                    DateKind = CSharpDateKind,
-                    UseNamedArgumentsForReferenceRecordTypes = CSharpUseNamedArgumentsForReferenceRecordTypes,
-                    GetPropertiesBindingFlags = CSharpGetPropertiesBindingFlags,
-                    WritablePropertiesOnly = CSharpWritablePropertiesOnly,
-                    GetFieldsBindingFlags = CSharpGetFieldsBindingFlags,
                     SortDirection = CSharpSortDirection,
-                    GenerateVariableInitializer = CSharpGenerateVariableInitializer,
-                    MaxCollectionSize = CSharpMaxCollectionSize
+                    UseFullTypeName = CSharpUseFullTypeName,
+                    UseNamedArgumentsInConstructors = CSharpUseNamedArgumentsInConstructors,
+                    WritablePropertiesOnly = CSharpWritablePropertiesOnly
                 }.ToJson();
             case "vb":
                 return new
                 {
+                    DateKind = VisualBasicDateKind,
+                    DateTimeInstantiation = VisualBasicDateTimeInstantiation,
+                    GenerateVariableInitializer = VisualBasicGenerateVariableInitializer,
+                    GetFieldsBindingFlags = VisualBasicGetFieldsBindingFlags,
+                    GetPropertiesBindingFlags = VisualBasicGetPropertiesBindingFlags,
                     IgnoreDefaultValues = VisualBasicIgnoreDefaultValues,
                     IgnoreNullValues = VisualBasicIgnoreNullValues,
+                    MaxCollectionSize = VisualBasicMaxCollectionSize,
                     MaxDepth = CommonMaxDepth,
-                    UseFullTypeName = VisualBasicUseFullTypeName,
-                    DateTimeInstantiation = VisualBasicDateTimeInstantiation,
-                    DateKind = VisualBasicDateKind,
-                    UseNamedArgumentsForReferenceRecordTypes = VisualBasicUseNamedArgumentsForReferenceRecordTypes,
-                    GetPropertiesBindingFlags = VisualBasicGetPropertiesBindingFlags,
-                    WritablePropertiesOnly = VisualBasicWritablePropertiesOnly,
-                    GetFieldsBindingFlags = VisualBasicGetFieldsBindingFlags,
                     SortDirection = VisualBasicSortDirection,
-                    GenerateVariableInitializer = VisualBasicGenerateVariableInitializer,
-                    MaxCollectionSize = VisualBasicMaxCollectionSize
+                    UseFullTypeName = VisualBasicUseFullTypeName,
+                    UseNamedArgumentsInConstructors = VisualBasicUseNamedArgumentsInConstructors,
+                    WritablePropertiesOnly = VisualBasicWritablePropertiesOnly
                 }.ToJson();
             case "json":
                 return new
                 {
+                    DateTimeZoneHandling = JsonDateTimeZoneHandling,
                     IgnoreDefaultValues = JsonIgnoreDefaultValues,
                     IgnoreNullValues = JsonIgnoreNullValues,
                     MaxDepth = CommonMaxDepth,
-                    TypeNameHandling = JsonTypeNameHandling,
                     NamingStrategy = JsonNamingStrategy,
                     SerializeEnumAsString = JsonSerializeEnumAsString,
-                    DateTimeZoneHandling = JsonDateTimeZoneHandling
+                    TypeNameHandling = JsonTypeNameHandling
                 }.ToJson();
             case "xml":
                 return new
                 {
+                    DateTimeZoneHandling = XmlDateTimeZoneHandling,
                     IgnoreDefaultValues = XmlIgnoreDefaultValues,
                     IgnoreNullValues = XmlIgnoreNullValues,
                     MaxDepth = CommonMaxDepth,
-                    UseFullTypeName = XmlUseFullTypeName,
                     NamingStrategy = XmlNamingStrategy,
                     SerializeEnumAsString = XmlSerializeEnumAsString,
-                    DateTimeZoneHandling = XmlDateTimeZoneHandling
+                    UseFullTypeName = XmlUseFullTypeName,
                 }.ToJson();
             case "yaml":
                 return new

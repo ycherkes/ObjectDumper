@@ -29,12 +29,12 @@ internal class CSharpSerializer : ISerializer
         IgnoreNullValues = true,
         MaxDepth = 25,
         MaxCollectionSize = int.MaxValue,
-        UseNamedArgumentsForReferenceRecordTypes = false,
+        UseNamedArgumentsInConstructors = false,
         UseTypeFullName = false,
         WritablePropertiesOnly = true,
-        ConfigureKnownTypes = (knownTypes, visitor, opts) =>
+        ConfigureKnownTypes = (knownTypes, visitor, opts, codeGenerator) =>
         {
-            var serviceDescriptorKnownObject = new ServiceDescriptorKnownObject(visitor, opts);
+            var serviceDescriptorKnownObject = new ServiceDescriptorKnownObject(visitor, codeGenerator);
             knownTypes.Add(new KeyValuePair<string, IKnownObjectVisitor>(serviceDescriptorKnownObject.Id, serviceDescriptorKnownObject));
         }
     };
@@ -59,7 +59,7 @@ internal class CSharpSerializer : ISerializer
         newSettings.MaxCollectionSize = csharpSettings.MaxCollectionSize;
         newSettings.DateTimeInstantiation = csharpSettings.DateTimeInstantiation;
         newSettings.DateKind = csharpSettings.DateKind;
-        newSettings.UseNamedArgumentsForReferenceRecordTypes = csharpSettings.UseNamedArgumentsForReferenceRecordTypes;
+        newSettings.UseNamedArgumentsInConstructors = csharpSettings.UseNamedArgumentsInConstructors;
         newSettings.GetPropertiesBindingFlags = csharpSettings.GetPropertiesBindingFlags;
         newSettings.WritablePropertiesOnly = csharpSettings.WritablePropertiesOnly;
         newSettings.GetFieldsBindingFlags = csharpSettings.GetFieldsBindingFlags;

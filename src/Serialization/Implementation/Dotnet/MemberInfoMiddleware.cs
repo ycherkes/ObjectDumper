@@ -8,24 +8,24 @@ namespace YellowFlavor.Serialization.Implementation.Dotnet;
 
 internal class MemberInfoMiddleware : IObjectDescriptorMiddleware
 {
-    private readonly HashSet<string> _includeProperties = new()
-    {
+    private readonly HashSet<string> _includeProperties =
+    [
         "Name",
         "DeclaringType",
         "ReflectedType",
         "MemberType",
         "Attributes"
-    };
+    ];
 
-    public IEnumerable<IReflectionDescriptor> Describe(object @object, Type objectType, Func<IEnumerable<IReflectionDescriptor>> prev)
+    public IObjectDescription GetObjectDescription(object @object, Type objectType, Func<IObjectDescription> prev)
     {
-        var members = prev();
+        var description = prev();
 
         if (typeof(MemberInfo).IsAssignableFrom(objectType))
         {
-            members = members.Where(m => _includeProperties.Contains(m.Name));
+            description.Members = description.Members.Where(m => _includeProperties.Contains(m.Name));
         }
 
-        return members;
+        return description;
     }
 }

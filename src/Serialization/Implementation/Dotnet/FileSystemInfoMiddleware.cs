@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using VarDump.Visitor.Descriptors;
 
@@ -7,30 +6,48 @@ namespace YellowFlavor.Serialization.Implementation.Dotnet;
 
 internal class FileSystemInfoMiddleware : IObjectDescriptorMiddleware
 {
-    public IEnumerable<IReflectionDescriptor> Describe(object @object, Type objectType, Func<IEnumerable<IReflectionDescriptor>> prev)
+    public IObjectDescription GetObjectDescription(object @object, Type objectType, Func<IObjectDescription> prev)
     {
         return @object switch
         {
-            FileInfo fileInfo => new[]
+            FileInfo fileInfo => new ObjectDescription
             {
-                new ReflectionDescriptor(fileInfo.FullName)
-                {
-                    ReflectionType = ReflectionType.ConstructorParameter
-                }
+                Type = objectType,
+                ConstructorParameters =
+                [
+                    new ConstructorParameterDescription
+                    { 
+                        Value = fileInfo.FullName,
+                        Type = typeof(string),
+                        Name = "fileName"
+                    }
+                ]
             },
-            DirectoryInfo directoryInfo => new[]
+            DirectoryInfo directoryInfo => new ObjectDescription
             {
-                new ReflectionDescriptor(directoryInfo.FullName)
-                {
-                    ReflectionType = ReflectionType.ConstructorParameter
-                }
+                Type = objectType,
+                ConstructorParameters =
+                [
+                    new ConstructorParameterDescription
+                    {
+                        Value = directoryInfo.FullName,
+                        Type = typeof(string),
+                        Name = "path"
+                    }
+                ]
             },
-            DriveInfo driveInfo => new[]
+            DriveInfo driveInfo => new ObjectDescription
             {
-                new ReflectionDescriptor(driveInfo.Name)
-                {
-                    ReflectionType = ReflectionType.ConstructorParameter
-                }
+                Type = objectType,
+                ConstructorParameters =
+                [
+                    new ConstructorParameterDescription
+                    {
+                        Value = driveInfo.Name,
+                        Type = typeof(string),
+                        Name = "driveName"
+                    }
+                ]
             },
             _ => prev()
         };
