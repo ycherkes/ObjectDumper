@@ -23,7 +23,8 @@ internal class MemberInfoMiddleware : IObjectDescriptorMiddleware
 
         if (typeof(MemberInfo).IsAssignableFrom(objectType))
         {
-            description.Members = description.Members.Where(m => _includeProperties.Contains(m.Name));
+            description.Properties = description.Properties.Where(p => _includeProperties.Contains(p.Name));
+            description.Fields = [];
         }
 
         return description;

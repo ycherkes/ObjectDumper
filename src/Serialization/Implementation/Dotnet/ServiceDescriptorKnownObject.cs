@@ -4,11 +4,10 @@ using System.Reflection;
 using VarDump.CodeDom.Common;
 using VarDump.CodeDom.Compiler;
 using VarDump.Visitor;
-using VarDump.Visitor.KnownTypes;
 
 namespace YellowFlavor.Serialization.Implementation.Dotnet;
 
-internal sealed class ServiceDescriptorKnownObject(IRootObjectVisitor rootObjectVisitor, ICodeWriter codeWriter)
+internal sealed class ServiceDescriptorKnownObject(INextDepthVisitor nextDepthVisitor, ICodeWriter codeWriter, DumpOptions options)
     : IKnownObjectVisitor
 {
     public bool IsSuitableFor(object obj, Type objectType)
@@ -38,7 +37,7 @@ internal sealed class ServiceDescriptorKnownObject(IRootObjectVisitor rootObject
 
         if (implementationInstance != null)
         {
-            parameters.Add(() => rootObjectVisitor.Visit(implementationInstance, context));
+            parameters.Add(() => nextDepthVisitor.Visit(implementationInstance, context));
         }
 
         var implementationFactory = objectType.GetProperty("ImplementationFactory", BindingFlags.Instance | BindingFlags.Public)?.GetValue(obj);
@@ -60,4 +59,6 @@ internal sealed class ServiceDescriptorKnownObject(IRootObjectVisitor rootObject
     }
 
     public string Id => "ServiceDescriptor";
+
+    public DumpOptions Options => options;
 }

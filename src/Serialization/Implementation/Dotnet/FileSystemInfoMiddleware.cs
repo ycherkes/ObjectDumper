@@ -13,9 +13,9 @@ internal class FileSystemInfoMiddleware : IObjectDescriptorMiddleware
             FileInfo fileInfo => new ObjectDescription
             {
                 Type = objectType,
-                ConstructorParameters =
+                ConstructorArguments = 
                 [
-                    new ConstructorParameterDescription
+                    new ConstructorArgumentDescription
                     { 
                         Value = fileInfo.FullName,
                         Type = typeof(string),
@@ -26,9 +26,9 @@ internal class FileSystemInfoMiddleware : IObjectDescriptorMiddleware
             DirectoryInfo directoryInfo => new ObjectDescription
             {
                 Type = objectType,
-                ConstructorParameters =
+                ConstructorArguments =
                 [
-                    new ConstructorParameterDescription
+                    new ConstructorArgumentDescription
                     {
                         Value = directoryInfo.FullName,
                         Type = typeof(string),
@@ -39,9 +39,9 @@ internal class FileSystemInfoMiddleware : IObjectDescriptorMiddleware
             DriveInfo driveInfo => new ObjectDescription
             {
                 Type = objectType,
-                ConstructorParameters =
+                ConstructorArguments =
                 [
-                    new ConstructorParameterDescription
+                    new ConstructorArgumentDescription
                     {
                         Value = driveInfo.Name,
                         Type = typeof(string),

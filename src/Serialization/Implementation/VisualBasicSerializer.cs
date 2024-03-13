@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using VarDump;
 using VarDump.Visitor;
-using VarDump.Visitor.KnownTypes;
 using YellowFlavor.Serialization.Implementation.Dotnet;
 using YellowFlavor.Serialization.Implementation.Settings;
 
@@ -22,7 +20,7 @@ internal class VisualBasicSerializer : ISerializer
             new MemberInfoMiddleware(),
             new FileSystemInfoMiddleware()
         },
-        ExcludeTypes = new[] { "Avro.Schema" },
+        ExcludeTypes = [ "Avro.Schema" ],
         GenerateVariableInitializer = true,
         GetPropertiesBindingFlags = BindingFlags.Instance | BindingFlags.Public,
         IgnoreDefaultValues = true,
@@ -32,10 +30,9 @@ internal class VisualBasicSerializer : ISerializer
         UseNamedArgumentsInConstructors = false,
         UseTypeFullName = false,
         WritablePropertiesOnly = true,
-        ConfigureKnownTypes = (knownTypes, visitor, opts, codeGenerator) =>
+        ConfigureKnownObjects = (knownObjects, nextDepthVisitor, options, codeWriter) =>
         {
-            var serviceDescriptorKnownObject = new ServiceDescriptorKnownObject(visitor, codeGenerator);
-            knownTypes.Add(new KeyValuePair<string, IKnownObjectVisitor>(serviceDescriptorKnownObject.Id, serviceDescriptorKnownObject));
+            knownObjects.Add(new ServiceDescriptorKnownObject(nextDepthVisitor, codeWriter, options));
         }
     };
 

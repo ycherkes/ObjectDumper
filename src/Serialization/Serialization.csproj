@@ -45,7 +45,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="VarDump" Version="0.3.4-alpha" />
+    <PackageReference Include="VarDump" Version="0.3.7" />
     <PackageReference Include="YamlDotNet" Version="13.7.1" />
     <PackageReference Include="ILRepack" Version="2.0.18" PrivateAssets="All" />
   </ItemGroup>
