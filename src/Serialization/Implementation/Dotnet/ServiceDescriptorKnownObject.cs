@@ -7,12 +7,16 @@ using VarDump.Visitor;
 
 namespace YellowFlavor.Serialization.Implementation.Dotnet;
 
-internal sealed class ServiceDescriptorKnownObject(INextDepthVisitor nextDepthVisitor, ICodeWriter codeWriter, DumpOptions options)
+internal sealed class ServiceDescriptorKnownObject(INextDepthVisitor nextDepthVisitor, ICodeWriter codeWriter)
     : IKnownObjectVisitor
 {
     public bool IsSuitableFor(object obj, Type objectType)
     {
         return string.Equals(objectType?.FullName, "Microsoft.Extensions.DependencyInjection.ServiceDescriptor", StringComparison.InvariantCulture);
+    }
+
+    public void ConfigureOptions(Action<DumpOptions> configure)
+    {
     }
 
     public void Visit(object obj, Type objectType, VisitContext context)
@@ -59,6 +63,4 @@ internal sealed class ServiceDescriptorKnownObject(INextDepthVisitor nextDepthVi
     }
 
     public string Id => "ServiceDescriptor";
-
-    public DumpOptions Options => options;
 }

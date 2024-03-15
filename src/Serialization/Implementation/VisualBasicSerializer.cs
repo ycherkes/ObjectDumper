@@ -16,11 +16,11 @@ internal class VisualBasicSerializer : ISerializer
         DateTimeInstantiation = DateTimeInstantiation.Parse,
         Descriptors =
         {
+            new ExcludeAvroSchemaMiddleware(),
             new DelegateMiddleware(),
             new MemberInfoMiddleware(),
             new FileSystemInfoMiddleware()
         },
-        ExcludeTypes = [ "Avro.Schema" ],
         GenerateVariableInitializer = true,
         GetPropertiesBindingFlags = BindingFlags.Instance | BindingFlags.Public,
         IgnoreDefaultValues = true,
@@ -32,7 +32,7 @@ internal class VisualBasicSerializer : ISerializer
         WritablePropertiesOnly = true,
         ConfigureKnownObjects = (knownObjects, nextDepthVisitor, options, codeWriter) =>
         {
-            knownObjects.Add(new ServiceDescriptorKnownObject(nextDepthVisitor, codeWriter, options));
+            knownObjects.Add(new ServiceDescriptorKnownObject(nextDepthVisitor, codeWriter));
         }
     };
 
