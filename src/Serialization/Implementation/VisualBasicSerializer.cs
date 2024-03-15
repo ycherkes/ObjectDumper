@@ -30,7 +30,7 @@ internal class VisualBasicSerializer : ISerializer
         UseNamedArgumentsInConstructors = false,
         UseTypeFullName = false,
         WritablePropertiesOnly = true,
-        ConfigureKnownObjects = (knownObjects, nextDepthVisitor, options, codeWriter) =>
+        ConfigureKnownObjects = (knownObjects, nextDepthVisitor, _, codeWriter) =>
         {
             knownObjects.Add(new ServiceDescriptorKnownObject(nextDepthVisitor, codeWriter));
         }

@@ -8,7 +8,7 @@ namespace YellowFlavor.Serialization.Implementation.Dotnet;
 
 internal class MemberInfoMiddleware : IObjectDescriptorMiddleware
 {
-    private readonly HashSet<string> _includeProperties =
+    private static readonly HashSet<string> IncludeProperties =
     [
         "Name",
         "DeclaringType",
@@ -21,11 +21,13 @@ internal class MemberInfoMiddleware : IObjectDescriptorMiddleware
     {
         var description = prev();
 
-        if (typeof(MemberInfo).IsAssignableFrom(objectType))
+        if (!typeof(MemberInfo).IsAssignableFrom(objectType))
         {
-            description.Properties = description.Properties.Where(p => _includeProperties.Contains(p.Name));
-            description.Fields = [];
+            return description;
         }
+
+        description.Properties = description.Properties.Where(p => IncludeProperties.Contains(p.Name));
+        description.Fields = [];
 
         return description;
     }
