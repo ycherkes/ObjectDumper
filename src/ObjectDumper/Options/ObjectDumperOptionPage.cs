@@ -75,8 +75,8 @@ public class ObjectDumperOptionPage : DialogPage
     public int CSharpMaxCollectionSize { get; set; } = int.MaxValue;
 
     [Category("C#")]
-    [DisplayName("Use Named Arguments For Constructors")]
-    [Description("Use Named Arguments For Constructors")]
+    [DisplayName("Use Named Arguments In Constructors")]
+    [Description("Use Named Arguments In Constructors")]
     [DefaultValue(false)]
     public bool CSharpUseNamedArgumentsInConstructors { get; set; } = false;
 
@@ -196,8 +196,8 @@ public class ObjectDumperOptionPage : DialogPage
     public int VisualBasicMaxCollectionSize { get; set; } = int.MaxValue;
 
     [Category("Visual Basic")]
-    [DisplayName("Use Named Arguments For Constructors")]
-    [Description("Use Named Arguments For Constructors")]
+    [DisplayName("Use Named Arguments In Constructors")]
+    [Description("Use Named Arguments In Constructors")]
     [DefaultValue(false)]
     public bool VisualBasicUseNamedArgumentsInConstructors { get; set; } = false;
 
