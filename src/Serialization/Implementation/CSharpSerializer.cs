@@ -3,8 +3,10 @@ using Newtonsoft.Json;
 using System.Reflection;
 using VarDump;
 using VarDump.Visitor;
+using VarDump.Visitor.Descriptors.Specific;
 using YellowFlavor.Serialization.Implementation.Dotnet;
 using YellowFlavor.Serialization.Implementation.Settings;
+using System;
 
 namespace YellowFlavor.Serialization.Implementation;
 
@@ -16,7 +18,10 @@ internal class CSharpSerializer : ISerializer
         DateTimeInstantiation = DateTimeInstantiation.Parse,
         Descriptors =
         {
-            new ExcludeAvroSchemaMiddleware(),
+            new ObjectMembersFilter
+            {
+                Condition = member => !string.Equals(member.Type.FullName, "Avro.Schema", StringComparison.InvariantCulture)
+            },
             new DelegateMiddleware(),
             new MemberInfoMiddleware(),
             new FileSystemInfoMiddleware()
