@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using Newtonsoft.Json;
 using System.Reflection;
 using VarDump;
 using VarDump.Visitor;
-using VarDump.Visitor.KnownTypes;
+using VarDump.Visitor.Descriptors.Specific;
 using YellowFlavor.Serialization.Implementation.Dotnet;
 using YellowFlavor.Serialization.Implementation.Settings;
+using System;
 
 namespace YellowFlavor.Serialization.Implementation;
 
@@ -18,24 +18,26 @@ internal class CSharpSerializer : ISerializer
         DateTimeInstantiation = DateTimeInstantiation.Parse,
         Descriptors =
         {
+            new ObjectMembersFilter
+            {
+                Condition = member => !string.Equals(member.Type.FullName, "Avro.Schema", StringComparison.InvariantCulture)
+            },
             new DelegateMiddleware(),
             new MemberInfoMiddleware(),
             new FileSystemInfoMiddleware()
         },
-        ExcludeTypes = new[] { "Avro.Schema" },
         GenerateVariableInitializer = true,
         GetPropertiesBindingFlags = BindingFlags.Instance | BindingFlags.Public,
         IgnoreDefaultValues = true,
         IgnoreNullValues = true,
         MaxDepth = 25,
         MaxCollectionSize = int.MaxValue,
-        UseNamedArgumentsForReferenceRecordTypes = false,
+        UseNamedArgumentsInConstructors = false,
         UseTypeFullName = false,
         WritablePropertiesOnly = true,
-        ConfigureKnownTypes = (knownTypes, visitor, opts) =>
+        ConfigureKnownObjects = (knownObjects, nextDepthVisitor, _, codeWriter) =>
         {
-            var serviceDescriptorKnownObject = new ServiceDescriptorKnownObject(visitor, opts);
-            knownTypes.Add(new KeyValuePair<string, IKnownObjectVisitor>(serviceDescriptorKnownObject.Id, serviceDescriptorKnownObject));
+            knownObjects.Add(new ServiceDescriptorKnownObject(nextDepthVisitor, codeWriter));
         }
     };
 
@@ -59,7 +61,7 @@ internal class CSharpSerializer : ISerializer
         newSettings.MaxCollectionSize = csharpSettings.MaxCollectionSize;
         newSettings.DateTimeInstantiation = csharpSettings.DateTimeInstantiation;
         newSettings.DateKind = csharpSettings.DateKind;
-        newSettings.UseNamedArgumentsForReferenceRecordTypes = csharpSettings.UseNamedArgumentsForReferenceRecordTypes;
+        newSettings.UseNamedArgumentsInConstructors = csharpSettings.UseNamedArgumentsInConstructors;
         newSettings.GetPropertiesBindingFlags = csharpSettings.GetPropertiesBindingFlags;
         newSettings.WritablePropertiesOnly = csharpSettings.WritablePropertiesOnly;
         newSettings.GetFieldsBindingFlags = csharpSettings.GetFieldsBindingFlags;

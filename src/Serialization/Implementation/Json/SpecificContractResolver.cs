@@ -14,6 +14,7 @@ internal class SpecificContractResolver : DefaultContractResolver
             var properties = (List<JsonProperty>)base.CreateProperties(type, memberSerialization);
 
             // Do not serialize properties
-            return properties.FindAll(p => !typeof(Delegate).IsAssignableFrom(p.PropertyType) && !ExcludeTypes.Any(pt => string.Equals(p.PropertyType?.FullName, pt, StringComparison.Ordinal)));
+            return properties.FindAll(p => !typeof(Delegate).IsAssignableFrom(p.PropertyType)
+                                           && !ExcludeTypes.Any(pt => string.Equals(p.PropertyType?.FullName, pt, StringComparison.Ordinal)));
         }
 }

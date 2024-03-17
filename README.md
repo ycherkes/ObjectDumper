@@ -25,12 +25,12 @@ The result will be output to a separate document window or copied to the clipboa
 
 # Configurable:
 
-![image](https://github.com/ycherkes/ObjectDumper/assets/13467759/9aeb86d3-f232-4c1c-83ea-a99e6fd283fc)
+![image](https://github.com/ycherkes/ObjectDumper/assets/13467759/c36d711d-70ff-475f-841b-e1bf00835427)
 
 # Quick tips:
 - How to compare two dumped objects:
   1. Enable option "Show Miscellaneous files in Solution Explorer":
-  ![image](https://user-images.githubusercontent.com/13467759/173348566-e5768350-321a-4fbd-85fc-10e3a366a5ae.png)
+  ![image](https://github.com/ycherkes/ObjectDumper/assets/13467759/2cd2d786-1e30-4425-83ab-664277068ad6)
   2. If you use Visual Studio 17.7 or above - just skip this step (it's an embedded), otherwise install a diff extension - I verified the [Heku.VsDiff](https://marketplace.visualstudio.com/items?itemName=Heku.VsDiff2022)
   3. Select files in Solution Explorer under the Miscellaneous Files folder -> Right click -> Compare Selected(Files):
   ![image](https://user-images.githubusercontent.com/13467759/173349566-518f89e1-9d21-4ab6-a4e1-da2dc86e3a78.png)

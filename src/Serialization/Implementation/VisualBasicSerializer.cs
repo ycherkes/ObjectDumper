@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System;
+using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;
 using VarDump;
 using VarDump.Visitor;
-using VarDump.Visitor.KnownTypes;
+using VarDump.Visitor.Descriptors.Specific;
 using YellowFlavor.Serialization.Implementation.Dotnet;
 using YellowFlavor.Serialization.Implementation.Settings;
 
@@ -18,24 +18,26 @@ internal class VisualBasicSerializer : ISerializer
         DateTimeInstantiation = DateTimeInstantiation.Parse,
         Descriptors =
         {
+            new ObjectMembersFilter
+            {
+                Condition = member => !string.Equals(member.Type.FullName, "Avro.Schema", StringComparison.InvariantCulture)
+            },
             new DelegateMiddleware(),
             new MemberInfoMiddleware(),
             new FileSystemInfoMiddleware()
         },
-        ExcludeTypes = new[] { "Avro.Schema" },
         GenerateVariableInitializer = true,
         GetPropertiesBindingFlags = BindingFlags.Instance | BindingFlags.Public,
         IgnoreDefaultValues = true,
         IgnoreNullValues = true,
         MaxDepth = 25,
         MaxCollectionSize = int.MaxValue,
-        UseNamedArgumentsForReferenceRecordTypes = false,
+        UseNamedArgumentsInConstructors = false,
         UseTypeFullName = false,
         WritablePropertiesOnly = true,
-        ConfigureKnownTypes = (knownTypes, visitor, opts) =>
+        ConfigureKnownObjects = (knownObjects, nextDepthVisitor, _, codeWriter) =>
         {
-            var serviceDescriptorKnownObject = new ServiceDescriptorKnownObject(visitor, opts);
-            knownTypes.Add(new KeyValuePair<string, IKnownObjectVisitor>(serviceDescriptorKnownObject.Id, serviceDescriptorKnownObject));
+            knownObjects.Add(new ServiceDescriptorKnownObject(nextDepthVisitor, codeWriter));
         }
     };
 
@@ -59,7 +61,7 @@ internal class VisualBasicSerializer : ISerializer
         newSettings.MaxCollectionSize = vbSettings.MaxCollectionSize;
         newSettings.DateTimeInstantiation = vbSettings.DateTimeInstantiation;
         newSettings.DateKind = vbSettings.DateKind;
-        newSettings.UseNamedArgumentsForReferenceRecordTypes = vbSettings.UseNamedArgumentsForReferenceRecordTypes;
+        newSettings.UseNamedArgumentsInConstructors = vbSettings.UseNamedArgumentsInConstructors;
         newSettings.GetPropertiesBindingFlags = vbSettings.GetPropertiesBindingFlags;
         newSettings.WritablePropertiesOnly = vbSettings.WritablePropertiesOnly;
         newSettings.GetFieldsBindingFlags = vbSettings.GetFieldsBindingFlags;
