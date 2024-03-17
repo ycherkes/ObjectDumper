@@ -95,4 +95,5 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Update VarDump to v 0.2.16 (Fix the cicrular reference detection - remove lazy behavior, regression in VarDump 0.2.13).
 
 ## [0.0.27]
-- Update VarDump to v 0.3.3 (Global refactoring).
+- Update VarDump to v 1.0.0 (see https://github.com/ycherkes/VarDump/releases/tag/version_1.0.0).
+- Renamed setting UseNamedArgumentsForReferenceRecordTypes to UseNamedArgumentsInConstructors.
