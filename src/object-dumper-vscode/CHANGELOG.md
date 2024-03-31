@@ -97,3 +97,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.27]
 - Update VarDump to v 1.0.0 (see https://github.com/ycherkes/VarDump/releases/tag/version_1.0.0).
 - Renamed setting UseNamedArgumentsForReferenceRecordTypes to UseNamedArgumentsInConstructors.
+
+## [0.0.28]
+- Update VarDump to v 1.0.2 (see https://github.com/ycherkes/VarDump/releases/tag/version_1.0.2).
