@@ -271,7 +271,7 @@
         "objectDumper.csharp.integralNumericFormat": {
           "type": "string",
           "default": "D",
-          "description": "Integral numeric format."
+          "description": "Integral numeric format. Available formats: [dDbBxX]\\d+_\\d+ example: 0 formatted as \"X8_4\" will output 0X0000_0000"
         },
         "objectDumper.json.enabled": {
           "type": "boolean",
@@ -448,7 +448,7 @@
         "objectDumper.vb.integralNumericFormat": {
           "type": "string",
           "default": "D",
-          "description": "Integral numeric format."
+          "description": "Integral numeric format. Available formats: [dDbBxX]\\d+_\\d+ example: 0 formatted as \"X8_4\" will output &H0000_0000"
         },
         "objectDumper.xml.enabled": {
           "type": "boolean",

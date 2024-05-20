@@ -42,8 +42,8 @@ export class OptionsProvider{
 					getFieldsBindingFlags: this.getBindingFlags(extensionConfiguration.vb.getFieldsBindingFlagsModifiers, extensionConfiguration.vb.getFieldsBindingFlagsInstanceOrStatic),
 					sortDirection: extensionConfiguration.vb.sortDirection,
 					generateVariableInitializer: extensionConfiguration.vb.generateVariableInitializer,
-					primitiveCollectionLayout: extensionConfiguration.csharp.primitiveCollectionLayout,
-					integralNumericFormat: extensionConfiguration.csharp.integralNumericFormat
+					primitiveCollectionLayout: extensionConfiguration.vb.primitiveCollectionLayout,
+					integralNumericFormat: extensionConfiguration.vb.integralNumericFormat
 				};
 			}
 			case "json":{

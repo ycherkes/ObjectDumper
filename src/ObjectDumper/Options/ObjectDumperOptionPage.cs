@@ -118,7 +118,7 @@ public class ObjectDumperOptionPage : DialogPage
 
     [Category("C#")]
     [DisplayName("Integral numeric format")]
-    [Description("Integral numeric format")]
+    [Description("Available formats: [dDbBxX]\\d+_\\d+ example: 0 formatted as \"X8_4\" will output 0X0000_0000")]
     [DefaultValue("D")]
     public string CSharpIntegralNumericFormat { get; set; } = "D";
 
@@ -251,7 +251,7 @@ public class ObjectDumperOptionPage : DialogPage
 
     [Category("Visual Basic")]
     [DisplayName("Integral numeric format")]
-    [Description("Integral numeric format")]
+    [Description("Available formats: [dDbBxX]\\d+_\\d+ example: 0 formatted as \"X8_4\" will output &H0000_0000")]
     [DefaultValue("D")]
     public string VisualBasicIntegralNumericFormat { get; set; } = "D";
 
