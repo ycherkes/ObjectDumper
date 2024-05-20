@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using VarDump.Visitor;
+using VarDump.Visitor.Format;
 
 namespace YellowFlavor.Serialization.Implementation.Settings;
 
@@ -19,4 +20,6 @@ internal class VbSettings
     public BindingFlags? GetFieldsBindingFlags { get; set; }
     public ListSortDirection? SortDirection { get; set; }
     public bool GenerateVariableInitializer { get; set; } = true;
+    public CollectionLayout PrimitiveCollectionLayout { get; set; } = CollectionLayout.MultiLine;
+    public string IntegralNumericFormat { get; set; } = "D";
 }

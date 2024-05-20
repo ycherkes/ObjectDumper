@@ -7,6 +7,7 @@ using VarDump.Visitor.Descriptors.Specific;
 using YellowFlavor.Serialization.Implementation.Dotnet;
 using YellowFlavor.Serialization.Implementation.Settings;
 using System;
+using VarDump.Visitor.Format;
 
 namespace YellowFlavor.Serialization.Implementation;
 
@@ -38,6 +39,11 @@ internal class CSharpSerializer : ISerializer
         ConfigureKnownObjects = (knownObjects, nextDepthVisitor, _, codeWriter) =>
         {
             knownObjects.Add(new ServiceDescriptorKnownObject(nextDepthVisitor, codeWriter));
+        },
+        Formatting = new VarDump.Visitor.Formatting
+        {
+            IntegralNumericFormat = "D",
+            PrimitiveCollectionLayout = CollectionLayout.MultiLine
         }
     };
 
@@ -67,6 +73,8 @@ internal class CSharpSerializer : ISerializer
         newSettings.GetFieldsBindingFlags = csharpSettings.GetFieldsBindingFlags;
         newSettings.SortDirection = csharpSettings.SortDirection;
         newSettings.GenerateVariableInitializer = csharpSettings.GenerateVariableInitializer;
+        newSettings.Formatting.PrimitiveCollectionLayout = csharpSettings.PrimitiveCollectionLayout;
+        newSettings.Formatting.IntegralNumericFormat = csharpSettings.IntegralNumericFormat;
 
         return newSettings;
     }

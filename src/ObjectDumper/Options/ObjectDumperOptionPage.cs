@@ -110,6 +110,18 @@ public class ObjectDumperOptionPage : DialogPage
     [DefaultValue(true)]
     public bool CSharpGenerateVariableInitializer { get; set; } = true;
 
+    [Category("C#")]
+    [DisplayName("Primitive collection layout")]
+    [Description("Primitive collection layout")]
+    [DefaultValue(CollectionLayout.MultiLine)]
+    public CollectionLayout CSharpPrimitiveCollectionLayout { get; set; } = CollectionLayout.MultiLine;
+
+    [Category("C#")]
+    [DisplayName("Integral numeric format")]
+    [Description("Integral numeric format")]
+    [DefaultValue("D")]
+    public string CSharpIntegralNumericFormat { get; set; } = "D";
+
     [Category("Json")]
     [DisplayName("Enabled")]
     [Description("Enabled")]
@@ -231,6 +243,18 @@ public class ObjectDumperOptionPage : DialogPage
     [DefaultValue(true)]
     public bool VisualBasicGenerateVariableInitializer { get; set; } = true;
 
+    [Category("Visual Basic")]
+    [DisplayName("Primitive collection layout")]
+    [Description("Primitive collection layout")]
+    [DefaultValue(CollectionLayout.MultiLine)]
+    public CollectionLayout VisualBasicPrimitiveCollectionLayout { get; set; } = CollectionLayout.MultiLine;
+
+    [Category("Visual Basic")]
+    [DisplayName("Integral numeric format")]
+    [Description("Integral numeric format")]
+    [DefaultValue("D")]
+    public string VisualBasicIntegralNumericFormat { get; set; } = "D";
+
     [Category("Xml")]
     [DisplayName("Enabled")]
     [Description("Enabled")]
@@ -304,7 +328,9 @@ public class ObjectDumperOptionPage : DialogPage
                     SortDirection = CSharpSortDirection,
                     UseFullTypeName = CSharpUseFullTypeName,
                     UseNamedArgumentsInConstructors = CSharpUseNamedArgumentsInConstructors,
-                    WritablePropertiesOnly = CSharpWritablePropertiesOnly
+                    WritablePropertiesOnly = CSharpWritablePropertiesOnly,
+                    PrimitiveCollectionLayout = CSharpPrimitiveCollectionLayout,
+                    IntegralNumericFormat = CSharpIntegralNumericFormat
                 }.ToJson();
             case "vb":
                 return new
@@ -321,7 +347,9 @@ public class ObjectDumperOptionPage : DialogPage
                     SortDirection = VisualBasicSortDirection,
                     UseFullTypeName = VisualBasicUseFullTypeName,
                     UseNamedArgumentsInConstructors = VisualBasicUseNamedArgumentsInConstructors,
-                    WritablePropertiesOnly = VisualBasicWritablePropertiesOnly
+                    WritablePropertiesOnly = VisualBasicWritablePropertiesOnly,
+                    PrimitiveCollectionLayout = VisualBasicPrimitiveCollectionLayout,
+                    IntegralNumericFormat = VisualBasicIntegralNumericFormat
                 }.ToJson();
             case "json":
                 return new

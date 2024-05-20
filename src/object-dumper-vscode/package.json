@@ -3,7 +3,7 @@
   "displayName": "Object Dumper",
   "description": "Extension for exporting in-memory objects during debugging to C#, JSON, VB, XML, and YAML string.",
   "publisher": "YevhenCherkes",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "repository": {
     "url": "https://github.com/ycherkes/ObjectDumper"
   },
@@ -259,6 +259,20 @@
           "default": 2147483647,
           "description": "The maximum size of collection."
         },
+        "objectDumper.csharp.primitiveCollectionLayout": {
+          "type": "string",
+          "enum": [
+            "multiLine",
+            "singleLine"
+          ],
+          "default": "multiLine",
+          "description": "Primitive collection layout."
+        },
+        "objectDumper.csharp.integralNumericFormat": {
+          "type": "string",
+          "default": "D",
+          "description": "Integral numeric format."
+        },
         "objectDumper.json.enabled": {
           "type": "boolean",
           "default": true,
@@ -421,6 +435,20 @@
           "type": "integer",
           "default": 2147483647,
           "description": "The maximum size of collection."
+        },
+        "objectDumper.vb.primitiveCollectionLayout": {
+          "type": "string",
+          "enum": [
+            "multiLine",
+            "singleLine"
+          ],
+          "default": "multiLine",
+          "description": "Primitive collection layout."
+        },
+        "objectDumper.vb.integralNumericFormat": {
+          "type": "string",
+          "default": "D",
+          "description": "Integral numeric format."
         },
         "objectDumper.xml.enabled": {
           "type": "boolean",

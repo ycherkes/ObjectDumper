@@ -22,7 +22,9 @@ export class OptionsProvider{
 					writablePropertiesOnly: extensionConfiguration.csharp.writablePropertiesOnly,
 					getFieldsBindingFlags: this.getBindingFlags(extensionConfiguration.csharp.getFieldsBindingFlagsModifiers, extensionConfiguration.csharp.getFieldsBindingFlagsInstanceOrStatic),
 					sortDirection: extensionConfiguration.csharp.sortDirection,
-					generateVariableInitializer: extensionConfiguration.csharp.generateVariableInitializer
+					generateVariableInitializer: extensionConfiguration.csharp.generateVariableInitializer,
+					primitiveCollectionLayout: extensionConfiguration.csharp.primitiveCollectionLayout,
+					integralNumericFormat: extensionConfiguration.csharp.integralNumericFormat
 				  };
 			}
 			case "vb":{
@@ -39,7 +41,9 @@ export class OptionsProvider{
 					writablePropertiesOnly: extensionConfiguration.vb.writablePropertiesOnly,
 					getFieldsBindingFlags: this.getBindingFlags(extensionConfiguration.vb.getFieldsBindingFlagsModifiers, extensionConfiguration.vb.getFieldsBindingFlagsInstanceOrStatic),
 					sortDirection: extensionConfiguration.vb.sortDirection,
-					generateVariableInitializer: extensionConfiguration.vb.generateVariableInitializer
+					generateVariableInitializer: extensionConfiguration.vb.generateVariableInitializer,
+					primitiveCollectionLayout: extensionConfiguration.csharp.primitiveCollectionLayout,
+					integralNumericFormat: extensionConfiguration.csharp.integralNumericFormat
 				};
 			}
 			case "json":{
