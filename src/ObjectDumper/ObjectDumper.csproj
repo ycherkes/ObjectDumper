@@ -70,6 +70,7 @@
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="DebuggeeInteraction\InteractionService.cs" />
     <Compile Include="Notifications\StatusBarHelper.cs" />
+    <Compile Include="Options\CollectionLayout.cs" />
     <Compile Include="Options\DateTimeOptions.cs" />
     <Compile Include="Options\DumpDestination.cs" />
     <Compile Include="Options\NamingConvention.cs" />

@@ -100,3 +100,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.29]
 - Update VarDump to v 1.0.2 (see https://github.com/ycherkes/VarDump/releases/tag/version_1.0.2).
+
+## [0.0.30]
+- Update VarDump to v 1.0.4.6-alpha (see https://github.com/ycherkes/VarDump/pull).

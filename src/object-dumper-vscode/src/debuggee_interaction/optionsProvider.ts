@@ -18,11 +18,15 @@ export class OptionsProvider{
 					dateTimeInstantiation: extensionConfiguration.csharp.dateTimeInstantiation,
 					dateKind: extensionConfiguration.csharp.dateKind,
 					useNamedArgumentsInConstructors: extensionConfiguration.csharp.useNamedArgumentsInConstructors,
+					usePredefinedConstants: extensionConfiguration.csharp.usePredefinedConstants,
+					usePredefinedMethods: extensionConfiguration.csharp.usePredefinedMethods,
 					getPropertiesBindingFlags: this.getBindingFlags(extensionConfiguration.csharp.getPropertiesBindingFlagsModifiers, extensionConfiguration.csharp.getPropertiesBindingFlagsInstanceOrStatic),
-					writablePropertiesOnly: extensionConfiguration.csharp.writablePropertiesOnly,
+					ignoreReadonlyProperties: extensionConfiguration.csharp.ignoreReadonlyProperties,
 					getFieldsBindingFlags: this.getBindingFlags(extensionConfiguration.csharp.getFieldsBindingFlagsModifiers, extensionConfiguration.csharp.getFieldsBindingFlagsInstanceOrStatic),
 					sortDirection: extensionConfiguration.csharp.sortDirection,
-					generateVariableInitializer: extensionConfiguration.csharp.generateVariableInitializer
+					generateVariableInitializer: extensionConfiguration.csharp.generateVariableInitializer,
+					primitiveCollectionLayout: extensionConfiguration.csharp.primitiveCollectionLayout,
+					integralNumericFormat: extensionConfiguration.csharp.integralNumericFormat
 				  };
 			}
 			case "vb":{
@@ -35,11 +39,15 @@ export class OptionsProvider{
 					dateTimeInstantiation: extensionConfiguration.vb.dateTimeInstantiation,
 					dateKind: extensionConfiguration.vb.dateKind,
 					useNamedArgumentsInConstructors: extensionConfiguration.vb.useNamedArgumentsInConstructors,
+					usePredefinedConstants: extensionConfiguration.vb.usePredefinedConstants,
+					usePredefinedMethods: extensionConfiguration.vb.usePredefinedMethods,
 					getPropertiesBindingFlags: this.getBindingFlags(extensionConfiguration.vb.getPropertiesBindingFlagsModifiers, extensionConfiguration.vb.getPropertiesBindingFlagsInstanceOrStatic),
-					writablePropertiesOnly: extensionConfiguration.vb.writablePropertiesOnly,
+					ignoreReadonlyProperties: extensionConfiguration.vb.ignoreReadonlyProperties,
 					getFieldsBindingFlags: this.getBindingFlags(extensionConfiguration.vb.getFieldsBindingFlagsModifiers, extensionConfiguration.vb.getFieldsBindingFlagsInstanceOrStatic),
 					sortDirection: extensionConfiguration.vb.sortDirection,
-					generateVariableInitializer: extensionConfiguration.vb.generateVariableInitializer
+					generateVariableInitializer: extensionConfiguration.vb.generateVariableInitializer,
+					primitiveCollectionLayout: extensionConfiguration.vb.primitiveCollectionLayout,
+					integralNumericFormat: extensionConfiguration.vb.integralNumericFormat
 				};
 			}
 			case "json":{
