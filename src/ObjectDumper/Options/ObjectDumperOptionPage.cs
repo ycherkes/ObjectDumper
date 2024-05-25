@@ -79,6 +79,18 @@ public class ObjectDumperOptionPage : DialogPage
     [Description("Use Named Arguments In Constructors")]
     [DefaultValue(false)]
     public bool CSharpUseNamedArgumentsInConstructors { get; set; } = false;
+    
+    [Category("C#")]
+    [DisplayName("Use Predefined Constants")]
+    [Description("Use Predefined Constants like int.MaxValue, DateTime.MinValue")]
+    [DefaultValue(true)]
+    public bool CSharpUsePredefinedConstants { get; set; } = true;
+
+    [Category("C#")]
+    [DisplayName("Use Predefined Methods")]
+    [Description("Use Predefined Methods like TimeSpan.FromDays")]
+    [DefaultValue(true)]
+    public bool CSharpUsePredefinedMethods { get; set; } = true;
 
     [Category("C#")]
     [DisplayName("Get Properties Binding Flags")]
@@ -87,10 +99,16 @@ public class ObjectDumperOptionPage : DialogPage
     public BindingFlags CSharpGetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
 
     [Category("C#")]
-    [DisplayName("Writable Properties Only")]
-    [Description("Writable Properties Only")]
+    [DisplayName("Ignore Readonly Properties")]
+    [Description("Ignore Readonly Properties")]
     [DefaultValue(true)]
-    public bool CSharpWritablePropertiesOnly { get; set; } = true;
+    public bool CSharpIgnoreReadonlyProperties { get; set; } = true;
+
+    [Category("C#")]
+    [DisplayName("Indent String")]
+    [Description("Indent String")]
+    [DefaultValue("    ")]
+    public string CSharpIndentString { get; set; } = "    ";
 
     [Category("C#")]
     [DisplayName("Get Fields Binding Flags")]
@@ -118,7 +136,7 @@ public class ObjectDumperOptionPage : DialogPage
 
     [Category("C#")]
     [DisplayName("Integral numeric format")]
-    [Description("Available formats: [dDbBxX]\\d+_\\d+ example: 0 formatted as \"X8_4\" will output 0X0000_0000")]
+    [Description("Available formats: d, D, b, B, x, X example: 0 formatted as \"X8_4\" will output 0X0000_0000")]
     [DefaultValue("D")]
     public string CSharpIntegralNumericFormat { get; set; } = "D";
 
@@ -214,16 +232,34 @@ public class ObjectDumperOptionPage : DialogPage
     public bool VisualBasicUseNamedArgumentsInConstructors { get; set; } = false;
 
     [Category("Visual Basic")]
+    [DisplayName("Use Predefined Constants")]
+    [Description("Use Predefined Constants like int.MaxValue, DateTime.MinValue")]
+    [DefaultValue(true)]
+    public bool VisualBasicUsePredefinedConstants { get; set; } = true;
+
+    [Category("Visual Basic")]
+    [DisplayName("Use Predefined Methods")]
+    [Description("Use Predefined Methods like TimeSpan.FromDays")]
+    [DefaultValue(true)]
+    public bool VisualBasicUsePredefinedMethods { get; set; } = true;
+
+    [Category("Visual Basic")]
     [DisplayName("Get Properties Binding Flags")]
     [Description("Get Properties Binding Flags")]
     [DefaultValue(BindingFlags.Public | BindingFlags.Instance)]
     public BindingFlags VisualBasicGetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
 
     [Category("Visual Basic")]
-    [DisplayName("Writable Properties Only")]
-    [Description("Writable Properties Only")]
+    [DisplayName("Ignore Readonly Properties")]
+    [Description("Ignore Readonly Properties")]
     [DefaultValue(true)]
-    public bool VisualBasicWritablePropertiesOnly { get; set; } = true;
+    public bool VisualBasicIgnoreReadonlyProperties { get; set; } = true;
+
+    [Category("Visual Basic")]
+    [DisplayName("Indent String")]
+    [Description("Indent String")]
+    [DefaultValue("    ")]
+    public string VisualBasicIndentString { get; set; } = "    ";
 
     [Category("Visual Basic")]
     [DisplayName("Get Fields Binding Flags")]
@@ -251,7 +287,7 @@ public class ObjectDumperOptionPage : DialogPage
 
     [Category("Visual Basic")]
     [DisplayName("Integral numeric format")]
-    [Description("Available formats: [dDbBxX]\\d+_\\d+ example: 0 formatted as \"X8_4\" will output &H0000_0000")]
+    [Description("Available formats: d, D, b, B, x, X example: 0 formatted as \"X8_4\" will output &H0000_0000")]
     [DefaultValue("D")]
     public string VisualBasicIntegralNumericFormat { get; set; } = "D";
 
@@ -323,14 +359,17 @@ public class ObjectDumperOptionPage : DialogPage
                     GetPropertiesBindingFlags = CSharpGetPropertiesBindingFlags,
                     IgnoreDefaultValues = CSharpIgnoreDefaultValues,
                     IgnoreNullValues = CSharpIgnoreNullValues,
+                    IgnoreReadonlyProperties = CSharpIgnoreReadonlyProperties,
+                    IndentString = CSharpIndentString,
+                    IntegralNumericFormat = CSharpIntegralNumericFormat,
                     MaxCollectionSize = CSharpMaxCollectionSize,
                     MaxDepth = CommonMaxDepth,
-                    SortDirection = CSharpSortDirection,
-                    UseFullTypeName = CSharpUseFullTypeName,
-                    UseNamedArgumentsInConstructors = CSharpUseNamedArgumentsInConstructors,
-                    WritablePropertiesOnly = CSharpWritablePropertiesOnly,
                     PrimitiveCollectionLayout = CSharpPrimitiveCollectionLayout,
-                    IntegralNumericFormat = CSharpIntegralNumericFormat
+                    SortDirection = CSharpSortDirection,
+                    UseNamedArgumentsInConstructors = CSharpUseNamedArgumentsInConstructors,
+                    UsePredefinedConstants = CSharpUsePredefinedConstants,
+                    UsePredefinedMethods = CSharpUsePredefinedMethods,
+                    UseFullTypeName = CSharpUseFullTypeName,
                 }.ToJson();
             case "vb":
                 return new
@@ -342,14 +381,17 @@ public class ObjectDumperOptionPage : DialogPage
                     GetPropertiesBindingFlags = VisualBasicGetPropertiesBindingFlags,
                     IgnoreDefaultValues = VisualBasicIgnoreDefaultValues,
                     IgnoreNullValues = VisualBasicIgnoreNullValues,
+                    IgnoreReadonlyProperties = VisualBasicIgnoreReadonlyProperties,
+                    IndentString = VisualBasicIndentString,
+                    IntegralNumericFormat = VisualBasicIntegralNumericFormat,
                     MaxCollectionSize = VisualBasicMaxCollectionSize,
                     MaxDepth = CommonMaxDepth,
-                    SortDirection = VisualBasicSortDirection,
-                    UseFullTypeName = VisualBasicUseFullTypeName,
-                    UseNamedArgumentsInConstructors = VisualBasicUseNamedArgumentsInConstructors,
-                    WritablePropertiesOnly = VisualBasicWritablePropertiesOnly,
                     PrimitiveCollectionLayout = VisualBasicPrimitiveCollectionLayout,
-                    IntegralNumericFormat = VisualBasicIntegralNumericFormat
+                    SortDirection = VisualBasicSortDirection,
+                    UseNamedArgumentsInConstructors = VisualBasicUseNamedArgumentsInConstructors,
+                    UsePredefinedConstants = VisualBasicUsePredefinedConstants,
+                    UsePredefinedMethods = VisualBasicUsePredefinedMethods,
+                    UseFullTypeName = VisualBasicUseFullTypeName,
                 }.ToJson();
             case "json":
                 return new

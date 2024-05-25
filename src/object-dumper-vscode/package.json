@@ -193,6 +193,16 @@
           "default": false,
           "description": "Use Named Arguments In Constructors."
         },
+        "objectDumper.csharp.usePredefinedConstants": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use Predefined Constants like int.MaxValue, DateTime.MinValue."
+        },
+        "objectDumper.csharp.usePredefinedMethods": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use Predefined Methods like TimeSpan.FromDays."
+        },
         "objectDumper.csharp.getPropertiesBindingFlagsModifiers": {
           "type": "string",
           "enum": [
@@ -213,10 +223,10 @@
           "default": "instance",
           "description": "Get Properties Binding Flags Instance or Static."
         },
-        "objectDumper.csharp.writablePropertiesOnly": {
+        "objectDumper.csharp.ignoreReadonlyProperties": {
           "type": "boolean",
           "default": true,
-          "description": "Writable Properties Only."
+          "description": "Ignore Readonly Properties."
         },
         "objectDumper.csharp.getFieldsBindingFlagsModifiers": {
           "type": [
@@ -370,6 +380,16 @@
           "default": false,
           "description": "Use Named Arguments In Constructors."
         },
+        "objectDumper.vb.usePredefinedConstants": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use Predefined Constants like int.MaxValue, DateTime.MinValue."
+        },
+        "objectDumper.vb.usePredefinedMethods": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use Predefined Methods like TimeSpan.FromDays."
+        },
         "objectDumper.vb.getPropertiesBindingFlagsModifiers": {
           "type": "string",
           "enum": [
@@ -390,10 +410,10 @@
           "default": "instance",
           "description": "Get Properties Binding Flags Instance or Static."
         },
-        "objectDumper.vb.writablePropertiesOnly": {
+        "objectDumper.vb.ignoreReadonlyProperties": {
           "type": "boolean",
           "default": true,
-          "description": "Writable Properties Only."
+          "description": "Ignore Readonly Properties."
         },
         "objectDumper.vb.getFieldsBindingFlagsModifiers": {
           "type": [
