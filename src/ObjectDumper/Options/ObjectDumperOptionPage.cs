@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using Microsoft.VisualStudio.Shell;
 using Newtonsoft.Json;
 using ObjectDumper.Extensions;
@@ -436,12 +437,21 @@ public class ObjectDumperOptionPage : DialogPage
 
         base.OnApply(e);
     }
+
+    private static readonly ConcurrentDictionary<DumpDestination, IDumpOutput> OutputsCache = new();
+
     public IDumpOutput GetDumpOutput(DTE2 dte)
     {
+        if(OutputsCache.TryGetValue(DumpTo, out var output))
+        {
+            return output;
+        }
+
         return DumpTo switch
         {
-            DumpDestination.NewDocumentTab => new DumpToNewDocumentTab(dte),
-            DumpDestination.Clipboard => new DumpToClipboard(),
+            DumpDestination.NewDocumentTab => OutputsCache.GetOrAdd(DumpDestination.NewDocumentTab, _ => new DumpToNewDocumentTab(dte)),
+            DumpDestination.Clipboard => OutputsCache.GetOrAdd(DumpDestination.Clipboard, _ => new DumpToClipboard()),
+            DumpDestination.OutputWindow => OutputsCache.GetOrAdd(DumpDestination.OutputWindow, _ => new DumpToOutputWindow(dte)),
             _ => throw new ArgumentOutOfRangeException()
         };
     }

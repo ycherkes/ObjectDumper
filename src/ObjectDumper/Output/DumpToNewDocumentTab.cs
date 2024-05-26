@@ -10,6 +10,8 @@ internal sealed class DumpToNewDocumentTab(DTE2 dte) : IDumpOutput
 {
     public void Write(string format, string expression, string content, bool isFileName)
     {
+        ThreadHelper.ThrowIfNotOnUIThread();
+
         var fileExtension = $".{format}";
 
         var fileName = SanitizeFileName(expression.Any(char.IsWhiteSpace) ? "expression" : expression);

@@ -19,7 +19,7 @@ The closest alternative is proprietary [OzCode export](https://github.com/oz-cod
 
 "**Dump as**" commands are available via context menu in the **Code** and **Immediate** windows.
 
-The result will be output to a separate document window or copied to the clipboard.
+The result will be printed to a new document window, Output Window -> Object Dumper Pane, or copied to the clipboard, depending on the DumpTo option.
 
 ![Presentation](https://user-images.githubusercontent.com/13467759/175763360-6d714f96-8b90-48a9-bff0-8bceac4c2502.gif)
 
