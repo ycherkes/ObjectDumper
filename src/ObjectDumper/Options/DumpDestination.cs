@@ -3,5 +3,6 @@
 public enum DumpDestination
 {
     NewDocumentTab,
-    Clipboard
+    Clipboard,
+    OutputWindow
 }
