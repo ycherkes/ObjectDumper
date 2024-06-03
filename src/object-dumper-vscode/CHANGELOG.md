@@ -106,3 +106,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.31]
 - Update VarDump to v 1.0.4.10 Fix/binary formatting (see https://github.com/ycherkes/VarDump/pull/44).
+
+## [0.0.32]
+- Update VarDump to v 1.0.4.11 Fix decimal dumping regression (see https://github.com/ycherkes/VarDump/pull/45).
