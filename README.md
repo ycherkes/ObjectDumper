@@ -36,13 +36,14 @@ The result will be printed to a new document window, Output Window -> Object Dum
   ![image](https://user-images.githubusercontent.com/13467759/173349566-518f89e1-9d21-4ab6-a4e1-da2dc86e3a78.png)
 
 
-### Known limitations:
+### Known restrictions:
 - [C#, F# and VisualBasic](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper/DebuggeeInteraction/InteractionService.cs#L25-L30) project languages are currently supported only.
 - netstandard 2.0+, netcore2.0+, netframework 4.5+
 - if you are debugging the solution in **Release mode** or debuging DLLs from another source, such as a nuget package, you'll get an error message: "Cannot evaluate expression because the code of the current method is optimized" or "error CS0103: The name 'YellowFlavor' does not exist in the current context". Solution: switch to **Debug mode** or turn the [Tools > Options > Debugging > General > Suppress JIT optimization on module load](https://learn.microsoft.com/en-us/visualstudio/debugger/jit-optimization-and-debugging?view=vs-2022#the-suppress-jit-optimization-on-module-load-managed-only-option) option on.
 - local debugging only.
 - if you see any encoding-related issues, please select the option: **Tools > Options > Environment > Documents > Save documents as Unicode when data cannot be saved in codepage**.
 - it doesn't work for UWP applications, because [UAP doesn't support Assembly.LoadFrom](https://github.com/dotnet/runtime/issues/7543). You can bypass this restriction by referencing the .nestandard20 version of [Serialization lib](https://github.com/ycherkes/ObjectDumper/tree/main/src/Serialization) and calling: ```YellowFlavor.Serialization.ObjectSerializer.WarmUp();``` for loading the serializer into executing assembly. [Example](https://github.com/ycherkes/ObjectDumper/blob/main/samples/uwp/TestUwp/App.xaml.cs#L22)
+- for debugging the IIS-hosted ASP.NET MVC backend, please add the following access for **YourComputerName\IIS_IUSRS** group: **Read-Write** access to **%userprofile%\AppData\Local\Temp** directory and **Read** access to **%userprofile%\AppData\Local\Microsoft\VisualStudio** directory, otherwise, it will throw [UnauthorizedAccessException](https://github.com/ycherkes/ObjectDumper/issues/90).
 
 **Privacy Notice:** No personal data is collected at all.
 
