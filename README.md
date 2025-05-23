@@ -15,7 +15,7 @@ Reflection-based Visual Studio and [Visual Studio Code](https://github.com/ycher
 
 Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
-The closest alternative is proprietary [OzCode export](https://github.com/oz-code/OzCodeDemo/tree/master/OzCodeDemo/12.Export) functionality.
+The closest alternative was proprietary [OzCode export](https://github.com/oz-code/OzCodeDemo/tree/master/OzCodeDemo/12.Export) functionality (link is dead, company was bought by DataDog, plugin does not exist anymore). 
 
 "**Dump as**" commands are available via context menu in the **Code** and **Immediate** windows.
 
