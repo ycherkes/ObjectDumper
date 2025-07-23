@@ -63,3 +63,5 @@ The result will be printed to a new document window, Output Window -> Object Dum
 - 🐞 Open an issue or browse more such issues to contribute to on [GitHub](https://github.com/ycherkes/ObjectDumper/issues).
 - 🔗 Share with your friends.
 - 🍪 Sponsor me on [GitHub](https://github.com/sponsors/ycherkes) or [PayPal](https://www.paypal.com/donate/?business=KXGF7CMW8Y8WJ&no_recurring=0&item_name=Help+Object+Dumper+become+better%21).
+
+A big thank you to [Yova Solutions](https://www.yovasolutions.com) for sponsoring my work!
