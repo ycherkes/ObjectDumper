@@ -52,9 +52,9 @@ The result will be printed to a new document window, Output Window -> Object Dum
 | Repository  | Purpose | License |
 | ------------- | ------------- | ------------- |
 | [ILRepack](https://github.com/gluck/il-repack) | Bundles the serializer dependencies into a single merged assembly, minimizing the risk of dependency/version conflicts in the consumer’s application | [![Apache-2.0](https://img.shields.io/github/license/gluck/il-repack?style=flat-square)](https://github.com/gluck/il-repack/blob/master/LICENSE)  |
-| [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) | Serializes objects to JSON (and XML via Json.NET XML helpers) output | [![MIT](https://img.shields.io/github/license/JamesNK/Newtonsoft.Json?style=flat-square)](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)  |
-| [VarDump](https://github.com/ycherkes/VarDump)  | Serializes objects to C# and VB output | [![Apache-2.0](https://img.shields.io/github/license/ycherkes/vardump?style=flat-square)](https://github.com/ycherkes/VarDump/blob/main/LICENSE)  |
-| [YamlDotNet](https://github.com/aaubry/YamlDotNet) | Serializes objects to YAML output | [![MIT](https://img.shields.io/github/license/aaubry/YamlDotNet?style=flat-square)](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt)  |
+| [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) | Serializes objects to **JSON** (and **XML** via Json.NET XML helpers) output | [![MIT](https://img.shields.io/github/license/JamesNK/Newtonsoft.Json?style=flat-square)](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)  |
+| [VarDump](https://github.com/ycherkes/VarDump)  | Serializes objects to **C#** and **VB** output | [![Apache-2.0](https://img.shields.io/github/license/ycherkes/vardump?style=flat-square)](https://github.com/ycherkes/VarDump/blob/main/LICENSE)  |
+| [YamlDotNet](https://github.com/aaubry/YamlDotNet) | Serializes objects to **YAML** output | [![MIT](https://img.shields.io/github/license/aaubry/YamlDotNet?style=flat-square)](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt)  |
 
 # ❤ Like this project and want to contribute?
 
