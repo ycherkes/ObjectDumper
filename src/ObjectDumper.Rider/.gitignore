@@ -1,0 +1,27 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Gradle wrapper jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Logs
+*.log
+
+# Plugin build output
+/build/
+/buildPlugin/
+/runIde/
