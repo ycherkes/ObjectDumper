@@ -22,7 +22,7 @@ To learn more about the war and how you can help, [click here](https://stand-wit
 
 [![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
-Reflection-based extension for **Visual Studio**, **[Visual Studio Code](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md)**, and **[JetBrains Rider](https://github.com/ycherkes/ObjectDumper/blob/main/ObjectDumper.Rider/README.md)** for exporting in-memory objects during debugging to **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** string.
+Reflection-based extension for **Visual Studio**, **[Visual Studio Code](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md)**, and **[JetBrains Rider](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper.Rider/README.md)** for exporting in-memory objects during debugging to **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** string.
 
 Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
