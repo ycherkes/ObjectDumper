@@ -1,0 +1,115 @@
+<idea-plugin>
+    <id>com.yellowflavor.objectdumper</id>
+    <name>Object Dumper</name>
+    <vendor email="support@yellowflavor.com" url="https://github.com/ycherkes/ObjectDumper">YellowFlavor</vendor>
+
+    <description><![CDATA[
+    <h2>Object Dumper for Rider</h2>
+    <p>
+    Reflection-based Rider extension for exporting in-memory objects during debugging to 
+    <strong>C# Object Initialization Code</strong>, <strong>JSON</strong>, 
+    <strong>Visual Basic Object Initialization Code</strong>, <strong>XML</strong>, and <strong>YAML</strong> string.
+    </p>
+    
+    <p>
+    Inspired by <a href="https://github.com/OmarElabd/ObjectExporter">ObjectExporter</a>.
+    </p>
+    
+    <h3>Features:</h3>
+    <ul>
+        <li>Dump objects as C# initialization code</li>
+        <li>Dump objects as JSON</li>
+        <li>Dump objects as XML</li>
+        <li>Dump objects as Visual Basic initialization code</li>
+        <li>Dump objects as YAML</li>
+        <li>Configurable output destination (new tab, clipboard, or debug console)</li>
+        <li>Configurable serialization options</li>
+    </ul>
+    
+    <h3>Usage:</h3>
+    <p>
+    While debugging, right-click on a variable in the Debug tool window and select "Dump as..." 
+    to export the object in your desired format.
+    </p>
+    
+    <h3>Known Restrictions:</h3>
+    <ul>
+        <li>C#, F# and Visual Basic project languages are currently supported</li>
+        <li>.NET Standard 2.0+, .NET Core 2.0+, .NET Framework 4.5+</li>
+        <li>Local debugging only</li>
+        <li>Debug mode recommended (Release mode may cause optimization issues)</li>
+    </ul>
+    
+    <p><strong>Privacy Notice:</strong> No personal data is collected at all.</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.rider</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="ObjectDumper.Notifications" displayType="BALLOON"/>
+        
+        <applicationConfigurable 
+            parentId="tools" 
+            instance="com.yellowflavor.objectdumper.settings.ObjectDumperConfigurable"
+            id="com.yellowflavor.objectdumper.settings" 
+            displayName="Object Dumper"/>
+        
+        <applicationService 
+            serviceImplementation="com.yellowflavor.objectdumper.settings.ObjectDumperSettings"/>
+    </extensions>
+
+    <actions>
+        <group id="ObjectDumper.DebuggerActions" 
+               text="Dump As" 
+               popup="true"
+               icon="AllIcons.Actions.Dump">
+            <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            
+            <action id="ObjectDumper.DumpAsCSharp"
+                    class="com.yellowflavor.objectdumper.actions.DumpAsCSharpAction"
+                    text="C#"
+                    description="Dump object as C# initialization code"
+                    icon="/icons/csharp.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift D" second-keystroke="D"/>
+                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift D" second-keystroke="D"/>
+            </action>
+            
+            <action id="ObjectDumper.DumpAsJson"
+                    class="com.yellowflavor.objectdumper.actions.DumpAsJsonAction"
+                    text="JSON"
+                    description="Dump object as JSON"
+                    icon="/icons/json.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift D" second-keystroke="J"/>
+                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift D" second-keystroke="J"/>
+            </action>
+            
+            <action id="ObjectDumper.DumpAsXml"
+                    class="com.yellowflavor.objectdumper.actions.DumpAsXmlAction"
+                    text="XML"
+                    description="Dump object as XML"
+                    icon="/icons/xml.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift D" second-keystroke="X"/>
+                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift D" second-keystroke="X"/>
+            </action>
+            
+            <action id="ObjectDumper.DumpAsVisualBasic"
+                    class="com.yellowflavor.objectdumper.actions.DumpAsVisualBasicAction"
+                    text="Visual Basic"
+                    description="Dump object as Visual Basic initialization code"
+                    icon="/icons/vb.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift D" second-keystroke="V"/>
+                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift D" second-keystroke="V"/>
+            </action>
+            
+            <action id="ObjectDumper.DumpAsYaml"
+                    class="com.yellowflavor.objectdumper.actions.DumpAsYamlAction"
+                    text="YAML"
+                    description="Dump object as YAML"
+                    icon="/icons/yaml.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift D" second-keystroke="Y"/>
+                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift D" second-keystroke="Y"/>
+            </action>
+        </group>
+    </actions>
+</idea-plugin>

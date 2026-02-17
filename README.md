@@ -1,5 +1,16 @@
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://stand-with-ukraine.pp.ua)
 
+## Terms of use[?](https://github.com/Tyrrrz/.github/blob/master/docs/why-so-political.md)
+
+By using this project or its source code, for any purpose and in any shape or form, you grant your **implicit agreement** to all the following statements:
+
+- You **condemn Russia and its military aggression against Ukraine**
+- You **recognize that Russia is an occupant that unlawfully invaded a sovereign state**
+- You **support Ukraine's territorial integrity, including its claims over temporarily occupied territories of Crimea and Donbas**
+- You **reject false narratives perpetuated by Russian state propaganda**
+
+To learn more about the war and how you can help, [click here](https://stand-with-ukraine.pp.ua). Glory to Ukraine! 🇺🇦
+
 <img src="https://yevhencherkes.gallerycdn.vsassets.io/extensions/yevhencherkes/yellowflavorobjectdumper/0.0.0.64/1665328424655/Microsoft.VisualStudio.Services.Icons.Default" width="100" height="100" />
 
 # Object Dumper
@@ -11,17 +22,25 @@
 
 [![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
-Reflection-based Visual Studio and [Visual Studio Code](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) extension for exporting in-memory objects during debugging to **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** string.
+Reflection-based extension for **Visual Studio**, **[Visual Studio Code](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md)**, and **[JetBrains Rider](https://github.com/ycherkes/ObjectDumper/blob/main/ObjectDumper.Rider/README.md)** for exporting in-memory objects during debugging to **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** string.
 
 Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
 The closest alternative was proprietary [OzCode export](https://github.com/oz-code/OzCodeDemo/tree/master/OzCodeDemo/12.Export) functionality (link is dead, company was bought by DataDog, plugin does not exist anymore). 
 
-"**Dump as**" commands are available via context menu in the **Code** and **Immediate** windows.
+"**Dump as**" commands are available via context menu in the **Code** and **Immediate** windows (Visual Studio), or in the Debug tool window (Rider).
 
 The result will be printed to a new document window, Output Window -> Object Dumper Pane, or copied to the clipboard, depending on the DumpTo option.
 
 ![Presentation](https://user-images.githubusercontent.com/13467759/175763360-6d714f96-8b90-48a9-bff0-8bceac4c2502.gif)
+
+# IDE Support
+
+| IDE | Status | Documentation |
+|-----|--------|---------------|
+| Visual Studio | ✅ Available | Built-in (this page) |
+| Visual Studio Code | ✅ Available | [VS Code README](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) |
+| JetBrains Rider | 🚧 In Development | [Rider README](https://github.com/ycherkes/ObjectDumper/blob/main/ObjectDumper.Rider/README.md) |
 
 # Configurable:
 

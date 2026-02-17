@@ -1,0 +1,5 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="ObjectDumper.Notifications" displayType="BALLOON"/>
+    </extensions>
+</idea-plugin>

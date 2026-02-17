@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Plugin IDE",
+            "type": "shell",
+            "command": "${env:USERPROFILE}\\.gradle\\wrapper\\dists\\gradle-8.5-bin\\gradle-8.5\\bin\\gradle.bat",
+            "args": [
+                "runIde"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "JAVA_HOME": "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.17.10-hotspot",
+                    "GRADLE_OPTS": "-Djavax.net.ssl.trustStoreType=Windows-ROOT"
+                }
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        }
+    ]
+}
