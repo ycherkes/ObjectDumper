@@ -68,8 +68,9 @@
             
             <action id="ObjectDumper.DumpAsCSharp"
                     class="com.yellowflavor.objectdumper.actions.DumpAsCSharpAction"
-                    text="C# Object Initialization"
-                    description="Dump object as C# initialization code">
+                    text="C#"
+                    description="Dump object as C# initialization code"
+                    icon="/icons/csharp.svg">
                 <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift D" second-keystroke="D"/>
                 <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift D" second-keystroke="D"/>
             </action>
@@ -77,7 +78,8 @@
             <action id="ObjectDumper.DumpAsJson"
                     class="com.yellowflavor.objectdumper.actions.DumpAsJsonAction"
                     text="JSON"
-                    description="Dump object as JSON">
+                    description="Dump object as JSON"
+                    icon="/icons/json.svg">
                 <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift D" second-keystroke="J"/>
                 <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift D" second-keystroke="J"/>
             </action>
@@ -85,15 +87,17 @@
             <action id="ObjectDumper.DumpAsXml"
                     class="com.yellowflavor.objectdumper.actions.DumpAsXmlAction"
                     text="XML"
-                    description="Dump object as XML">
+                    description="Dump object as XML"
+                    icon="/icons/xml.svg">
                 <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift D" second-keystroke="X"/>
                 <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift D" second-keystroke="X"/>
             </action>
             
             <action id="ObjectDumper.DumpAsVisualBasic"
                     class="com.yellowflavor.objectdumper.actions.DumpAsVisualBasicAction"
-                    text="Visual Basic Object Initialization"
-                    description="Dump object as Visual Basic initialization code">
+                    text="Visual Basic"
+                    description="Dump object as Visual Basic initialization code"
+                    icon="/icons/vb.svg">
                 <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift D" second-keystroke="V"/>
                 <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift D" second-keystroke="V"/>
             </action>
@@ -101,7 +105,8 @@
             <action id="ObjectDumper.DumpAsYaml"
                     class="com.yellowflavor.objectdumper.actions.DumpAsYamlAction"
                     text="YAML"
-                    description="Dump object as YAML">
+                    description="Dump object as YAML"
+                    icon="/icons/yaml.svg">
                 <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift D" second-keystroke="Y"/>
                 <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift D" second-keystroke="Y"/>
             </action>
