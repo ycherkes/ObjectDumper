@@ -40,7 +40,7 @@ The result will be printed to a new document window, Output Window -> Object Dum
 |-----|--------|---------------|
 | Visual Studio | ✅ Available | Built-in (this page) |
 | Visual Studio Code | ✅ Available | [VS Code README](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) |
-| JetBrains Rider | 🚧 In Development | [Rider README](https://github.com/ycherkes/ObjectDumper/blob/main/ObjectDumper.Rider/README.md) |
+| JetBrains Rider | ✅ Available | [Rider README](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper.Rider/README.md) |
 
 # Configurable:
 
