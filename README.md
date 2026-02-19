@@ -36,11 +36,11 @@ The result will be printed to a new document window, Output Window -> Object Dum
 
 # IDE Support
 
-| IDE | Status | Documentation |
-|-----|--------|---------------|
-| Visual Studio | ✅ Available | Built-in (this page) |
-| Visual Studio Code | ✅ Available | [VS Code README](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) |
-| JetBrains Rider | ⏳ In review | [Rider README](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper.Rider/README.md) |
+| IDE | Documentation |
+|-----|---------------|
+| Visual Studio | Built-in (this page) |
+| Visual Studio Code | [VS Code README](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) |
+| JetBrains Rider | [Rider README](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper.Rider/README.md) |
 
 # Configurable:
 
