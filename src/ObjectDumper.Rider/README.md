@@ -15,7 +15,7 @@ To learn more about the war and how you can help, [click here](https://stand-wit
 
 Reflection-based JetBrains Rider extension for exporting in-memory objects during debugging to **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** string.
 
-This is the Rider version of the popular [Object Dumper extension](https://github.com/ycherkes/ObjectDumper) available for Visual Studio and Visual Studio Code.
+This is the [Rider version](https://plugins.jetbrains.com/plugin/30257-object-dumper) of the popular [Object Dumper extension](https://github.com/ycherkes/ObjectDumper) available for Visual Studio and Visual Studio Code.
 
 ## Features
 
