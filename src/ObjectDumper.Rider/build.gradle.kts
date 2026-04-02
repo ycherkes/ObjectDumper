@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.yellowflavor"
-version = "0.0.1"
+version = "0.0.2"
 
 repositories {
     mavenCentral()
@@ -54,12 +54,12 @@ intellijPlatform {
         
         ideaVersion {
             sinceBuild = "233"
-            untilBuild = "253.*"
+            untilBuild = provider { null }
         }
         
         vendor {
-            name = "YellowFlavor"
-            email = "support@yellowflavor.com"
+            name = "Reffinert"
+            email = "ycherkes@outlook.com"
             url = "https://github.com/ycherkes/ObjectDumper"
         }
     }
@@ -104,17 +104,6 @@ tasks.named("prepareSandbox") {
 
 tasks.named("buildPlugin") {
     dependsOn("copySerializationLibs")
-}
-
-tasks {
-    wrapper {
-        gradleVersion = "8.5"
-    }
-    
-    patchPluginXml {
-        sinceBuild.set("233")
-        untilBuild.set("253.*")
-    }
 }
 
 kotlin {
