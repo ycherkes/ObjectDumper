@@ -19,6 +19,7 @@ internal class CSharpSerializer : ISerializer
         {
             knownObjects.Add(new ServiceDescriptorKnownObject(nextDepthVisitor, codeWriter));
         },
+        CollectionLiteralStyle = CollectionLiteralStyle.Initializer,
         DateKind = DateKind.Original,
         DateTimeInstantiation = DateTimeInstantiation.Parse,
         Descriptors =
@@ -32,6 +33,7 @@ internal class CSharpSerializer : ISerializer
             new FileSystemInfoMiddleware()
         },
         GenerateVariableInitializer = true,
+        GetBaseClassFields = false,
         GetPropertiesBindingFlags = BindingFlags.Instance | BindingFlags.Public,
         IgnoreDefaultValues = true,
         IgnoreNullValues = true,
@@ -40,11 +42,13 @@ internal class CSharpSerializer : ISerializer
         IntegralNumericFormat = "D",
         MaxCollectionSize = int.MaxValue,
         MaxDepth = 25,
+        NewLineStyle = NewLineStyle.Auto,
         PrimitiveCollectionLayout = CollectionLayout.MultiLine,
+        StringLiteralStyle = StringLiteralStyle.Auto,
+        TypeNamePolicy = TypeNamingPolicy.ShortName,
         UseNamedArgumentsInConstructors = false,
         UsePredefinedConstants = true,
-        UsePredefinedMethods = true,
-        UseTypeFullName = false
+        UsePredefinedMethods = true
     };
 
     public void Serialize(object obj, string settings, TextWriter textWriter)
@@ -61,9 +65,11 @@ internal class CSharpSerializer : ISerializer
 
         var deserializedSettings = JsonConvert.DeserializeObject<CSharpSettings>(settings);
 
+        newOptions.CollectionLiteralStyle = deserializedSettings.CollectionLiteralStyle;
         newOptions.DateKind = deserializedSettings.DateKind;
         newOptions.DateTimeInstantiation = deserializedSettings.DateTimeInstantiation;
         newOptions.GenerateVariableInitializer = deserializedSettings.GenerateVariableInitializer;
+        newOptions.GetBaseClassFields = deserializedSettings.GetBaseClassFields;
         newOptions.GetFieldsBindingFlags = deserializedSettings.GetFieldsBindingFlags;
         newOptions.GetPropertiesBindingFlags = deserializedSettings.GetPropertiesBindingFlags;
         newOptions.IgnoreDefaultValues = deserializedSettings.IgnoreDefaultValues;
@@ -73,12 +79,14 @@ internal class CSharpSerializer : ISerializer
         newOptions.IntegralNumericFormat = deserializedSettings.IntegralNumericFormat;
         newOptions.MaxCollectionSize = deserializedSettings.MaxCollectionSize;
         newOptions.MaxDepth = deserializedSettings.MaxDepth;
+        newOptions.NewLineStyle = deserializedSettings.NewLineStyle;
         newOptions.PrimitiveCollectionLayout = deserializedSettings.PrimitiveCollectionLayout;
         newOptions.SortDirection = deserializedSettings.SortDirection;
+        newOptions.StringLiteralStyle = deserializedSettings.StringLiteralStyle;
         newOptions.UseNamedArgumentsInConstructors = deserializedSettings.UseNamedArgumentsInConstructors;
         newOptions.UsePredefinedConstants = deserializedSettings.UsePredefinedConstants;
         newOptions.UsePredefinedMethods = deserializedSettings.UsePredefinedMethods;
-        newOptions.UseTypeFullName = deserializedSettings.UseFullTypeName;
+        newOptions.TypeNamePolicy = deserializedSettings.TypeNamePolicy;
 
         return newOptions;
     }

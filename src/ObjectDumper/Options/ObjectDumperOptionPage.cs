@@ -51,10 +51,34 @@ public class ObjectDumperOptionPage : DialogPage
     public bool CSharpIgnoreDefaultValues { get; set; } = true;
 
     [Category("C#")]
-    [DisplayName("Use Full Type Name")]
-    [Description("Use Full Type Name")]
+    [DisplayName("Type Naming Policy")]
+    [Description("Controls whether generated type names are short, nested-qualified, or fully qualified.")]
+    [DefaultValue(TypeNamingPolicy.ShortName)]
+    public TypeNamingPolicy CSharpTypeNamePolicy { get; set; } = TypeNamingPolicy.ShortName;
+
+    [Category("C#")]
+    [DisplayName("Newline Style")]
+    [Description("Controls line endings in generated output.")]
+    [DefaultValue(NewLineStyle.Auto)]
+    public NewLineStyle CSharpNewLineStyle { get; set; } = NewLineStyle.Auto;
+
+    [Category("C#")]
+    [DisplayName("Include Base-Class Fields")]
+    [Description("Includes fields declared by base classes when field serialization is enabled.")]
     [DefaultValue(false)]
-    public bool CSharpUseFullTypeName { get; set; }
+    public bool CSharpGetBaseClassFields { get; set; }
+
+    [Category("C#")]
+    [DisplayName("String Literal Style")]
+    [Description("Controls C# string syntax. Raw literals require a compatible C# language version.")]
+    [DefaultValue(StringLiteralStyle.Auto)]
+    public StringLiteralStyle CSharpStringLiteralStyle { get; set; } = StringLiteralStyle.Auto;
+
+    [Category("C#")]
+    [DisplayName("Collection Literal Style")]
+    [Description("Uses traditional initializers or C# collection expressions. Expressions require a compatible C# language version.")]
+    [DefaultValue(CollectionLiteralStyle.Initializer)]
+    public CollectionLiteralStyle CSharpCollectionLiteralStyle { get; set; } = CollectionLiteralStyle.Initializer;
 
     [Category("C#")]
     [DisplayName("DateTime Instantiation")]
@@ -202,10 +226,22 @@ public class ObjectDumperOptionPage : DialogPage
     public bool VisualBasicIgnoreDefaultValues { get; set; } = true;
 
     [Category("Visual Basic")]
-    [DisplayName("Use Full Type Name")]
-    [Description("Use Full Type Name")]
+    [DisplayName("Type Naming Policy")]
+    [Description("Controls whether generated type names are short, nested-qualified, or fully qualified.")]
+    [DefaultValue(TypeNamingPolicy.ShortName)]
+    public TypeNamingPolicy VisualBasicTypeNamePolicy { get; set; } = TypeNamingPolicy.ShortName;
+
+    [Category("Visual Basic")]
+    [DisplayName("Newline Style")]
+    [Description("Controls line endings in generated output.")]
+    [DefaultValue(NewLineStyle.Auto)]
+    public NewLineStyle VisualBasicNewLineStyle { get; set; } = NewLineStyle.Auto;
+
+    [Category("Visual Basic")]
+    [DisplayName("Include Base-Class Fields")]
+    [Description("Includes fields declared by base classes when field serialization is enabled.")]
     [DefaultValue(false)]
-    public bool VisualBasicUseFullTypeName { get; set; }
+    public bool VisualBasicGetBaseClassFields { get; set; }
 
     [Category("Visual Basic")]
     [DisplayName("DateTime Instantiation")]
@@ -353,9 +389,11 @@ public class ObjectDumperOptionPage : DialogPage
             case "cs":
                 return new
                 {
+                    CollectionLiteralStyle = CSharpCollectionLiteralStyle,
                     DateKind = CSharpDateKind,
                     DateTimeInstantiation = CSharpDateTimeInstantiation,
                     GenerateVariableInitializer = CSharpGenerateVariableInitializer,
+                    GetBaseClassFields = CSharpGetBaseClassFields,
                     GetFieldsBindingFlags = CSharpGetFieldsBindingFlags,
                     GetPropertiesBindingFlags = CSharpGetPropertiesBindingFlags,
                     IgnoreDefaultValues = CSharpIgnoreDefaultValues,
@@ -365,12 +403,14 @@ public class ObjectDumperOptionPage : DialogPage
                     IntegralNumericFormat = CSharpIntegralNumericFormat,
                     MaxCollectionSize = CSharpMaxCollectionSize,
                     MaxDepth = CommonMaxDepth,
+                    NewLineStyle = CSharpNewLineStyle,
                     PrimitiveCollectionLayout = CSharpPrimitiveCollectionLayout,
                     SortDirection = CSharpSortDirection,
+                    StringLiteralStyle = CSharpStringLiteralStyle,
+                    TypeNamePolicy = CSharpTypeNamePolicy,
                     UseNamedArgumentsInConstructors = CSharpUseNamedArgumentsInConstructors,
                     UsePredefinedConstants = CSharpUsePredefinedConstants,
                     UsePredefinedMethods = CSharpUsePredefinedMethods,
-                    UseFullTypeName = CSharpUseFullTypeName,
                 }.ToJson();
             case "vb":
                 return new
@@ -378,6 +418,7 @@ public class ObjectDumperOptionPage : DialogPage
                     DateKind = VisualBasicDateKind,
                     DateTimeInstantiation = VisualBasicDateTimeInstantiation,
                     GenerateVariableInitializer = VisualBasicGenerateVariableInitializer,
+                    GetBaseClassFields = VisualBasicGetBaseClassFields,
                     GetFieldsBindingFlags = VisualBasicGetFieldsBindingFlags,
                     GetPropertiesBindingFlags = VisualBasicGetPropertiesBindingFlags,
                     IgnoreDefaultValues = VisualBasicIgnoreDefaultValues,
@@ -387,12 +428,13 @@ public class ObjectDumperOptionPage : DialogPage
                     IntegralNumericFormat = VisualBasicIntegralNumericFormat,
                     MaxCollectionSize = VisualBasicMaxCollectionSize,
                     MaxDepth = CommonMaxDepth,
+                    NewLineStyle = VisualBasicNewLineStyle,
                     PrimitiveCollectionLayout = VisualBasicPrimitiveCollectionLayout,
                     SortDirection = VisualBasicSortDirection,
+                    TypeNamePolicy = VisualBasicTypeNamePolicy,
                     UseNamedArgumentsInConstructors = VisualBasicUseNamedArgumentsInConstructors,
                     UsePredefinedConstants = VisualBasicUsePredefinedConstants,
                     UsePredefinedMethods = VisualBasicUsePredefinedMethods,
-                    UseFullTypeName = VisualBasicUseFullTypeName,
                 }.ToJson();
             case "json":
                 return new

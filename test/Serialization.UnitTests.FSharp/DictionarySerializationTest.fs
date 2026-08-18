@@ -20,7 +20,6 @@ let ``SerializeDictionaryOfAnonymousTypeCSharp`` () =
         IgnoreDefaultValues = true;
         IgnoreNullValues = true;
         MaxDepth = 5;
-        UseFullTypeName = false;
         DateTimeInstantiation = "New";
         DateKind = "ConvertToUtc"
     |}), stringWriter)

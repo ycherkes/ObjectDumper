@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.yellowflavor"
-version = "0.0.2"
+version = "0.0.3"
 
 repositories {
     mavenCentral()
@@ -44,12 +44,10 @@ intellijPlatform {
         """.trimIndent()
         
         changeNotes = """
-            Initial release with support for:
-            - Dump as C#
-            - Dump as JSON
-            - Dump as XML
-            - Dump as VB
-            - Dump as YAML
+            Updated the bundled VarDump library to 2.0.8.0.
+            Improved enum, queryable, default-value, and circular-reference serialization.
+            Reduced allocations while writing collections and object graphs.
+            Added type naming, newline, inherited-field, C# string-literal, and C# collection-literal options.
         """.trimIndent()
         
         ideaVersion {
@@ -75,7 +73,7 @@ tasks.register<Copy>("copySerializationLibs") {
     group = "build"
     
     val objectDumperRoot = project.projectDir.parentFile
-    val sourceLibsPath = file("$objectDumperRoot/src/ObjectDumper/InjectableLibs")
+    val sourceLibsPath = file("$objectDumperRoot/ObjectDumper/InjectableLibs")
     val targetLibsPath = file("src/main/resources/InjectableLibs")
     
     from(sourceLibsPath) {
@@ -95,6 +93,10 @@ tasks.register<Copy>("copySerializationLibs") {
             logger.warn("The plugin will be built without serialization libraries")
         }
     }
+}
+
+tasks.named("processResources") {
+    dependsOn("copySerializationLibs")
 }
 
 // Ensure serialization libs are copied before preparing the plugin

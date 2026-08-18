@@ -18,7 +18,6 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(anonymous, JsonConvert.SerializeObject(new
             {
-                UseFullTypeName = false,
                 DateTimeInstantiation = "Parse"
             }));
 
@@ -42,7 +41,6 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(anonymous, JsonConvert.SerializeObject(new
             {
-                UseFullTypeName = false,
                 DateTimeInstantiation = "Parse"
             }));
 
@@ -66,7 +64,6 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(anonymous, JsonConvert.SerializeObject(new
             {
-                UseFullTypeName = false,
                 DateTimeInstantiation = "Parse"
             }));
 
@@ -89,7 +86,6 @@ namespace Serialization.UnitTests
 
             var result = serializer.Serialize(anonymous, JsonConvert.SerializeObject(new
             {
-                UseFullTypeName = false,
                 DateTimeInstantiation = "Parse"
             }));
 

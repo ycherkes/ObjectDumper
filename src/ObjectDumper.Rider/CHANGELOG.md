@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-08-18
+
+### Changed
+- Updated the bundled VarDump library to 2.0.8.0.
+- Improved enum, queryable, default-value, and circular-reference serialization.
+- Reduced allocations while writing collections and object graphs.
+- Added type naming, newline, and inherited-field options for C# and Visual Basic.
+- Added C# string-literal and collection-literal style options.
+
 ## [0.0.1] - 2024-01-XX
 
 ### Added
@@ -29,5 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Full debugger API integration pending (current implementation is a foundation)
 - Remote debugging not yet supported
 
-[Unreleased]: https://github.com/ycherkes/ObjectDumper/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/ycherkes/ObjectDumper/compare/v0.0.3...HEAD
+[0.0.3]: https://github.com/ycherkes/ObjectDumper/compare/v0.0.1...v0.0.3
 [0.0.1]: https://github.com/ycherkes/ObjectDumper/releases/tag/v0.0.1

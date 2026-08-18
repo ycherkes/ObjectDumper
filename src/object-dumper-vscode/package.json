@@ -3,7 +3,7 @@
   "displayName": "Object Dumper",
   "description": "Extension for exporting in-memory objects during debugging to C#, JSON, VB, XML, and YAML string.",
   "publisher": "YevhenCherkes",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "repository": {
     "url": "https://github.com/ycherkes/ObjectDumper"
   },
@@ -165,10 +165,50 @@
           "default": true,
           "description": "Ignore Default Values."
         },
-        "objectDumper.csharp.useFullTypeName": {
+        "objectDumper.csharp.typeNamePolicy": {
+          "type": "string",
+          "enum": [
+            "shortName",
+            "nestedQualified",
+            "fullName"
+          ],
+          "default": "shortName",
+          "description": "Controls whether generated type names are short, nested-qualified, or fully qualified."
+        },
+        "objectDumper.csharp.newLineStyle": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "unix",
+            "windows"
+          ],
+          "default": "auto",
+          "description": "Controls line endings in generated output."
+        },
+        "objectDumper.csharp.getBaseClassFields": {
           "type": "boolean",
           "default": false,
-          "description": "Use Full Type Name."
+          "description": "Includes fields declared by base classes when field serialization is enabled."
+        },
+        "objectDumper.csharp.stringLiteralStyle": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "escaped",
+            "verbatim",
+            "raw"
+          ],
+          "default": "auto",
+          "description": "Controls C# string syntax. Raw literals require a compatible C# language version."
+        },
+        "objectDumper.csharp.collectionLiteralStyle": {
+          "type": "string",
+          "enum": [
+            "initializer",
+            "expression"
+          ],
+          "default": "initializer",
+          "description": "Uses traditional initializers or C# collection expressions. Expressions require a compatible C# language version."
         },
         "objectDumper.csharp.dateTimeInstantiation": {
           "type": "string",
@@ -352,10 +392,30 @@
           "default": true,
           "description": "Ignore Default Values."
         },
-        "objectDumper.vb.useFullTypeName": {
+        "objectDumper.vb.typeNamePolicy": {
+          "type": "string",
+          "enum": [
+            "shortName",
+            "nestedQualified",
+            "fullName"
+          ],
+          "default": "shortName",
+          "description": "Controls whether generated type names are short, nested-qualified, or fully qualified."
+        },
+        "objectDumper.vb.newLineStyle": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "unix",
+            "windows"
+          ],
+          "default": "auto",
+          "description": "Controls line endings in generated output."
+        },
+        "objectDumper.vb.getBaseClassFields": {
           "type": "boolean",
           "default": false,
-          "description": "Use Full Type Name."
+          "description": "Includes fields declared by base classes when field serialization is enabled."
         },
         "objectDumper.vb.dateTimeInstantiation": {
           "type": "string",

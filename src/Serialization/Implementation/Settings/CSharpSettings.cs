@@ -7,7 +7,9 @@ namespace YellowFlavor.Serialization.Implementation.Settings;
 
 internal class CSharpSettings
 {
+    public CollectionLiteralStyle CollectionLiteralStyle { get; set; } = CollectionLiteralStyle.Initializer;
     public bool GenerateVariableInitializer { get; set; } = true;
+    public bool GetBaseClassFields { get; set; } = false;
     public BindingFlags? GetFieldsBindingFlags { get; set; }
     public BindingFlags GetPropertiesBindingFlags { get; set; } = BindingFlags.Public | BindingFlags.Instance;
     public bool IgnoreDefaultValues { get; set; } = true;
@@ -19,9 +21,11 @@ internal class CSharpSettings
     public DateKind DateKind { get; set; } = DateKind.ConvertToUtc;
     public int MaxCollectionSize { get; set; } = int.MaxValue;
     public int MaxDepth { get; set; } = 25;
+    public NewLineStyle NewLineStyle { get; set; } = NewLineStyle.Auto;
     public CollectionLayout PrimitiveCollectionLayout { get; set; } = CollectionLayout.MultiLine;
     public ListSortDirection? SortDirection { get; set; }
-    public bool UseFullTypeName { get; set; } = false;
+    public StringLiteralStyle StringLiteralStyle { get; set; } = StringLiteralStyle.Auto;
+    public TypeNamingPolicy TypeNamePolicy { get; set; } = TypeNamingPolicy.ShortName;
     public bool UseNamedArgumentsInConstructors { get; set; } = false;
     public bool UsePredefinedConstants { get; set; } = true;
     public bool UsePredefinedMethods { get; set; } = true;

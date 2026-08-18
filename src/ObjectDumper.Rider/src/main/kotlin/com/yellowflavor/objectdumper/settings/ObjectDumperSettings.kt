@@ -18,7 +18,11 @@ class ObjectDumperSettings : PersistentStateComponent<ObjectDumperSettings> {
     var csharpEnabled: Boolean = true
     var csharpIgnoreNullValues: Boolean = true
     var csharpIgnoreDefaultValues: Boolean = true
-    var csharpUseFullTypeName: Boolean = false
+    var csharpTypeNamePolicy: TypeNamingPolicy = TypeNamingPolicy.ShortName
+    var csharpNewLineStyle: NewLineStyle = NewLineStyle.Auto
+    var csharpGetBaseClassFields: Boolean = false
+    var csharpStringLiteralStyle: StringLiteralStyle = StringLiteralStyle.Auto
+    var csharpCollectionLiteralStyle: CollectionLiteralStyle = CollectionLiteralStyle.Initializer
     var csharpDateTimeInstantiation: DateTimeInstantiation = DateTimeInstantiation.Parse
     var csharpDateKind: DateKind = DateKind.Original
     var csharpMaxCollectionSize: Int = Int.MAX_VALUE
@@ -40,7 +44,9 @@ class ObjectDumperSettings : PersistentStateComponent<ObjectDumperSettings> {
     var visualBasicEnabled: Boolean = true
     var vbIgnoreNullValues: Boolean = true
     var vbIgnoreDefaultValues: Boolean = true
-    var vbUseFullTypeName: Boolean = false
+    var vbTypeNamePolicy: TypeNamingPolicy = TypeNamingPolicy.ShortName
+    var vbNewLineStyle: NewLineStyle = NewLineStyle.Auto
+    var vbGetBaseClassFields: Boolean = false
     var vbDateTimeInstantiation: DateTimeInstantiation = DateTimeInstantiation.Parse
     var vbDateKind: DateKind = DateKind.Original
     var vbMaxCollectionSize: Int = Int.MAX_VALUE
@@ -138,6 +144,34 @@ enum class DateKind(val jsonValue: String) {
 enum class CollectionLayout(val jsonValue: String) {
     MultiLine("MultiLine"),
     SingleLine("SingleLine");
+}
+
+/** Matches VarDump TypeNamingPolicy. */
+enum class TypeNamingPolicy(val jsonValue: String) {
+    ShortName("ShortName"),
+    NestedQualified("NestedQualified"),
+    FullName("FullName");
+}
+
+/** Matches VarDump NewLineStyle. */
+enum class NewLineStyle(val jsonValue: String) {
+    Auto("Auto"),
+    Unix("Unix"),
+    Windows("Windows");
+}
+
+/** Matches VarDump C# StringLiteralStyle. */
+enum class StringLiteralStyle(val jsonValue: String) {
+    Auto("Auto"),
+    Escaped("Escaped"),
+    Verbatim("Verbatim"),
+    Raw("Raw");
+}
+
+/** Matches VarDump C# CollectionLiteralStyle. */
+enum class CollectionLiteralStyle(val jsonValue: String) {
+    Initializer("Initializer"),
+    Expression("Expression");
 }
 
 /** Matches C# NamingStrategy enum. JSON value: PascalCase string. */
