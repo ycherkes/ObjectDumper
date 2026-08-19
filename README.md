@@ -17,7 +17,7 @@ To learn more about the war and how you can help, [click here](https://stand-wit
 
 [![VS Marketplace](https://vsmarketplacebadges.dev/version-short/YevhenCherkes.YellowFlavorObjectDumper.svg?label=VS%20Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
 [![VS Installs](https://vsmarketplacebadges.dev/installs-short/YevhenCherkes.YellowFlavorObjectDumper.svg?label=VS%20Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
-[![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](LICENSE.txt)
+[![License: MIT](https://img.shields.io/badge/LICENSE-MIT-44cc11?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
 **Object Dumper** is a Visual Studio extension for exporting live .NET objects during debugging into reusable **C#**, **Visual Basic**, **JSON**, **XML**, or **YAML** representations.
 
