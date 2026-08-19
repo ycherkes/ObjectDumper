@@ -30,7 +30,7 @@ Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
 ### Generate reusable code from runtime objects
 
-C# and Visual Basic output is powered by [VarDump](https://github.com/ycherkes/VarDump).
+C# and Visual Basic output is powered by [VarDump](https://github.com/ycherkes/VarDump). See the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for supported formatting and traversal options.
 
 Typical use cases include:
 
@@ -40,68 +40,7 @@ Typical use cases include:
 - copying runtime objects as JSON or YAML for API testing
 - inspecting large object graphs without manually expanding every debugger node
 
-### Fine-grained C# and Visual Basic formatting
-
-Object Dumper exposes VarDump 2.x formatting and traversal options directly through VS Code settings.
-
-For both C# and Visual Basic you can configure:
-
-- **Type naming policy**
-  - `shortName`
-  - `nestedQualified`
-  - `fullName`
-- **Newline style**
-  - `auto`
-  - `unix`
-  - `windows`
-- inclusion of **base-class fields**
-- null and default-value handling
-- maximum collection size
-- property visibility
-- field visibility
-- instance/static member selection
-- readonly-property handling
-- member sorting
-- generated variable initializers
-- primitive collection layout
-- integral numeric formatting
-- named constructor arguments
-- predefined constants and helper methods
-- `DateTime` construction and kind handling
-
-C# additionally supports:
-
-- **String literal style**
-  - `auto`
-  - `escaped`
-  - `verbatim`
-  - `raw`
-- **Collection literal style**
-  - `initializer`
-  - `expression`
-
-> [!NOTE]
-> Raw string literals and collection expressions require a compatible C# language version in the project where the generated code is used.
-
-### Format-specific settings
-
-JSON supports configuration for:
-
-- null/default-value handling
-- naming strategy
-- enums as strings
-- type-name handling
-- `DateTime` zone handling
-
-XML supports:
-
-- null/default-value handling
-- naming strategy
-- enums as strings
-- full type names
-- `DateTime` zone handling
-
-YAML supports configurable naming conventions.
+Dump behavior and available formats can be configured by opening **Settings** and searching for **Object Dumper**.
 
 ## Installation
 
@@ -138,7 +77,7 @@ The commands are only enabled during a supported debugging session.
 
 ## Configuration
 
-Open **Settings** and search for:
+Configure dump behavior by opening **Settings** and searching for:
 
 ```text
 Object Dumper
@@ -154,57 +93,7 @@ or edit your `settings.json` directly.
 }
 ```
 
-### C# example
-
-```json
-{
-  "objectDumper.csharp.typeNamePolicy": "shortName",
-  "objectDumper.csharp.newLineStyle": "auto",
-  "objectDumper.csharp.getBaseClassFields": false,
-  "objectDumper.csharp.stringLiteralStyle": "auto",
-  "objectDumper.csharp.collectionLiteralStyle": "initializer",
-  "objectDumper.csharp.generateVariableInitializer": true,
-  "objectDumper.csharp.primitiveCollectionLayout": "multiLine"
-}
-```
-
-### Visual Basic example
-
-```json
-{
-  "objectDumper.vb.typeNamePolicy": "shortName",
-  "objectDumper.vb.newLineStyle": "auto",
-  "objectDumper.vb.getBaseClassFields": false,
-  "objectDumper.vb.generateVariableInitializer": true,
-  "objectDumper.vb.primitiveCollectionLayout": "multiLine"
-}
-```
-
-### Type naming
-
-The `typeNamePolicy` setting controls how generated C# and Visual Basic type names are written:
-
-| Value | Behavior |
-|---|---|
-| `shortName` | Uses the shortest practical type name |
-| `nestedQualified` | Includes containing type names for nested types |
-| `fullName` | Uses fully qualified type names |
-
-### C# string literal style
-
-| Value | Behavior |
-|---|---|
-| `auto` | VarDump chooses an appropriate representation |
-| `escaped` | Standard escaped strings |
-| `verbatim` | Verbatim `@"..."` strings where applicable |
-| `raw` | C# raw string literals |
-
-### C# collection literal style
-
-| Value | Behavior |
-|---|---|
-| `initializer` | Traditional collection/array initializer syntax |
-| `expression` | C# collection-expression syntax |
+C# and Visual Basic settings use the `objectDumper.csharp.*` and `objectDumper.vb.*` namespaces. VS Code Settings shows their defaults and accepted values; refer to the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for serializer behavior.
 
 ## Changelog
 

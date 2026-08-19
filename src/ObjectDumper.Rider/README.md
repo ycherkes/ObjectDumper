@@ -37,7 +37,7 @@ This is the [JetBrains Rider version](https://plugins.jetbrains.com/plugin/30257
 
 ### Generate code you can reuse
 
-C# and Visual Basic dumps are powered by [VarDump](https://github.com/ycherkes/VarDump) and are intended to produce readable code that can be copied into tests, samples, repro cases, or debugging utilities.
+C# and Visual Basic dumps are powered by [VarDump](https://github.com/ycherkes/VarDump) and are intended to produce readable code that can be copied into tests, samples, repro cases, or debugging utilities. See the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for supported formatting and traversal options.
 
 Typical uses include:
 
@@ -47,69 +47,6 @@ Typical uses include:
 - generating C# or Visual Basic object initialization code
 - inspecting large object graphs without expanding every debugger node manually
 
-### Fine-grained C# and Visual Basic formatting
-
-Object Dumper exposes VarDump 2.x formatting and traversal options directly in Rider.
-
-For both C# and Visual Basic you can configure:
-
-- **Type naming policy**
-  - `ShortName`
-  - `NestedQualified`
-  - `FullName`
-- **Newline style**
-  - `Auto`
-  - `Unix`
-  - `Windows`
-- inclusion of **base-class fields**
-- null and default-value handling
-- maximum collection size
-- property and field visibility
-- instance/static member selection
-- readonly-property handling
-- indentation
-- member sorting
-- generated variable initializers
-- primitive collection layout
-- integral numeric formatting
-- predefined constants and helper methods
-- named constructor arguments
-- `DateTime` construction and kind handling
-
-C# additionally supports:
-
-- **String literal style**
-  - `Auto`
-  - `Escaped`
-  - `Verbatim`
-  - `Raw`
-- **Collection literal style**
-  - `Initializer`
-  - `Expression`
-
-> [!NOTE]
-> Raw string literals and collection expressions require a compatible C# language version in the project where the generated code is used.
-
-### Format-specific configuration
-
-JSON options include:
-
-- naming strategy
-- enum serialization as strings
-- type-name handling
-- `DateTime` zone handling
-- null/default-value handling
-
-XML options include:
-
-- naming strategy
-- enum serialization as strings
-- full type names
-- `DateTime` zone handling
-- null/default-value handling
-
-YAML supports configurable naming conventions.
-
 ### Choose where dumps go
 
 Generated output can be sent to:
@@ -117,6 +54,8 @@ Generated output can be sent to:
 - **New Tab**
 - **Clipboard**
 - **Debug Console**
+
+Serialization, traversal, formatting, and output behavior can be configured under **Settings / Preferences → Tools → Object Dumper**.
 
 ## Installation
 
@@ -156,7 +95,7 @@ Install [Object Dumper from the JetBrains Marketplace](https://plugins.jetbrains
 
 ## Configuration
 
-Open:
+Configure dump behavior under:
 
 **Settings / Preferences → Tools → Object Dumper**
 
@@ -177,26 +116,7 @@ The settings are grouped into tabs for:
 | **Operation Timeout** | Maximum debugger dump duration | `10 seconds` |
 | **Dump To** | Output destination | `New Tab` |
 
-### C# defaults
-
-Some notable defaults are:
-
-| Option | Default |
-|---|---|
-| Ignore Null Values | `true` |
-| Ignore Default Values | `true` |
-| Type Naming Policy | `ShortName` |
-| Newline Style | `Auto` |
-| Include Base-Class Fields | `false` |
-| String Literal Style | `Auto` |
-| Collection Literal Style | `Initializer` |
-| DateTime Instantiation | `Parse` |
-| DateTime Kind | `Original` |
-| Generate Variable Initializer | `true` |
-| Primitive Collection Layout | `MultiLine` |
-| Integral Numeric Format | `D` |
-
-Visual Basic uses equivalent defaults for the options that apply to it.
+C# and Visual Basic settings correspond to VarDump options. Rider displays their defaults; refer to the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for serializer behavior.
 
 ## Changelog
 

@@ -44,7 +44,7 @@ Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
 ### Generate reusable code from runtime state
 
-C# and Visual Basic output is powered by [VarDump](https://github.com/ycherkes/VarDump).
+C# and Visual Basic output is powered by [VarDump](https://github.com/ycherkes/VarDump). See the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for supported formatting and traversal options.
 
 Typical use cases include:
 
@@ -55,71 +55,6 @@ Typical use cases include:
 - inspecting large object graphs without manually expanding every debugger node
 - comparing two runtime objects by dumping them into separate documents and using Visual Studio's file comparison tools
 
-### Fine-grained C# and Visual Basic formatting
-
-Object Dumper exposes VarDump 2.x formatting and traversal options through:
-
-**Tools → Options → Object Dumper**
-
-For both C# and Visual Basic you can configure:
-
-- **Type naming policy**
-  - `ShortName`
-  - `NestedQualified`
-  - `FullName`
-- **Newline style**
-  - `Auto`
-  - `Unix`
-  - `Windows`
-- inclusion of **base-class fields**
-- null and default-value handling
-- maximum collection size
-- property binding flags
-- field binding flags
-- readonly-property handling
-- member sorting
-- indentation
-- generated variable initializers
-- primitive collection layout
-- integral numeric formatting
-- named constructor arguments
-- predefined constants and helper methods
-- `DateTime` construction and kind handling
-
-C# additionally supports:
-
-- **String literal style**
-  - `Auto`
-  - `Escaped`
-  - `Verbatim`
-  - `Raw`
-- **Collection literal style**
-  - `Initializer`
-  - `Expression`
-
-> [!NOTE]
-> Raw string literals and collection expressions require a compatible C# language version in the project where the generated code is used.
-
-### Format-specific settings
-
-JSON supports:
-
-- null/default-value handling
-- naming strategy
-- enums as strings
-- type-name handling
-- `DateTime` zone handling
-
-XML supports:
-
-- null/default-value handling
-- naming strategy
-- enums as strings
-- full type names
-- `DateTime` zone handling
-
-YAML supports configurable naming conventions.
-
 ### Multiple output destinations
 
 Use **Dump To** to choose where generated content is written:
@@ -127,6 +62,8 @@ Use **Dump To** to choose where generated content is written:
 - **New Document**
 - **Output Window → Object Dumper**
 - **Clipboard**
+
+Serialization, traversal, formatting, and output behavior can be configured under **Tools → Options → Object Dumper**.
 
 ## Installation
 
@@ -145,9 +82,11 @@ After installation, restart Visual Studio if prompted.
 
 ## Configuration
 
-Open:
+Configure dump behavior under:
 
 **Tools → Options → Object Dumper**
+
+![Object Dumper options page](https://github.com/ycherkes/ObjectDumper/assets/13467759/a26e322f-cb29-4daa-a8d2-96f9df57af1b)
 
 ### Common defaults
 
@@ -157,31 +96,7 @@ Open:
 | Operation Timeout | `10 seconds` |
 | Dump To | `New Document` |
 
-### C# defaults
-
-| Option | Default |
-|---|---|
-| Enabled | `true` |
-| Ignore Null Values | `true` |
-| Ignore Default Values | `true` |
-| Type Naming Policy | `ShortName` |
-| Newline Style | `Auto` |
-| Include Base-Class Fields | `false` |
-| String Literal Style | `Auto` |
-| Collection Literal Style | `Initializer` |
-| DateTime Instantiation | `Parse` |
-| DateTime Kind | `Original` |
-| Max Collection Size | `int.MaxValue` |
-| Use Named Arguments In Constructors | `false` |
-| Use Predefined Constants | `true` |
-| Use Predefined Methods | `true` |
-| Get Properties Binding Flags | `Public, Instance` |
-| Ignore Readonly Properties | `true` |
-| Generate Variable Initializer | `true` |
-| Primitive Collection Layout | `MultiLine` |
-| Integral Numeric Format | `D` |
-
-Visual Basic exposes equivalent defaults for the options that apply to it.
+C# and Visual Basic settings correspond to VarDump options. Refer to the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for their behavior.
 
 ## Changelog
 
