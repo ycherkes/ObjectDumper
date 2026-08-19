@@ -163,7 +163,8 @@ Install [Object Dumper from the JetBrains Marketplace](https://plugins.jetbrains
 5. Select C#, Visual Basic, JSON, XML, or YAML.
 6. Object Dumper serializes the object and writes the result to the configured destination.
 
-![Usage Example](docs/usage-example.gif)
+![Usage Example Code Window](docs/usage-from-code.png)
+![Usage Example Debug -> Threads And Variables Window](docs/usage-from-watch.png)
 
 ## Configuration
 
