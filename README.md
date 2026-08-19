@@ -348,9 +348,8 @@ Debugger interaction and serialization happen locally as part of your Visual Stu
 Contributions, bug reports, and feature requests are welcome.
 
 - [Star the repository](https://github.com/ycherkes/ObjectDumper)
-- [Open an issue](https://github.com/ycherkes/ObjectDumper/issues)
-- Submit a pull request
-- [Review the Visual Studio extension](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper&ssr=false#review-details)
+- [Open an issue or submit a pull request](https://github.com/ycherkes/ObjectDumper/issues)
+- Write a review and star this extension on [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper&ssr=false#review-details), [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper&ssr=false#review-details), and [Jetbrains Marketplace](https://plugins.jetbrains.com/plugin/30257-object-dumper/reviews)
 
 ## Support the project
 
