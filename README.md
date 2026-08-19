@@ -100,18 +100,6 @@ C# additionally supports:
 > [!NOTE]
 > Raw string literals and collection expressions require a compatible C# language version in the project where the generated code is used.
 
-### Improved serialization with VarDump 2.x
-
-This version updates the bundled VarDump library from `1.0.4.11` to `2.0.8.0`.
-
-The upgrade improves:
-
-- enum serialization
-- `IQueryable` handling
-- default-value handling
-- circular-reference detection
-- allocations while traversing collections and object graphs
-
 ### Format-specific settings
 
 JSON supports:
@@ -195,19 +183,9 @@ Open:
 
 Visual Basic exposes equivalent defaults for the options that apply to it.
 
-## Upgrading from earlier versions
+## Changelog
 
-The VarDump 2.x upgrade replaces the old Boolean full-type-name option for C# and Visual Basic with **Type Naming Policy**.
-
-Available values are:
-
-- `ShortName`
-- `NestedQualified`
-- `FullName`
-
-Persisted Object Dumper settings may reset after upgrading because the old setting format is not migrated.
-
-XML keeps its own separate **Use Full Type Name** setting because XML serialization uses a different configuration path.
+See the [changelog](CHANGELOG.md) for release details and migration guidance.
 
 ## IDE support
 
@@ -232,6 +210,11 @@ Visual Studio can be used to compare two dumped object documents:
 
 ## Requirements
 
+Supported Visual Studio versions:
+
+- Visual Studio 2019
+- Visual Studio 2022
+
 Supported project languages:
 
 - C#
@@ -243,8 +226,7 @@ Supported serializer targets include:
 - .NET Framework 4.5+
 - .NET Standard 2.0+
 - .NET Core 2.0+
-- .NET Core 3.1+
-- .NET 6+
+- .NET 5+
 
 Local debugging is currently required.
 
@@ -311,22 +293,18 @@ See [issue #90](https://github.com/ycherkes/ObjectDumper/issues/90).
 
 Object Dumper separates Visual Studio integration from its serializer layer:
 
-1. **Visual Studio extension layer**  
-   Provides commands, menus, options, output destinations, and debugger integration.
+1. **Visual Studio extension layer:** Provides commands, menus, options, output destinations, and debugger integration.
 
-2. **Debugger interaction**  
-   Evaluates the selected expression and loads the appropriate serializer into the debuggee.
+2. **Debugger interaction:** Evaluates the selected expression and loads the appropriate serializer into the debuggee.
 
-3. **Shared serialization layer**  
-   Uses framework-specific `YellowFlavor.Serialization.dll` assemblies.
+3. **Shared serialization layer:** Uses framework-specific `YellowFlavor.Serialization.dll` assemblies.
 
 4. **Serialization libraries**
    - VarDump for C# and Visual Basic
    - Json.NET for JSON and XML
    - YamlDotNet for YAML
 
-5. **ILRepack**  
-   Bundles serializer dependencies into merged assemblies to reduce dependency conflicts with the debuggee.
+5. **ILRepack:** Bundles serializer dependencies into merged assemblies to reduce dependency conflicts with the debuggee.
 
 ## Privacy
 
@@ -348,8 +326,9 @@ Debugger interaction and serialization happen locally as part of your Visual Stu
 Contributions, bug reports, and feature requests are welcome.
 
 - [Star the repository](https://github.com/ycherkes/ObjectDumper)
-- [Open an issue or submit a pull request](https://github.com/ycherkes/ObjectDumper/issues)
-- Write a review and star this extension on [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper&ssr=false#review-details), [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper&ssr=false#review-details), and [Jetbrains Marketplace](https://plugins.jetbrains.com/plugin/30257-object-dumper/reviews)
+- [Open an issue](https://github.com/ycherkes/ObjectDumper/issues/new/choose)
+- [Submit a pull request](https://github.com/ycherkes/ObjectDumper/compare)
+- [Review the Visual Studio extension](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper&ssr=false#review-details)
 
 ## Support the project
 

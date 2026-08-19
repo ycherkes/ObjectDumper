@@ -1,7 +1,7 @@
 # Object Dumper for Visual Studio Code
 
 [![Marketplace](https://vsmarketplacebadges.dev/version/YevhenCherkes.object-dumper.svg?label=VS%20Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
-[![Installs](https://vsmarketplacebadges.dev/installs/YevhenCherkes.object-dumper.svg?label=VS%20Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
+[![Installs](https://vsmarketplacebadges.dev/installs/YevhenCherkes.object-dumper.svg?label=VS%20Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
 [![License: MIT](https://img.shields.io/badge/LICENSE-MIT-44bb00?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
 [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7&style=for-the-badge)](https://stand-with-ukraine.pp.ua)
@@ -83,18 +83,6 @@ C# additionally supports:
 > [!NOTE]
 > Raw string literals and collection expressions require a compatible C# language version in the project where the generated code is used.
 
-### Improved serialization with VarDump 2.x
-
-Version `0.0.33` updates the bundled VarDump library from `1.0.4.11` to `2.0.8.0`.
-
-The new serializer improves:
-
-- enum serialization
-- `IQueryable` handling
-- default-value handling
-- circular-reference detection
-- allocation behavior while traversing collections and object graphs
-
 ### Format-specific settings
 
 JSON supports configuration for:
@@ -110,6 +98,7 @@ XML supports:
 - null/default-value handling
 - naming strategy
 - enums as strings
+- full type names
 - `DateTime` zone handling
 
 YAML supports configurable naming conventions.
@@ -217,19 +206,9 @@ The `typeNamePolicy` setting controls how generated C# and Visual Basic type nam
 | `initializer` | Traditional collection/array initializer syntax |
 | `expression` | C# collection-expression syntax |
 
-## Upgrading from earlier versions
+## Changelog
 
-Starting with Object Dumper `0.0.33`, C# and Visual Basic type naming is controlled by `typeNamePolicy`.
-
-The previous Boolean full-type-name setting has been removed.
-
-The available replacements are:
-
-- `shortName`
-- `nestedQualified`
-- `fullName`
-
-Persisted extension settings using the old option may need to be updated manually.
+See the [project changelog](https://github.com/ycherkes/ObjectDumper/blob/main/CHANGELOG.md) for release details and migration guidance.
 
 ## Requirements and known restrictions
 
@@ -265,8 +244,8 @@ Debugger interaction and serialization happen as part of your local or Codespace
 Contributions, bug reports, and feature requests are welcome.
 
 - [Star the repository](https://github.com/ycherkes/ObjectDumper)
-- [Open an issue](https://github.com/ycherkes/ObjectDumper/issues)
-- Submit a pull request
+- [Open an issue](https://github.com/ycherkes/ObjectDumper/issues/new/choose)
+- [Submit a pull request](https://github.com/ycherkes/ObjectDumper/compare)
 - [Review the VS Code extension](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper&ssr=false#review-details)
 
 ## Support the project

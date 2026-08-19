@@ -90,18 +90,6 @@ C# additionally supports:
 > [!NOTE]
 > Raw string literals and collection expressions require a compatible C# language version in the project where the generated code is used.
 
-### Improved object serialization
-
-The bundled VarDump 2.x serializer improves handling of:
-
-- enums
-- queryables
-- default values
-- circular references
-- large collections and object graphs
-
-It also reduces allocations while writing collections and traversing object graphs.
-
 ### Format-specific configuration
 
 JSON options include:
@@ -210,19 +198,9 @@ Some notable defaults are:
 
 Visual Basic uses equivalent defaults for the options that apply to it.
 
-## Upgrading from earlier versions
+## Changelog
 
-Version `0.0.3` updates the bundled VarDump library from `1.0.4.11` to `2.0.8.0`.
-
-The old C# and Visual Basic Boolean "full type name" setting has been replaced by the three-value **Type Naming Policy** option:
-
-- `ShortName`
-- `NestedQualified`
-- `FullName`
-
-Persisted Object Dumper settings may reset after upgrading because the old setting format is not migrated.
-
-XML keeps its separate **Use Full Type Name** option because XML serialization uses a different configuration path.
+See the [project changelog](https://github.com/ycherkes/ObjectDumper/blob/main/CHANGELOG.md) for release details and migration guidance.
 
 ## Requirements
 
@@ -235,8 +213,7 @@ Supported serializer targets include:
 - .NET Framework 4.5+
 - .NET Standard 2.0+
 - .NET Core 2.0+
-- .NET Core 3.1+
-- .NET 6+
+- .NET 5+
 
 ## Known limitations
 
@@ -259,15 +236,17 @@ From the Rider plugin directory:
 
 ```bash
 cd src/ObjectDumper.Rider
-./gradlew buildPlugin
+./gradlew buildPlugin -x instrumentCode
 ```
 
 On Windows:
 
 ```powershell
 cd src/ObjectDumper.Rider
-.\gradlew.bat buildPlugin
+.\gradlew.bat buildPlugin -x instrumentCode
 ```
+
+The plugin is Kotlin-only and does not use Java GUI forms, so code instrumentation is not required. Excluding `instrumentCode` also avoids a known IntelliJ Platform Gradle Plugin `2.0.0` failure on some Windows/JDK installations.
 
 The packaged plugin is written to:
 
@@ -287,27 +266,17 @@ On Windows:
 .\gradlew.bat runIde
 ```
 
-### Current instrumentation note
-
-The project currently uses IntelliJ Platform Gradle Plugin `2.0.0`.
-
-On the current Windows/JDK setup, its `instrumentCode` task may fail while looking for a non-existent `Packages` directory. Plugin packaging can be performed with code instrumentation excluded; the Rider plugin is Kotlin-only and does not use Java GUI forms that require that instrumentation.
-
 ## Architecture
 
 Object Dumper separates Rider integration from the shared serialization layer:
 
-1. **Rider plugin layer**  
-   Provides actions, settings, context menus, and IDE integration.
+1. **Rider plugin layer:** Provides actions, settings, context menus, and IDE integration.
 
-2. **Debugger integration**  
-   Evaluates the selected expression in the active Rider debugging session.
+2. **Debugger integration:** Evaluates the selected expression in the active Rider debugging session.
 
-3. **Shared serialization layer**  
-   Uses framework-specific `YellowFlavor.Serialization.dll` assemblies and VarDump 2.x for C#/Visual Basic output.
+3. **Shared serialization layer:** Uses framework-specific `YellowFlavor.Serialization.dll` assemblies and VarDump 2.x for C#/Visual Basic output.
 
-4. **Output handling**  
-   Sends generated content to an editor tab, clipboard, or debug console.
+4. **Output handling:** Sends generated content to an editor tab, clipboard, or debug console.
 
 The Rider package contains serializer assemblies for multiple .NET target frameworks so the plugin can inject a compatible serializer into the debuggee.
 
@@ -324,8 +293,8 @@ The Rider package contains serializer assemblies for multiple .NET target framew
 
 Contributions, bug reports, and feature requests are welcome.
 
-- [Open an issue](https://github.com/ycherkes/ObjectDumper/issues)
-- Submit a pull request
+- [Open an issue](https://github.com/ycherkes/ObjectDumper/issues/new/choose)
+- [Submit a pull request](https://github.com/ycherkes/ObjectDumper/compare)
 - Star the [Object Dumper repository](https://github.com/ycherkes/ObjectDumper)
 
 ## Privacy
