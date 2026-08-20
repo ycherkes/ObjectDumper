@@ -3,7 +3,7 @@ package com.yellowflavor.objectdumper.debugger
 import com.intellij.openapi.project.Project
 import com.intellij.xdebugger.XDebugSession
 import com.intellij.xdebugger.XDebuggerManager
-import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.ide.plugins.PluginManager
 import com.intellij.openapi.extensions.PluginId
 import com.yellowflavor.objectdumper.settings.ObjectDumperSettings
 import java.io.File
@@ -40,7 +40,7 @@ class DebuggerInteractionService(private val project: Project) {
         try {
             // Use IntelliJ Platform API to get plugin path
             val pluginId = PluginId.getId("com.yellowflavor.objectdumper")
-            val plugin = PluginManagerCore.getPlugin(pluginId)
+            val plugin = PluginManager.getInstance().findEnabledPlugin(pluginId)
             if (plugin != null) {
                 return plugin.pluginPath.toString()
             }

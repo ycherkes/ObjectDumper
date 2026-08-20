@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.yellowflavor"
-version = "0.0.3"
+version = "0.0.4"
 
 repositories {
     mavenCentral()
@@ -55,7 +55,7 @@ intellijPlatform {
         }
         
         vendor {
-            name = "Reffinert"
+            name = "Raffinert"
             email = "ycherkes@outlook.com"
             url = "https://github.com/ycherkes/ObjectDumper"
         }
