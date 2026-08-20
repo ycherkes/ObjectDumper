@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.3] - 2026-08-18
 
 ### Changed
-- Updated the bundled VarDump library to 2.0.8.0.
+- Updated the bundled VarDump library to 2.0.9.
 - Improved enum, queryable, default-value, and circular-reference serialization.
 - Reduced allocations while writing collections and object graphs.
 - Added type naming, newline, and inherited-field options for C# and Visual Basic.

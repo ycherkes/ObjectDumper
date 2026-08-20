@@ -43,7 +43,7 @@ intellijPlatform {
         """.trimIndent()
         
         changeNotes = """
-            Updated the bundled VarDump library to 2.0.8.0.
+            Updated the bundled VarDump library to 2.0.9.
             Improved enum, queryable, default-value, and circular-reference serialization.
             Reduced allocations while writing collections and object graphs.
             Added type naming, newline, inherited-field, C# string-literal, and C# collection-literal options.

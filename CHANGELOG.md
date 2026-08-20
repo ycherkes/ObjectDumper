@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
-- Updated the bundled [VarDump](https://github.com/ycherkes/VarDump#readme) library from `1.0.4.11` to `2.0.8.0`.
+- Updated the bundled [VarDump](https://github.com/ycherkes/VarDump#readme) library from `1.0.4.11` to `2.0.9`.
 - Added type-naming policy, newline-style, and inherited-field options for C# and Visual Basic in all three IDE integrations.
 - Added C# string-literal and collection-literal style options.
 - Rebuilt and synchronized the merged serializer assemblies for .NET Framework 4.5, .NET Standard 2.0, .NET Core 2.0, .NET Core 3.1, and .NET 6.
