@@ -4,7 +4,7 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.21"
-    id("org.jetbrains.intellij.platform") version "2.0.0"
+    id("org.jetbrains.intellij.platform") version "2.18.1"
     id("org.jetbrains.changelog") version "2.2.0"
 }
 
@@ -23,7 +23,6 @@ dependencies {
     intellijPlatform {
         rider("2023.3")
         
-        instrumentationTools()
         testFramework(TestFrameworkType.Platform)
     }
 }
