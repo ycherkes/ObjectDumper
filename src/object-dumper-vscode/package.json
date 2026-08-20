@@ -16,7 +16,12 @@
   ],
   "activationEvents": [
     "onLanguage:csharp",
-    "onLanguage:fsharp"
+    "onLanguage:fsharp",
+    "onCommand:objectDumper.dumpAsCsharp",
+    "onCommand:objectDumper.dumpAsJson",
+    "onCommand:objectDumper.dumpAsVb",
+    "onCommand:objectDumper.dumpAsXml",
+    "onCommand:objectDumper.dumpAsYaml"
   ],
   "main": "./out/extension.js",
   "directories": {"lib": "src/injectable_libraries"},
@@ -26,38 +31,38 @@
         "command": "objectDumper.dumpAsCsharp",
         "key": "ctrl+k d",
         "mac": "cmd+k d",
-        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+        "when": "config.objectDumper.csharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
       },
       {
         "command": "objectDumper.dumpAsJson",
         "key": "ctrl+k j",
         "mac": "cmd+k j",
-        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+        "when": "config.objectDumper.json.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
       },
       {
         "command": "objectDumper.dumpAsVb",
         "key": "ctrl+k v",
         "mac": "cmd+k v",
-        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+        "when": "config.objectDumper.vb.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
       },
       {
         "command": "objectDumper.dumpAsXml",
         "key": "ctrl+k x",
         "mac": "cmd+k x",
-        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+        "when": "config.objectDumper.xml.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
       },
       {
         "command": "objectDumper.dumpAsYaml",
         "key": "ctrl+k y",
         "mac": "cmd+k y",
-        "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
+        "when": "config.objectDumper.yaml.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/"
       }
     ],
     "commands": [
       {
         "command": "objectDumper.dumpAsCsharp",
         "title": "Dump As C#",
-        "enablement": "objectDumper.dumpAsCsharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "enablement": "config.objectDumper.csharp.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
         "icon": {
           "dark": "./art/commandIcons/CSFileNode.svg",
           "light": "./art/commandIcons/CSFileNode.svg"
@@ -66,7 +71,7 @@
       {
         "command": "objectDumper.dumpAsJson",
         "title": "Dump As Json",
-        "enablement": "objectDumper.dumpAsJson.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "enablement": "config.objectDumper.json.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
         "icon": {
           "dark": "./art/commandIcons/JsonFile.svg",
           "light": "./art/commandIcons/JsonFile.svg"
@@ -75,7 +80,7 @@
       {
         "command": "objectDumper.dumpAsVb",
         "title": "Dump As Vb",
-        "enablement": "objectDumper.dumpAsVb.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "enablement": "config.objectDumper.vb.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
         "icon": {
           "dark": "./art/commandIcons/VBFileNode.svg",
           "light": "./art/commandIcons/VBFileNode.svg"
@@ -84,7 +89,7 @@
       {
         "command": "objectDumper.dumpAsXml",
         "title": "Dump As Xml",
-        "enablement": "objectDumper.dumpAsXml.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
+        "enablement": "config.objectDumper.xml.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
         "icon": {
           "dark": "./art/commandIcons/XmlFile.svg",
           "light": "./art/commandIcons/XmlFile.svg"
@@ -93,6 +98,7 @@
       {
         "command": "objectDumper.dumpAsYaml",
         "title": "Dump As Yaml",
+        "enablement": "config.objectDumper.yaml.enabled && inDebugMode && resourceLangId =~ /fsharp|csharp/",
         "icon": {
           "dark": "./art/commandIcons/YamlFile.svg",
           "light": "./art/commandIcons/YamlFile.svg"
@@ -109,27 +115,27 @@
       ],
       "objectDumper.dumpAs": [
         {
-          "when": "objectDumper.dumpAsCsharp.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "config.objectDumper.csharp.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "objectDumper.dumpAsCsharp",
           "group": "dumpAs"
         },
         {
-          "when": "objectDumper.dumpAsJson.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "config.objectDumper.json.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "objectDumper.dumpAsJson",
           "group": "dumpAs"
         },
         {
-          "when": "objectDumper.dumpAsVb.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "config.objectDumper.vb.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "objectDumper.dumpAsVb",
           "group": "dumpAs"
         },
         {
-          "when": "objectDumper.dumpAsXml.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "config.objectDumper.xml.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "objectDumper.dumpAsXml",
           "group": "dumpAs"
         },
         {
-          "when": "objectDumper.dumpAsYaml.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
+          "when": "config.objectDumper.yaml.enabled && inDebugMode && editorLangId =~ /fsharp|csharp/",
           "command": "objectDumper.dumpAsYaml",
           "group": "dumpAs"
         }
@@ -138,8 +144,7 @@
     "submenus": [
       {
         "id": "objectDumper.dumpAs",
-        "label": "Dump As",
-        "icon": "$(something)"
+        "label": "Dump As"
       }
     ],
     "configuration": {
@@ -270,6 +275,10 @@
         },
         "objectDumper.csharp.getFieldsBindingFlagsModifiers": {
           "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
             null,
             "public",
             "nonPublic",
@@ -279,7 +288,10 @@
           "description": "Get Fields Binding Flags Modifiers."
         },
         "objectDumper.csharp.getFieldsBindingFlagsInstanceOrStatic": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             null,
             "instance",
@@ -290,7 +302,10 @@
           "description": "Get Fields Binding Flags Instance or Static."
         },
         "objectDumper.csharp.sortDirection": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             null,
             "ascending",
@@ -477,6 +492,10 @@
         },
         "objectDumper.vb.getFieldsBindingFlagsModifiers": {
           "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
             null,
             "public",
             "nonPublic",
@@ -486,7 +505,10 @@
           "description": "Get Fields Binding Flags Modifiers."
         },
         "objectDumper.vb.getFieldsBindingFlagsInstanceOrStatic": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             null,
             "instance",
@@ -497,7 +519,10 @@
           "description": "Get Fields Binding Flags Instance or Static."
         },
         "objectDumper.vb.sortDirection": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             null,
             "ascending",
@@ -617,9 +642,7 @@
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
     "typescript": "^4.8.4",
-    "@vscode/test-electron": "^2.2.0"
+    "@vscode/test-electron": "^2.5.2"
   },
-  "dependencies": {
-    "sanitize-filename-ts": "^1.0.2"
-  }
+  "dependencies": {}
 }

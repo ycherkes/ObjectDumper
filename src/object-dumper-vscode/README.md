@@ -1,10 +1,10 @@
 # Object Dumper for Visual Studio Code
 
-[![Marketplace](https://vsmarketplacebadges.dev/version/YevhenCherkes.object-dumper.svg?label=VS%20Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
-[![Installs](https://vsmarketplacebadges.dev/installs/YevhenCherkes.object-dumper.svg?label=VS%20Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
+[![Marketplace](https://vsmarketplacebadges.dev/version/YevhenCherkes.object-dumper.png?label=VS%20Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
+[![Installs](https://vsmarketplacebadges.dev/installs/YevhenCherkes.object-dumper.png?label=VS%20Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
 [![License: MIT](https://img.shields.io/badge/LICENSE-MIT-44bb00?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
-[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7&style=for-the-badge)](https://stand-with-ukraine.pp.ua)
+[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.png?labelColor=0057b7&style=for-the-badge)](https://stand-with-ukraine.pp.ua)
 
 **Object Dumper** is a Visual Studio Code extension for exporting live .NET objects during debugging into reusable **C#**, **Visual Basic**, **JSON**, **XML**, or **YAML** representations.
 

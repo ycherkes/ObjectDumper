@@ -114,3 +114,4 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Update VarDump to v 2.0.8.0 with enum, queryable, default-value, circular-reference, and performance improvements.
 - Add type naming, newline, and inherited-field options for C# and Visual Basic.
 - Add C# string-literal and collection-literal style options.
+- Fix extension activation and missing Dump As context menus when the packaged VSIX does not contain runtime npm dependencies.
