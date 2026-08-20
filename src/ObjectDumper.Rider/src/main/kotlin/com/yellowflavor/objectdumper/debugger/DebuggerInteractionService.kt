@@ -193,9 +193,11 @@ class DebuggerInteractionService(private val project: Project) {
 
         return buildString {
             append("{")
-            append("\"DateKind\":\"${s.csharpDateKind.jsonValue}\"")
+            append("\"CollectionLiteralStyle\":\"${s.csharpCollectionLiteralStyle.jsonValue}\"")
+            append(",\"DateKind\":\"${s.csharpDateKind.jsonValue}\"")
             append(",\"DateTimeInstantiation\":\"${s.csharpDateTimeInstantiation.jsonValue}\"")
             append(",\"GenerateVariableInitializer\":${s.csharpGenerateVariableInitializer}")
+            append(",\"GetBaseClassFields\":${s.csharpGetBaseClassFields}")
             append(",\"GetFieldsBindingFlags\":${getFieldsFlags ?: "null"}")
             append(",\"GetPropertiesBindingFlags\":${getPropertiesFlags ?: "null"}")
             append(",\"IgnoreDefaultValues\":${s.csharpIgnoreDefaultValues}")
@@ -205,12 +207,14 @@ class DebuggerInteractionService(private val project: Project) {
             append(",\"IntegralNumericFormat\":\"$integralFormat\"")
             append(",\"MaxCollectionSize\":${s.csharpMaxCollectionSize}")
             append(",\"MaxDepth\":${s.commonMaxDepth}")
+            append(",\"NewLineStyle\":\"${s.csharpNewLineStyle.jsonValue}\"")
             append(",\"PrimitiveCollectionLayout\":\"${s.csharpPrimitiveCollectionLayout.jsonValue}\"")
             append(",\"SortDirection\":$sortDirection")
+            append(",\"StringLiteralStyle\":\"${s.csharpStringLiteralStyle.jsonValue}\"")
+            append(",\"TypeNamePolicy\":\"${s.csharpTypeNamePolicy.jsonValue}\"")
             append(",\"UseNamedArgumentsInConstructors\":${s.csharpUseNamedArgumentsInConstructors}")
             append(",\"UsePredefinedConstants\":${s.csharpUsePredefinedConstants}")
             append(",\"UsePredefinedMethods\":${s.csharpUsePredefinedMethods}")
-            append(",\"UseFullTypeName\":${s.csharpUseFullTypeName}")
             append("}")
         }
     }
@@ -228,6 +232,7 @@ class DebuggerInteractionService(private val project: Project) {
             append("\"DateKind\":\"${s.vbDateKind.jsonValue}\"")
             append(",\"DateTimeInstantiation\":\"${s.vbDateTimeInstantiation.jsonValue}\"")
             append(",\"GenerateVariableInitializer\":${s.vbGenerateVariableInitializer}")
+            append(",\"GetBaseClassFields\":${s.vbGetBaseClassFields}")
             append(",\"GetFieldsBindingFlags\":${getFieldsFlags ?: "null"}")
             append(",\"GetPropertiesBindingFlags\":${getPropertiesFlags ?: "null"}")
             append(",\"IgnoreDefaultValues\":${s.vbIgnoreDefaultValues}")
@@ -237,12 +242,13 @@ class DebuggerInteractionService(private val project: Project) {
             append(",\"IntegralNumericFormat\":\"$integralFormat\"")
             append(",\"MaxCollectionSize\":${s.vbMaxCollectionSize}")
             append(",\"MaxDepth\":${s.commonMaxDepth}")
+            append(",\"NewLineStyle\":\"${s.vbNewLineStyle.jsonValue}\"")
             append(",\"PrimitiveCollectionLayout\":\"${s.vbPrimitiveCollectionLayout.jsonValue}\"")
             append(",\"SortDirection\":$sortDirection")
+            append(",\"TypeNamePolicy\":\"${s.vbTypeNamePolicy.jsonValue}\"")
             append(",\"UseNamedArgumentsInConstructors\":${s.vbUseNamedArgumentsInConstructors}")
             append(",\"UsePredefinedConstants\":${s.vbUsePredefinedConstants}")
             append(",\"UsePredefinedMethods\":${s.vbUsePredefinedMethods}")
-            append(",\"UseFullTypeName\":${s.vbUseFullTypeName}")
             append("}")
         }
     }

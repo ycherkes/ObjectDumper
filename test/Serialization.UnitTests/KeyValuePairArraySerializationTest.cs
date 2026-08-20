@@ -22,7 +22,6 @@ namespace Serialization.UnitTests
                 IgnoreDefaultValues = true,
                 IgnoreNullValues = true,
                 MaxDepth = 5,
-                UseFullTypeName = false,
                 DateTimeInstantiation = "New",
                 DateKind = "ConvertToUtc"
             }));
@@ -51,7 +50,6 @@ namespace Serialization.UnitTests
                 IgnoreDefaultValues = true,
                 IgnoreNullValues = true,
                 MaxDepth = 5,
-                UseFullTypeName = false,
                 DateTimeInstantiation = "New",
                 DateKind = "ConvertToUtc"
             }));

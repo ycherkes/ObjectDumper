@@ -13,74 +13,245 @@ To learn more about the war and how you can help, [click here](https://stand-wit
 
 <img src="https://yevhencherkes.gallerycdn.vsassets.io/extensions/yevhencherkes/yellowflavorobjectdumper/0.0.0.64/1665328424655/Microsoft.VisualStudio.Services.Icons.Default" width="100" height="100" />
 
-# Object Dumper
+# Object Dumper for Visual Studio
 
-[![VS marketplace](https://img.shields.io/visual-studio-marketplace/v/YevhenCherkes.YellowFlavorObjectDumper.svg?label=VS%20marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
-[![VS installs](https://img.shields.io/visual-studio-marketplace/i/YevhenCherkes.YellowFlavorObjectDumper?label=VS%20installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
-[![VS Code marketplace](https://img.shields.io/visual-studio-marketplace/v/YevhenCherkes.object-dumper.svg?label=VS%20Code%20marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
-[![VS Code installs](https://img.shields.io/visual-studio-marketplace/i/YevhenCherkes.object-dumper?label=VS%20Code%20installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
+[![VS Marketplace](https://vsmarketplacebadges.dev/version-short/YevhenCherkes.YellowFlavorObjectDumper.svg?label=VS%20Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
+[![VS Installs](https://vsmarketplacebadges.dev/installs-short/YevhenCherkes.YellowFlavorObjectDumper.svg?label=VS%20Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper)
+[![License: MIT](https://img.shields.io/badge/LICENSE-MIT-44bb00?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
-[![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
+**Object Dumper** is a Visual Studio extension for exporting live .NET objects during debugging into reusable **C#**, **Visual Basic**, **JSON**, **XML**, or **YAML** representations.
 
-Reflection-based extension for **Visual Studio**, **[Visual Studio Code](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md)**, and **[JetBrains Rider](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper.Rider/README.md)** for exporting in-memory objects during debugging to **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** string.
+Instead of manually expanding a large object graph and copying debugger values one by one, pause at a breakpoint, select an expression in the **Code** or **Immediate** window, choose **Dump As**, and Object Dumper sends the generated result to a new document, the Object Dumper output pane, or the clipboard.
+
+Object Dumper is also available for:
+
+- [Visual Studio Code](src/object-dumper-vscode/README.md)
+- [JetBrains Rider](src/ObjectDumper.Rider/README.md)
 
 Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
-The closest alternative was proprietary [OzCode export](https://github.com/oz-code/OzCodeDemo/tree/master/OzCodeDemo/12.Export) functionality (link is dead, company was bought by DataDog, plugin does not exist anymore). 
-
-"**Dump as**" commands are available via context menu in the **Code** and **Immediate** windows (Visual Studio), or in the Debug tool window (Rider).
-
-The result will be printed to a new document window, Output Window -> Object Dumper Pane, or copied to the clipboard, depending on the DumpTo option.
-
 ![Presentation](https://user-images.githubusercontent.com/13467759/175763360-6d714f96-8b90-48a9-bff0-8bceac4c2502.gif)
 
-# IDE Support
+## Features
+
+### Dump debugger objects in multiple formats
+
+- C# object initialization code
+- Visual Basic object initialization code
+- JSON
+- XML
+- YAML
+
+### Generate reusable code from runtime state
+
+C# and Visual Basic output is powered by [VarDump](https://github.com/ycherkes/VarDump). See the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for supported formatting and traversal options.
+
+Typical use cases include:
+
+- creating unit-test fixtures from real runtime objects
+- capturing complex DTOs or domain objects for bug reproduction
+- generating C# or Visual Basic initialization code
+- exporting debugger state to JSON or YAML
+- inspecting large object graphs without manually expanding every debugger node
+- comparing two runtime objects by dumping them into separate documents and using Visual Studio's file comparison tools
+
+### Multiple output destinations
+
+Use **Dump To** to choose where generated content is written:
+
+- **New Document**
+- **Output Window → Object Dumper**
+- **Clipboard**
+
+Serialization, traversal, formatting, and output behavior can be configured under **Tools → Options → Object Dumper**.
+
+## Installation
+
+Install Object Dumper from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper).
+
+After installation, restart Visual Studio if prompted.
+
+## Usage
+
+1. Start debugging your .NET application.
+2. Stop at a breakpoint.
+3. Select an expression in the **Code** window, or enter/select an expression in the **Immediate** window.
+4. Right-click and open **Dump As**.
+5. Choose C#, Visual Basic, JSON, XML, or YAML.
+6. The generated output is sent to the destination configured by **Dump To**.
+
+## Configuration
+
+Configure dump behavior under:
+
+**Tools → Options → Object Dumper**
+
+![Object Dumper options page](https://github.com/ycherkes/ObjectDumper/assets/13467759/a26e322f-cb29-4daa-a8d2-96f9df57af1b)
+
+### Common defaults
+
+| Option | Default |
+|---|---|
+| Max Depth | `25` |
+| Operation Timeout | `10 seconds` |
+| Dump To | `New Document` |
+
+C# and Visual Basic settings correspond to VarDump options. Refer to the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for their behavior.
+
+## Changelog
+
+See the [changelog](CHANGELOG.md) for release details and migration guidance.
+
+## IDE support
 
 | IDE | Documentation |
-|-----|---------------|
-| Visual Studio | Built-in (this page) |
-| Visual Studio Code | [VS Code README](https://github.com/ycherkes/ObjectDumper/blob/main/src/object-dumper-vscode/README.md) |
-| JetBrains Rider | [Rider README](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper.Rider/README.md) |
+|---|---|
+| Visual Studio | This page |
+| Visual Studio Code | [VS Code README](src/object-dumper-vscode/README.md) |
+| JetBrains Rider | [Rider README](src/ObjectDumper.Rider/README.md) |
 
-# Configurable:
+## Quick tip: compare two dumped objects
 
-![image](https://github.com/ycherkes/ObjectDumper/assets/13467759/a26e322f-cb29-4daa-a8d2-96f9df57af1b)
+Visual Studio can be used to compare two dumped object documents:
 
-# Quick tips:
-- How to compare two dumped objects:
-  1. Enable option "Show Miscellaneous files in Solution Explorer":
-  ![image](https://github.com/ycherkes/ObjectDumper/assets/13467759/2cd2d786-1e30-4425-83ab-664277068ad6)
-  2. If you use Visual Studio 17.7 or above - just skip this step (it's an embedded), otherwise install a diff extension - I verified the [Heku.VsDiff](https://marketplace.visualstudio.com/items?itemName=Heku.VsDiff2022)
-  3. Select files in Solution Explorer under the Miscellaneous Files folder -> Right click -> Compare Selected(Files):
-  ![image](https://user-images.githubusercontent.com/13467759/173349566-518f89e1-9d21-4ab6-a4e1-da2dc86e3a78.png)
+1. Enable **Show Miscellaneous Files in Solution Explorer**.
+2. Dump both objects to separate documents.
+3. In Visual Studio 17.7 or later, select both files under **Miscellaneous Files**, right-click, and use the built-in comparison command.
+4. On older versions, install a diff extension such as [Heku.VsDiff](https://marketplace.visualstudio.com/items?itemName=Heku.VsDiff2022).
 
+![Show Miscellaneous Files](https://github.com/ycherkes/ObjectDumper/assets/13467759/2cd2d786-1e30-4425-83ab-664277068ad6)
 
-### Known restrictions:
-- [C#, F# and VisualBasic](https://github.com/ycherkes/ObjectDumper/blob/main/src/ObjectDumper/DebuggeeInteraction/InteractionService.cs#L25-L30) project languages are currently supported only.
-- netstandard 2.0+, netcore2.0+, netframework 4.5+
-- if you are debugging the solution in **Release mode** or debuging DLLs from another source, such as a nuget package, you'll get an error message: "Cannot evaluate expression because the code of the current method is optimized" or "error CS0103: The name 'YellowFlavor' does not exist in the current context". Solution: switch to **Debug mode** or turn the [Tools > Options > Debugging > General > Suppress JIT optimization on module load](https://learn.microsoft.com/en-us/visualstudio/debugger/jit-optimization-and-debugging?view=vs-2022#the-suppress-jit-optimization-on-module-load-managed-only-option) option on.
-- local debugging only.
-- if you see any encoding-related issues, please select the option: **Tools > Options > Environment > Documents > Save documents as Unicode when data cannot be saved in codepage**.
-- it doesn't work for UWP applications, because [UAP doesn't support Assembly.LoadFrom](https://github.com/dotnet/runtime/issues/7543). You can bypass this restriction by referencing the .nestandard20 version of [Serialization lib](https://github.com/ycherkes/ObjectDumper/tree/main/src/Serialization) and calling: ```YellowFlavor.Serialization.ObjectSerializer.WarmUp();``` for loading the serializer into executing assembly. [Example](https://github.com/ycherkes/ObjectDumper/blob/main/samples/uwp/TestUwp/App.xaml.cs#L22)
-- for debugging the IIS-hosted ASP.NET MVC backend, please add the following access for **YourComputerName\IIS_IUSRS** group: **Read-Write** access to **%userprofile%\AppData\Local\Temp** directory and **Read** access to **%userprofile%\AppData\Local\Microsoft\VisualStudio** directory, otherwise, it will throw [UnauthorizedAccessException](https://github.com/ycherkes/ObjectDumper/issues/90).
+![Compare Selected Files](https://user-images.githubusercontent.com/13467759/173349566-518f89e1-9d21-4ab6-a4e1-da2dc86e3a78.png)
 
-**Privacy Notice:** No personal data is collected at all.
+## Requirements
 
-# Powered By
+Supported Visual Studio versions:
 
-| Repository  | Purpose | License |
-| ------------- | ------------- | ------------- |
-| [ILRepack](https://github.com/gluck/il-repack) | Bundles the serializer dependencies into a single merged assembly, minimizing the risk of dependency/version conflicts in the consumer’s application | [![Apache-2.0](https://img.shields.io/github/license/gluck/il-repack?style=flat-square)](https://github.com/gluck/il-repack/blob/master/LICENSE)  |
-| [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) | Serializes objects to **JSON** (and **XML** via Json.NET XML helpers) output | [![MIT](https://img.shields.io/github/license/JamesNK/Newtonsoft.Json?style=flat-square)](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)  |
-| [VarDump](https://github.com/ycherkes/VarDump)  | Serializes objects to **C#** and **VB** output | [![Apache-2.0](https://img.shields.io/github/license/ycherkes/vardump?style=flat-square)](https://github.com/ycherkes/VarDump/blob/main/LICENSE)  |
-| [YamlDotNet](https://github.com/aaubry/YamlDotNet) | Serializes objects to **YAML** output | [![MIT](https://img.shields.io/github/license/aaubry/YamlDotNet?style=flat-square)](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt)  |
+- Visual Studio 2019
+- Visual Studio 2022
 
-# ❤ Like this project and want to contribute?
+Supported project languages:
 
-- ⭐ Star this repo on [GitHub](https://github.com/ycherkes/ObjectDumper).
-- ✏️ Write a review  and star this extension on [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper&ssr=false#review-details) or [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper&ssr=false#review-details).
-- 🐞 Open an issue or browse more such issues to contribute to on [GitHub](https://github.com/ycherkes/ObjectDumper/issues).
-- 🔗 Share with your friends.
-- 🍪 Sponsor me on [GitHub](https://github.com/sponsors/ycherkes) or [PayPal](https://www.paypal.com/donate/?business=KXGF7CMW8Y8WJ&no_recurring=0&item_name=Help+Object+Dumper+become+better%21).
+- C#
+- F#
+- Visual Basic
 
-A big thank you to [Yova Solutions](https://www.yovasolutions.com) for sponsoring my work!
+Supported serializer targets include:
+
+- .NET Framework 4.5+
+- .NET Standard 2.0+
+- .NET Core 2.0+
+- .NET 5+
+
+Local debugging is currently required.
+
+## Known limitations and troubleshooting
+
+### Optimized code / Release builds
+
+When debugging optimized code, external DLLs, or some NuGet package code, Visual Studio may report errors such as:
+
+```text
+Cannot evaluate expression because the code of the current method is optimized
+```
+
+or:
+
+```text
+error CS0103: The name 'YellowFlavor' does not exist in the current context
+```
+
+Use a Debug build when possible.
+
+Alternatively enable:
+
+**Tools → Options → Debugging → General → Suppress JIT optimization on module load**
+
+See the [Visual Studio documentation](https://learn.microsoft.com/en-us/visualstudio/debugger/jit-optimization-and-debugging?view=vs-2022#the-suppress-jit-optimization-on-module-load-managed-only-option).
+
+### Remote debugging
+
+Remote debugging is not currently supported.
+
+### Encoding issues
+
+If generated documents contain encoding-related issues, enable:
+
+**Tools → Options → Environment → Documents → Save documents as Unicode when data cannot be saved in codepage**
+
+### UWP applications
+
+UWP does not support `Assembly.LoadFrom`, which prevents Object Dumper from injecting the serializer assembly automatically.
+
+A workaround is to reference the .NET Standard 2.0 version of the [Serialization library](src/Serialization) directly and preload it:
+
+```csharp
+YellowFlavor.Serialization.ObjectSerializer.WarmUp();
+```
+
+See the [UWP sample](samples/uwp/TestUwp/App.xaml.cs).
+
+### IIS-hosted ASP.NET MVC
+
+When debugging an IIS-hosted ASP.NET MVC backend, the debugger process may require additional filesystem access.
+
+Grant **YourComputerName\IIS_IUSRS**:
+
+- **Read/Write** access to `%userprofile%\AppData\Local\Temp`
+- **Read** access to `%userprofile%\AppData\Local\Microsoft\VisualStudio`
+
+Otherwise Object Dumper may fail with `UnauthorizedAccessException`.
+
+See [issue #90](https://github.com/ycherkes/ObjectDumper/issues/90).
+
+## Architecture
+
+Object Dumper separates Visual Studio integration from its serializer layer:
+
+1. **Visual Studio extension layer:** Provides commands, menus, options, output destinations, and debugger integration.
+
+2. **Debugger interaction:** Evaluates the selected expression and loads the appropriate serializer into the debuggee.
+
+3. **Shared serialization layer:** Uses framework-specific `YellowFlavor.Serialization.dll` assemblies.
+
+4. **Serialization libraries**
+   - VarDump for C# and Visual Basic
+   - Json.NET for JSON and XML
+   - YamlDotNet for YAML
+
+5. **ILRepack:** Bundles serializer dependencies into merged assemblies to reduce dependency conflicts with the debuggee.
+
+## Privacy
+
+**Object Dumper does not collect personal data.**
+
+Debugger interaction and serialization happen locally as part of your Visual Studio debugging session.
+
+## Powered by
+
+| Library | Purpose | License |
+|---|---|---|
+| [VarDump](https://github.com/ycherkes/VarDump) | C# and Visual Basic serialization | [Apache-2.0](https://github.com/ycherkes/VarDump/blob/main/LICENSE) |
+| [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) | JSON and XML serialization | [MIT](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md) |
+| [YamlDotNet](https://github.com/aaubry/YamlDotNet) | YAML serialization | [MIT](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt) |
+| [ILRepack](https://github.com/gluck/il-repack) | Serializer dependency merging | [Apache-2.0](https://github.com/gluck/il-repack/blob/master/LICENSE) |
+
+## Contributing
+
+Contributions, bug reports, and feature requests are welcome.
+
+- [Star the repository](https://github.com/ycherkes/ObjectDumper)
+- [Open an issue](https://github.com/ycherkes/ObjectDumper/issues/new/choose)
+- [Submit a pull request](https://github.com/ycherkes/ObjectDumper/compare)
+- [Review the Visual Studio extension](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper&ssr=false#review-details)
+
+## Support the project
+
+If Object Dumper saves you time, you can support its continued development through:
+
+- [GitHub Sponsors](https://github.com/sponsors/ycherkes)
+- [PayPal](https://www.paypal.com/donate/?business=KXGF7CMW8Y8WJ&no_recurring=0&item_name=Help+Object+Dumper+become+better%21)
+
+## License
+
+Object Dumper is licensed under the [MIT License](LICENSE.txt).

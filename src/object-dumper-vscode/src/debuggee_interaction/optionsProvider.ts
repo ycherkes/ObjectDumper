@@ -10,11 +10,15 @@ export class OptionsProvider{
 		{
 			case "cs":{
                   return {
+					collectionLiteralStyle: extensionConfiguration.csharp.collectionLiteralStyle,
 					ignoreDefaultValues: extensionConfiguration.csharp.ignoreDefaultValues,
 					ignoreNullValues: extensionConfiguration.csharp.ignoreNullValues,
+					getBaseClassFields: extensionConfiguration.csharp.getBaseClassFields,
 					maxCollectionSize: extensionConfiguration.csharp.maxCollectionSize,
 					maxDepth: extensionConfiguration.common.maxDepth,
-					useFullTypeName: extensionConfiguration.csharp.useFullTypeName,
+					newLineStyle: extensionConfiguration.csharp.newLineStyle,
+					typeNamePolicy: extensionConfiguration.csharp.typeNamePolicy,
+					stringLiteralStyle: extensionConfiguration.csharp.stringLiteralStyle,
 					dateTimeInstantiation: extensionConfiguration.csharp.dateTimeInstantiation,
 					dateKind: extensionConfiguration.csharp.dateKind,
 					useNamedArgumentsInConstructors: extensionConfiguration.csharp.useNamedArgumentsInConstructors,
@@ -33,9 +37,11 @@ export class OptionsProvider{
 				return {
 					ignoreDefaultValues: extensionConfiguration.vb.ignoreDefaultValues,
 					ignoreNullValues: extensionConfiguration.vb.ignoreNullValues,
+					getBaseClassFields: extensionConfiguration.vb.getBaseClassFields,
 					maxCollectionSize: extensionConfiguration.vb.maxCollectionSize,
 					maxDepth: extensionConfiguration.common.maxDepth,
-					useFullTypeName: extensionConfiguration.vb.useFullTypeName,
+					newLineStyle: extensionConfiguration.vb.newLineStyle,
+					typeNamePolicy: extensionConfiguration.vb.typeNamePolicy,
 					dateTimeInstantiation: extensionConfiguration.vb.dateTimeInstantiation,
 					dateKind: extensionConfiguration.vb.dateKind,
 					useNamedArgumentsInConstructors: extensionConfiguration.vb.useNamedArgumentsInConstructors,

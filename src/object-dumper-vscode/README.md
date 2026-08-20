@@ -1,48 +1,149 @@
-# [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7&style=for-the-badge)](https://stand-with-ukraine.pp.ua) [Stand with the people of Ukraine: How to Help](https://stand-with-ukraine.pp.ua)
+# Object Dumper for Visual Studio Code
 
-<img src="https://yevhencherkes.gallerycdn.vsassets.io/extensions/yevhencherkes/yellowflavorobjectdumper/0.0.0.64/1665328424655/Microsoft.VisualStudio.Services.Icons.Default" width="100" height="100" />
+[![Marketplace](https://vsmarketplacebadges.dev/version/YevhenCherkes.object-dumper.png?label=VS%20Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
+[![Installs](https://vsmarketplacebadges.dev/installs/YevhenCherkes.object-dumper.png?label=VS%20Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
+[![License: MIT](https://img.shields.io/badge/LICENSE-MIT-44bb00?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
 
-# Object Dumper
+[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.png?labelColor=0057b7&style=for-the-badge)](https://stand-with-ukraine.pp.ua)
 
-[![marketplace](https://img.shields.io/visual-studio-marketplace/v/YevhenCherkes.object-dumper.svg?label=Marketplace&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
-[![installs](https://img.shields.io/visual-studio-marketplace/i/YevhenCherkes.object-dumper?label=Installs&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper)
-[![License: MIT](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=for-the-badge)](https://github.com/ycherkes/ObjectDumper/blob/main/LICENSE.txt)
+**Object Dumper** is a Visual Studio Code extension for exporting live .NET objects during debugging into reusable **C#**, **Visual Basic**, **JSON**, **XML**, or **YAML** representations.
 
-Reflection-based Visual Studio Code and [Visual Studio](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper) extension for exporting in-memory objects during debugging to **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** string.
+Instead of manually expanding a complex object graph and copying debugger values one by one, select an expression in the editor while paused at a breakpoint, choose **Dump As**, and Object Dumper opens the generated representation in a separate editor document.
+
+The extension also works in **GitHub Codespaces**.
+
+Object Dumper is also available for [Visual Studio](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper) and [JetBrains Rider](https://plugins.jetbrains.com/plugin/30257-object-dumper).
 
 Inspired by [ObjectExporter](https://github.com/OmarElabd/ObjectExporter).
 
-"**Dump as**" commands are available via context menu in the **Code** window only.
-
-The result is shown in a separate document window.
-
 ![Presentation](https://user-images.githubusercontent.com/13467759/201370888-c8aa6d18-a732-4538-8466-3251665bbfe6.gif)
 
-**Pay attention: you can use this extension in GitHub codespaces.**
+## Features
 
-# Configurable:
-![image](https://user-images.githubusercontent.com/13467759/201370963-716fbb73-ed7a-47e1-a105-9ac9ee79a287.PNG)
+### Dump objects in multiple formats
 
-### Known restrictions:
-- C# and F# project languages are currently supported only.
-- netstandard 2.0+, netcore2.0+, but netframework is not supported yet.
-- local debugging only.
+- C# object initialization code
+- Visual Basic object initialization code
+- JSON
+- XML
+- YAML
 
-**Privacy Notice:** No personal data is collected at all.
+### Generate reusable code from runtime objects
 
-# Powered By
+C# and Visual Basic output is powered by [VarDump](https://github.com/ycherkes/VarDump). See the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for supported formatting and traversal options.
 
-| Repository  | License |
-| ------------- | ------------- |
-| [ILRepack](https://github.com/gluck/il-repack)  | [![Apache-2.0](https://img.shields.io/github/license/gluck/il-repack?style=flat-square)](https://github.com/gluck/il-repack/blob/master/LICENSE)  |
-| [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)  | [![MIT](https://img.shields.io/github/license/JamesNK/Newtonsoft.Json?style=flat-square)](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)  |
-| [VarDump](https://github.com/ycherkes/VarDump)  | [![Apache-2.0](https://img.shields.io/github/license/ycherkes/vardump?style=flat-square)](https://github.com/ycherkes/VarDump/blob/main/LICENSE)  |
-| [YamlDotNet](https://github.com/aaubry/YamlDotNet)  | [![MIT](https://img.shields.io/github/license/aaubry/YamlDotNet?style=flat-square)](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt)  |
+Typical use cases include:
 
-# ❤ Like this project and want to contribute?
+- creating unit-test fixtures from real runtime objects
+- capturing DTOs and domain objects for bug reproduction
+- turning debugger state into C# or Visual Basic initialization code
+- copying runtime objects as JSON or YAML for API testing
+- inspecting large object graphs without manually expanding every debugger node
 
-- ⭐ Star this repo on [GitHub](https://github.com/ycherkes/ObjectDumper).
-- ✏️ Write a review  and star this extension on [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.YellowFlavorObjectDumper&ssr=false#review-details) or [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper&ssr=false#review-details).
-- 🐞 Open an issue or browse more such issues to contribute to on [GitHub](https://github.com/ycherkes/ObjectDumper/issues).
-- 🔗 Share with your friends.
-- 🍪 Sponsor me on [GitHub](https://github.com/sponsors/ycherkes) or [PayPal](https://www.paypal.com/donate/?business=KXGF7CMW8Y8WJ&no_recurring=0&item_name=Help+Object+Dumper+become+better%21).
+Dump behavior and available formats can be configured by opening **Settings** and searching for **Object Dumper**.
+
+## Installation
+
+Install **Object Dumper** from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper), or install it from VS Code:
+
+1. Open **Extensions**
+2. Search for **Object Dumper**
+3. Select the extension published by **YevhenCherkes**
+4. Click **Install**
+
+## Usage
+
+Object Dumper commands are available while debugging a **C#** or **F#** project.
+
+1. Start a debugging session.
+2. Stop at a breakpoint.
+3. Select or place the cursor on the expression you want to export.
+4. Right-click in the editor.
+5. Open **Dump As**.
+6. Choose the desired format.
+7. The generated output opens in a separate editor document.
+
+### Keyboard shortcuts
+
+| Format | Windows / Linux | macOS |
+|---|---|---|
+| C# | `Ctrl+K D` | `Cmd+K D` |
+| JSON | `Ctrl+K J` | `Cmd+K J` |
+| Visual Basic | `Ctrl+K V` | `Cmd+K V` |
+| XML | `Ctrl+K X` | `Cmd+K X` |
+| YAML | `Ctrl+K Y` | `Cmd+K Y` |
+
+The commands are only enabled during a supported debugging session.
+
+## Configuration
+
+Configure dump behavior by opening **Settings** and searching for:
+
+```text
+Object Dumper
+```
+
+or edit your `settings.json` directly.
+
+### Common settings
+
+```json
+{
+  "objectDumper.common.maxDepth": 25
+}
+```
+
+C# and Visual Basic settings use the `objectDumper.csharp.*` and `objectDumper.vb.*` namespaces. VS Code Settings shows their defaults and accepted values; refer to the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for serializer behavior.
+
+## Changelog
+
+See the [project changelog](https://github.com/ycherkes/ObjectDumper/blob/main/CHANGELOG.md) for release details and migration guidance.
+
+## Requirements and known restrictions
+
+- Visual Studio Code `1.73.0` or later
+- C# and F# source projects are currently supported
+- local debugging only
+- .NET Standard 2.0+ and .NET Core 2.0+ debugging scenarios are supported
+- .NET Framework debugging is not currently supported
+
+Object Dumper commands are exposed from the **editor context menu**, not from the Variables/Watch context menu.
+
+## GitHub Codespaces
+
+Object Dumper can be used in GitHub Codespaces as long as the active debugging scenario satisfies the extension's supported .NET requirements.
+
+## Privacy
+
+**Object Dumper does not collect personal data.**
+
+Debugger interaction and serialization happen as part of your local or Codespaces debugging session.
+
+## Powered by
+
+| Library | Purpose | License |
+|---|---|---|
+| [VarDump](https://github.com/ycherkes/VarDump) | C# and Visual Basic serialization | [Apache-2.0](https://github.com/ycherkes/VarDump/blob/main/LICENSE) |
+| [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) | JSON and XML serialization | [MIT](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md) |
+| [YamlDotNet](https://github.com/aaubry/YamlDotNet) | YAML serialization | [MIT](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt) |
+| [ILRepack](https://github.com/gluck/il-repack) | Serializer assembly merging | [Apache-2.0](https://github.com/gluck/il-repack/blob/master/LICENSE) |
+
+## Contributing
+
+Contributions, bug reports, and feature requests are welcome.
+
+- [Star the repository](https://github.com/ycherkes/ObjectDumper)
+- [Open an issue](https://github.com/ycherkes/ObjectDumper/issues/new/choose)
+- [Submit a pull request](https://github.com/ycherkes/ObjectDumper/compare)
+- [Review the VS Code extension](https://marketplace.visualstudio.com/items?itemName=YevhenCherkes.object-dumper&ssr=false#review-details)
+
+## Support the project
+
+If Object Dumper saves you time, you can support its continued development through:
+
+- [GitHub Sponsors](https://github.com/sponsors/ycherkes)
+- [PayPal](https://www.paypal.com/donate/?business=KXGF7CMW8Y8WJ&no_recurring=0&item_name=Help+Object+Dumper+become+better%21)
+
+## License
+
+Object Dumper is licensed under the [MIT License](../../LICENSE.txt).

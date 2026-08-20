@@ -32,6 +32,7 @@ internal class VisualBasicSerializer : ISerializer
             new FileSystemInfoMiddleware()
         },
         GenerateVariableInitializer = true,
+        GetBaseClassFields = false,
         GetPropertiesBindingFlags = BindingFlags.Instance | BindingFlags.Public,
         IgnoreDefaultValues = true,
         IgnoreNullValues = true,
@@ -40,11 +41,12 @@ internal class VisualBasicSerializer : ISerializer
         IntegralNumericFormat = "D",
         MaxCollectionSize = int.MaxValue,
         MaxDepth = 25,
+        NewLineStyle = NewLineStyle.Auto,
         PrimitiveCollectionLayout = CollectionLayout.MultiLine,
+        TypeNamePolicy = TypeNamingPolicy.ShortName,
         UseNamedArgumentsInConstructors = false,
         UsePredefinedConstants = true,
-        UsePredefinedMethods = true,
-        UseTypeFullName = false
+        UsePredefinedMethods = true
     };
 
     public void Serialize(object obj, string settings, TextWriter textWriter)
@@ -64,6 +66,7 @@ internal class VisualBasicSerializer : ISerializer
         newOptions.DateKind = deserializedSettings.DateKind;
         newOptions.DateTimeInstantiation = deserializedSettings.DateTimeInstantiation;
         newOptions.GenerateVariableInitializer = deserializedSettings.GenerateVariableInitializer;
+        newOptions.GetBaseClassFields = deserializedSettings.GetBaseClassFields;
         newOptions.GetFieldsBindingFlags = deserializedSettings.GetFieldsBindingFlags;
         newOptions.GetPropertiesBindingFlags = deserializedSettings.GetPropertiesBindingFlags;
         newOptions.IgnoreDefaultValues = deserializedSettings.IgnoreDefaultValues;
@@ -73,12 +76,13 @@ internal class VisualBasicSerializer : ISerializer
         newOptions.IntegralNumericFormat = deserializedSettings.IntegralNumericFormat;
         newOptions.MaxCollectionSize = deserializedSettings.MaxCollectionSize;
         newOptions.MaxDepth = deserializedSettings.MaxDepth;
+        newOptions.NewLineStyle = deserializedSettings.NewLineStyle;
         newOptions.PrimitiveCollectionLayout = deserializedSettings.PrimitiveCollectionLayout;
         newOptions.SortDirection = deserializedSettings.SortDirection;
         newOptions.UseNamedArgumentsInConstructors = deserializedSettings.UseNamedArgumentsInConstructors;
         newOptions.UsePredefinedConstants = deserializedSettings.UsePredefinedConstants;
         newOptions.UsePredefinedMethods = deserializedSettings.UsePredefinedMethods;
-        newOptions.UseTypeFullName = deserializedSettings.UseFullTypeName;
+        newOptions.TypeNamePolicy = deserializedSettings.TypeNamePolicy;
 
         return newOptions;
     }

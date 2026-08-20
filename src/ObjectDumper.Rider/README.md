@@ -1,5 +1,9 @@
 # Object Dumper for JetBrains Rider
 
+[![JetBrains Plugin](https://img.shields.io/jetbrains/plugin/v/30257-object-dumper?label=JetBrains%20Marketplace)](https://plugins.jetbrains.com/plugin/30257-object-dumper)
+[![GitHub](https://img.shields.io/github/stars/ycherkes/ObjectDumper?style=flat-square)](https://github.com/ycherkes/ObjectDumper)
+[![License](https://img.shields.io/github/license/ycherkes/ObjectDumper?style=flat-square)](../../LICENSE.txt)
+
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://stand-with-ukraine.pp.ua)
 
 ## Terms of use[?](https://github.com/Tyrrrz/.github/blob/master/docs/why-so-political.md)
@@ -13,140 +17,221 @@ By using this project or its source code, for any purpose and in any shape or fo
 
 To learn more about the war and how you can help, [click here](https://stand-with-ukraine.pp.ua). Glory to Ukraine! 🇺🇦
 
-Reflection-based JetBrains Rider extension for exporting in-memory objects during debugging to **C# Object Initialization Code**, **JSON**, **Visual Basic Object Initialization Code**, **XML**, and **YAML** string.
+---
 
-This is the [Rider version](https://plugins.jetbrains.com/plugin/30257-object-dumper) of the popular [Object Dumper extension](https://github.com/ycherkes/ObjectDumper) available for Visual Studio and Visual Studio Code.
+**Object Dumper** is a JetBrains Rider plugin for exporting live objects from the debugger into reusable **C#**, **Visual Basic**, **JSON**, **XML**, or **YAML** representations.
+
+Instead of manually expanding a large object graph and copying values one by one, pause at a breakpoint, right-click a variable, choose **Dump As**, and send the generated output to a new editor tab, the clipboard, or the debug console.
+
+This is the [JetBrains Rider version](https://plugins.jetbrains.com/plugin/30257-object-dumper) of [Object Dumper](https://github.com/ycherkes/ObjectDumper), also available for Visual Studio and Visual Studio Code.
 
 ## Features
 
-- ?? **Dump objects during debugging** in multiple formats:
-  - C# Object Initialization Code
-  - JSON
-  - XML
-  - Visual Basic Object Initialization Code
-  - YAML
+### Dump debugger objects in multiple formats
 
-- ?? **Highly configurable**:
-  - Choose output destination (new editor tab, clipboard, or debug console)
-  - Configure max depth and collection size limits
-  - Customize DateTime formatting
-  - Control collection layout (inline or one-per-line)
-  - Select naming conventions (PascalCase, camelCase, snake_case)
+- C# object initialization code
+- Visual Basic object initialization code
+- JSON
+- XML
+- YAML
 
-- ?? **Easy to use**: Right-click on any variable in the Debug tool window and select "Dump as..."
+### Generate code you can reuse
 
-- ? **Full Implementation**: Complete debugger integration with expression evaluation, assembly injection, and serialization
+C# and Visual Basic dumps are powered by [VarDump](https://github.com/ycherkes/VarDump) and are intended to produce readable code that can be copied into tests, samples, repro cases, or debugging utilities. See the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for supported formatting and traversal options.
+
+Typical uses include:
+
+- creating test fixtures from runtime objects
+- capturing complex DTOs for bug reports or reproductions
+- converting live debugger state to JSON or YAML
+- generating C# or Visual Basic object initialization code
+- inspecting large object graphs without expanding every debugger node manually
+
+### Choose where dumps go
+
+Generated output can be sent to:
+
+- **New Tab**
+- **Clipboard**
+- **Debug Console**
+
+Serialization, traversal, formatting, and output behavior can be configured under **Settings / Preferences → Tools → Object Dumper**.
 
 ## Installation
 
-### From JetBrains Marketplace (Coming Soon)
+### JetBrains Marketplace
 
-1. Open Rider
-2. Go to `File` ? `Settings` ? `Plugins`
-3. Search for "Object Dumper"
-4. Click `Install`
-5. Restart Rider
+Install [Object Dumper from the JetBrains Marketplace](https://plugins.jetbrains.com/plugin/30257-object-dumper), or directly from Rider:
 
-### From Source
+1. Open **Settings / Preferences**
+2. Go to **Plugins**
+3. Search for **Object Dumper**
+4. Click **Install**
+5. Restart Rider if prompted
 
-1. Clone this repository
-2. Navigate to the `ObjectDumper.Rider` directory
-3. Run `./gradlew buildPlugin`
-4. Install the generated plugin from `build/distributions/ObjectDumper.Rider-*.zip`
+### Install a locally built plugin
+
+1. Build the plugin as described in [Building from source](#building-from-source).
+2. Open **Settings / Preferences → Plugins** in Rider.
+3. Open the plugin actions menu.
+4. Choose **Install Plugin from Disk...**
+5. Select the generated ZIP from:
+
+   ```text
+   build/distributions/ObjectDumper-*.zip
+   ```
 
 ## Usage
 
-1. Start debugging your .NET application in Rider
-2. Set a breakpoint and pause execution
-3. In the Debug tool window, right-click on any variable
-4. Select `Dump As` ? choose your desired format (C#, JSON, XML, VB, or YAML)
-5. The dumped object will appear based on your configured destination
+1. Start debugging a .NET application in Rider.
+2. Stop at a breakpoint.
+3. Locate the object or variable in the **Debug** tool window.
+4. Right-click it and choose **Dump As**.
+5. Select C#, Visual Basic, JSON, XML, or YAML.
+6. Object Dumper serializes the object and writes the result to the configured destination.
 
-![Usage Example](docs/usage-example.gif)
+![Usage Example Code Window](docs/usage-from-code.png)
+![Usage Example Debug -> Threads And Variables Window](docs/usage-from-watch.png)
 
 ## Configuration
 
-Access settings via `File` ? `Settings` ? `Tools` ? `Object Dumper`
+Configure dump behavior under:
 
-### Available Options
+**Settings / Preferences → Tools → Object Dumper**
 
-- **Enabled Formats**: Toggle which formats appear in the context menu
-- **Dump Destination**: 
-  - New Tab (opens in editor)
-  - Clipboard (copies to clipboard)
-  - Debug Console (prints to debug output)
-- **Serialization Options**:
-  - Max Depth (default: 10)
-  - Max Collection Size (default: 100)
-  - Operation Timeout (default: 30 seconds)
-- **DateTime Options**: Custom format string and kind (UTC/Local/Unspecified)
-- **Collection Layout**: Inline or one-per-line
-- **Naming Options**: Convention and strategy customization
+The settings are grouped into tabs for:
+
+- Common
+- C#
+- Visual Basic
+- JSON
+- XML
+- YAML
+
+### Common settings
+
+| Option | Description | Default |
+|---|---|---|
+| **Max Depth** | Maximum object-graph traversal depth | `25` |
+| **Operation Timeout** | Maximum debugger dump duration | `10 seconds` |
+| **Dump To** | Output destination | `New Tab` |
+
+C# and Visual Basic settings correspond to VarDump options. Rider displays their defaults; refer to the [VarDump documentation](https://github.com/ycherkes/VarDump#readme) for serializer behavior.
+
+## Changelog
+
+See the [project changelog](https://github.com/ycherkes/ObjectDumper/blob/main/CHANGELOG.md) for release details and migration guidance.
 
 ## Requirements
 
 - JetBrains Rider 2023.3 or later
-- .NET Framework 4.5+ / .NET Core 2.0+ / .NET Standard 2.0+
-- C#, F#, or Visual Basic projects
+- A supported local .NET debugging session
+- C#, F#, or Visual Basic .NET project
 
-## Known Limitations
+Supported serializer targets include:
 
-- **Supported Languages**: C#, F#, and Visual Basic only
-- **Debug Mode**: Works best in Debug mode. Release mode may cause "optimized code" errors
-- **Local Debugging**: Remote debugging is not currently supported
-- **Target Frameworks**: .NET Framework 4.5+, .NET Core 2.0+, .NET Standard 2.0+
+- .NET Framework 4.5+
+- .NET Standard 2.0+
+- .NET Core 2.0+
+- .NET 5+
 
-## Building from Source
+## Known limitations
 
-Prerequisites:
-- JDK 17 or later
-- Gradle 8.5 (included via wrapper)
+- Remote debugging is currently not supported.
+- Optimized Release builds may expose fewer values or produce debugger evaluation errors.
+- Debugger evaluation is subject to Rider and runtime restrictions.
+- Raw C# string literals and collection expressions require a compatible C# language version in the code that consumes the generated output.
 
-Build steps:
+## Building from source
+
+### Prerequisites
+
+- **JDK 17**
+- Gradle wrapper included in the repository
+
+> [!IMPORTANT]
+> Rider plugin packaging currently requires JDK 17 for this project. JDK 21 alone is not sufficient for the current build setup.
+
+From the Rider plugin directory:
+
 ```bash
-cd ObjectDumper.Rider
-./gradlew buildPlugin
+cd src/ObjectDumper.Rider
+./gradlew buildPlugin -x instrumentCode
 ```
 
-Run in sandbox:
+On Windows:
+
+```powershell
+cd src/ObjectDumper.Rider
+.\gradlew.bat buildPlugin -x instrumentCode
+```
+
+The plugin is Kotlin-only and does not use Java GUI forms, so code instrumentation is not required. Excluding `instrumentCode` also avoids a known IntelliJ Platform Gradle Plugin `2.0.0` failure on some Windows/JDK installations.
+
+The packaged plugin is written to:
+
+```text
+build/distributions/
+```
+
+### Run Rider in a development sandbox
+
 ```bash
 ./gradlew runIde
 ```
 
+On Windows:
+
+```powershell
+.\gradlew.bat runIde
+```
+
 ## Architecture
 
-The Rider plugin integrates with the existing Object Dumper infrastructure:
+Object Dumper separates Rider integration from the shared serialization layer:
 
-1. **Plugin Layer** (Kotlin/Java): Provides the Rider UI integration
-2. **Debugger Integration**: Interacts with Rider's debugger API to evaluate expressions
-3. **Serialization Library** (Shared): Uses the same `YellowFlavor.Serialization.dll` as the Visual Studio extension
-4. **Output Handlers**: Manages where the dumped output is sent
+1. **Rider plugin layer:** Provides actions, settings, context menus, and IDE integration.
+
+2. **Debugger integration:** Evaluates the selected expression in the active Rider debugging session.
+
+3. **Shared serialization layer:** Uses framework-specific `YellowFlavor.Serialization.dll` assemblies and VarDump 2.x for C#/Visual Basic output.
+
+4. **Output handling:** Sends generated content to an editor tab, clipboard, or debug console.
+
+The Rider package contains serializer assemblies for multiple .NET target frameworks so the plugin can inject a compatible serializer into the debuggee.
+
+## Powered by
+
+| Library | Purpose | License |
+|---|---|---|
+| [VarDump](https://github.com/ycherkes/VarDump) | C# and Visual Basic object serialization | [Apache-2.0](https://github.com/ycherkes/VarDump/blob/main/LICENSE) |
+| [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) | JSON and XML serialization | [MIT](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md) |
+| [YamlDotNet](https://github.com/aaubry/YamlDotNet) | YAML serialization | [MIT](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt) |
+| [ILRepack](https://github.com/gluck/il-repack) | Serializer assembly merging | [Apache-2.0](https://github.com/gluck/il-repack/blob/master/LICENSE) |
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions, bug reports, and feature requests are welcome.
 
-## Powered By
+- [Open an issue](https://github.com/ycherkes/ObjectDumper/issues/new/choose)
+- [Submit a pull request](https://github.com/ycherkes/ObjectDumper/compare)
+- Star the [Object Dumper repository](https://github.com/ycherkes/ObjectDumper)
 
-The same powerful serialization libraries used by the Visual Studio extension:
+## Privacy
 
-| Library  | Purpose | License |
-| ------------- | ------------- | ------------- |
-| [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) | JSON and XML serialization | [![MIT](https://img.shields.io/github/license/JamesNK/Newtonsoft.Json?style=flat-square)](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)  |
-| [VarDump](https://github.com/ycherkes/VarDump)  | C# and VB serialization | [![Apache-2.0](https://img.shields.io/github/license/ycherkes/vardump?style=flat-square)](https://github.com/ycherkes/VarDump/blob/main/LICENSE)  |
-| [YamlDotNet](https://github.com/aaubry/YamlDotNet) | YAML serialization | [![MIT](https://img.shields.io/github/license/aaubry/YamlDotNet?style=flat-square)](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE.txt)  |
-| [ILRepack](https://github.com/gluck/il-repack) | Assembly merging | [![Apache-2.0](https://img.shields.io/github/license/gluck/il-repack?style=flat-square)](https://github.com/gluck/il-repack/blob/master/LICENSE)  |
+**Object Dumper does not collect personal data.**
+
+Debugger interaction and serialization happen locally as part of the Rider debugging session.
+
+## Support the project
+
+If Object Dumper saves you time, you can support its continued development:
+
+- [GitHub Sponsors](https://github.com/sponsors/ycherkes)
+- [PayPal](https://www.paypal.com/donate/?business=KXGF7CMW8Y8WJ)
+
+A big thank you to [Yova Solutions](https://www.yovasolutions.com) for sponsoring this work.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.txt](../LICENSE.txt) file for details.
-
-## Support
-
-- ?? Report issues on [GitHub Issues](https://github.com/ycherkes/ObjectDumper/issues)
-- ? Star the project on [GitHub](https://github.com/ycherkes/ObjectDumper)
-- ?? Sponsor on [GitHub Sponsors](https://github.com/sponsors/ycherkes) or [PayPal](https://www.paypal.com/donate/?business=KXGF7CMW8Y8WJ)
-
-**Privacy Notice:** No personal data is collected at all.
-
-A big thank you to [Yova Solutions](https://www.yovasolutions.com) for sponsoring this work!
+Object Dumper is licensed under the [MIT License](../../LICENSE.txt).

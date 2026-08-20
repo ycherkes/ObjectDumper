@@ -20,7 +20,11 @@ class ObjectDumperConfigurable : Configurable {
     private val csharpEnabled = JBCheckBox("Enabled")
     private val csharpIgnoreNullValues = JBCheckBox("Ignore Null Values")
     private val csharpIgnoreDefaultValues = JBCheckBox("Ignore Default Values")
-    private val csharpUseFullTypeName = JBCheckBox("Use Full Type Name")
+    private val csharpTypeNamePolicy = JComboBox(TypeNamingPolicy.values())
+    private val csharpNewLineStyle = JComboBox(NewLineStyle.values())
+    private val csharpGetBaseClassFields = JBCheckBox("Include Base-Class Fields")
+    private val csharpStringLiteralStyle = JComboBox(StringLiteralStyle.values())
+    private val csharpCollectionLiteralStyle = JComboBox(CollectionLiteralStyle.values())
     private val csharpDateTimeInstantiation = JComboBox(DateTimeInstantiation.values())
     private val csharpDateKind = JComboBox(DateKind.values())
     private val csharpMaxCollectionSize = JBTextField()
@@ -43,7 +47,9 @@ class ObjectDumperConfigurable : Configurable {
     private val vbEnabled = JBCheckBox("Enabled")
     private val vbIgnoreNullValues = JBCheckBox("Ignore Null Values")
     private val vbIgnoreDefaultValues = JBCheckBox("Ignore Default Values")
-    private val vbUseFullTypeName = JBCheckBox("Use Full Type Name")
+    private val vbTypeNamePolicy = JComboBox(TypeNamingPolicy.values())
+    private val vbNewLineStyle = JComboBox(NewLineStyle.values())
+    private val vbGetBaseClassFields = JBCheckBox("Include Base-Class Fields")
     private val vbDateTimeInstantiation = JComboBox(DateTimeInstantiation.values())
     private val vbDateKind = JComboBox(DateKind.values())
     private val vbMaxCollectionSize = JBTextField()
@@ -145,7 +151,11 @@ class ObjectDumperConfigurable : Configurable {
             .addSeparator()
             .addComponent(csharpIgnoreNullValues)
             .addComponent(csharpIgnoreDefaultValues)
-            .addComponent(csharpUseFullTypeName)
+            .addLabeledComponent("Type Naming Policy:", csharpTypeNamePolicy)
+            .addLabeledComponent("Newline Style:", csharpNewLineStyle)
+            .addComponent(csharpGetBaseClassFields)
+            .addLabeledComponent("String Literal Style:", csharpStringLiteralStyle)
+            .addLabeledComponent("Collection Literal Style:", csharpCollectionLiteralStyle)
             .addLabeledComponent("DateTime Instantiation:", csharpDateTimeInstantiation)
             .addLabeledComponent("DateTime Kind:", csharpDateKind)
             .addLabeledComponent("Max Collection Size:", csharpMaxCollectionSize)
@@ -176,7 +186,9 @@ class ObjectDumperConfigurable : Configurable {
             .addSeparator()
             .addComponent(vbIgnoreNullValues)
             .addComponent(vbIgnoreDefaultValues)
-            .addComponent(vbUseFullTypeName)
+            .addLabeledComponent("Type Naming Policy:", vbTypeNamePolicy)
+            .addLabeledComponent("Newline Style:", vbNewLineStyle)
+            .addComponent(vbGetBaseClassFields)
             .addLabeledComponent("DateTime Instantiation:", vbDateTimeInstantiation)
             .addLabeledComponent("DateTime Kind:", vbDateKind)
             .addLabeledComponent("Max Collection Size:", vbMaxCollectionSize)
@@ -252,7 +264,11 @@ class ObjectDumperConfigurable : Configurable {
         if (csharpEnabled.isSelected != s.csharpEnabled) return true
         if (csharpIgnoreNullValues.isSelected != s.csharpIgnoreNullValues) return true
         if (csharpIgnoreDefaultValues.isSelected != s.csharpIgnoreDefaultValues) return true
-        if (csharpUseFullTypeName.isSelected != s.csharpUseFullTypeName) return true
+        if (csharpTypeNamePolicy.selectedItem != s.csharpTypeNamePolicy) return true
+        if (csharpNewLineStyle.selectedItem != s.csharpNewLineStyle) return true
+        if (csharpGetBaseClassFields.isSelected != s.csharpGetBaseClassFields) return true
+        if (csharpStringLiteralStyle.selectedItem != s.csharpStringLiteralStyle) return true
+        if (csharpCollectionLiteralStyle.selectedItem != s.csharpCollectionLiteralStyle) return true
         if (csharpDateTimeInstantiation.selectedItem != s.csharpDateTimeInstantiation) return true
         if (csharpDateKind.selectedItem != s.csharpDateKind) return true
         if (csharpMaxCollectionSize.text.toIntOrNull() != s.csharpMaxCollectionSize) return true
@@ -274,7 +290,9 @@ class ObjectDumperConfigurable : Configurable {
         if (vbEnabled.isSelected != s.visualBasicEnabled) return true
         if (vbIgnoreNullValues.isSelected != s.vbIgnoreNullValues) return true
         if (vbIgnoreDefaultValues.isSelected != s.vbIgnoreDefaultValues) return true
-        if (vbUseFullTypeName.isSelected != s.vbUseFullTypeName) return true
+        if (vbTypeNamePolicy.selectedItem != s.vbTypeNamePolicy) return true
+        if (vbNewLineStyle.selectedItem != s.vbNewLineStyle) return true
+        if (vbGetBaseClassFields.isSelected != s.vbGetBaseClassFields) return true
         if (vbDateTimeInstantiation.selectedItem != s.vbDateTimeInstantiation) return true
         if (vbDateKind.selectedItem != s.vbDateKind) return true
         if (vbMaxCollectionSize.text.toIntOrNull() != s.vbMaxCollectionSize) return true
@@ -345,7 +363,11 @@ class ObjectDumperConfigurable : Configurable {
         s.csharpEnabled = csharpEnabled.isSelected
         s.csharpIgnoreNullValues = csharpIgnoreNullValues.isSelected
         s.csharpIgnoreDefaultValues = csharpIgnoreDefaultValues.isSelected
-        s.csharpUseFullTypeName = csharpUseFullTypeName.isSelected
+        s.csharpTypeNamePolicy = csharpTypeNamePolicy.selectedItem as TypeNamingPolicy
+        s.csharpNewLineStyle = csharpNewLineStyle.selectedItem as NewLineStyle
+        s.csharpGetBaseClassFields = csharpGetBaseClassFields.isSelected
+        s.csharpStringLiteralStyle = csharpStringLiteralStyle.selectedItem as StringLiteralStyle
+        s.csharpCollectionLiteralStyle = csharpCollectionLiteralStyle.selectedItem as CollectionLiteralStyle
         s.csharpDateTimeInstantiation = csharpDateTimeInstantiation.selectedItem as DateTimeInstantiation
         s.csharpDateKind = csharpDateKind.selectedItem as DateKind
         s.csharpMaxCollectionSize = csharpMaxCollectionSize.text.toIntOrNull()?.coerceAtLeast(1) ?: Int.MAX_VALUE
@@ -369,7 +391,9 @@ class ObjectDumperConfigurable : Configurable {
         s.visualBasicEnabled = vbEnabled.isSelected
         s.vbIgnoreNullValues = vbIgnoreNullValues.isSelected
         s.vbIgnoreDefaultValues = vbIgnoreDefaultValues.isSelected
-        s.vbUseFullTypeName = vbUseFullTypeName.isSelected
+        s.vbTypeNamePolicy = vbTypeNamePolicy.selectedItem as TypeNamingPolicy
+        s.vbNewLineStyle = vbNewLineStyle.selectedItem as NewLineStyle
+        s.vbGetBaseClassFields = vbGetBaseClassFields.isSelected
         s.vbDateTimeInstantiation = vbDateTimeInstantiation.selectedItem as DateTimeInstantiation
         s.vbDateKind = vbDateKind.selectedItem as DateKind
         s.vbMaxCollectionSize = vbMaxCollectionSize.text.toIntOrNull()?.coerceAtLeast(1) ?: Int.MAX_VALUE
@@ -439,7 +463,11 @@ class ObjectDumperConfigurable : Configurable {
         csharpEnabled.isSelected = s.csharpEnabled
         csharpIgnoreNullValues.isSelected = s.csharpIgnoreNullValues
         csharpIgnoreDefaultValues.isSelected = s.csharpIgnoreDefaultValues
-        csharpUseFullTypeName.isSelected = s.csharpUseFullTypeName
+        csharpTypeNamePolicy.selectedItem = s.csharpTypeNamePolicy
+        csharpNewLineStyle.selectedItem = s.csharpNewLineStyle
+        csharpGetBaseClassFields.isSelected = s.csharpGetBaseClassFields
+        csharpStringLiteralStyle.selectedItem = s.csharpStringLiteralStyle
+        csharpCollectionLiteralStyle.selectedItem = s.csharpCollectionLiteralStyle
         csharpDateTimeInstantiation.selectedItem = s.csharpDateTimeInstantiation
         csharpDateKind.selectedItem = s.csharpDateKind
         csharpMaxCollectionSize.text = s.csharpMaxCollectionSize.toString()
@@ -461,7 +489,9 @@ class ObjectDumperConfigurable : Configurable {
         vbEnabled.isSelected = s.visualBasicEnabled
         vbIgnoreNullValues.isSelected = s.vbIgnoreNullValues
         vbIgnoreDefaultValues.isSelected = s.vbIgnoreDefaultValues
-        vbUseFullTypeName.isSelected = s.vbUseFullTypeName
+        vbTypeNamePolicy.selectedItem = s.vbTypeNamePolicy
+        vbNewLineStyle.selectedItem = s.vbNewLineStyle
+        vbGetBaseClassFields.isSelected = s.vbGetBaseClassFields
         vbDateTimeInstantiation.selectedItem = s.vbDateTimeInstantiation
         vbDateKind.selectedItem = s.vbDateKind
         vbMaxCollectionSize.text = s.vbMaxCollectionSize.toString()

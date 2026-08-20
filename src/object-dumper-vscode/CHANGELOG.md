@@ -109,3 +109,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.32]
 - Update VarDump to v 1.0.4.11 Fix decimal dumping regression (see https://github.com/ycherkes/VarDump/pull/45).
+
+## [0.0.33]
+- Update VarDump to v 2.0.9 with enum, queryable, default-value, circular-reference, and performance improvements.
+- Add type naming, newline, and inherited-field options for C# and Visual Basic.
+- Add C# string-literal and collection-literal style options.
+- Fix extension activation and missing Dump As context menus when the packaged VSIX does not contain runtime npm dependencies.

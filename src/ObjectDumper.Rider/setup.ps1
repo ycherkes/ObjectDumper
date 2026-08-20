@@ -7,7 +7,7 @@ Write-Host ""
 # Define paths
 $riderPluginRoot = $PSScriptRoot
 $objectDumperRoot = Split-Path -Parent $riderPluginRoot
-$sourceLibsPath = Join-Path $objectDumperRoot "src\ObjectDumper\InjectableLibs"
+$sourceLibsPath = Join-Path $objectDumperRoot "ObjectDumper\InjectableLibs"
 $targetLibsPath = Join-Path $riderPluginRoot "src\main\resources\InjectableLibs"
 
 # Check if source directory exists
