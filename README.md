@@ -125,10 +125,7 @@ Visual Studio can be used to compare two dumped object documents:
 
 ## Requirements
 
-Supported Visual Studio versions:
-
-- Visual Studio 2019
-- Visual Studio 2022
+Supported Visual Studio versions: 2019, 2022, 2026
 
 Supported project languages:
 
