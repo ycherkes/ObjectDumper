@@ -140,7 +140,7 @@ Supported serializer targets include:
 - .NET Core 2.0+
 - .NET 5+
 
-Local debugging is currently required.
+Local debugging only.
 
 ## Known limitations and troubleshooting
 
